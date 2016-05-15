@@ -1,0 +1,69 @@
+{
+  "name": "brisky-core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "lib/element.js",
+  "scripts": {
+    "test": "node test | tap-difflet",
+    "watch": "nodemon test | tap-difflet",
+    "cover": "istanbul cover --report none --print detail test/index.js",
+    "docs": "node_modules/vigour-doc/bin/vdoc",
+    "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vigour-io/brisky-core.git"
+  },
+  "author": "vigour.io <dev@vigour.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vigour-io/brisky-core/issues"
+  },
+  "homepage": "https://github.com/vigour-io/brisky-core#readme",
+  "dependencies": {
+    "babel-preset-es2015": "^6.6.0",
+    "babelify": "^7.3.0",
+    "html-element": "^1.5.0",
+    "lodash.get": "^4.2.0",
+    "lodash.set": "^4.1.0",
+    "vigour-observable": "^2.1.8",
+    "vigour-stamp": "^1.0.1",
+    "vigour-state": "^1.4.1",
+    "vigour-ua": "^1.0.3",
+    "vigour-util": "^2.0.8"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.9",
+    "istanbul": "^0.4.3",
+    "nodemon": "^1.9.1",
+    "tap-difflet": "0.4.0",
+    "tape": "^4.4.0",
+    "vigour-doc": "^1.1.5"
+  },
+  "browser": {
+    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
+    "html-element": false
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ]
+        }
+      ]
+    ]
+  },
+  "keywords": [
+    "reactive",
+    "state",
+    "element",
+    "DOM"
+  ],
+  "contributors": [
+    "Jim de Beer <jim@vigour.io>",
+    "Youri Daamen <youri@vigour.io>"
+  ]
+}
