@@ -24,8 +24,10 @@ test('element map', function (t) {
   elem = e({ $: 'field' })
   map = prep(elem.$map())
   t.same(map, {
-    field: sub(1, 't', elem)
+    field: sub(1, 't', elem),
+    _: {},
   }, 'element, sub')
+
   elem = e({ holder: { $: 'field' } })
   map = prep(elem.$map())
   t.same(map, {
@@ -34,48 +36,48 @@ test('element map', function (t) {
   }, 'element with child, nested sub')
 })
 
-test('element with properties map', function (t) {
-  var elem, map
-  t.plan(4)
+// test('element with properties map', function (t) {
+//   var elem, map
+//   t.plan(4)
 
-  elem = e({ style: { x: 10 } })
-  map = prep(elem.$map())
-  t.same(map, {
-    _: obj('t', elem)
-  }, 'property, no subs')
+//   elem = e({ style: { x: 10 } })
+//   map = prep(elem.$map())
+//   t.same(map, {
+//     _: obj('t', elem)
+//   }, 'property, no subs')
 
-  elem = e({ text: { $: 'textField' } })
-  map = prep(elem.$map())
-  t.same(map, {
-    textField: sub(true, 's', elem.text),
-    _: obj('t', elem)
-  }, 'text property, subs')
+//   elem = e({ text: { $: 'textField' } })
+//   map = prep(elem.$map())
+//   t.same(map, {
+//     textField: sub(true, 's', elem.text),
+//     _: obj('t', elem)
+//   }, 'text property, subs')
 
-  elem = e({
-    style: { x: { $: 'xField' } }
-  })
-  map = prep(elem.$map())
-  t.same(map, {
-    xField: sub(true, 's', elem.style.x),
-    _: obj('t', elem.style, elem)
-  }, 'style property, subs')
+//   elem = e({
+//     style: { x: { $: 'xField' } }
+//   })
+//   map = prep(elem.$map())
+//   t.same(map, {
+//     xField: sub(true, 's', elem.style.x),
+//     _: obj('t', elem.style, elem)
+//   }, 'style property, subs')
 
-  elem = e({
-    text: { $: 'textField' },
-    style: {
-      x: { $: 'xField' },
-      y: { $: 'yField' }
-    }
-  })
+//   elem = e({
+//     text: { $: 'textField' },
+//     style: {
+//       x: { $: 'xField' },
+//       y: { $: 'yField' }
+//     }
+//   })
 
-  map = prep(elem.$map())
-  t.same(map, {
-    xField: sub(true, 's', elem.style.x),
-    yField: sub(true, 's', elem.style.y),
-    textField: sub(true, 's', elem.text),
-    _: obj('t', elem.style, elem)
-  }, 'mixed properties, subs')
-})
+//   map = prep(elem.$map())
+//   t.same(map, {
+//     xField: sub(true, 's', elem.style.x),
+//     yField: sub(true, 's', elem.style.y),
+//     textField: sub(true, 's', elem.text),
+//     _: obj('t', elem.style, elem)
+//   }, 'mixed properties, subs')
+// })
 
 // test('collection map', function (t) {
 //   var elem, map

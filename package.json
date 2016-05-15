@@ -4,6 +4,7 @@
   "description": "",
   "main": "lib/element.js",
   "scripts": {
+    "start": "watchify-server test/index.js",
     "test": "node test | tap-difflet",
     "watch": "nodemon test | tap-difflet",
     "cover": "istanbul cover --report none --print detail test/index.js",
@@ -38,7 +39,8 @@
     "nodemon": "^1.9.1",
     "tap-difflet": "0.4.0",
     "tape": "^4.4.0",
-    "vigour-doc": "^1.1.5"
+    "vigour-doc": "^1.1.5",
+    "watchify-server": "^1.0.2"
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
