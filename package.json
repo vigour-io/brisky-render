@@ -5,11 +5,11 @@
   "main": "lib/element.js",
   "scripts": {
     "start": "watchify-server test/index.js",
-    "test": "node test | tap-difflet",
+    "test": "node test | tap-difflet && standard",
     "watch": "nodemon test | tap-difflet",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "docs": "node_modules/vigour-doc/bin/vdoc",
-    "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)"
+    "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0) && standard"
   },
   "repository": {
     "type": "git",
@@ -40,7 +40,8 @@
     "tap-difflet": "0.4.0",
     "tape": "^4.4.0",
     "vigour-doc": "^1.1.5",
-    "watchify-server": "^1.0.2"
+    "watchify-server": "^1.0.2",
+    "standard": "^7.0.1"
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
