@@ -1,43 +1,70 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
+const parseElement = require('parse-element')
+const s = require('vigour-state/s')
 
 test('collection', function (t) {
-  // types
   const app = {
     holder: {
       $: 'collection.$any',
       Child: {
         tag: 'span',
-        title: { $: 'title' },
-        input: {
-          tag: 'input'
-          // props: {
-            // value: 'hello'
-          // }
-        },
-        on: {
-          click (e) {}
-        }
+        title: { text: { $: 'title' } }
       }
     }
   }
 
-  const elem = render(app, {
+  const state = s({
     collection: [
       { title: 'a' },
       { title: 'b' }
     ]
   })
 
-  console.log(elem.fastRender())
+  const elem = render(app, state)
 
-  var d = Date.now()
-  // for (let i = 0; i < 1e4; i++) {
-  //   elem.innerHTML
-  // }
-  console.log(Date.now() - d + 'ms')
+  t.equal(
+    parseElement(elem),
+    '<div><div><span><div>a</div></span><span><div>b</div></span></div></div>',
+    'create multiple rows'
+  )
+
+  state.collection[0].remove()
+  t.equal(
+    parseElement(elem),
+    '<div><div><span><div>b</div></span></div></div>',
+    'remove first row'
+  )
+
+  try {
+    render({ holder: { $: 'collection.$any' } }, state)
+  } catch (e) {
+    t.equal(
+      e.message,
+      '$any: Child === Element. Define a Child Element',
+      'throws error when no Child is defined'
+    )
+  }
+
+  t.equal(
+    parseElement(
+      render({
+        components: {
+          span: {
+            tag: 'span',
+            title: { text: { $: 'title' } }
+          },
+          collection: {
+            $: 'collection.$any',
+            Child: { type: 'span' }
+          }
+        },
+        holder: { type: 'collection' }
+      }, state)
+    ),
+    '<div><div><span><div>b</div></span></div></div>',
+    'context render'
+  )
   t.end()
-  // need to exclude those order fields...
-  // find an easy solution for that -- maybe if isNode -- define props?
 })
