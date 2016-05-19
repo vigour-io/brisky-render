@@ -44,7 +44,8 @@ test('html', function (t) {
 
   t.equal(
     parseElement(app),
-    '<div><p><div></div><div><p>static</p></div></p></div>',
+    // div has to be parsed correctly
+    '<div><p><div/><div><p>static</p></div></p></div>',
     'removed text'
   )
 
