@@ -18,5 +18,9 @@ test('collection', function (t) {
       { title: 'a' },
       { title: 'b' }
     ]
-  })).toString()
+  }).innerHTML)
+
+  t.end()
+  // need to exclude those order fields...
+  // find an easy solution for that -- maybe if isNode -- define props?
 })
