@@ -4,7 +4,7 @@ const test = require('tape')
 const p = require('parse-element')
 const s = require('vigour-state/s')
 
-test('text', function (t) {
+test('text', (t) => {
   const state = s({ text: 'some text' })
   t.equal(
     p(render({ text: 'hello' })),
@@ -51,11 +51,10 @@ test('text', function (t) {
   t.end()
 })
 
-test.skip('text - path subscription', function (t) {
+test('text - path subscription', (t) => {
   const state = s({
     first: { second: 'a' }
   })
-
   // add broken operator case and everything
   const app = render({
     text: { $: 'first.second' }
