@@ -40,6 +40,14 @@ test('text', (t) => {
     'state and static text as a component'
   )
 
+  state.text.set('other text')
+
+  t.equal(
+    p(app),
+    '<div><p><div>-other text-</div><div>static</div></p></div>',
+    'updated text'
+  )
+
   state.text.remove()
 
   t.equal(
