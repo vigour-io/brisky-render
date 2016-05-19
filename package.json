@@ -1,9 +1,8 @@
 {
   "name": "brisky-core",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/element.js",
+  "version": "1.0.1",
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
+  "main": "lib/element.js",
   "scripts": {
     "start": "watchify-server test/index.js",
     "test": "node test | tap-difflet && standard",
