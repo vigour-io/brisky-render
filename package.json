@@ -29,7 +29,7 @@
     "lodash.set": "^4.1.0",
     "vigour-observable": "^2.1.8",
     "vigour-stamp": "^1.0.1",
-    "vigour-state": "^1.6.4",
+    "vigour-state": "^2.0.0",
     "vigour-ua": "^1.0.3",
     "vigour-util": "^2.0.8"
   },
