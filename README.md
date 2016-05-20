@@ -7,4 +7,4 @@
 [![Coverage Status](https://coveralls.io/repos/github/vigour-io/brisky-core/badge.svg?branch=master)](https://coveralls.io/github/vigour-io/brisky-core?branch=master)
 
 <!-- VDOC END -->
-The core of [brisky](https://github.com/vigour-io/brisky), a js library for creating blazing fast javascript ui's.
+The core of [brisky](https://github.com/vigour-io/brisky), a library for creating blazing fast javascript ui's.
