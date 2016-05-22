@@ -43,7 +43,7 @@
     "tape": "^4.4.0",
     "vigour-doc": "^1.1.5",
     "watchify-server": "^1.0.2",
-    "parse-element": "^1.1.1"
+    "parse-element": "^2.0.0"
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
