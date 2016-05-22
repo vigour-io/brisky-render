@@ -73,3 +73,19 @@ test('text - path subscription', (t) => {
   t.equal(p(app), '<div/>', 'removed text')
   t.end()
 })
+
+test('text - true subscription', (t) => {
+  const state = s({
+    first: { second: 'a' }
+  })
+  // add broken operator case and everything
+  const app = render({
+    $: 'first.second',
+    text: { $: true }
+  }, state)
+
+  t.equal(p(app), '<div>a</div>', 'correct html')
+  state.first.remove()
+  t.equal(p(app), '<div/>', 'removed text')
+  t.end()
+})
