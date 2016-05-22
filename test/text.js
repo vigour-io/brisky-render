@@ -86,6 +86,6 @@ test('text - true subscription', (t) => {
 
   t.equal(p(app), '<div>a</div>', 'correct html')
   state.first.remove()
-  t.equal(p(app), '<div/>', 'removed text')
+  t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })
