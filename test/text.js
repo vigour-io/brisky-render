@@ -52,7 +52,7 @@ test('text', (t) => {
 
   t.equal(
     p(app),
-    '<div><p><div/><div>static</div></p></div>',
+    '<div><p><div></div><div>static</div></p></div>',
     'removed text'
   )
 
@@ -70,6 +70,6 @@ test('text - path subscription', (t) => {
 
   t.equal(p(app), '<div>a</div>', 'correct html')
   state.first.remove()
-  t.equal(p(app), '<div/>', 'removed text')
+  t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })

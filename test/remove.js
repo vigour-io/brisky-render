@@ -13,9 +13,9 @@ test('remove', (t) => {
       $: 'first'
     }
   }, state)
-  t.equal(p(app), '<div><h1/></div>', 'correct initial html')
+  t.equal(p(app), '<div><h1></h1></div>', 'correct initial html')
   state.first.remove()
-  t.equal(p(app), '<div/>', 'removed node')
+  t.equal(p(app), '<div></div>', 'removed node')
   t.end()
 })
 
@@ -29,9 +29,9 @@ test('remove - path subscription', (t) => {
       }
     }
   }, state)
-  t.equal(p(app), '<div><div><h1/></div></div>', 'correct initial html')
+  t.equal(p(app), '<div><div><h1></h1></div></div>', 'correct initial html')
   state.first.remove()
-  t.equal(p(app), '<div><div/></div>', 'removed node')
+  t.equal(p(app), '<div><div></div></div>', 'removed node')
   t.end()
 })
 
@@ -45,9 +45,9 @@ test('remove - path subscription - $root', (t) => {
       }
     }
   }, state)
-  t.equal(p(app), '<div><div><h1/></div></div>', 'correct initial html')
+  t.equal(p(app), '<div><div><h1></h1></div></div>', 'correct initial html')
   state.first.remove()
-  t.equal(p(app), '<div><div/></div>', 'removed node')
+  t.equal(p(app), '<div><div></div></div>', 'removed node')
   t.end()
 })
 
