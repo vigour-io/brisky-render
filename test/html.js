@@ -14,7 +14,7 @@ test('html', function (t) {
 
   const app = render(
     {
-      components: {
+      types: {
         thing: {
           tag: 'p',
           state: {

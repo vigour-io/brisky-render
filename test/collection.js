@@ -50,7 +50,7 @@ test('collection', function (t) {
   t.equal(
     parseElement(
       render({
-        components: {
+        types: {
           span: {
             tag: 'span',
             title: { text: { $: 'title' } }
