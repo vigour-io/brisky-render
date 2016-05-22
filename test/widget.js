@@ -2,6 +2,7 @@
 const test = require('tape')
 const render = require('../render')
 const s = require('vigour-state/s')
+const parseElement = require('parse-element')
 
 test('widgets', (t) => {
   const state = s({ holder: true })
@@ -14,6 +15,7 @@ test('widgets', (t) => {
         on: {
           remove (data, stamp) {
             cnt = cnt + 1
+            t.equal(parseElement(data.target), '<div></div>', 'gets node in data.target')
           }
         }
       }
@@ -21,6 +23,6 @@ test('widgets', (t) => {
   }, state)
 
   state.holder.remove()
-  t.equals(cnt, 1, 'fired remove listener for widget once')
+  t.equal(cnt, 1, 'fired remove listener for widget once')
   t.end()
 })

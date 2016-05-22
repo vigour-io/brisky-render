@@ -54,7 +54,7 @@ test('remove - path subscription - $root', (t) => {
 test('remove - mixed and context', (t) => {
   const state = s({ first: { second: 'a' } })
   const app = render({
-    components: {
+    types: {
       basic: {
         tag: 'p',
         first: {
@@ -85,7 +85,7 @@ test('remove - mixed and context', (t) => {
 test('remove - mixed and context - $root', (t) => {
   const state = s({ first: { second: 'a' } })
   const app = render({
-    components: {
+    types: {
       basic: {
         tag: 'p',
         first: {
