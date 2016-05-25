@@ -8,7 +8,7 @@ test('collection', function (t) {
   const app = {
     holder: {
       $: 'collection.$any',
-      Child: {
+      child: {
         tag: 'span',
         title: { text: { $: 'title' } }
       }
@@ -42,8 +42,8 @@ test('collection', function (t) {
   } catch (e) {
     t.equal(
       e.message,
-      '$any: Child === Element. Define a Child Element',
-      'throws error when no Child is defined'
+      '$any: child === Element. Define a child Element',
+      'throws error when no child is defined'
     )
   }
 
@@ -57,7 +57,7 @@ test('collection', function (t) {
           },
           collection: {
             $: 'collection.$any',
-            Child: { type: 'span' }
+            child: { type: 'span' }
           }
         },
         holder: { type: 'collection' }
