@@ -40,9 +40,7 @@ test('collection', function (t) {
   try {
     render({ holder: { $: 'collection.$any' } }, state)
   } catch (e) {
-    t.equal(
-      e.message,
-      '$any: child === Element. Define a child Element',
+    t.ok(e.message.indexOf('$any: child === Element. Define a child Element') !== -1,
       'throws error when no child is defined'
     )
   }
