@@ -1,6 +1,7 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
+const parseElement = require('parse-element')
 
 test('test/condition', function (t) {
   var elem = render({
@@ -114,8 +115,8 @@ test('test/condition', function (t) {
   })
 
   t.equal(
-    elem.innerHTML,
-    '<div>holder<div>item<div>b</div></div></div>',
+    parseElement(elem),
+    '<div><div>holder<div>item<div>b</div></div></div></div>',
     'simple test nested +  root'
   )
 
@@ -154,43 +155,9 @@ test('test/condition', function (t) {
   })
 
   t.equal(
-    elem.innerHTML,
-    '<div>holder<div>item<div>b</div></div></div>',
-    'simple test nested +  root +  true notation'
-  )
-
-  elem = render({
-    holder: {
-      text: 'holder',
-      $: 'thing',
-      item: {
-        text: 'item',
-        $: '$test',
-        $test: {
-          val: (state) => {
-            return state.title.compute() === 'b' &&
-              state.getRoot().nested.rootthing.title.compute() === 'a'
-          },
-          $: '$root.nested.rootthing'
-        },
-        title: {
-          text: { $: 'title' }
-        }
-      }
-    }
-  }, {
-    thing: {
-      title: 'b'
-    },
-    nested: {
-      rootthing: { title: 'a' }
-    }
-  })
-
-  t.equal(
-    elem.innerHTML,
-    '<div>holder<div>item<div>b</div></div></div>',
-    'simple test nested +  root +  string notation'
+    parseElement(elem),
+    '<div><div>holder<div>item<div>b</div></div></div></div>',
+    'simple test nested +  root'
   )
 
   t.end()
