@@ -79,5 +79,119 @@ test('test/condition', function (t) {
     'simple test nested'
   )
 
+  elem = render({
+    holder: {
+      text: 'holder',
+      $: 'thing',
+      item: {
+        text: 'item',
+        $: '$test',
+        $test: {
+          val: (state) => {
+            return state.title.compute() === 'b' &&
+              state.getRoot().nested.rootthing.title.compute() === 'a'
+          },
+          $: {
+            $root: {
+              nested: {
+                rootthing: {}
+              }
+            }
+          }
+        },
+        title: {
+          text: { $: 'title' }
+        }
+      }
+    }
+  }, {
+    thing: {
+      title: 'b'
+    },
+    nested: {
+      rootthing: { title: 'a' }
+    }
+  })
+
+  t.equal(
+    elem.innerHTML,
+    '<div>holder<div>item<div>b</div></div></div>',
+    'simple test nested +  root'
+  )
+
+  elem = render({
+    holder: {
+      text: 'holder',
+      $: 'thing',
+      item: {
+        text: 'item',
+        $: '$test',
+        $test: {
+          val: (state) => {
+            return state.title.compute() === 'b' &&
+              state.getRoot().nested.rootthing.title.compute() === 'a'
+          },
+          $: {
+            $root: {
+              nested: {
+                rootthing: true
+              }
+            }
+          }
+        },
+        title: {
+          text: { $: 'title' }
+        }
+      }
+    }
+  }, {
+    thing: {
+      title: 'b'
+    },
+    nested: {
+      rootthing: { title: 'a' }
+    }
+  })
+
+  t.equal(
+    elem.innerHTML,
+    '<div>holder<div>item<div>b</div></div></div>',
+    'simple test nested +  root +  true notation'
+  )
+
+  elem = render({
+    holder: {
+      text: 'holder',
+      $: 'thing',
+      item: {
+        text: 'item',
+        $: '$test',
+        $test: {
+          val: (state) => {
+            return state.title.compute() === 'b' &&
+              state.getRoot().nested.rootthing.title.compute() === 'a'
+          },
+          $: '$root.nested.rootthing'
+        },
+        title: {
+          text: { $: 'title' }
+        }
+      }
+    }
+  }, {
+    thing: {
+      title: 'b'
+    },
+    nested: {
+      rootthing: { title: 'a' }
+    }
+  })
+
+  t.equal(
+    elem.innerHTML,
+    '<div>holder<div>item<div>b</div></div></div>',
+    'simple test nested +  root +  string notation'
+  )
+
   t.end()
 })
