@@ -1,8 +1,8 @@
 'use strict'
-// require('./map')
-// require('./group')
+require('./order')
 require('./html')
+require('./group')
 require('./text')
-require('./remove')
-require('./widget')
-require('./collection')
+// require('./remove')
+// require('./widget')
+// require('./collection')
