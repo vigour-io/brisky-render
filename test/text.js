@@ -20,8 +20,7 @@ test('text', (t) => {
           state: {
             text: {
               $: 'text',
-              $transform: (val) =>
-                typeof val === 'object' ? '' : `-${val}-`
+              $transform: (val) => typeof val === 'object' ? '' : `-${val}-`
             }
           },
           static: {
