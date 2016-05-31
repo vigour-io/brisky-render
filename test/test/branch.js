@@ -6,7 +6,6 @@ const s = require('vigour-state/s')
 
 test('$test - branch', function (t) {
   const state = s({ fields: { first: true } })
-  var appState
   var app = render({
     holder: {
       tag: 'holder',
@@ -39,13 +38,7 @@ test('$test - branch', function (t) {
         $: '$root.third'
       }
     }
-  },
-  state,
-  (subs) => {
-    if (!appState) {
-      appState = subs
-    }
-  })
+  }, state)
 
   t.same(
     parse(app),

@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parseElement = require('parse-element')
+const parse = require('parse-element')
 
 test('$test - basic', function (t) {
   var elem = render({
@@ -115,7 +115,7 @@ test('$test - basic', function (t) {
   })
 
   t.equal(
-    parseElement(elem),
+    parse(elem),
     '<div><div>holder<div>item<div>b</div></div></div></div>',
     'simple test nested +  root'
   )
@@ -155,7 +155,7 @@ test('$test - basic', function (t) {
   })
 
   t.equal(
-    parseElement(elem),
+    parse(elem),
     '<div><div>holder<div>item<div>b</div></div></div></div>',
     'simple test nested +  root'
   )
