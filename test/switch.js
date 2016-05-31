@@ -40,11 +40,22 @@ test('switch - branch', function (t) {
       },
       holder2: {
         tag: 'holder2',
-        $: 'field'
-        // switcher: {
-          // $: 'navigation.$switch',
-          // $switch: (state) => state.key
-        // }
+        $: 'field',
+        switcher: {
+          tag: 'switcher',
+          $: 'navigation.$switch',
+          $switch: (state) => state.key,
+          properties: {
+            first: {
+              tag: 'first',
+              text: { $: 'title' }
+            },
+            second: {
+              tag: 'second',
+              text: { $: 'rating' }
+            }
+          }
+        }
       }
     },
     state
@@ -57,7 +68,9 @@ test('switch - branch', function (t) {
         <holder>
           <switcher></switcher>
         </holder>
-        <holder2></holder2>
+        <holder2>
+          <switcher></switcher>
+        </holder2>
       </div>
     `),
     'intial'
@@ -82,7 +95,11 @@ test('switch - branch', function (t) {
             <first>first</first>
           </switcher>
         </holder>
-        <holder2></holder2>
+        <holder2>
+          <switcher>
+            <first>first</first>
+          </switcher>
+        </holder2>
       </div>
     `),
     'switch navigation to items[0]'
@@ -98,7 +115,11 @@ test('switch - branch', function (t) {
             <second>100</second>
           </switcher>
         </holder>
-        <holder2></holder2>
+        <holder2>
+          <switcher>
+            <second>100</second>
+          </switcher>
+        </holder2>
       </div>
     `),
     'switch navigation to items[1]'
