@@ -2,7 +2,6 @@
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
-// const strip = require('vigour-util/strip/formatting')
 const s = require('vigour-state/s')
 
 test('$test - branch', function (t) {
