@@ -1,9 +1,9 @@
 'use strict'
-const render = require('../render')
+const render = require('../../render')
 const test = require('tape')
 const parseElement = require('parse-element')
 
-test('test/condition', function (t) {
+test('$test - basic', function (t) {
   var elem = render({
     holder: {
       $: 'collection.$any',
