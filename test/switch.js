@@ -26,33 +26,46 @@ test('switch - branch', function (t) {
               text: { $: 'rating' }
             }
           }
+        },
+        // breaks order...
+        second: {
+          tag: 'switchsecond',
+          $: 'field',
+          switcher: {
+            tag: 'switcher',
+            $: 'navigation.$switch',
+            $switch: (state) => state.key,
+            properties: {
+              first: {
+                tag: 'first',
+                text: { $: 'title' }
+              },
+              second: {
+                tag: 'second',
+                text: { $: 'rating' }
+              }
+            }
+          }
         }
-        // THIS BREAKS ORDER FIX IT!
-        // second: {
-        //   tag: 'second',
-        //   $: 'field',
-        //   switcher: {
-        //     // $: 'navigation.$switch',
-        //     // $switch: (state) => state.key
-        //   }
-        // }
-        // in here it breaks
       },
       holder2: {
         tag: 'holder2',
         $: 'field',
-        switcher: {
-          tag: 'switcher',
-          $: 'navigation.$switch',
-          $switch: (state) => state.key,
-          properties: {
-            first: {
-              tag: 'first',
-              text: { $: 'title' }
-            },
-            second: {
-              tag: 'second',
-              text: { $: 'rating' }
+        field: {
+          $: 'navigation',
+          switcher: {
+            tag: 'switcher',
+            $: '$switch',
+            $switch: (state) => state.key,
+            properties: {
+              first: {
+                tag: 'first',
+                text: { $: 'title' }
+              },
+              second: {
+                tag: 'second',
+                text: { $: 'rating' }
+              }
             }
           }
         }
@@ -67,9 +80,14 @@ test('switch - branch', function (t) {
       <div>
         <holder>
           <switcher></switcher>
+          <switchsecond>
+            <switcher></switcher>
+          </switchsecond>
         </holder>
         <holder2>
+          <div>
           <switcher></switcher>
+          </div>
         </holder2>
       </div>
     `),
@@ -94,11 +112,18 @@ test('switch - branch', function (t) {
           <switcher>
             <first>first</first>
           </switcher>
+          <switchsecond>
+            <switcher>
+              <first>first</first>
+            </switcher>
+          </switchsecond>
         </holder>
         <holder2>
+          <div>
           <switcher>
             <first>first</first>
           </switcher>
+          </div>
         </holder2>
       </div>
     `),
@@ -114,11 +139,18 @@ test('switch - branch', function (t) {
           <switcher>
             <second>100</second>
           </switcher>
+          <switchsecond>
+            <switcher>
+              <second>100</second>
+            </switcher>
+          </switchsecond>
         </holder>
         <holder2>
+          <div>
           <switcher>
             <second>100</second>
           </switcher>
+          </div>
         </holder2>
       </div>
     `),
