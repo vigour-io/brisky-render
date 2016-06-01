@@ -1,5 +1,5 @@
 'use strict'
-const render = require('../render')
+const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
@@ -7,7 +7,6 @@ const strip = require('vigour-util/strip/formatting')
 
 test('switch - branch', function (t) {
   const state = s({ field: { navigation: {} } })
-
   var app = render(
     {
       holder: {
@@ -27,7 +26,6 @@ test('switch - branch', function (t) {
             }
           }
         },
-        // breaks order...
         second: {
           tag: 'switchsecond',
           $: 'field',
