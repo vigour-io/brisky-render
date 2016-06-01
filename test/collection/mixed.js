@@ -3,6 +3,7 @@ const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
+const strip = require('vigour-util/strip/formatting')
 
 test('collection - mixed', function (t) {
   const state = s({
@@ -21,8 +22,8 @@ test('collection - mixed', function (t) {
         tag: 'holder',
         $: 'field.collection.$any',
         child: {
-          class: 'basic-item',
-          text: { $: 'title' }
+          type: 'text',
+          $: 'title'
         }
       },
       holder2: {
@@ -31,43 +32,38 @@ test('collection - mixed', function (t) {
         title: {
           text: { $: 'title' }
         }
+      },
+      holder3: {
+        $: 'field',
+        tag: 'holder3',
+        collection: {
+          tag: 'collection',
+          $: 'collection.$any',
+          child: {
+            type: 'text',
+            $: 'title'
+          }
+        }
       }
-      // holder3: {
-      //   tag: 'holder3',
-      //   $: 'collection.$any',
-      //   child: {
-      //     class: 'basic-item',
-      //     text: { $: 'title' }
-      //   }
-      // }
     }
   }, state)
 
-  console.log(parse(app))
-  document.body.appendChild(app)
-
+  t.equal(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <holder>0</holder>
+          <holder2>
+            <div>0</div>
+          </holder2>
+          <holder3>
+            <collection>0</collection>
+          </holder3>
+        </div>
+      </div>
+    `),
+    'multiple collections, combined with a non colleciton on the same levels'
+  )
   t.end()
 })
-
-/*
-  header: {
-    a: {
-      bla: {
-        x: {
-          text: { $: 'x', $prepend: 'x:' }
-        },
-        lastname: {
-          text: {
-            $: 'title.lastname',
-            $prepend: 'lname: '
-          }
-        }
-      },
-      text: {
-        $: 'title',
-        $prepend: 'h:',
-        $transform (val) { return val }
-      }
-    }
-  }
-*/
