@@ -1,10 +1,10 @@
 'use strict'
-const render = require('../render')
+const render = require('../../render')
 const test = require('tape')
 const parseElement = require('parse-element')
 const s = require('vigour-state/s')
 
-test('collection', function (t) {
+test('collection - basic', function (t) {
   const app = {
     holder: {
       $: 'collection.$any',

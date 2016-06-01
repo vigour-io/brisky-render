@@ -133,3 +133,65 @@ test('order - context', function (t) {
 
   t.end()
 })
+
+test('order - texts', function (t) {
+  const state = s({
+    fields: '-ha-'
+  })
+  const app = render(
+    {
+      properties: {
+        field: {
+          $: 'fields',
+          blurf: {
+            text: 'blurf'
+          },
+          texts: {
+            child: { type: 'text', $: true }
+          },
+          other: {
+            $: 'other',
+            text: { $: true }
+          },
+          more: {
+            text: 'more!'
+          }
+        }
+      },
+      field: {
+        texts: [ 1, 2, 3, 4, 5, 6, 7 ]
+      }
+    },
+    state
+  )
+  state.set({
+    fields: {
+      other: 'its other!'
+    }
+  })
+  state.set({
+    fields: {
+      other: null
+    }
+  })
+  state.set({
+    fields: {
+      other: 'its other!'
+    }
+  })
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>blurf</div>
+          <div>-ha--ha--ha--ha--ha--ha--ha-</div>
+          <div>its other!</div>
+          <div>more!</div>
+        </div>
+      </div>
+    `),
+    'correct order on sequential sets'
+  )
+  t.end()
+})
