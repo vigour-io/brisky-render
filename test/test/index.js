@@ -2,3 +2,4 @@
 require('./basic')
 require('./branch')
 require('./switch')
+require('./parent')

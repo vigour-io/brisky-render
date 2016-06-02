@@ -37,8 +37,8 @@ test('$test - $parent', function (t) {
 
   var app = render({
     types,
-    frag: {
-      tag: 'fragment',
+    holder: {
+      tag: 'holder',
       $: 'emojis',
       bla: { type: 'emojis' },
       text: '-------',
@@ -60,17 +60,21 @@ test('$test - $parent', function (t) {
     }
   })
 
+  // wrong order in node but not in the browser...
+  // clone node difference
   t.same(
     parse(app),
     strip(`
     <div>
-      <div>
-        <span>🌕<span>🐶</span></span>
-      </div>
-      -------
-      <div>
-        <span>🌔<span>💦</span></span>
-      </div>
+      <holder>
+        <div>
+          <span>🌕<span>🐶</span></span>
+        </div>
+        -------
+        <div>
+          <span>🌔<span>💦</span></span>
+        </div>
+      </holder>
     </div>
     `),
     'parses parent /w tests correctly'
@@ -102,5 +106,6 @@ test('$test - $parent', function (t) {
   //   '<div><holder></holder></div>',
   //   'set state.fields.first to false'
   // )
+
   t.end()
 })
