@@ -24,14 +24,14 @@ test('fragment', function (t) {
   const app = render(
     {
       types,
-      text: 'app',
       holder: {
         $: 'lol',
         frag: { type: 'fragment' },
         statics: {
           text: 'its static!'
         }
-      }
+      },
+      text: 'yo'
     },
     state
   )
@@ -46,10 +46,19 @@ test('fragment', function (t) {
 
   document.body.appendChild(app)
 
-  // setTimeout(function () {
-  //   console.log('remove fragment!')
-  //   state.lol.lulz.remove()
-  // }, 500)
+  setTimeout(function () {
+    console.log('remove fragment!')
+    state.lol.lulz.remove()
+  }, 1000)
+
+  setTimeout(function () {
+    console.log('readd lol')
+    state.set({
+      lol: {
+        lulz: 'lulz!'
+      }
+    })
+  }, 1500)
 
   t.end()
 })
