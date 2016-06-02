@@ -70,7 +70,6 @@ test('$test - $parent', function (t) {
         <div>
           <span>🌕<span>🐶</span></span>
         </div>
-        -------
         <div>
           <span>🌔<span>💦</span></span>
         </div>
@@ -80,11 +79,33 @@ test('$test - $parent', function (t) {
     'parses parent /w tests correctly'
   )
 
+  state.set({
+    emojis: { title: '💩' }
+  })
+
+  t.same(
+    parse(app),
+    strip(`
+    <div>
+      <holder>
+        <div>
+          <span>🌕<span>🐶</span></span>
+        </div>
+        💩
+        <div>
+          <span>🌔<span>💦</span></span>
+        </div>
+      </holder>
+    </div>
+    `),
+    'set emoji title'
+  )
+
   if ('body' in document) {
     document.body.appendChild(app)
   }
 
-  console.log('FIRE DAT GUN')
+  console.log('FIRE DAT GUN parent tests condition!')
   state.set({
     emojis: {
       focus: 'blurk!'
