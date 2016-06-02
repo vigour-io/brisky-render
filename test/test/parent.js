@@ -26,7 +26,7 @@ test('$test - $parent', function (t) {
     moon: {
       $: 0,
       text: { $: true },
-      dog: {
+      nature: {
         $: '$parent.$parent.nature',
         text: { $: 0 }
       }
@@ -40,9 +40,9 @@ test('$test - $parent', function (t) {
     holder: {
       tag: 'holder',
       $: 'emojis',
-      bla: { type: 'emojis' },
-      text: '-------',
-      blurf: {
+      a: { type: 'emojis' },
+      text: { $: 'title' },
+      b: {
         type: 'emojis',
         $: 'deep.moons.$test'
       }
