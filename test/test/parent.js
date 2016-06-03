@@ -41,7 +41,8 @@ test('$test - $parent', function (t) {
       tag: 'holder',
       $: 'emojis',
       a: { type: 'emojis' },
-      text: { $: 'title' },
+      text: '----',
+      // text: { $: 'title' }, // also crashes without
       b: {
         type: 'emojis',
         $: 'deep.moons.$test'
