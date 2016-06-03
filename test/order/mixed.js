@@ -1,10 +1,10 @@
 'use strict'
-const render = require('../render')
+const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
-const Element = require('../lib/element')
+const Element = require('../../lib/element')
 
 test('order - basic', function (t) {
   const state = s()
