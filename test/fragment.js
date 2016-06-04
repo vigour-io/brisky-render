@@ -13,10 +13,10 @@ test('fragment', function (t) {
     fragment: {
       tag: 'fragment',
       $: 'lulz',
-      text: '-----------'
+      // text: '-----------'
       // a: { text: 'hello' },
       // b: { text: 'blurgh' },
-      // c: { text: { $: true } },
+      c: { text: { $: true } }
       // footer: { type: 'text', val: '----------' }
     }
   }
@@ -28,7 +28,7 @@ test('fragment', function (t) {
         $: 'lol',
         frag: { type: 'fragment' },
         statics: {
-          text: 'its static!'
+          text: 'its static (from lol)'
         }
       },
       text: 'yo'
@@ -46,19 +46,19 @@ test('fragment', function (t) {
 
   document.body.appendChild(app)
 
-  setTimeout(function () {
-    console.log('remove fragment!')
-    state.lol.lulz.remove()
-  }, 1000)
+  // setTimeout(function () {
+  //   console.log('remove fragment!')
+  //   state.lol.lulz.remove()
+  // }, 1000)
 
-  setTimeout(function () {
-    console.log('readd lol')
-    state.set({
-      lol: {
-        lulz: 'lulz!'
-      }
-    })
-  }, 1500)
+  // setTimeout(function () {
+  //   console.log('readd lol')
+  //   state.set({
+  //     lol: {
+  //       lulz: 'lulz!'
+  //     }
+  //   })
+  // }, 1500)
 
   t.end()
 })
