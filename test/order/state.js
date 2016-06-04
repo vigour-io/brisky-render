@@ -7,10 +7,13 @@ const strip = require('vigour-util/strip/formatting')
 
 test('order - basic', function (t) {
   const state = s()
+
+  // lets try to break it by reacreating foked up cases
   const app = render(
     {
       1: { $: 1, text: { $: true } },
-      2: { $: 2, text: { $: true } },
+      bla: { text: 'bla' },
+      2: { $: 2, text: { $: true } }
     },
     state
   )
