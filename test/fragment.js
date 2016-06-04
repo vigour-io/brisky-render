@@ -1,10 +1,9 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
-// const parse = require('parse-element')
+const parse = require('parse-element')
 const s = require('vigour-state/s')
 // const strip = require('vigour-util/strip/formatting')
-// const Element = require('../lib/element')
 
 test('fragment', function (t) {
   const state = global.state = s()
@@ -15,8 +14,8 @@ test('fragment', function (t) {
       $: 'lulz',
       // text: '-----------'
       // a: { text: 'hello' },
-      // b: { text: 'blurgh' },
-      c: { text: { $: true } }
+      b: { text: { $: '$root.b' } },
+      c: { text: { $: true, $prepend: 'frag: ' } }
       // footer: { type: 'text', val: '----------' }
     }
   }
@@ -28,23 +27,27 @@ test('fragment', function (t) {
         $: 'lol',
         frag: { type: 'fragment' },
         statics: {
-          text: 'its static (from lol)'
+          text: '--->its static (from lol)'
         }
       },
-      text: 'yo'
+      text: 'static under!'
     },
     state
   )
 
-  setTimeout(function () {
-    state.set({
-      lol: {
-        lulz: 'lulz!'
-      }
-    })
-  }, 500)
+  state.set({
+    lol: {
+      lulz: 'lulz!'
+    }
+  })
 
-  document.body.appendChild(app)
+  state.set({
+    b: 'its b!'
+  })
+
+  console.log('???', parse(app))
+
+  // document.body.appendChild(app)
 
   // setTimeout(function () {
   //   console.log('remove fragment!')
