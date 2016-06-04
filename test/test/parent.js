@@ -41,8 +41,7 @@ test('$test - $parent', function (t) {
       tag: 'holder',
       $: 'emojis',
       a: { type: 'emojis' },
-      text: '----',
-      // text: { $: 'title' }, // also crashes without
+      text: { $: 'title' },
       b: {
         type: 'emojis',
         $: 'deep.moons.$test'
@@ -61,7 +60,7 @@ test('$test - $parent', function (t) {
     }
   })
 
-  // wrong order in node but not in the browser...
+    // wrong order in node but not in the browser...
   // clone node difference
   t.same(
     parse(app),
@@ -118,16 +117,16 @@ test('$test - $parent', function (t) {
     focus: 'hello'
   })
 
-  // t.same(
-  //   parse(app),
-  //   '<div><holder><first></first></holder></div>',
-  //   'correct html on intial state'
-  // )
-  // t.same(
-  //   parse(app),
-  //   '<div><holder></holder></div>',
-  //   'set state.fields.first to false'
-  // )
+    // t.same(
+    //   parse(app),
+    //   '<div><holder><first></first></holder></div>',
+    //   'correct html on intial state'
+    // )
+    // t.same(
+    //   parse(app),
+    //   '<div><holder></holder></div>',
+    //   'set state.fields.first to false'
+    // )
 
   t.end()
 })
