@@ -45,8 +45,6 @@ test('fragment', function (t) {
     b: 'its b!'
   })
 
-  console.log('???', parse(app))
-
   // document.body.appendChild(app)
 
   // setTimeout(function () {
