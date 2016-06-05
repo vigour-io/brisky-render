@@ -1,34 +1,11 @@
 'use strict'
-const render = require('../render')
+const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
-const Element = require('../lib/element')
-
-test('order - basic', function (t) {
-  const state = s()
-  const app = render(
-    {
-      state: { $: 'text', text: { $: true } },
-      static: { tag: 'p' }
-    },
-    state
-  )
-  t.equal(parse(app), '<div><p></p></div>', 'correct initial')
-  state.set({ text: 'other text' })
-  t.equal(
-    parse(app),
-    strip(`
-      <div>
-        <div>other text</div>
-        <p></p>
-      </div>
-    `),
-    'updates text'
-  )
-  t.end()
-})
+const Element = require('../../lib/element')
+const isNode = require('vigour-util/is/node')
 
 test('order - context', function (t) {
   const state = s({
@@ -134,7 +111,7 @@ test('order - context', function (t) {
   t.end()
 })
 
-test('order - texts', function (t) {
+test('order - context - texts', function (t) {
   const state = s({
     fields: '-ha-'
   })
@@ -164,6 +141,7 @@ test('order - texts', function (t) {
     },
     state
   )
+
   state.set({
     fields: {
       other: 'its other!'
@@ -179,19 +157,23 @@ test('order - texts', function (t) {
       other: 'its other!'
     }
   })
-  t.same(
-    parse(app),
-    strip(`
-      <div>
+  if (!isNode) {
+    t.same(
+      parse(app),
+      strip(`
         <div>
-          <div>blurf</div>
-          <div>-ha--ha--ha--ha--ha--ha--ha-</div>
-          <div>its other!</div>
-          <div>more!</div>
+          <div>
+            <div>blurf</div>
+            <div>-ha--ha--ha--ha--ha--ha--ha-</div>
+            <div>its other!</div>
+            <div>more!</div>
+          </div>
         </div>
-      </div>
-    `),
-    'correct order on sequential sets'
-  )
+      `),
+      'correct order on sequential sets'
+    )
+  } else {
+    console.log('html-element - cant run this in node')
+  }
   t.end()
 })
