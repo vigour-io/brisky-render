@@ -14,7 +14,6 @@ test('$test - $parent', function (t) {
     $: 'moons.$test',
     $test: {
       val (state, tree) {
-        console.log(state.parent.parent.path(), tree)
         return true
       },
       $: '$parent.$parent.focus'
