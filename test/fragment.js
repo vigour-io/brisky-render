@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
-const parse = require('parse-element')
+// const parse = require('parse-element')
 const s = require('vigour-state/s')
 // const strip = require('vigour-util/strip/formatting')
 
@@ -20,7 +20,7 @@ test('fragment', function (t) {
     }
   }
 
-  const app = render(
+  const app = render( //eslint-disable-line
     {
       types,
       holder: {
@@ -46,7 +46,6 @@ test('fragment', function (t) {
   })
 
   // document.body.appendChild(app)
-
   // setTimeout(function () {
   //   console.log('remove fragment!')
   //   state.lol.lulz.remove()
