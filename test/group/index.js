@@ -5,82 +5,6 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
-// const vstamp = require('vigour-stamp')
-// test('group - no done', function (t) {
-//   var string = ''
-
-//   const state = s({
-//     thing: {
-//       one: 'A',
-//       two: 'B',
-//       three: 'C'
-//     }
-//   })
-
-//   const elem = render({
-//     properties: {
-//       randomGroup: {
-//         type: 'group',
-//         render: {
-//           static (target, node) {
-//             const val = target.compute()
-//             string = target.storeStatic(val, node)
-//           },
-//           state (target, state, type, stamp, subs, tree, id, pid) {
-//             // const val = state && target.$ ? target.compute(state) : target.compute()
-//           }
-//         },
-//         child: {
-//           define: {
-//             collect (val, store, id) {
-//               const _ = store._ || (store._ = {})
-//               const index = _[id] || (_[id] = store.length + 1)
-//               store[index] = val ? typeof val === 'string' ? val : this.key : ''
-//             }
-//           },
-//           render: {
-//             static (target, node, store) {
-//               target.collect(target.compute(), store, target.uid())
-//             },
-//             state (target, state, type, stamp, subs, tree, id, pid) {
-//               const store = target.getStore(tree, pid + 'random')
-//               if (!store.stamp && store.stamp !== 0) {
-//                 vstamp.on(stamp, function () {
-//                   const val = '' // should be parent value
-//                   string = target.cParent().storeState(val, state, type, stamp, subs._.p, tree._p, pid + 'random', pid)
-//                   store.stamp = null
-//                   console.log('string:', string)
-//                 })
-//                 store.stamp = stamp
-//               }
-//               target.collect(target.compute(state), store, id)
-//             }
-//           }
-//         }
-//       }
-//     },
-//     $: 'thing',
-//     randomGroup: {
-//       a: { $: 'one' },
-//       b: { $: 'two' },
-//       c: { $: 'three' }
-//     }
-//   }, state)
-
-//   setTimeout(function () {
-//     console.log('--- update ---')
-//     state.set({
-//       thing: {
-//         one: 'hey'
-//       }
-//     })
-
-//     // t.equals(string, 'a b c', 'static group')
-//     setTimeout(function () {
-//       t.end()
-//     }, 50)
-//   }, 10)
-// })
 
 test('group', function (t) {
   const types = {
@@ -91,38 +15,19 @@ test('group', function (t) {
         template: true
       },
       render: {
-        static (target, node) {
+        static (target, node, store) {
           node.style.position = 'fixed'
           node.style[target.style] = target.template
         },
-        state (target, state, type, stamp, subs, tree, id, pid) {
-          console.error('go here!')
-          // maybe give it another name? exec it or something?
+        state (target, state, type, stamp, subs, tree, id, pid, store) {
           var val = state && target.$ ? target.compute(state) : target.compute()
-          target.storeState(void 0, state, type, stamp, subs, tree, pid + 'animation', pid, true, (stored) => {
-            const node = getParent(type, stamp, subs, tree, pid)
-            const keys = Object.keys(stored)
-            val = (target.template || val)
-              .replace('{0}', stored[keys[0]])
-              .replace('{1}', stored[keys[1]])
-              .replace('{2}', stored[keys[2]])
-            node.style.position = 'fixed'
-            node.style[target.style] = val
-          })
-        }
-      },
-      child: {
-        define: {
-          collect (val, store, id) {
-            const _ = store._ || (store._ = {})
-            const index = _[id] || (_[id] = store.length + 1)
-            store[index] = val
+          const node = getParent(type, stamp, subs, tree, pid)
+          val = (target.template || val)
+          for (let key in store) {
+            val = val.replace(`{${key}}`, store[key])
           }
-        },
-        render: {
-          state (target, state, type, stamp, subs, tree, id, pid) {
-            target.collect(target.compute(state), target.getStore(tree, pid + 'animation'), id)
-          }
+          node.style.position = 'fixed'
+          node.style[target.style] = val
         }
       }
     }
@@ -156,10 +61,10 @@ test('group', function (t) {
       animation: {
         type: 'animation',
         style: 'transform',
-        template: 'translate3d({0}px,{1}px, 0px) rotate({2}deg)',
-        0: { $: 0 },
-        1: { $: 1 },
-        2: { $: 2 }
+        template: 'translate3d({x}px,{y}px, 0px) rotate({rotate}deg)',
+        x: { $: 0 },
+        y: { $: 1 },
+        rotate: { $: 2 }
       }
     }
   }
@@ -178,8 +83,8 @@ test('group', function (t) {
         $: '0.$any',
         child: {
           animation: {
-            0: { $transform: (val) => val * 2.5 - 0.75 * max },
-            1: { $transform: (val) => val * 2.5 - 1.5 * max }
+            x: { $transform: (val) => val * 2.5 - 0.75 * max },
+            y: { $transform: (val) => val * 2.5 - 1.5 * max }
           }
         }
       }
