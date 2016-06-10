@@ -1,11 +1,11 @@
 'use strict'
-
 const render = require('../render')
 const test = require('tape')
 const p = require('parse-element')
 const s = require('vigour-state/s')
 
-test('remove', (t) => {
+test('parent', (t) => {
+  console.log('lets go parent')
   const state = s({ first: true })
   // add broken operator case and everything
   const app = render({
