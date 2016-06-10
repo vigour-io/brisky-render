@@ -50,7 +50,7 @@ test('group', function (t) {
   }
 
   const arr = []
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 20; i++) {
     arr.push(i)
   }
 
@@ -67,8 +67,8 @@ test('group', function (t) {
     },
     child: {
       tag: 'span',
-      $: '$test',
-      $test: (state) => state[0] && state[0].compute() > max / 2,
+      // $: '$test',
+      // $test: (state) => state[0] && state[0].compute() > max / 2,
       title: {
         tag: 'h1',
         $: 'title',
