@@ -136,18 +136,19 @@ test('group', function (t) {
   const path = require('path')
   const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
-  const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
+  // const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
   function loop () {
     cnt++
     state.each((p, key) => {
       update(cnt / 20, key)
     })
+    setTimeout(loop)
   }
   loop()
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  t.same(parse(app), output, 'group outputs correct html')
+  // t.same(parse(app), output, 'group outputs correct html')
   t.end()
 })
