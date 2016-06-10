@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
-const vstamp = require('vigour-stamp')
+// const vstamp = require('vigour-stamp')
 // test('group - no done', function (t) {
 //   var string = ''
 
@@ -96,16 +96,19 @@ test('group', function (t) {
           node.style[target.style] = target.template
         },
         state (target, state, type, stamp, subs, tree, id, pid) {
+          console.error('go here!')
+          // maybe give it another name? exec it or something?
           var val = state && target.$ ? target.compute(state) : target.compute()
-          const stored = target.storeState(void 0, state, type, stamp, subs, tree, pid + 'animation', pid, true)
-          const node = getParent(type, stamp, subs, tree, pid)
-          const keys = Object.keys(stored)
-          val = (target.template || val)
-            .replace('{0}', stored[keys[0]])
-            .replace('{1}', stored[keys[1]])
-            .replace('{2}', stored[keys[2]])
-          node.style.position = 'fixed'
-          node.style[target.style] = val
+          target.storeState(void 0, state, type, stamp, subs, tree, pid + 'animation', pid, true, (stored) => {
+            const node = getParent(type, stamp, subs, tree, pid)
+            const keys = Object.keys(stored)
+            val = (target.template || val)
+              .replace('{0}', stored[keys[0]])
+              .replace('{1}', stored[keys[1]])
+              .replace('{2}', stored[keys[2]])
+            node.style.position = 'fixed'
+            node.style[target.style] = val
+          })
         }
       },
       child: {
