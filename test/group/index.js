@@ -53,7 +53,11 @@ test('group', function (t) {
     child: {
       tag: 'span',
       $: '$test',
-      $test: (state) => state[0] && state[0].compute() > max / 2,
+      $test: (state) => {
+        const x = state[0] && state[0].compute()
+        // const y = state[1] && state[1].compute()
+        return x > max / 2
+      },
       title: {
         tag: 'h1',
         $: 'title',
