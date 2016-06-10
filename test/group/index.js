@@ -5,6 +5,83 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
+const vstamp = require('vigour-stamp')
+// test('group - no done', function (t) {
+//   var string = ''
+
+//   const state = s({
+//     thing: {
+//       one: 'A',
+//       two: 'B',
+//       three: 'C'
+//     }
+//   })
+
+//   const elem = render({
+//     properties: {
+//       randomGroup: {
+//         type: 'group',
+//         render: {
+//           static (target, node) {
+//             const val = target.compute()
+//             string = target.storeStatic(val, node)
+//           },
+//           state (target, state, type, stamp, subs, tree, id, pid) {
+//             // const val = state && target.$ ? target.compute(state) : target.compute()
+//           }
+//         },
+//         child: {
+//           define: {
+//             collect (val, store, id) {
+//               const _ = store._ || (store._ = {})
+//               const index = _[id] || (_[id] = store.length + 1)
+//               store[index] = val ? typeof val === 'string' ? val : this.key : ''
+//             }
+//           },
+//           render: {
+//             static (target, node, store) {
+//               target.collect(target.compute(), store, target.uid())
+//             },
+//             state (target, state, type, stamp, subs, tree, id, pid) {
+//               const store = target.getStore(tree, pid + 'random')
+//               if (!store.stamp && store.stamp !== 0) {
+//                 vstamp.on(stamp, function () {
+//                   const val = '' // should be parent value
+//                   string = target.cParent().storeState(val, state, type, stamp, subs._.p, tree._p, pid + 'random', pid)
+//                   store.stamp = null
+//                   console.log('string:', string)
+//                 })
+//                 store.stamp = stamp
+//               }
+//               target.collect(target.compute(state), store, id)
+//             }
+//           }
+//         }
+//       }
+//     },
+//     $: 'thing',
+//     randomGroup: {
+//       a: { $: 'one' },
+//       b: { $: 'two' },
+//       c: { $: 'three' }
+//     }
+//   }, state)
+
+
+//   setTimeout(function () {
+//     console.log('--- update ---')
+//     state.set({
+//       thing: {
+//         one: 'hey'
+//       }
+//     })
+
+//     // t.equals(string, 'a b c', 'static group')
+//     setTimeout(function () {
+//       t.end()
+//     }, 50)
+//   }, 10)
+// })
 
 test('group', function (t) {
   const types = {
