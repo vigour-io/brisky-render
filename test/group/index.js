@@ -35,7 +35,7 @@ test('group', function (t) {
   }
 
   const arr = []
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 10; i++) {
     arr.push(i)
   }
 
@@ -55,8 +55,8 @@ test('group', function (t) {
       $: '$test',
       $test: (state) => {
         const x = state[0] && state[0].compute()
-        // const y = state[1] && state[1].compute()
-        return x > max / 2
+        const y = state[1] && state[1].compute()
+        return x > max / 2 && y > max / 2 && x < max * 10 && y < max * 5
       },
       title: {
         tag: 'h1',
