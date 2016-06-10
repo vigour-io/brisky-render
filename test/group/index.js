@@ -26,6 +26,7 @@ test('group', function (t) {
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])
           }
+          // target.template.replace('{x}', store.x).
           node.style.position = 'fixed'
           node.style[target.style] = val
         }
@@ -51,8 +52,8 @@ test('group', function (t) {
     },
     child: {
       tag: 'span',
-      $: '$test',
-      $test: (state) => state[0] && state[0].compute() > max / 2,
+      // $: '$test',
+      // $test: (state) => state[0] && state[0].compute() > max / 2,
       title: {
         tag: 'h1',
         $: 'title',
@@ -120,18 +121,19 @@ test('group', function (t) {
   const path = require('path')
   const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
-  const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
+  // const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
   function loop () {
     cnt++
     state.each((p, key) => {
       update(cnt / 20, key)
     })
+    setTimeout(loop, 100)
   }
   loop()
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  t.same(parse(app), output, 'group outputs correct html')
-  t.end()
+  // t.same(parse(app), output, 'group outputs correct html')
+  // t.end()
 })
