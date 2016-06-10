@@ -67,7 +67,6 @@ const vstamp = require('vigour-stamp')
 //     }
 //   }, state)
 
-
 //   setTimeout(function () {
 //     console.log('--- update ---')
 //     state.set({
@@ -213,7 +212,7 @@ test('group', function (t) {
   const path = require('path')
   const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
-  const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
+  const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
   function loop () {
     cnt++
