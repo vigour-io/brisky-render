@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parse = require('parse-element')
+// const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
@@ -133,8 +133,8 @@ test('group', function (t) {
   //   </body>
   //   </html>
   // `
-  const path = require('path')
-  const fs = require('fs')
+  // const path = require('path')
+  // const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
   // const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
