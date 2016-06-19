@@ -122,8 +122,8 @@ test('group', function (t) {
   //   </body>
   //   </html>
   // `
-  const path = require('path')
-  const fs = require('fs')
+  // const path = require('path')
+  // const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
   // const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
