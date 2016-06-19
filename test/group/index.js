@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parse = require('parse-element')
+// const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
@@ -35,7 +35,7 @@ test('group', function (t) {
   }
 
   const arr = []
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 20; i++) {
     arr.push(i)
   }
 
@@ -52,12 +52,17 @@ test('group', function (t) {
     },
     child: {
       tag: 'span',
+<<<<<<< HEAD
       $: '$test',
       $test: (state) => {
         const x = state[0] && state[0].compute()
         // const y = state[1] && state[1].compute()
         return x > max / 2
       },
+=======
+      // $: '$test',
+      // $test: (state) => state[0] && state[0].compute() > max / 2,
+>>>>>>> master
       title: {
         tag: 'h1',
         $: 'title',
@@ -125,7 +130,11 @@ test('group', function (t) {
   // const path = require('path')
   // const fs = require('fs')
  // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
+<<<<<<< HEAD
   // const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
+=======
+  // const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
+>>>>>>> master
   var cnt = 30
   function loop () {
     cnt++
@@ -139,5 +148,9 @@ test('group', function (t) {
     document.body.appendChild(app)
   }
   // t.same(parse(app), output, 'group outputs correct html')
+<<<<<<< HEAD
   // t.end()
+=======
+  t.end()
+>>>>>>> master
 })
