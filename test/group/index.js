@@ -52,17 +52,12 @@ test('group', function (t) {
     },
     child: {
       tag: 'span',
-<<<<<<< HEAD
       $: '$test',
       $test: (state) => {
         const x = state[0] && state[0].compute()
         // const y = state[1] && state[1].compute()
         return x > max / 2
       },
-=======
-      // $: '$test',
-      // $test: (state) => state[0] && state[0].compute() > max / 2,
->>>>>>> master
       title: {
         tag: 'h1',
         $: 'title',
@@ -116,25 +111,6 @@ test('group', function (t) {
     state[field].set(set)
   }
 
-  // const html = `
-  //   <!doctype html>
-  //   <html lang="en">
-  //   <head>
-  //     <meta charset="utf-8">
-  //   </head>
-  //   <body>
-  //   {app}
-  //   </body>
-  //   </html>
-  // `
-  // const path = require('path')
-  // const fs = require('fs')
- // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
-<<<<<<< HEAD
-  // const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
-=======
-  // const output = fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
->>>>>>> master
   var cnt = 30
   function loop () {
     cnt++
@@ -147,10 +123,5 @@ test('group', function (t) {
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  // t.same(parse(app), output, 'group outputs correct html')
-<<<<<<< HEAD
-  // t.end()
-=======
   t.end()
->>>>>>> master
 })
