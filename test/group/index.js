@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parse = require('parse-element')
+// const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
@@ -113,21 +113,6 @@ test('group', function (t) {
     state[field].set(set)
   }
 
-  // const html = `
-  //   <!doctype html>
-  //   <html lang="en">
-  //   <head>
-  //     <meta charset="utf-8">
-  //   </head>
-  //   <body>
-  //   {app}
-  //   </body>
-  //   </html>
-  // `
-  const path = require('path')
-  const fs = require('fs')
- // fs.writeFile(path.join(__dirname, 'output.html'), html.replace('{app}', parse(app)))
-  // const output = 'body' in document ? '' : fs.readFileSync(path.join(__dirname, 'output.html'), 'utf-8')
   var cnt = 30
   function loop () {
     cnt++
@@ -140,6 +125,5 @@ test('group', function (t) {
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  // t.same(parse(app), output, 'group outputs correct html')
-  // t.end()
+  t.end()
 })
