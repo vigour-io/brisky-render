@@ -35,7 +35,7 @@ test('group', function (t) {
   }
 
   const arr = []
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 20; i++) {
     arr.push(i)
   }
 
@@ -52,12 +52,12 @@ test('group', function (t) {
     },
     child: {
       tag: 'span',
-      // $: '$test',
-      // $test: (state) => {
-      //   const x = state[0] && state[0].compute()
-      //   const y = state[1] && state[1].compute()
-      //   return x > max / 2 && y > max / 2 && x < max * 10 && y < max * 5
-      // },
+      $: '$test',
+      $test: (state) => {
+        const x = state[0] && state[0].compute()
+        const y = state[1] && state[1].compute()
+        return x > max / 2 && y > max/ 2
+      },
       title: {
         tag: 'h1',
         $: 'title',
@@ -96,6 +96,8 @@ test('group', function (t) {
     },
     state
   )
+
+  //3900
 
   function update (cnt, field) {
     const set = {}
