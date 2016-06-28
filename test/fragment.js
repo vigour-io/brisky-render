@@ -12,15 +12,12 @@ test('fragment', function (t) {
     fragment: {
       tag: 'fragment',
       $: 'lulz',
-      // text: '-----------'
-      // a: { text: 'hello' },
       b: { text: { $: '$root.b' } },
       c: { text: { $: true, $prepend: 'frag: ' } }
-      // footer: { type: 'text', val: '----------' }
     }
   }
 
-  const app = render( //eslint-disable-line
+  const app = render(
     {
       types,
       holder: {
@@ -45,20 +42,24 @@ test('fragment', function (t) {
     b: 'its b!'
   })
 
-  // document.body.appendChild(app)
-  // setTimeout(function () {
-  //   console.log('remove fragment!')
-  //   state.lol.lulz.remove()
-  // }, 1000)
+  if ('body' in document) {
+    document.body.appendChild(app)
+  }
 
-  // setTimeout(function () {
-  //   console.log('readd lol')
-  //   state.set({
-  //     lol: {
-  //       lulz: 'lulz!'
-  //     }
-  //   })
-  // }, 1500)
+  setTimeout(function () {
+    console.log('remove fragment!')
+    // need to remove all children...
+    state.lol.lulz.remove()
+  }, 1000)
+
+  setTimeout(function () {
+    console.log('readd lol')
+    state.set({
+      lol: {
+        lulz: 'lulz!'
+      }
+    })
+  }, 1500)
 
   t.end()
 })
