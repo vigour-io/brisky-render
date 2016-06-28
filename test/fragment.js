@@ -13,6 +13,7 @@ test('fragment', function (t) {
       tag: 'fragment',
       $: 'lulz',
       b: { text: { $: '$root.b' } },
+      static: { text: 'sooo static' },
       c: { text: { $: true, $prepend: 'frag: ' } }
     }
   }
@@ -38,26 +39,19 @@ test('fragment', function (t) {
     }
   })
 
-  state.set({
-    b: 'its b!'
-  })
+  setTimeout(() => state.set({ b: 'its b!' }), 500)
 
   if ('body' in document) {
     document.body.appendChild(app)
   }
 
   setTimeout(function () {
-    console.log('remove fragment!')
-    // need to remove all children...
     state.lol.lulz.remove()
   }, 1000)
 
   setTimeout(function () {
-    console.log('readd lol')
     state.set({
-      lol: {
-        lulz: 'lulz!'
-      }
+      lol: { lulz: 'lulz!' }
     })
   }, 1500)
 
