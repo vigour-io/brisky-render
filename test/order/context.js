@@ -5,7 +5,6 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
 const Element = require('../../lib/element')
-const isNode = require('vigour-util/is/node')
 
 test('order - context', function (t) {
   const state = s({
@@ -157,23 +156,20 @@ test('order - context - texts', function (t) {
       other: 'its other!'
     }
   })
-  if (!isNode) {
-    t.same(
-      parse(app),
-      strip(`
+
+  t.same(
+    parse(app),
+    strip(`
+      <div>
         <div>
-          <div>
-            <div>blurf</div>
-            <div>-ha--ha--ha--ha--ha--ha--ha-</div>
-            <div>its other!</div>
-            <div>more!</div>
-          </div>
+          <div>blurf</div>
+          <div>-ha--ha--ha--ha--ha--ha--ha-</div>
+          <div>its other!</div>
+          <div>more!</div>
         </div>
-      `),
-      'correct order on sequential sets'
-    )
-  } else {
-    console.log('html-element - cant run this in node')
-  }
+      </div>
+    `),
+    'correct order on sequential sets'
+  )
   t.end()
 })
