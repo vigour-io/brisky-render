@@ -91,6 +91,7 @@ test('group', function (t) {
           animation: {
             x: { $transform: (val) => val * 2.5 - 0.75 * max },
             y: { $transform: (val) => val * 2.5 - 1.5 * max }
+            // rotate: 360 // does not work for static...
           }
         }
       }
