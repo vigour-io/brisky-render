@@ -1,10 +1,12 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-// const parse = require('parse-element')
+const parse = require('parse-element')
 const s = require('vigour-state/s')
 const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
+const fs = require('fs')
+const path = require('path')
 
 test('group', function (t) {
   const types = {
@@ -26,7 +28,6 @@ test('group', function (t) {
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])
           }
-          // target.template.replace('{x}', store.x).
           node.style.position = 'fixed'
           node.style[target.style] = val
         }
@@ -56,7 +57,7 @@ test('group', function (t) {
       $test: (state) => {
         const x = state[0] && state[0].compute()
         const y = state[1] && state[1].compute()
-        return x > max / 2 && y > max/ 2
+        return x > max / 2 && y > max / 2
       },
       title: {
         tag: 'h1',
@@ -97,8 +98,6 @@ test('group', function (t) {
     state
   )
 
-  //3900
-
   function update (cnt, field) {
     const set = {}
     const d = Math.ceil(65 / emos.moons.length)
@@ -116,14 +115,14 @@ test('group', function (t) {
   var cnt = 30
   function loop () {
     cnt++
-    state.each((p, key) => {
-      update(cnt / 20, key)
-    })
-    setTimeout(loop)
+    state.each((p, key) => update(cnt / 20, key))
   }
   loop()
   if ('body' in document) {
     document.body.appendChild(app)
+  } else {
+    const output = fs.readFileSync(path.join(__dirname, '/output.html'))
+    t.equal(parse(app), output.toString(), 'correct output')
   }
   t.end()
 })
