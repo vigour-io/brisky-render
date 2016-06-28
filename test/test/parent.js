@@ -14,7 +14,8 @@ test('$test - $parent', function (t) {
     $: 'moons.$test',
     $test: {
       val (state, tree) {
-        return true
+        const focus = state.lookUp('focus')
+        return focus && focus.compute()
       },
       $: '$parent.$parent.focus'
     },
@@ -59,8 +60,32 @@ test('$test - $parent', function (t) {
     }
   })
 
-    // wrong order in node but not in the browser...
+  t.same(
+    parse(app),
+    '<div><holder></holder></div>',
+    'intial render (empty)'
+  )
+
+  // wrong order in node but not in the browser...
   // clone node difference
+  state.set({ focus: true })
+
+  t.same(
+    parse(app),
+    strip(`
+    <div>
+      <holder>
+        <div>
+          <span>🌕<span>🐶</span></span>
+        </div>
+      </holder>
+    </div>
+    `),
+    'set $root.focus to true'
+  )
+
+  state.set({ emojis: { focus: true } })
+
   t.same(
     parse(app),
     strip(`
@@ -75,7 +100,7 @@ test('$test - $parent', function (t) {
       </holder>
     </div>
     `),
-    'parses parent /w tests correctly'
+    'set $root.emojis.focus to true'
   )
 
   state.set({
@@ -85,17 +110,17 @@ test('$test - $parent', function (t) {
   t.same(
     parse(app),
     strip(`
-    <div>
-      <holder>
-        <div>
-          <span>🌕<span>🐶</span></span>
-        </div>
-        💩
-        <div>
-          <span>🌔<span>💦</span></span>
-        </div>
-      </holder>
-    </div>
+      <div>
+        <holder>
+          <div>
+            <span>🌕<span>🐶</span></span>
+          </div>
+          💩
+          <div>
+            <span>🌔<span>💦</span></span>
+          </div>
+        </holder>
+      </div>
     `),
     'set emoji title'
   )
@@ -104,28 +129,13 @@ test('$test - $parent', function (t) {
     document.body.appendChild(app)
   }
 
-  console.log('FIRE DAT GUN parent tests condition!')
-  state.set({
-    emojis: {
-      focus: 'blurk!'
-    }
-  })
+  state.set({ focus: false, emojis: { focus: false } })
 
-  console.log('FIRE FIRE')
-  state.set({
-    focus: 'hello'
-  })
-
-    // t.same(
-    //   parse(app),
-    //   '<div><holder><first></first></holder></div>',
-    //   'correct html on intial state'
-    // )
-    // t.same(
-    //   parse(app),
-    //   '<div><holder></holder></div>',
-    //   'set state.fields.first to false'
-    // )
+  t.same(
+    parse(app),
+    '<div><holder>💩</holder></div>',
+    'set all focus fields to false'
+  )
 
   t.end()
 })
