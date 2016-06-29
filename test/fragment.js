@@ -1,9 +1,9 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
-// const parse = require('parse-element')
+const parse = require('parse-element')
 const s = require('vigour-state/s')
-// const strip = require('vigour-util/strip/formatting')
+const strip = require('vigour-util/strip/formatting')
 
 test('fragment', function (t) {
   const state = global.state = s()
@@ -12,15 +12,13 @@ test('fragment', function (t) {
     fragment: {
       tag: 'fragment',
       $: 'lulz',
-      // text: '-----------'
-      // a: { text: 'hello' },
-      b: { text: { $: '$root.b' } },
+      b: { tag: 'b', $: '$root.b', text: { $: true } },
+      static: { text: 'sooo static' },
       c: { text: { $: true, $prepend: 'frag: ' } }
-      // footer: { type: 'text', val: '----------' }
     }
   }
 
-  const app = render( //eslint-disable-line
+  const app = render(
     {
       types,
       holder: {
@@ -35,30 +33,61 @@ test('fragment', function (t) {
     state
   )
 
-  state.set({
-    lol: {
-      lulz: 'lulz!'
-    }
-  })
+  if ('body' in document) {
+    document.body.appendChild(app)
+  }
 
-  state.set({
-    b: 'its b!'
-  })
+  t.equal(parse(app), '<div>static under!</div>', 'initial subscription')
 
-  // document.body.appendChild(app)
-  // setTimeout(function () {
-  //   console.log('remove fragment!')
-  //   state.lol.lulz.remove()
-  // }, 1000)
+  state.set({ lol: { lulz: 'lulz!' } })
 
-  // setTimeout(function () {
-  //   console.log('readd lol')
-  //   state.set({
-  //     lol: {
-  //       lulz: 'lulz!'
-  //     }
-  //   })
-  // }, 1500)
+  t.equal(parse(app), strip(`
+    <div>
+      <div>
+        <div>---&gt;its static (from lol)</div>
+        <div>sooo static</div>
+        <div>frag: lulz!</div>
+      </div>
+      static under!
+    </div>
+  `), 'create fragment')
+
+  state.set({ b: 'its b!' })
+  t.equal(parse(app), strip(`
+    <div>
+      <div>
+        <div>---&gt;its static (from lol)</div>
+        <b>its b!</b>
+        <div>sooo static</div>
+        <div>frag: lulz!</div>
+      </div>
+      static under!
+    </div>
+  `), 'set $root.b')
+
+  state.lol.lulz.remove()
+
+  t.equal(parse(app), strip(`
+    <div>
+      <div>
+        <div>---&gt;its static (from lol)</div>
+      </div>
+      static under!
+    </div>
+  `), 'remove fragment')
+
+  state.set({ lol: { lulz: 'lulz!' } })
+  t.equal(parse(app), strip(`
+    <div>
+      <div>
+        <div>---&gt;its static (from lol)</div>
+        <b>its b!</b>
+        <div>sooo static</div>
+        <div>frag: lulz!</div>
+      </div>
+      static under!
+    </div>
+  `), 're-add fragment')
 
   t.end()
 })
