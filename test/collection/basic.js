@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parseElement = require('parse-element')
+const parse = require('parse-element')
 const s = require('vigour-state/s')
 
 test('collection - basic', function (t) {
@@ -25,14 +25,14 @@ test('collection - basic', function (t) {
   const elem = render(app, state)
 
   t.equal(
-    parseElement(elem),
+    parse(elem),
     '<div><div><span><div>a</div></span><span><div>b</div></span></div></div>',
     'create multiple rows'
   )
 
   state.collection[0].remove()
   t.equal(
-    parseElement(elem),
+    parse(elem),
     '<div><div><span><div>b</div></span></div></div>',
     'remove first row'
   )
@@ -46,7 +46,7 @@ test('collection - basic', function (t) {
   }
 
   t.equal(
-    parseElement(
+    parse(
       render({
         types: {
           span: {
@@ -63,6 +63,27 @@ test('collection - basic', function (t) {
     ),
     '<div><div><span><div>b</div></span></div></div>',
     'context render'
+  )
+  t.end()
+})
+
+test('collection - merge', function (t) {
+  const simple = {
+    types: {
+      collection: {
+        tag: 'fragment',
+        $: 'collection.$any',
+        child: { tag: 'b', title: { tag: 'fragment', text: { $: 'title' } } }
+      }
+    },
+    holder1: { type: 'collection' },
+    holder2: { type: 'collection' }
+  }
+  const app = render(simple, { collection: [ { title: 1 }, { title: 2 } ] })
+  t.equal(
+    parse(app),
+    '<div><b>1</b><b>2</b><b>1</b><b>2</b></div>',
+    'intial subscription'
   )
   t.end()
 })
