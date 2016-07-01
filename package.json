@@ -4,7 +4,7 @@
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
   "main": "lib/element.js",
   "scripts": {
-    "start": "budo ./test/collection/context -p 8080 --live",
+    "start": "budo ./test/test/switch -p 8080 --live",
     "test": "node test | tap-difflet && standard",
     "watch": "nodemon test | tap-difflet",
     "cover": "istanbul cover --report none --print detail test/index.js",

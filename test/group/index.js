@@ -1,3 +1,3 @@
 'use strict'
-// require('./combined')
+require('./combined')
 require('./switch')
