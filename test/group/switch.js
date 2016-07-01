@@ -37,11 +37,6 @@ test('group - switch', function (t) {
   }, state, (s) => { global.s = s })
 
   t.equal(p(app), '<div><div ab="- -"></div></div>', 'initial subscription')
-
-  // console.log(global.s)
-  console.log(global.s.something['$switch1cs897c'].letters)
-  // console.log(global.s.something['$switch-field'].letters.val =)
-
   state.letters.set({ a: 'A' })
   t.equal(p(app), '<div><div ab="A -"></div></div>', 'update something.a')
 
