@@ -140,11 +140,14 @@ test('$test - $parent', function (t) {
   t.end()
 })
 
-test('$test - $parent + $switch', function (t) {
+test('$test - $parent + $switch + $any', function (t) {
   const state = s({
-    field: { number: 1000 },
+    fields: {
+      a: { number: 1000 },
+      b: { number: 1000 }
+    },
     text: '$root.title',
-    current: '$root.field',
+    current: '$root.fields',
     title: 'count'
   })
   const elem = {
@@ -153,15 +156,18 @@ test('$test - $parent + $switch', function (t) {
       $: 'current.$switch',
       $switch: (state) => state.key,
       properties: {
-        field: {
-          $: '$test',
-          $test: (state) => {
-            return state.number.compute() > 100
-          },
-          nested: {
-            tag: 'nested',
-            text: {
-              $: '$parent.$parent.text'
+        fields: {
+          $: '$any',
+          child: {
+            $: '$test',
+            $test: (state) => {
+              return state.number.compute() > 100
+            },
+            nested: {
+              tag: 'nested',
+              text: {
+                $: '$parent.$parent.text'
+              }
             }
           }
         }
@@ -169,8 +175,16 @@ test('$test - $parent + $switch', function (t) {
     }
   }
   const app = render(elem, state)
-  t.equal(parse(app), '<div><div><nested>count</nested></div></div>', '$parent.$parent over reference')
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>count</nested></div><div><nested>count</nested></div></div></div>',
+    '$parent.$parent over reference'
+  )
   state.title.set('counter')
-  t.equal(parse(app), '<div><div><nested>counter</nested></div></div>', 'update title')
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>counter</nested></div><div><nested>counter</nested></div></div></div>',
+    'update title'
+  )
   t.end()
 })
