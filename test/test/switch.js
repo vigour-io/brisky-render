@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
 
-test('$test + $switch', function (t) {
+test('$test - $switch', function (t) {
   const state = s({
     field: { first: true },
     lulz: true,
@@ -58,7 +58,6 @@ test('$test + $switch', function (t) {
     'set switcher'
   )
 
-  console.error('now it goes totally apeshit')
   state.navigation.set('$root.lulz')
 
   t.same(
