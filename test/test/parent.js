@@ -143,8 +143,11 @@ test('$test - $parent', function (t) {
 test('$test - $parent + $switch + $any', function (t) {
   const state = s({
     fields: {
-      a: { number: 1000 },
-      b: { number: 1000 }
+      items: {
+        a: { number: 1000 },
+        b: { number: 1000 }
+      },
+      text: '$root.text'
     },
     text: '$root.title',
     current: '$root.fields',
@@ -157,7 +160,7 @@ test('$test - $parent + $switch + $any', function (t) {
       $switch: (state) => state.key,
       properties: {
         fields: {
-          $: '$any',
+          $: 'items.$any',
           child: {
             $: '$test',
             $test: (state) => {
