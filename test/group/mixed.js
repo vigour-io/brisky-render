@@ -7,13 +7,12 @@ const p = require('parse-element')
 
 test('group - mixed', function (t) {
   const state = s({
-    letters: {},
-    something: '$root.letters'
+    something: { letters: { a: 'A' } }
   })
-
   const app = render({
     letters: {
       ab: {
+        $: 'something',
         type: 'group',
         render: {
           state (target, state, type, stamp, subs, tree, id, pid, store) {
@@ -21,13 +20,18 @@ test('group - mixed', function (t) {
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
-        a: { $: 'a' }
+        a: {
+          $: 'letters.a.$test',
+          $test: (state) => true
+        },
+        b: 'B'
       }
     }
-  }, state, (s) => { global.s = s })
-
-  // t.equal(p(app), '<div><div ab="- -"></div></div>', 'initial subscription')
-  state.letters.set({ a: 'A' })
-  console.log(p(app))
+  }, state)
+  t.equal(p(app), '<div><div ab="A B"></div></div>', 'initial')
+  state.something.letters.a.set('x')
+  t.equal(p(app), '<div><div ab="x B"></div></div>', 'update')
+  state.something.letters.a.remove()
+  t.equal(p(app), '<div><div ab="- B"></div></div>', 'remove')
   t.end()
 })
