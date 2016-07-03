@@ -65,6 +65,19 @@ test('fragment', function (t) {
     </div>
   `), 'set $root.b')
 
+  state.set({ b: null })
+  t.equal(parse(app), strip(`
+    <div>
+      <div>
+        <div>---&gt;its static (from lol)</div>
+        <div>sooo static</div>
+        <div>frag: lulz!</div>
+      </div>
+      static under!
+    </div>
+  `), 'set $root.b')
+
+  state.set({ b: 'its b!' })
   state.lol.lulz.remove()
 
   t.equal(parse(app), strip(`
