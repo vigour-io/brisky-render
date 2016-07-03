@@ -139,3 +139,57 @@ test('$test - $parent', function (t) {
 
   t.end()
 })
+
+test('$test - $parent + $switch + $any', function (t) {
+  const state = s({
+    content: {
+      fields: {
+        items: {
+          a: { number: 1000 },
+          b: { number: 1000 }
+        },
+        text: '$root.text'
+      }
+    },
+    text: '$root.title',
+    current: '$root.content.fields',
+    title: 'count'
+  })
+  const elem = {
+    holder: {
+      tag: 'fragment',
+      $: 'current.$switch',
+      $switch: (state) => state.key,
+      properties: {
+        fields: {
+          $: 'items.$any',
+          child: {
+            $: '$test',
+            $test: (state) => {
+              return state.number.compute() > 100
+            },
+            nested: {
+              tag: 'nested',
+              text: {
+                $: '$parent.$parent.text'
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  const app = render(elem, state)
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>count</nested></div><div><nested>count</nested></div></div></div>',
+    '$parent.$parent over reference'
+  )
+  state.title.set('counter')
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>counter</nested></div><div><nested>counter</nested></div></div></div>',
+    'update title'
+  )
+  t.end()
+})

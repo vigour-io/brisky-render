@@ -17,3 +17,25 @@ test('parent', (t) => {
   t.equal(p(app), '<div></div>', 'removed node')
   t.end()
 })
+
+test('parent - error', (t) => {
+  var tree
+  const state = s({})
+  render({
+    first: {
+      tag: 'h1',
+      text: { $: 'first' }
+    }
+  }, state, (s, t) => {
+    tree = t
+  })
+  for (let key in tree._) {
+    delete tree._[key]
+  }
+  try {
+    state.set({ first: 'hello' })
+  } catch (e) {
+    t.ok(true, 'throws error when no parent')
+    t.end()
+  }
+})

@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
 
-test('$test + $switch', function (t) {
+test('$test - $switch', function (t) {
   const state = s({
     field: { first: true },
     lulz: true,
@@ -69,21 +69,21 @@ test('$test + $switch', function (t) {
         </switcher>
       </div>
     `),
-    'switch to other proeprty'
+    'switch to other property'
   )
 
-  state.bla.set(false)
+  // state.bla.set(false)
 
-  t.same(
-    parse(app),
-    strip(`
-      <div>
-        <switcher>
-        </switcher>
-      </div>
-    `),
-    'set bla to false'
-  )
+  // t.same(
+  //   parse(app),
+  //   strip(`
+  //     <div>
+  //       <switcher>
+  //       </switcher>
+  //     </div>
+  //   `),
+  //   'set bla to false'
+  // )
 
   t.end()
 })

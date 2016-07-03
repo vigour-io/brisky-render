@@ -6,7 +6,7 @@ const parseElement = require('parse-element')
 
 test('widgets', (t) => {
   const state = s({ holder: true })
-  let cnt = 0
+  var cnt = 0
   render({
     holder: {
       $: 'holder',
