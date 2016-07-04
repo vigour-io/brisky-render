@@ -83,6 +83,10 @@ test('text - true subscription', (t) => {
     text: { $: true }
   }, state)
   t.equal(p(app), '<div>a</div>', 'correct html')
+
+  state.first.second.set(void 0)
+  t.equal(p(app), '<div></div>', 'set text to void 0')
+
   state.first.remove()
   t.equal(p(app), '<div></div>', 'removed text')
   t.end()
