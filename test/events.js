@@ -19,19 +19,21 @@ test('events', (t) => {
   t.end()
 })
 
-test('events - traveler', (t) => {
+test('events - deep', (t) => {
   const state = s({ something: true })
   const elem = new Element({
     node: {
       tag: 'thing',
       $: 'something',
       hello: {
-        define: { hasEvents: true }
+        bla: {
+          define: { hasEvents: true }
+        }
       }
     }
   })
   const app = render(elem, state)
-  t.equal(app.childNodes[0].childNodes[0]._, elem.node.hello, 'correct _ on node')
-  t.equal(app.childNodes[0].childNodes[0]._s, state.something, 'correct state on node')
+  t.equal(app.childNodes[0].childNodes[0].childNodes[0]._, elem.node.hello.bla, 'correct _ on node')
+  t.equal(app.childNodes[0].childNodes[0].childNodes[0]._s, state.something, 'correct state on node')
   t.end()
 })
