@@ -9,7 +9,7 @@ test('events', (t) => {
   const elem = new Element({
     node: {
       $: 'something',
-      define: { hasEvents: true }
+      hasEvents: true
     }
   })
   const app = render(elem, state)
@@ -25,7 +25,7 @@ test('events - deep', (t) => {
       $: 'something',
       hello: {
         bla: {
-          define: { hasEvents: true }
+          hasEvents: true
         }
       }
     }
@@ -47,7 +47,7 @@ test('events - reference', (t) => {
       $: 'something',
       field: {
         $: 'field',
-        define: { hasEvents: true }
+        hasEvents: true
       }
     }
   })
