@@ -5,7 +5,7 @@
   "main": "lib/element.js",
   "scripts": {
     "start": "budo ./test/collection/recursive -p 8080 --live",
-    "test": "node test | tap-difflet && standard",
+    "test": "(ducktape; node test) | tap-difflet && standard",
     "watch": "nodemon test | tap-difflet",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "docs": "node_modules/vigour-doc/bin/vdoc",
@@ -30,10 +30,11 @@
     "vigour-observable": "^3.1.7",
     "vigour-stamp": "^1.3.2",
     "vigour-state": "^4.2.0",
-    "vigour-ua": "^1.0.3",
+    "vigour-ua": "^2.0.0",
     "vigour-util": "^3.0.0"
   },
   "devDependencies": {
+    "ducktape": "^1.0.0",
     "budo": "^8.2.2",
     "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
