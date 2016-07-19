@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
 
-test('collection - mixed', function (t) {
+test('any - mixed', function (t) {
   const state = s({
     field: {
       collection: {

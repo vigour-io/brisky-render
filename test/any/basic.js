@@ -4,7 +4,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
 
-test('collection - basic', function (t) {
+test('any - basic', function (t) {
   const app = {
     holder: {
       $: 'collection.$any',
@@ -67,7 +67,7 @@ test('collection - basic', function (t) {
   t.end()
 })
 
-test('collection - merge', function (t) {
+test('any - merge', function (t) {
   const simple = {
     types: {
       collection: {
