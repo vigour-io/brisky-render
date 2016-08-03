@@ -49,7 +49,7 @@ test('group - combined', function (t) {
     animation: {
       type: 'animation',
       style: 'transform',
-      template: 'translate(0px,1px)'
+      template: 'translate(0px, 1px)'
     },
     child: {
       tag: 'span',
@@ -67,7 +67,7 @@ test('group - combined', function (t) {
       animation: {
         type: 'animation',
         style: 'transform',
-        template: 'translate3d({x}px,{y}px, 0px) rotate({rotate}deg)',
+        template: 'translate3d({x}px, {y}px, 0px) rotate({rotate}deg)',
         x: { $: 0 },
         y: { $: 1 },
         rotate: { $: 2 }

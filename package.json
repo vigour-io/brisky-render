@@ -44,7 +44,7 @@
     "tap-difflet": "0.4.0",
     "tape": "^4.4.0",
     "vigour-doc": "^1.1.5",
-    "parse-element": "^2.0.1"
+    "parse-element": "^2.0.2"
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
