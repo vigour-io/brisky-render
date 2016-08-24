@@ -87,3 +87,50 @@ test('any - merge', function (t) {
   )
   t.end()
 })
+
+test('any - reference', function (t) {
+  const state = {
+    products: {
+      items: {
+        paid_full: {
+          icon: 'star',
+          title: 'Paid Full',
+          currency: '$',
+          price: '123',
+          pricePostfix: '/month'
+        }
+      }
+    },
+    user: {
+      name: 'John Doe',
+      email: 'test@vigour.io',
+      avatar: false,
+      purchases: {
+        items: {
+          paid_full: {
+            product: '$root.products.items.paid_full'
+          }
+        }
+      }
+    }
+  }
+
+  const app = {
+    collection: {
+      $: '$root.user.purchases.items.$any',
+      child: {
+        $: 'product',
+        text: {
+          $: 'title'
+        }
+      }
+    }
+  }
+  const node = render(app, state)
+  t.equal(
+    parse(node),
+    '<div><div><div>Paid Full</div></div></div>',
+    'intial subscription'
+  )
+  t.end()
+})
