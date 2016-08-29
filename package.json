@@ -1,6 +1,6 @@
 {
   "name": "brisky-core",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
   "main": "lib/element.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "babel-preset-es2015": "^6.14.0",
     "babelify": "^7.3.0",
-    "html-element": "vigour-io/html-element#master",
+    "html-element": "^2.1.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
     "vigour-observable": "^3.1.18",
