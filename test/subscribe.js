@@ -20,3 +20,22 @@ test('subscribe - merge', (t) => {
   t.equal(p(app), '<div>update<a></a></div>', 'fires update')
   t.end()
 })
+
+test('subscribe - resubscribe', (t) => {
+  const state = s({
+    field: 'its text'
+  })
+  const app = render(
+    {
+      text: { $: 'field' },
+      a: { tag: 'a', $: 'field' }
+    },
+    state
+  )
+  state.field.set('update')
+  t.equal(p(app), '<div>update<a></a></div>', 'fires update')
+  state.field.val = 'silent update'
+  state.resubscribe()
+  t.equal(p(app), '<div>silent update<a></a></div>', 'fires silent update')
+  t.end()
+})
