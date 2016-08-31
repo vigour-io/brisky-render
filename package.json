@@ -1,6 +1,6 @@
 {
   "name": "brisky-core",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
   "main": "lib/element.js",
   "scripts": {
