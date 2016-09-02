@@ -44,32 +44,31 @@ test('subscribe - resubscribe - switch', (t) => {
   const state = s({
     a: 'its text',
     b: 'its field2',
-    somefield: '$root.field'
+    somefield: '$root.a'
   })
   const app = render(
     {
-      switch: {
-        $: '$somefield.$switch',
-        $switch: (key) => key,
+      text: 'app',
+      xxx: {
+        tag: 'ul',
+        $: 'somefield.$switch',
+        $switch: (state) => state.key,
         properties: {
-          a: { text: { $: true, $add: ' haha a' } },
-          b: { text: { $: true, $add: ' haha b' } }
+          a: { tag: 'li', text: { $: true, $add: ' haha a' } },
+          b: { tag: 'li', text: { $: true, $add: ' haha b' } }
         }
       }
     },
     state
   )
-  state.field.set('update')
-  t.equal(p(app), '<div>update<a></a></div>', 'fires update')
-  state.field.val = 'silent update'
-  state.resubscribe()
-  t.equal(p(app), '<div>silent update<a></a></div>', 'fires silent update')
 
   global.state = state
 
   if (document.body) {
     document.body.appendChild(app)
   }
+
+  state.resubscribe()
 
   t.end()
 })
