@@ -4,9 +4,9 @@
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
   "main": "lib/element.js",
   "scripts": {
-    "start": "budo ./test/clone -p 8080 --live",
     "test": "(ducktape; node test) | tap-difflet && standard",
     "watch": "nodemon test | tap-difflet",
+    "watch-browser": "budo ./test/index.js -p 8080 --live",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "docs": "node_modules/vigour-doc/bin/vdoc",
     "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0) && standard"
@@ -29,7 +29,7 @@
     "lodash.set": "^4.3.2",
     "vigour-observable": "^3.1.18",
     "vigour-stamp": "^1.4.0",
-    "vigour-state": "^4.4.2",
+    "vigour-state": "^4.4.6",
     "vigour-ua": "^2.1.0",
     "vigour-util": "^3.3.2"
   },
