@@ -24,13 +24,13 @@ test('$test - $switch', function (t) {
           first: {
             tag: 'first',
             $: 'first.$test',
-            $test: (state) => state.compute() === true
+            $test: (state) => state && state.compute() === true
           }
         },
         lulz: {
           tag: 'lulz',
           $: '$root.bla.$test',
-          $test: (state) => state.compute() === true
+          $test: (state) => state && state.compute() === true
         }
       }
     }
@@ -71,19 +71,6 @@ test('$test - $switch', function (t) {
     `),
     'switch to other property'
   )
-
-  // state.bla.set(false)
-
-  // t.same(
-  //   parse(app),
-  //   strip(`
-  //     <div>
-  //       <switcher>
-  //       </switcher>
-  //     </div>
-  //   `),
-  //   'set bla to false'
-  // )
 
   t.end()
 })
