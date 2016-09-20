@@ -24,13 +24,13 @@ test('$test - $switch', function (t) {
           first: {
             tag: 'first',
             $: 'first.$test',
-            $test: (state) => state.compute() === true
+            $test: (state) => state && state.compute() === true
           }
         },
         lulz: {
           tag: 'lulz',
           $: '$root.bla.$test',
-          $test: (state) => state.compute() === true
+          $test: (state) => state && state.compute() === true
         }
       }
     }
