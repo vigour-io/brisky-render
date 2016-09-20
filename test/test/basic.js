@@ -162,3 +162,21 @@ test('$test - basic', function (t) {
 
   t.end()
 })
+
+test('$test - override test from type', function (t) {
+  // use type and
+  render({
+    types: {
+      thing: {
+        text: { $: 'bla.$test' }
+      }
+    },
+    jur: {
+      type: 'thing',
+      text: { $: 'a' }
+    }
+  }, {}, (subs) => {
+    t.equal(subs.a._.tList[3].$test, null, 'should be null')
+  })
+  t.end()
+})

@@ -62,3 +62,50 @@ test('subscribe - resubscribe - switch', (t) => {
   t.equal(p(app), '<div>app<ul><li>its text haha a</li></ul></div>')
   t.end()
 })
+
+test('subscribe - object subscription', (t) => {
+  const state = s({
+    a: 'its text',
+    b: 'its also text',
+    fields: {
+      a: {
+        title: 'its fields a'
+      }
+    }
+  })
+  const app = render({
+    flups: {
+      html: {
+        $: {
+          fields: {
+            $any: {
+              title: {
+                val: true
+              }
+            }
+          },
+          a: { val: true },
+          b: { val: true }
+        }
+      }
+    },
+    field: {
+      text: { $: 'a' }
+    }
+  }, state, (subs) => {
+    // console.log(subs)
+  })
+  t.equal(p(app), '<div><div>its also text</div><div>its text</div></div>', 'initial subs')
+  state.a.set('haha a')
+  t.equal(p(app), '<div><div>haha a</div><div>haha a</div></div>', 'update a')
+  state.b.set('haha b')
+  t.equal(p(app), '<div><div>haha b</div><div>haha a</div></div>', 'update b')
+  state.fields.a.title.set('x')
+  t.equal(p(app), '<div><div>x</div><div>haha a</div></div>', 'update fields a title')
+  // do we need to scope it to state? first commmon ancestor where the object enters?
+  // will add an if in the render thats a bit nasty
+  if (global.document && global.document.body) {
+    global.document.body.appendChild(app)
+  }
+  t.end()
+})
