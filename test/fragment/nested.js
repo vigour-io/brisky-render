@@ -30,7 +30,10 @@ test('fragment - nested', function (t) {
             child: {
               $: '$test',
               tag: 'fragment',
-              text: { $: 'title' }
+              text: { $: 'title' },
+              field: {
+                text: { $: 'title' }
+              }
             }
           }
         }
@@ -45,6 +48,8 @@ test('fragment - nested', function (t) {
   state.set({ nav: '$root.title' })
   t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'initial subscription') // eslint-disable-line
   state.set({ nav: '$root.fields' })
-  t.equal(parse(app), '<div>a</div>', 'switch')
+  t.equal(parse(app), '<div>a<div>a</div></div>', 'switch')
+  state.set({ nav: '$root.title' })
+  t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'remove prevoous') // eslint-disable-line
   t.end()
 })
