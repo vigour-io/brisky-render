@@ -165,7 +165,7 @@ test('$test - basic', function (t) {
 
 test('$test - override test from type', function (t) {
   // use type and
-  const app = render({
+  render({
     types: {
       thing: {
         text: { $: 'bla.$test' }
