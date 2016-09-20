@@ -3,21 +3,38 @@ const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
 
 test('fragment - nested', function (t) {
-  const state = global.state = s()
+  const state = global.state = s({
+    title: 'its a title',
+    fields: {
+      a: { title: 'a' },
+      b: false
+    }
+  })
 
   const app = render(
     {
-      holder: {
-        $: 'lol',
-        frag: { type: 'fragment' },
-        statics: {
-          text: '--->its static (from lol)'
+      switcher: {
+        tag: 'fragment',
+        $: 'nav.$switch',
+        properties: {
+          title: {
+            $: true,
+            tag: 'fragment',
+            text: '¯\_(ツ)_/¯'
+          },
+          fields: {
+            tag: 'fragment',
+            $: '$any',
+            child: {
+              $: '$test',
+              tag: 'fragment',
+              text: { $: 'title' }
+            }
+          }
         }
-      },
-      text: 'static under!'
+      }
     },
     state
   )
@@ -25,21 +42,9 @@ test('fragment - nested', function (t) {
   if ('body' in document) {
     document.body.appendChild(app)
   }
-
-  t.equal(parse(app), '<div>static under!</div>', 'initial subscription')
-
-  state.set({ lol: { lulz: 'lulz!' } })
-
-  t.equal(parse(app), strip(`
-    <div>
-      <div>
-        <div>---&gt;its static (from lol)</div>
-        <div>sooo static</div>
-        <div>frag: lulz!</div>
-      </div>
-      static under!
-    </div>
-  `), 'create fragment')
-
+  state.set({ nav: '$root.title' })
+  t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'initial subscription')
+  state.set({ nav: '$root.fields' })
+  t.equal(parse(app), '<div>a</div>', 'switch')
   t.end()
 })
