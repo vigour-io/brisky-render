@@ -72,18 +72,5 @@ test('$test - $switch', function (t) {
     'switch to other property'
   )
 
-  // state.bla.set(false)
-
-  // t.same(
-  //   parse(app),
-  //   strip(`
-  //     <div>
-  //       <switcher>
-  //       </switcher>
-  //     </div>
-  //   `),
-  //   'set bla to false'
-  // )
-
   t.end()
 })

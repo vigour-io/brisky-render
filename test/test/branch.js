@@ -32,7 +32,7 @@ test('$test - branch', function (t) {
       $: 'fields.$test',
       $test: {
         val (state) {
-          let $r = state.getRoot()
+          const $r = state.getRoot()
           return 'third' in $r && $r.third.compute() === true
         },
         $: '$root.third'
