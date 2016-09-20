@@ -78,6 +78,7 @@ test('fragment - basic', function (t) {
   `), 'set $root.b')
 
   state.set({ b: 'its b!' })
+
   state.lol.lulz.remove()
 
   t.equal(parse(app), strip(`
