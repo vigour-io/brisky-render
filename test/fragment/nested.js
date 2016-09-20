@@ -22,7 +22,7 @@ test('fragment - nested', function (t) {
           title: {
             $: true,
             tag: 'fragment',
-            text: '¯\_(ツ)_/¯'
+            text: '¯\_(ツ)_/¯' // eslint-disable-line
           },
           fields: {
             tag: 'fragment',
@@ -43,7 +43,7 @@ test('fragment - nested', function (t) {
     document.body.appendChild(app)
   }
   state.set({ nav: '$root.title' })
-  t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'initial subscription')
+  t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'initial subscription') // eslint-disable-line
   state.set({ nav: '$root.fields' })
   t.equal(parse(app), '<div>a</div>', 'switch')
   t.end()
