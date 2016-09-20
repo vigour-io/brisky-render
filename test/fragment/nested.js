@@ -22,7 +22,7 @@ test('fragment - nested', function (t) {
           title: {
             $: true,
             tag: 'fragment',
-            text: '¯\_(ツ)_/¯' // eslint-disable-line
+            text: '¯\\_(ツ)_/¯' // eslint-disable-line
           },
           fields: {
             tag: 'fragment',
@@ -33,6 +33,10 @@ test('fragment - nested', function (t) {
               text: { $: 'title' },
               field: {
                 text: { $: 'title', $transform: String.toUpperCase }
+              },
+              bla: {
+                tag: 'fragment',
+                text: { $: 'title' }
               }
             }
           }
@@ -41,15 +45,14 @@ test('fragment - nested', function (t) {
     },
     state
   )
-
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  // state.set({ nav: '$root.title' })
-  // t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'initial subscription') // eslint-disable-line
-  state.set({ nav: '$root.fields' })
-  t.equal(parse(app), '<div>a<div>a</div></div>', 'switch')
   state.set({ nav: '$root.title' })
-  t.equal(parse(app), '<div>¯\_(ツ)_/¯</div>', 'remove prevoous') // eslint-disable-line
+  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'initial subscription') // eslint-disable-line
+  state.set({ nav: '$root.fields' })
+  t.equal(parse(app), '<div>a<div>a</div>a</div>', 'switch')
+  state.set({ nav: '$root.title' })
+  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'remove prevoous') // eslint-disable-line
   t.end()
 })
