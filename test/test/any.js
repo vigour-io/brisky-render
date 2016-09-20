@@ -54,7 +54,6 @@ test('$test - $any', function (t) {
     `),
     'set switcher'
   )
-
   if (global.document && global.document.body) {
     global.document.body.appendChild(app)
   }
