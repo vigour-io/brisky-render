@@ -5,58 +5,58 @@ const parse = require('parse-element')
 const s = require('vigour-state/s')
 const strip = require('vigour-util/strip/formatting')
 
-test('$test - $any', function (t) {
-  const state = s({
-    fields: {
-      items: [ 1, 2 ]
-    },
-    title: 'hello',
-    nav: '$root.fields'
-  })
+// test('$test - $any', function (t) {
+//   const state = s({
+//     fields: {
+//       items: [ 1, 2 ]
+//     },
+//     title: 'hello',
+//     nav: '$root.fields'
+//   })
 
-  var app = render({
-    switcher: {
-      $: 'nav.$switch',
-      tag: 'fragment',
-      properties: {
-        fields: {
-          $: 'items.$any',
-          child: { text: '(｀^´)' }
-        },
-        title: { text: 'ಠ_ರೃ' }
-      }
-    }
-  }, state)
+//   var app = render({
+//     switcher: {
+//       $: 'nav.$switch',
+//       tag: 'fragment',
+//       properties: {
+//         fields: {
+//           $: 'items.$any',
+//           child: { text: '(｀^´)' }
+//         },
+//         title: { text: 'ಠ_ರೃ' }
+//       }
+//     }
+//   }, state)
 
-  t.same(
-    parse(app),
-    strip(`
-      <div>
-        <div>
-          <div>(｀^´)</div>
-          <div>(｀^´)</div>
-        </div>
-      </div>
-    `),
-    'set switcher'
-  )
+//   t.same(
+//     parse(app),
+//     strip(`
+//       <div>
+//         <div>
+//           <div>(｀^´)</div>
+//           <div>(｀^´)</div>
+//         </div>
+//       </div>
+//     `),
+//     'set switcher'
+//   )
 
-  state.nav.set('$root.title')
+//   state.nav.set('$root.title')
 
-  t.same(
-    parse(app),
-    strip(`
-      <div>
-        <div>
-          ಠ_ರೃ
-        </div>
-      </div>
-    `),
-    'set switcher'
-  )
+//   t.same(
+//     parse(app),
+//     strip(`
+//       <div>
+//         <div>
+//           ಠ_ರೃ
+//         </div>
+//       </div>
+//     `),
+//     'set switcher'
+//   )
 
-  t.end()
-})
+//   t.end()
+// })
 
 test('$test - any - reference change', function (t) {
   const state = s({
@@ -76,11 +76,11 @@ test('$test - any - reference change', function (t) {
       $: 'items.$any',
       child: {
         $: '$test',
-        $test: val => true,
         text: { $: true }
       }
     }
   }, state)
+
   t.same(
     parse(app),
     strip(`
@@ -92,6 +92,7 @@ test('$test - any - reference change', function (t) {
       </div>
     `)
   )
+
   state.holder.current.set(state.holder.fields2)
   t.same(
     parse(app),
@@ -104,5 +105,10 @@ test('$test - any - reference change', function (t) {
       </div>
     `)
   )
+
+  if (document && document.body) {
+    document.body.appendChild(app)
+  }
+
   t.end()
 })

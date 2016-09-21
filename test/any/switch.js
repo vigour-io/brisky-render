@@ -5,47 +5,48 @@ const parse = require('parse-element')
 const strip = require('vigour-util/strip/formatting')
 const s = require('vigour-state/s')
 
-test('any - switch - basic', function (t) {
-  const state = s({
-    holder: {
-      items: [ 1, 2 ]
-    }
-  })
+// test('any - switch - basic', function (t) {
+//   const state = s({
+//     holder: {
+//       items: [ 1, 2 ]
+//     }
+//   })
 
-  var app = render({
-    $: 'holder',
-    page: {
-      $: 'items.$any',
-      child: {
-        $: '$switch',
-        $switch: val => 'sameAsAlways',
-        properties: {
-          sameAsAlways: {
-            text: { $: true }
-          }
-        }
-      }
-    }
-  }, state)
+//   const app = render({
+//     $: 'holder',
+//     page: {
+//       $: 'items.$any',
+//       child: {
+//         $: '$switch',
+//         $switch: val => 'sameAsAlways',
+//         properties: {
+//           sameAsAlways: {
+//             text: { $: true }
+//           }
+//         }
+//       }
+//     }
+//   }, state)
 
-  t.same(
-    parse(app),
-    strip(`
-      <div>
-        <div>
-          <div>
-            <div>1</div>
-          </div>
-          <div>
-            <div>2</div>
-          </div>
-        </div>
-      </div>
-    `)
-  )
+//   t.same(
+//     parse(app),
+//     strip(`
+//       <div>
+//         <div>
+//           <div>
+//             <div>1</div>
+//           </div>
+//           <div>
+//             <div>2</div>
+//           </div>
+//         </div>
+//       </div>
+//     `)
+//   )
+//   document.body.appendChild(app)
 
-  t.end()
-})
+//   t.end()
+// })
 
 test('any - switch - type', function (t) {
   const state = s({
@@ -54,7 +55,7 @@ test('any - switch - type', function (t) {
     }
   })
 
-  var app = render({
+  const app = render({
     $: 'holder',
     types: {
       page: {
@@ -71,9 +72,12 @@ test('any - switch - type', function (t) {
       }
     },
     page: {
+      text: 'xxx',
       type: 'page'
     }
   }, state)
+
+  document.body.appendChild(app)
 
   t.same(
     parse(app),
