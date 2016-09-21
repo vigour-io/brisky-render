@@ -58,3 +58,51 @@ test('$test - $any', function (t) {
   t.end()
 })
 
+test('$test - any - reference change', function (t) {
+  const state = s({
+    holder: {
+      fields: {
+        items: [ 1, 2 ]
+      },
+      fields2: {
+        items: [ 3, 4 ]
+      },
+      current: '$root.holder.fields'
+    }
+  })
+  var app = render({
+    $: 'holder.current',
+    page: {
+      $: 'items.$any',
+      child: {
+        $: '$test',
+        $test: val => true,
+        text: { $: true }
+      }
+    }
+  }, state)
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>1</div>
+          <div>2</div>
+        </div>
+      </div>
+    `)
+  )
+  state.holder.current.set(state.holder.fields2)
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>3</div>
+          <div>4</div>
+        </div>
+      </div>
+    `)
+  )
+  t.end()
+})
