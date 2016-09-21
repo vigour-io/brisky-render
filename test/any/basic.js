@@ -150,8 +150,9 @@ test('any - reference change', function (t) {
   })
 
   var app = render({
+    $: 'holder.current',
     page: {
-      $: 'holder.current.items.$any',
+      $: 'items.$any',
       child: {
         text: { $: true }
       }
