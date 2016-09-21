@@ -57,6 +57,7 @@ test('reference - $any', function (t) {
       current: '$root.holder.fields'
     }
   })
+
   const app = render({
     $: 'holder.current',
     page: {
@@ -65,12 +66,12 @@ test('reference - $any', function (t) {
         text: { $: true }
       }
     }
-  }, state, (subs) => {
-    console.log(subs, '?')
-  })
+  }, state)
+
   if (document && document.body) {
     document.body.appendChild(app)
   }
+
   t.same(
     parse(app),
     strip(`
@@ -82,8 +83,9 @@ test('reference - $any', function (t) {
       </div>
     `)
   )
-  console.error('\n\n\nok so what up in this bitch')
+
   state.holder.current.set(state.holder.fields2)
+
   t.same(
     parse(app),
     strip(`
@@ -104,6 +106,7 @@ test('reference - root - $any', function (t) {
     fields2: [ 3, 4 ],
     current: '$root.fields'
   })
+
   const app = render({
     $: 'current',
     page: {
@@ -113,9 +116,11 @@ test('reference - root - $any', function (t) {
       }
     }
   }, state)
+
   if (document && document.body) {
     document.body.appendChild(app)
   }
+
   t.same(
     parse(app),
     strip(`
@@ -127,7 +132,9 @@ test('reference - root - $any', function (t) {
       </div>
     `)
   )
+
   state.current.set(state.fields2)
+
   t.same(
     parse(app),
     strip(`
