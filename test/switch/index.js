@@ -2,3 +2,4 @@
 require('./branch')
 require('./nested')
 require('./property')
+require('./context')
