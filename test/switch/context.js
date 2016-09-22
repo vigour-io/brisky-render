@@ -37,7 +37,9 @@ test('any - switch - type', function (t) {
     }
   }, state)
 
-  document.body.appendChild(app)
+  if (document && document.body) {
+    document.body.appendChild(app)
+  }
 
   t.same(
     parse(app),
