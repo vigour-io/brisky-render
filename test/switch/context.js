@@ -6,28 +6,22 @@ const strip = require('vigour-util/strip/formatting')
 const s = require('vigour-state/s')
 
 test('any - switch - type', function (t) {
-  console.error('now we will fuck it up')
   const state = s({
-    holder: {
-      val: 'text',
-      title: 'xxxx'
-    }
+    holder: { val: 'text' }
   })
 
   const app = render({
     $: 'holder',
+    key: 'app',
     types: {
       page: {
         tag: 'switcher',
         $: '$switch',
-        $switch: (val) => {
-          console.log('SWITCH', val.path().join('/'))
-          return 'sameAsAlways'
-        },
+        $switch: (val) => 'sameAsAlways',
         properties: {
           sameAsAlways: {
             tag: 'same',
-            text: { $: 'title' }
+            text: { $: true }
           }
         }
       }
@@ -45,14 +39,9 @@ test('any - switch - type', function (t) {
     parse(app),
     strip(`
       <div>
-        <div>
-          <div>
-            <div>1</div>
-          </div>
-          <div>
-            <div>2</div>
-          </div>
-        </div>
+        <switcher>
+          <same>text</same>
+        </switcher>
       </div>
     `)
   )
