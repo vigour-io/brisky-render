@@ -12,7 +12,6 @@ test('fragment - nested', function (t) {
       b: false
     }
   })
-
   const app = render(
     {
       switcher: {
@@ -49,10 +48,38 @@ test('fragment - nested', function (t) {
     document.body.appendChild(app)
   }
   state.set({ nav: '$root.title' })
-  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'initial subscription') // eslint-disable-line
+  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'initial subscription')
   state.set({ nav: '$root.fields' })
   t.equal(parse(app), '<div>a<div>a</div>a</div>', 'switch')
   state.set({ nav: '$root.title' })
-  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'remove prevoous') // eslint-disable-line
+  t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'remove previous')
+  t.end()
+})
+
+test('fragment - nested - remove', function (t) {
+  const state = global.state = s({
+    bla: '¯\\_(ツ)_/¯'
+  })
+  const app = render(
+    {
+      a: {
+        tag: 'fragment',
+        b: {
+          tag: 'fragment',
+          c: {
+            $: 'bla.$test',
+            text: { $: true }
+          }
+        }
+      }
+    },
+    state
+  )
+  if ('body' in document) {
+    document.body.appendChild(app)
+  }
+  t.equal(parse(app), '<div><div>¯\\_(ツ)_/¯</div></div>', 'initial subscription')
+  state.bla.remove()
+  t.equal(parse(app), '<div></div>', 'remove state')
   t.end()
 })
