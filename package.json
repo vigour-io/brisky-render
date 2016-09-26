@@ -22,8 +22,7 @@
   },
   "homepage": "https://github.com/vigour-io/brisky-core#readme",
   "dependencies": {
-    "babel-preset-es2015": "^6.14.0",
-    "babelify": "^7.3.0",
+    "bubleify": "0.5.1",
     "html-element": "^2.1.0",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2",
@@ -53,14 +52,7 @@
   },
   "browserify": {
     "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
+      "bubleify"
     ]
   },
   "keywords": [
