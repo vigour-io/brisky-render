@@ -24,7 +24,7 @@ test('group - switch', function (t) {
           ab: {
             type: 'group',
             render: {
-              state (target, state, type, stamp, subs, tree, id, pid, store) {
+              state (target, s, type, stamp, subs, tree, id, pid, store) {
                 const node = getParent(type, stamp, subs, tree, pid)
                 node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
               }
