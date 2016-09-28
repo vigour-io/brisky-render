@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const strip = require('vigour-util/strip/formatting')
 const s = require('vigour-state/s')
 
-test('$switch - one level', function (t) {
+test('$switch - context - one level', function (t) {
   const state = s({
     holder: { val: 'text' }
   })
@@ -43,7 +43,7 @@ test('$switch - one level', function (t) {
   t.end()
 })
 
-test('$switch - deep', function (t) {
+test('$switch - context - deep', function (t) {
   const state = s({
     holder: { val: 'text' }
   })
@@ -89,54 +89,39 @@ test('$switch - deep', function (t) {
   t.end()
 })
 
-/*
-exports.types = {
-  discoverPage: {
-    class: 'flex-column',
-    style: { flexShrink: 0 },
-    $: 'items.$any',
-    child: {
-      $: '$switch',
-      tag: 'fragment',
-      $switch: state => state.rowtype ? state.rowtype.compute() : 'items',
-      rowtype: {
-        type: 'property',
-        $: 'rowtype',
-        render: { state () {} }
+test('$switch - context - double', function (t) {
+  const state = s({
+    a: 'A!',
+    field: { nest: '$root.a' },
+    c: '$root.field'
+  })
+  const app = render({
+    types: {
+      a: {
+        text: { $: true }
       },
-      properties
-    }
-  },
-
-  pageSwitcher: {
-    properties: {
-      discover: {
-        type: 'discoverPage'
+      field: {
+        $: 'nest.$switch',
+        properties: {
+          a: { type: 'a' }
+        }
+      },
+      c: {
+        $: 'c.$switch',
+        properties: {
+          field: { type: 'field' }
+        }
       }
+    },
+    c: {
+      type: 'c'
     }
+  }, state)
+
+  console.log(parse(app))
+
+  if (document.body) {
+    document.body.appendChild(app)
   }
-}
-
-const app = {
-  inject: [
-    // INJECT THE PAGE SWITCHER BEFORE THE PAGES (youzi)
-    require('@vigour-io/play-sidebar'),
-    require('@vigour-io/play-page-switcher'),
-    require('@vigour-io/play-carousel'),
-    require('@vigour-io/play-form'),
-    require('@vigour-io/play-horizontal-list'),
-    require('@vigour-io/play-icon'),
-    require('@vigour-io/play-item'),
-    require('@vigour-io/play-page-discover'),
-    require('@vigour-io/play-page-header'),
-    require('@vigour-io/play-page-shows'),
-    require('@vigour-io/play-layout')
-  ],
-
-  holder: {
-    type: 'layout'
-  }
-}```
-
-type layout uses type pageSwitcher
-*/
+  t.end()
+})
