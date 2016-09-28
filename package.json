@@ -24,8 +24,6 @@
   "dependencies": {
     "bubleify": "0.5.1",
     "html-element": "^2.1.0",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2",
     "vigour-observable": "^3.1.18",
     "vigour-stamp": "^1.4.0",
     "vigour-state": "^4.6.3",
