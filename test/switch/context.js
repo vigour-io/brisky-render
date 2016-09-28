@@ -93,6 +93,9 @@ test('$switch - context - double', function (t) {
   const state = s({
     a: 'A!',
     field: { nest: '$root.a' },
+    flups: {
+      c: '$root.field'
+    },
     c: '$root.field'
   })
   const app = render({
@@ -100,25 +103,74 @@ test('$switch - context - double', function (t) {
       a: {
         text: { $: true }
       },
+      b: {
+        text: { $: 'nest', $add: '-B' }
+      },
       field: {
+        tag: 'x',
         $: 'nest.$switch',
         properties: {
           a: { type: 'a' }
         }
       },
+      c2: {
+        tag: 'c2',
+        bla: {
+          tag: 'bla',
+          $: 'c.$switch',
+          properties: {
+            field: { type: 'b' }
+          }
+        }
+      },
       c: {
+        tag: 'c',
         $: 'c.$switch',
         properties: {
           field: { type: 'field' }
         }
       }
     },
-    c: {
-      type: 'c'
+    c: { type: 'c' },
+    c2: { type: 'c2' },
+    c3: { tag: 'c3', type: 'c2', $: 'flups' },
+    c4: {
+      type: 'c2',
+      tag: 'c4',
+      bla: {
+        properties: {
+          field: {
+            type: 'a',
+            tag: 'fragment',
+            $: 'nest'
+          }
+        }
+      }
     }
   }, state)
 
-  console.log(parse(app))
+  t.same(
+    parse(app),
+    strip(`<div>
+      <c>
+        <x>
+          <div>A!</div>
+        </x>
+      </c>
+      <c2>
+        <bla>
+          <div>A!-B</div>
+        </bla>
+      </c2>
+      <c3>
+        <bla>
+          <div>A!-B</div>
+        </bla>
+      </c3>
+      <c4>
+        <bla>A!</bla>
+      </c4>
+    </div>`), 'correct ouput')
 
   if (document.body) {
     document.body.appendChild(app)

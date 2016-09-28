@@ -1,7 +1,6 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
-const s = require('vigour-state/s')
 
 // remove the val from sync perhaps just call it true / 1
 test('sync - basic', (t) => {
