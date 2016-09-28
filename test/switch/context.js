@@ -116,4 +116,27 @@ exports.types = {
     }
   }
 }
+
+const app = {
+  inject: [
+    // INJECT THE PAGE SWITCHER BEFORE THE PAGES (youzi)
+    require('@vigour-io/play-sidebar'),
+    require('@vigour-io/play-page-switcher'),
+    require('@vigour-io/play-carousel'),
+    require('@vigour-io/play-form'),
+    require('@vigour-io/play-horizontal-list'),
+    require('@vigour-io/play-icon'),
+    require('@vigour-io/play-item'),
+    require('@vigour-io/play-page-discover'),
+    require('@vigour-io/play-page-header'),
+    require('@vigour-io/play-page-shows'),
+    require('@vigour-io/play-layout')
+  ],
+
+  holder: {
+    type: 'layout'
+  }
+}```
+
+type layout uses type pageSwitcher
 */
