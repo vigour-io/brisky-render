@@ -48,11 +48,24 @@ test('sync - $any', (t) => {
         $: true,
         text: { $: true, sync: false }
       }
+    },
+    c: {
+      $: 'c.$any',
+      child: { text: { $: true, sync: false } }
+    },
+    d: {
+      $: 'd',
+      field: {
+        $: '$any',
+        child: { text: { $: true, sync: false } }
+      }
     }
   },
   state,
   (s) => { subs = s })
   t.equal(subs.a.$any._.sync, true, 'a.$any')
   t.equal(subs.b.$any._.sync, 1, 'b.$any')
+  t.equal(subs.b.$any._.sync, 1, 'c.$any')
+  t.equal(subs.b.$any._.sync, 1, 'd.$any')
   t.end()
 })
