@@ -5,8 +5,8 @@
   "main": "lib/element.js",
   "scripts": {
     "test": "(ducktape; node test) | tap-difflet && standard",
-    "watch": "nodemon test | tap-difflet",
-    "watch-browser": "budo ./test/index.js -p 8080 --live",
+    "dev": "nodemon test | tap-difflet",
+    "dev-browser": "budo ./test/index.js -p 8080 --live",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "docs": "node_modules/vigour-doc/bin/vdoc",
     "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0) && standard"
@@ -22,16 +22,14 @@
   },
   "homepage": "https://github.com/vigour-io/brisky-core#readme",
   "dependencies": {
-    "babel-preset-es2015": "^6.14.0",
-    "babelify": "^7.3.0",
+    "bubleify": "0.5.1",
     "html-element": "^2.1.0",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2",
     "vigour-observable": "^3.1.18",
     "vigour-stamp": "^1.4.0",
     "vigour-state": "^4.6.3",
     "vigour-ua": "^2.1.0",
-    "vigour-util": "^3.3.2"
+    "vigour-util": "^3.3.2",
+    "quick-hash": "^1.0.0"
   },
   "devDependencies": {
     "ducktape": "^1.0.1",
@@ -53,14 +51,7 @@
   },
   "browserify": {
     "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "es2015"
-          ]
-        }
-      ]
+      "bubleify"
     ]
   },
   "keywords": [

@@ -15,14 +15,14 @@ test('group - mixed', function (t) {
         $: 'something',
         type: 'group',
         render: {
-          state (target, state, type, stamp, subs, tree, id, pid, store) {
+          state (target, s, type, stamp, subs, tree, id, pid, store) {
             const node = getParent(type, stamp, subs, tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
         a: {
           $: 'letters.a.$test',
-          $test: (state) => true
+          $test: state => true
         },
         b: 'B'
       }
