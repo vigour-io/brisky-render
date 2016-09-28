@@ -88,3 +88,32 @@ test('$switch - deep', function (t) {
   }
   t.end()
 })
+
+/*
+exports.types = {
+  discoverPage: {
+    class: 'flex-column',
+    style: { flexShrink: 0 },
+    $: 'items.$any',
+    child: {
+      $: '$switch',
+      tag: 'fragment',
+      $switch: state => state.rowtype ? state.rowtype.compute() : 'items',
+      rowtype: {
+        type: 'property',
+        $: 'rowtype',
+        render: { state () {} }
+      },
+      properties
+    }
+  },
+
+  pageSwitcher: {
+    properties: {
+      discover: {
+        type: 'discoverPage'
+      }
+    }
+  }
+}
+*/
