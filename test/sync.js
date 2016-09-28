@@ -29,24 +29,8 @@ test('sync - basic', (t) => {
   },
   state,
   (s) => { subs = s })
-
-  t.equal(
-    subs.field._.sync,
-    1,
-    'field sync defaults to 1'
-  )
-
-  t.same(
-    subs.field.other._.sync,
-    undefined,
-    'field.other sync is true no sync'
-  )
-
-  t.same(
-    subs.field.something._.sync,
-    1,
-    'field.something sync is true no sync'
-  )
-
+  t.equal(subs.field._.sync, 1, 'field')
+  t.same(subs.field.other._.sync, undefined, 'field.other')
+  t.same(subs.field.something._.sync, 1, 'field.something')
   t.end()
 })
