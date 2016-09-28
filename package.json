@@ -30,7 +30,8 @@
     "vigour-stamp": "^1.4.0",
     "vigour-state": "^4.6.3",
     "vigour-ua": "^2.1.0",
-    "vigour-util": "^3.3.2"
+    "vigour-util": "^3.3.2",
+    "quick-hash": "^1.0.0"
   },
   "devDependencies": {
     "ducktape": "^1.0.1",
