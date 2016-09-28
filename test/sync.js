@@ -4,7 +4,6 @@ const test = require('tape')
 const s = require('vigour-state/s')
 
 // remove the val from sync perhaps just call it true / 1
-
 test('sync - basic', (t) => {
   const state = s({ field: 'its text' })
   var subs
@@ -32,5 +31,25 @@ test('sync - basic', (t) => {
   t.equal(subs.field._.sync, 1, 'field')
   t.same(subs.field.other._.sync, undefined, 'field.other')
   t.same(subs.field.something._.sync, 1, 'field.something')
+  t.end()
+})
+
+test('sync - $any', (t) => {
+  const state = s({ field: 'its text' })
+  var subs
+  render({
+    $: '$any',
+    child: {
+      // $: true,
+      sync: false,
+      text: {
+        $: true
+      }
+    }
+  },
+  state,
+  (s) => { subs = s })
+  console.log(subs)
+  // t.equal(subs.field._.sync, 1, 'field')
   t.end()
 })
