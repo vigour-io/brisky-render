@@ -38,18 +38,21 @@ test('sync - $any', (t) => {
   const state = s({ field: 'its text' })
   var subs
   render({
-    $: '$any',
-    child: {
-      // $: true,
-      sync: false,
-      text: {
-        $: true
+    a: {
+      $: 'a.$any',
+      child: { $: true, sync: false }
+    },
+    b: {
+      $: 'b.$any',
+      child: {
+        $: true,
+        text: { $: true, sync: false }
       }
     }
   },
   state,
   (s) => { subs = s })
-  console.log(subs)
-  // t.equal(subs.field._.sync, 1, 'field')
+  t.equal(subs.a.$any._.sync, true, 'a.$any')
+  t.equal(subs.b.$any._.sync, 1, 'b.$any')
   t.end()
 })
