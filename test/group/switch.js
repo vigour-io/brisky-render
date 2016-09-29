@@ -23,6 +23,8 @@ test('group - switch', function (t) {
         letters: {
           ab: {
             type: 'group',
+            subscriptionType: true,
+            $: true,
             render: {
               state (target, s, type, stamp, subs, tree, id, pid, store) {
                 const node = getParent(type, stamp, subs, tree, pid)
