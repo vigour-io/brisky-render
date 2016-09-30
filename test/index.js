@@ -1,6 +1,5 @@
 'use strict'
 require('./order')
-require('./html')
 require('./text')
 require('./remove')
 require('./widget')
@@ -17,3 +16,4 @@ require('./fragment')
 require('./sync')
 require('./switch')
 require('./property')
+require('./html')
