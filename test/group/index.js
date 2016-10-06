@@ -2,3 +2,4 @@
 require('./combined')
 require('./switch')
 require('./mixed')
+require('./remove')
