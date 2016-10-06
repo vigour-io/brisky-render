@@ -31,6 +31,5 @@ test('group - remove', function (t) {
   t.equal(p(app), '<div><div ab="a b"></div></div>', 'initial subscription')
   state.letters.set({ a: 'no' })
   t.equal(p(app), '<div><div ab="- b"></div></div>', 'update "a" to no')
-  document.body.appendChild(app)
   t.end()
 })
