@@ -1,8 +1,8 @@
-const struct = require('brisky-struct')
-const render = require('../render')
-const state = struct({
+const State = require('vigour-state')
+const render = require('brisky-core/render')
+const state = new State({
   x: 'x!',
-  // collection: [ 1, 2 ]
+  collection: [ 1, 2 ]
 })
 
 const app = render({
@@ -11,11 +11,9 @@ const app = render({
   },
   xxxxx: {
     $: 'collection.$any',
-    props: {
-      default: {
-        text: '!!!!!!',
-        blurx: { text: 'its blurx' }
-      }
+    child: {
+      text: '!!!!!!',
+      blurx: { text: 'its blurx' }
     }
   },
   blax: {
@@ -29,7 +27,6 @@ const app = render({
 
 console.log(app)
 document.body.appendChild(app)
-app.style.width = '200px'
 
 state.x.set('!!!!')
 
@@ -38,14 +35,8 @@ var arr = []
 while (i--) {
   arr.push(i)
 }
-
-state.set({
-  xx: [ 1, 2, 3 ]
-})
-
-// state.subscribe({ xx: { $any: true } }, () => {})
-
 var d = Date.now()
+// state.subscribe({ xx: { $any: { val: true } } }, () => {})
 state.set({ collection: arr })
 console.log(Date.now() - d, 'ms')
 
