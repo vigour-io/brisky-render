@@ -43,7 +43,8 @@
     "tap-difflet": "0.6.0",
     "tape": "^4.6.0",
     "vigour-state": "^4.8.2",
-    "brisky-core": "^1.8.3"
+    "brisky-core": "^1.8.3",
+    "stats-js": "1.0.0-alpha1"
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",

@@ -1,5 +1,7 @@
 const struct = require('brisky-struct')
 const render = require('../render')
+const stats = require('./stats')
+
 const state = struct({
   x: 'x!',
   collection: [ 1, 2 ]
@@ -13,7 +15,7 @@ const app = render({
     $: 'collection.$any',
     props: {
       default: {
-        text: '!!!!!!',
+        text: { $: true },
         blurx: { text: 'its blurx' }
       }
     }
@@ -32,20 +34,18 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-var i = 1e4
-var arr = []
-while (i--) {
-  arr.push(i)
+const n = 2e3
+
+var cnt = 0
+const update = () => {
+  var i = n
+  cnt++
+  stats.n(n)
+  stats.begin()
+  var arr = []
+  while (i--) { arr.push(i + cnt) }
+  state.set({ collection: arr })
+  stats.end()
+  global.requestAnimationFrame(update)
 }
-
-state.set({
-  xx: [ 1, 2, 3 ]
-})
-
-// state.subscribe({ xx: { $any: true } }, () => {})
-
-var d = Date.now()
-state.set({ collection: arr })
-console.log(Date.now() - d, 'ms')
-
-global.state = state
+update()
