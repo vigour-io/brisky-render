@@ -5,7 +5,7 @@
   "main": "lib/element.js",
   "scripts": {
     "test": "(ducktape; node test) | tap-difflet && standard",
-    "wip": "budo ./test/wip.js -p 8080 --live",
+    "wip": "budo ./wip -p 8080 --live",
     "dev": "nodemon test | tap-difflet",
     "dev-browser": "budo ./test/index.js -p 8080 --live",
     "cover": "istanbul cover --report none --print detail test/index.js",
@@ -27,7 +27,7 @@
     "html-element": "^2.1.0",
     "quick-hash": "^1.0.0",
     "vigour-ua": "^2.1.0",
-    "brisky-struct": "0.0.5"
+    "brisky-struct": "0.0.6"
   },
   "devDependencies": {
     "brisky-performance": "^1.4.2",
