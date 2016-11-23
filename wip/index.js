@@ -1,16 +1,23 @@
 const struct = require('brisky-struct')
 const render = require('../render')
-const state = struct({ x: 'x!' })
+const state = struct({
+  x: 'x!',
+  collection: [ 1, 2 ]
+})
 
 const elem = render({
-  // bla: {
-    // bla: {
-    //   bla: {
-  text: { $: 'x' }
-    //   }
-    // },
-    // text: 'hello'
-  // }
+  bla: {
+    text: { $: 'x' }
+  },
+  xxxxx: {
+    $: 'collection.$any',
+    props: {
+      default: {
+        text: '!!!!!!'
+      }
+    }
+  },
+  text: 'hello'
 }, state)
 
 console.log(elem)
