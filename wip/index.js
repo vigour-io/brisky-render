@@ -2,7 +2,7 @@ const struct = require('brisky-struct')
 const render = require('../render')
 const state = struct({
   x: 'x!',
-  // collection: [ 1, 2 ]
+  collection: [ 1, 2 ]
 })
 
 const app = render({
@@ -29,7 +29,6 @@ const app = render({
 
 console.log(app)
 document.body.appendChild(app)
-app.style.width = '200px'
 
 state.x.set('!!!!')
 
