@@ -32,25 +32,4 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-const n = 2e3
-
-var d = Date.now()
-// state.subscribe({ xx: { $any: { val: true } } }, () => {})
-
-console.log(Date.now() - d, 'ms')
-
-global.state = state
-
-var cnt = 0
-const update = () => {
-  var i = n
-  cnt++
-  stats.n(n)
-  stats.begin()
-  var arr = []
-  while (i--) { arr.push(i + cnt) }
-  state.set({ collection: arr })
-  stats.end()
-  global.requestAnimationFrame(update)
-}
-update()
+stats(state)

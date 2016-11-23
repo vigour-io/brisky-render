@@ -34,18 +34,4 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-const n = 2e3
-
-var cnt = 0
-const update = () => {
-  var i = n
-  cnt++
-  stats.n(n)
-  stats.begin()
-  var arr = []
-  while (i--) { arr.push(i + cnt) }
-  state.set({ collection: arr })
-  stats.end()
-  global.requestAnimationFrame(update)
-}
-update()
+stats(state)
