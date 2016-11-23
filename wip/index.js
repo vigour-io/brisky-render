@@ -5,7 +5,8 @@ const elem = render({
   bla: {
     bla: {
       bla: true
-    }
+    },
+    text: 'hello'
   }
 }, struct({ x: 'x!' }))
 
