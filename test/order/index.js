@@ -1,3 +1,2 @@
-'use strict'
-require('./basic')
-// require('./context')
+// require('./basic')
+require('./context')

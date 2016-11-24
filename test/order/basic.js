@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('order - basic', function (t) {
+test('order - basic', t => {
   const state = s()
   const app = render(
     {
@@ -29,36 +29,30 @@ test('order - basic', function (t) {
   t.end()
 })
 
-// test('order - basic - mixed', function (t) {
-//   const state = s()
-//   const app = render(
-//     {
-//       a: { text: 'a' },
-//       first: { $: 1, text: { $: true } },
-//       b: { text: 'b' },
-//       second: { $: 2, text: { $: true } },
-//       c: { text: 'c' }
-//     },
-//     state
-//   )
-//   state.set({ 2: 2 })
-//   t.equal(
-//     parse(app),
-//     '<div><div>a</div><div>b</div><div>2</div><div>c</div></div>',
-//     'initial order'
-//   )
-//   state.set({ 1: 1 })
+test('order - basic - mixed', t => {
+  const state = s()
+  const app = render(
+    {
+      a: { text: 'a' },
+      first: { $: 1, text: { $: true } },
+      b: { text: 'b' },
+      second: { $: 2, text: { $: true } },
+      c: { text: 'c' }
+    },
+    state
+  )
+  state.set({ 2: 2 })
+  t.equal(
+    parse(app),
+    '<div><div>a</div><div>b</div><div>2</div><div>c</div></div>',
+    'initial order'
+  )
+  state.set({ 1: 1 })
 
-//   // // wrong output
-//   // for (var i in app.childNodes) {
-//   //   // html-element wrong again -- insertbefore is unreliable
-//   //   console.log(app.childNodes[i].childNodes[0].value)
-//   // }
-//   // console.log(parse(app))
-//   // t.equal(
-//   //   parse(app),
-//   //   '<div><div>a</div><div>1</div><div>b</div><div>2</div><div>c</div></div>',
-//   //   'update second'
-//   // )
-//   t.end()
-// })
+  t.equal(
+    parse(app),
+    '<div><div>a</div><div>1</div><div>b</div><div>2</div><div>c</div></div>',
+    'update second'
+  )
+  t.end()
+})
