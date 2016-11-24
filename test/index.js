@@ -13,7 +13,7 @@ require('./html') // needs switch
 
 // require('./group')
 
-// require('./clone')
+require('./clone')
 // require('./subscribe')
 // require('./reference')
 // require('./test')

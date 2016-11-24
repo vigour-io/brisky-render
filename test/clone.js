@@ -26,7 +26,7 @@ test('clone - reuse ', function (t) {
             type: 'property',
             render: {
               static (target, node) {
-                node.className = target.parent.parent.key
+                node.className = target.parent(2).key
               }
             }
           },
@@ -34,8 +34,8 @@ test('clone - reuse ', function (t) {
             type: 'property',
             $: 'b',
             render: {
-              state (target, s, type, stamp, subs, tree, id, pid, store) {
-                const node = getParent(type, stamp, subs, tree, pid)
+              state (target, s, type, subs, tree, id, pid, store) {
+                const node = getParent(type, subs, tree, pid)
                 node.src = s.compute()
               }
             }
