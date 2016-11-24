@@ -8,7 +8,6 @@ test('group - remove', t => {
   const state = s({
     letters: { a: 'a', b: 'b' }
   })
-
   const app = render({
     letters: {
       $: 'letters',
