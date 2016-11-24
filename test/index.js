@@ -9,7 +9,7 @@ require('./render') // needs switch
 
 require('./parent')
 
-require('./html')
+require('./html') // needs switch
 
 // require('./group')
 
