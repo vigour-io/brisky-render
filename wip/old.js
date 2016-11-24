@@ -1,6 +1,7 @@
+var d = Date.now()
 const State = require('vigour-state')
 const render = require('brisky-core/render')
-// const stats = require('./stats')
+const stats = require('./stats')
 
 const state = new State({
   x: 'x!',
@@ -15,7 +16,7 @@ const app = render({
     $: 'collection.$any',
     child: {
       text: { $: true },
-      blurx: { text: 'its blurx' }
+      blurx: { text: 'its blurx', bla: { text: 'rain' }, blurf: { text: 'again' } }
     }
   },
   blax: {
@@ -32,4 +33,5 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-// stats(state)
+stats(state)
+console.log('TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')

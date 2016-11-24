@@ -1,6 +1,7 @@
+var d = Date.now()
 const struct = require('brisky-struct')
 const render = require('../render')
-// const stats = require('./stats')
+const stats = require('./stats')
 
 const state = struct({
   x: 'x!',
@@ -16,7 +17,7 @@ const app = render({
     props: {
       default: {
         text: { $: true },
-        blurx: { text: 'its blurx' }
+        blurx: { text: 'its blurx', bla: { text: 'rain' }, blurf: { text: 'again' } }
       }
     }
   },
@@ -29,9 +30,9 @@ const app = render({
   text: 'hello'
 }, state)
 
-console.log(app)
 document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-// stats(state)
+stats(state)
+console.log('TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
