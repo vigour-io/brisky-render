@@ -2,7 +2,7 @@
 const render = require('../render')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
+const strip = require('strip-formatting')
 const s = require('brisky-struct')
 
 test('reference - basic', function (t) {
@@ -14,7 +14,7 @@ test('reference - basic', function (t) {
       fields2: {
         thing: 2
       },
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -54,7 +54,7 @@ test('reference - $any', function (t) {
     holder: {
       fields: [ 1, 2 ],
       fields2: [ 3, 4 ],
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -62,8 +62,10 @@ test('reference - $any', function (t) {
     $: 'holder.current',
     page: {
       $: '$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: {
+          text: { $: true }
+        }
       }
     }
   }, state)
@@ -104,15 +106,17 @@ test('reference - root - $any', function (t) {
   const state = s({
     fields: [ 1, 2 ],
     fields2: [ 3, 4 ],
-    current: '$root.fields'
+    current: [ '@', 'parent', 'fields' ]
   })
 
   const app = render({
     $: 'current',
     page: {
       $: '$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: {
+          text: { $: true }
+        }
       }
     }
   }, state)

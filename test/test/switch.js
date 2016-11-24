@@ -3,7 +3,7 @@ const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
-const strip = require('vigour-util/strip/formatting')
+const strip = require('strip-formatting')
 
 test('$test - $switch', function (t) {
   const state = s({

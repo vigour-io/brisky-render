@@ -21,47 +21,47 @@ test('subscribe - merge', (t) => {
   t.end()
 })
 
-test('subscribe - resubscribe', (t) => {
-  const state = s({
-    field: 'its text'
-  })
-  const app = render(
-    {
-      text: { $: 'field' },
-      a: { tag: 'a', $: 'field' }
-    },
-    state
-  )
-  state.field.set('update')
-  t.equal(p(app), '<div>update<a></a></div>', 'fires update')
-  state.field.val = 'silent update'
-  state.resubscribe()
-  t.equal(p(app), '<div>silent update<a></a></div>', 'fires silent update')
-  t.end()
-})
+// test('subscribe - resubscribe', (t) => {
+//   const state = s({
+//     field: 'its text'
+//   })
+//   const app = render(
+//     {
+//       text: { $: 'field' },
+//       a: { tag: 'a', $: 'field' }
+//     },
+//     state
+//   )
+//   state.field.set('update')
+//   t.equal(p(app), '<div>update<a></a></div>', 'fires update')
+//   state.field.val = 'silent update'
+//   state.resubscribe()
+//   t.equal(p(app), '<div>silent update<a></a></div>', 'fires silent update')
+//   t.end()
+// })
 
-test('subscribe - resubscribe - switch', (t) => {
-  const state = s({
-    a: 'its text',
-    b: 'its field2',
-    somefield: '$root.a'
-  })
-  const app = render({
-    text: 'app',
-    xxx: {
-      tag: 'ul',
-      $: 'somefield.$switch',
-      $switch: (state) => state.key,
-      properties: {
-        a: { tag: 'li', text: { $: true, $add: ' haha a' } },
-        b: { tag: 'li', text: { $: true, $add: ' haha b' } }
-      }
-    }
-  }, state)
-  state.resubscribe()
-  t.equal(p(app), '<div>app<ul><li>its text haha a</li></ul></div>')
-  t.end()
-})
+// test('subscribe - resubscribe - switch', (t) => {
+//   const state = s({
+//     a: 'its text',
+//     b: 'its field2',
+//     somefield: '$root.a'
+//   })
+//   const app = render({
+//     text: 'app',
+//     xxx: {
+//       tag: 'ul',
+//       $: 'somefield.$switch',
+//       $switch: (state) => state.key,
+//       properties: {
+//         a: { tag: 'li', text: { $: true, $add: ' haha a' } },
+//         b: { tag: 'li', text: { $: true, $add: ' haha b' } }
+//       }
+//     }
+//   }, state)
+//   // state.resubscribe()
+//   // t.equal(p(app), '<div>app<ul><li>its text haha a</li></ul></div>')
+//   t.end()
+// })
 
 test('subscribe - object subscription', (t) => {
   const state = s({

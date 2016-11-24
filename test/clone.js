@@ -25,9 +25,7 @@ test('clone - reuse ', function (t) {
           class: {
             type: 'property',
             render: {
-              static (target, node) {
-                node.className = target.parent(2).key
-              }
+              static (target, node) { node.className = target.parent(2).key }
             }
           },
           src: {

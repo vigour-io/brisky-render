@@ -14,8 +14,8 @@ require('./html') // needs switch
 // require('./group')
 
 require('./clone')
-// require('./subscribe')
-// require('./reference')
+require('./subscribe') // switch and resubscribe
+require('./reference')
 // require('./test')
 // require('./fragment')
 // require('./sync')

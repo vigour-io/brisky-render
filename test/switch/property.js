@@ -2,7 +2,7 @@
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
+const strip = require('strip-formatting')
 
 test('switch - property', function (t) {
   const app = render(
