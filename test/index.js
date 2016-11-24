@@ -2,9 +2,10 @@ require('./order')
 require('./text')
 require('./remove')
 // require('./widget')
-require('./context')
-// require('./render')
-// require('./parent')
+require('./context') // needs switch
+require('./render') // needs switch
+
+require('./parent')
 // require('./group')
 // require('./clone')
 // require('./subscribe')

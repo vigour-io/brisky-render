@@ -13,7 +13,7 @@ test('parent', (t) => {
     }
   }, state)
   t.equal(p(app), '<div><h1></h1></div>', 'correct initial html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div></div>', 'removed node')
   t.end()
 })
