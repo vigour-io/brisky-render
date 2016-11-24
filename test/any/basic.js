@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const strip = require('strip-formatting')
 const s = require('brisky-struct')
 
-test('any - basic', function (t) {
+test('any - basic', t => {
   const app = {
     holder: {
       $: 'collection.$any',
@@ -68,7 +68,7 @@ test('any - basic', function (t) {
   t.end()
 })
 
-test('any - reference', function (t) {
+test('any - reference', t => {
   const state = {
     products: {
       items: {
@@ -115,7 +115,7 @@ test('any - reference', function (t) {
   t.end()
 })
 
-test('any - reference change', function (t) {
+test('any - reference change', t => {
   const state = s({
     holder: {
       fields: {

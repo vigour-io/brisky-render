@@ -3,7 +3,7 @@ const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 
-test('$test - basic', function (t) {
+test('$test - basic', t => {
   var elem = render({
     holder: {
       $: 'collection.$any',
@@ -163,7 +163,7 @@ test('$test - basic', function (t) {
   t.end()
 })
 
-test('$test - override test from type', function (t) {
+test('$test - override test from type', t => {
   // use type and
   render({
     types: {

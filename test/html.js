@@ -4,7 +4,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
 
-test('html', function (t) {
+test('html', t => {
   const state = s({ text: 'some text' })
   t.equal(
     parse(render({ html: '<p>html</p>' })),

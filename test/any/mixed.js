@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('any - mixed', function (t) {
+test('any - mixed', t => {
   const state = s({
     field: {
       collection: {

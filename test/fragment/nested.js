@@ -4,7 +4,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
 
-test('fragment - nested', function (t) {
+test('fragment - nested', t => {
   const state = global.state = s({
     title: 'its a title',
     fields: {
@@ -56,7 +56,7 @@ test('fragment - nested', function (t) {
   t.end()
 })
 
-test('fragment - nested - remove', function (t) {
+test('fragment - nested - remove', t => {
   const state = global.state = s({
     bla: '¯\\_(ツ)_/¯'
   })

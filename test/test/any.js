@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-// test('$test - $any', function (t) {
+// test('$test - $any', t => {
 //   const state = s({
 //     fields: {
 //       items: [ 1, 2 ]
@@ -58,7 +58,7 @@ const strip = require('strip-formatting')
 //   t.end()
 // })
 
-test('$test - any - reference change', function (t) {
+test('$test - any - reference change', t => {
   const state = s({
     holder: {
       fields: {

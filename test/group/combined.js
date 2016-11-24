@@ -8,7 +8,7 @@ const emos = require('../util/emojis')
 const fs = require('fs')
 const path = require('path')
 
-test('group - combined', function (t) {
+test('group - combined', t => {
   const types = {
     animation: {
       type: 'group',

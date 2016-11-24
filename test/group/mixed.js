@@ -5,7 +5,7 @@ const s = require('brisky-struct')
 const getParent = require('../../lib/render/dom/parent')
 const p = require('parse-element')
 
-test('group - mixed', function (t) {
+test('group - mixed', t => {
   const state = s({
     something: { letters: { a: 'A' } }
   })

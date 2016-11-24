@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('fragment - basic', function (t) {
+test('fragment - basic', t => {
   const state = global.state = s()
 
   const types = {

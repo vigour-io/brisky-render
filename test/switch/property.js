@@ -4,7 +4,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 
-test('switch - property', function (t) {
+test('switch - property', t => {
   const app = render(
     {
       switcher: {

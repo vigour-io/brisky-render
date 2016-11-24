@@ -5,7 +5,7 @@ const s = require('brisky-struct')
 const getParent = require('../../lib/render/dom/parent')
 const p = require('parse-element')
 
-test('group - remove', function (t) {
+test('group - remove', t => {
   const state = s({
     letters: { a: 'a', b: 'b' }
   })

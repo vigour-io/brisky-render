@@ -5,7 +5,7 @@ const s = require('brisky-struct')
 const browser = require('./browser')
 const getParent = require('../lib/render/dom/parent')
 
-test('clone - reuse ', function (t) {
+test('clone - reuse ', t => {
   const state = global.state = s({
     one: {
       a: 'one',

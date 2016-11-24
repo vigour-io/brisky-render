@@ -2,7 +2,7 @@
 const render = require('../render')
 const test = require('tape')
 
-test('property - cachedNode + context', (t) => {
+test('property - cachedNode + context', t => {
   var elem
   render({
     types: {
@@ -18,10 +18,8 @@ test('property - cachedNode + context', (t) => {
     override: { type: 'elem', class: 'haha' }
   },
   {},
-  (s, t, state, type, stamp, subs, tree, sType, app) => {
-    elem = app
-  })
+  (s, t, app) => { elem = app })
   t.equal(elem.flurps._class, elem.types.elem._class, 'instance shares _class')
-  t.ok(elem.override.hasOwnProperty('_cachedNode'), 'override got own property cachedNode')
+  t.ok('_cachedNode' in elem.override, 'override got own property cachedNode')
   t.end()
 })

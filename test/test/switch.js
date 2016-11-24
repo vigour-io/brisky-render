@@ -1,11 +1,10 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('$test - $switch', function (t) {
+test('$test - $switch', t => {
   const state = s({
     field: { first: true },
     lulz: true,

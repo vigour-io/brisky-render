@@ -17,8 +17,8 @@ require('./clone')
 require('./subscribe') // switch and resubscribe
 require('./reference')
 // require('./test')
-// require('./fragment')
-// require('./sync')
+// require('./fragment') // switch && test
+// require('./sync') // not for now
 // require('./switch')
-// require('./property')
+require('./property')
 // require('./any')

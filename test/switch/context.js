@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const strip = require('strip-formatting')
 const s = require('brisky-struct')
 
-test('$switch - context - one level', function (t) {
+test('$switch - context - one level', t => {
   const state = s({
     holder: { val: 'text' }
   })
@@ -43,7 +43,7 @@ test('$switch - context - one level', function (t) {
   t.end()
 })
 
-test('$switch - context - deep', function (t) {
+test('$switch - context - deep', t => {
   const state = s({
     holder: { val: 'text' }
   })
@@ -89,7 +89,7 @@ test('$switch - context - deep', function (t) {
   t.end()
 })
 
-test('$switch - context - double', function (t) {
+test('$switch - context - double', t => {
   const state = s({
     a: 'A!',
     field: { nest: '$root.a' },

@@ -7,7 +7,7 @@ const s = require('brisky-struct')
 const moons = require('../util/emojis').moons
 const nature = require('../util/emojis')
 
-test('$test - $parent', function (t) {
+test('$test - $parent', t => {
   const state = s()
 
   const emojis = {
@@ -140,7 +140,7 @@ test('$test - $parent', function (t) {
   t.end()
 })
 
-test('$test - $parent + $switch + $any', function (t) {
+test('$test - $parent + $switch + $any', t => {
   const state = s({
     content: {
       fields: {

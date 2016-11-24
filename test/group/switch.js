@@ -5,7 +5,7 @@ const s = require('brisky-struct')
 const getParent = require('../../lib/render/dom/parent')
 const p = require('parse-element')
 
-test('group - switch', function (t) {
+test('group - switch', t => {
   const state = s({
     letters: {},
     something: '$root.letters'

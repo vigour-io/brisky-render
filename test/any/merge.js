@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const strip = require('strip-formatting')
 const s = require('brisky-struct')
 
-test('any - merge', function (t) {
+test('any - merge', t => {
   const app = {
     holder: {
       tag: 'holder',
@@ -51,7 +51,7 @@ test('any - merge', function (t) {
   t.end()
 })
 
-test('any - merge - multiple collections', function (t) {
+test('any - merge - multiple collections', t => {
   const simple = {
     types: {
       collection: {

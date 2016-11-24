@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('switch - branch', function (t) {
+test('switch - branch', t => {
   const state = s({ field: { navigation: {} } })
   var app = render(
     {

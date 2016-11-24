@@ -5,7 +5,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('switch - nested', function (t) {
+test('switch - nested', t => {
   const state = s({ field: { navigation: {} } })
   var cnt = 0
   const app = render(

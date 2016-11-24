@@ -4,7 +4,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
 
-test('$test - branch', function (t) {
+test('$test - branch', t => {
   const state = s({ fields: { first: true } })
   var app = render({
     holder: {
