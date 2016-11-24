@@ -21,9 +21,11 @@ test('any - mixed', t => {
       holder1: {
         tag: 'holder',
         $: 'field.collection.$any',
-        child: {
-          type: 'text',
-          $: 'title'
+        props: {
+          default: {
+            type: 'text',
+            $: 'title'
+          }
         }
       },
       holder2: {
@@ -39,9 +41,11 @@ test('any - mixed', t => {
         collection: {
           tag: 'collection',
           $: 'collection.$any',
-          child: {
-            type: 'text',
-            $: 'title'
+          props: {
+            default: {
+              type: 'text',
+              $: 'title'
+            }
           }
         }
       }
