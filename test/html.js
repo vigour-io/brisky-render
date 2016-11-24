@@ -40,7 +40,7 @@ test('html', function (t) {
     'state and static html as a component'
   )
 
-  state.text.remove()
+  state.text.set(null)
 
   t.equal(
     parse(app),

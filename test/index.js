@@ -1,12 +1,18 @@
 require('./order')
 require('./text')
 require('./remove')
+
 // require('./widget')
+
 require('./context') // needs switch
 require('./render') // needs switch
 
 require('./parent')
+
+require('./html')
+
 // require('./group')
+
 // require('./clone')
 // require('./subscribe')
 // require('./reference')
@@ -15,5 +21,4 @@ require('./parent')
 // require('./sync')
 // require('./switch')
 // require('./property')
-// require('./html')
 // require('./any')

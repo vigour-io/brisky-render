@@ -12,7 +12,7 @@ test('group - combined', function (t) {
   const types = {
     animation: {
       type: 'group',
-      properties: {
+      props: {
         style: true,
         template: true
       },
@@ -21,9 +21,9 @@ test('group - combined', function (t) {
           node.style.position = 'fixed'
           node.style[target.style] = target.template
         },
-        state (target, s, type, stamp, subs, tree, id, pid, store) {
+        state (target, s, type, subs, tree, id, pid, store) {
           var val = s && target.$ ? target.compute(s) : target.compute()
-          const node = getParent(type, stamp, subs, tree, pid)
+          const node = getParent(type, subs, tree, pid)
           val = (target.template || val)
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])
@@ -116,7 +116,7 @@ test('group - combined', function (t) {
   var cnt = 30
   function loop () {
     cnt++
-    state.each((p, key) => update(cnt / 20, key))
+    state.forEach((p, key) => update(cnt / 20, key))
   }
   loop()
   if ('body' in document) {
