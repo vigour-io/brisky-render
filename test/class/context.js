@@ -1,6 +1,6 @@
 'use strict'
 const test = require('tape')
-const render = require('brisky-core/render')
+const render = require('../../lib/render')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 const s = require('brisky-struct')
