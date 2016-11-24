@@ -1,6 +1,6 @@
 require('./order')
 require('./text')
-// require('./remove')
+require('./remove')
 // require('./widget')
 // require('./context')
 // require('./render')

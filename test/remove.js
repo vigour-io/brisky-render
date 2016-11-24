@@ -2,9 +2,9 @@
 const render = require('../render')
 const test = require('tape')
 const p = require('parse-element')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 
-test('remove', (t) => {
+test('remove', t => {
   const state = s({ first: true })
   // add broken operator case and everything
   const app = render({
@@ -14,12 +14,12 @@ test('remove', (t) => {
     }
   }, state)
   t.equal(p(app), '<div><h1></h1></div>', 'correct initial html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div></div>', 'removed node')
   t.end()
 })
 
-test('remove - path subscription', (t) => {
+test('remove - path subscription', t => {
   const state = s({ first: { second: 'a' } })
   const app = render({
     first: {
@@ -30,28 +30,28 @@ test('remove - path subscription', (t) => {
     }
   }, state)
   t.equal(p(app), '<div><div><h1></h1></div></div>', 'correct initial html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div><div></div></div>', 'removed node')
   t.end()
 })
 
-test('remove - path subscription - $root', (t) => {
+test('remove - path subscription - root', t => {
   const state = s({ first: { second: 'a' } })
   const app = render({
     first: {
       second: {
         tag: 'h1',
-        $: '$root.first.second'
+        $: 'root.first.second'
       }
     }
   }, state)
   t.equal(p(app), '<div><div><h1></h1></div></div>', 'correct initial html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div><div></div></div>', 'removed node')
   t.end()
 })
 
-test('remove - mixed and context', (t) => {
+test('remove - mixed and context', t => {
   const state = s({ first: { second: 'a' } })
   const app = render({
     types: {
@@ -73,7 +73,7 @@ test('remove - mixed and context', (t) => {
     '<div>a<p><div>a</div><div>b</div></p></div>',
     'correct initial html'
   )
-  state.first.remove()
+  state.first.set(null)
   t.equal(
     p(app),
     '<div><p><div>b</div></p></div>',
@@ -82,20 +82,20 @@ test('remove - mixed and context', (t) => {
   t.end()
 })
 
-test('remove - mixed and context - $root', (t) => {
+test('remove - mixed and context - root', t => {
   const state = s({ first: { second: 'a' } })
   const app = render({
     types: {
       basic: {
         tag: 'p',
         first: {
-          $: '$root.first',
+          $: 'root.first',
           text: { $: 'second' }
         },
         second: { text: 'b' }
       }
     },
-    text: { $: '$root.first.second' },
+    text: { $: 'root.first.second' },
     basic: { type: 'basic' }
   }, state)
 
@@ -104,7 +104,7 @@ test('remove - mixed and context - $root', (t) => {
     '<div>a<p><div>a</div><div>b</div></p></div>',
     'correct initial html'
   )
-  state.first.remove()
+  state.first.set(null)
   t.equal(
     p(app),
     '<div><p><div>b</div></p></div>',

@@ -1,7 +1,7 @@
 'use strict'
 const test = require('tape')
 const render = require('../render')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 const parseElement = require('parse-element')
 
 test('widgets', (t) => {

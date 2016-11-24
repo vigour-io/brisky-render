@@ -1,7 +1,7 @@
 'use strict'
 const render = require('../render')
 const test = require('tape')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 const browser = require('./browser')
 const getParent = require('../lib/render/dom/parent')
 

@@ -2,7 +2,7 @@
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 
 test('$test - branch', function (t) {
   const state = s({ fields: { first: true } })

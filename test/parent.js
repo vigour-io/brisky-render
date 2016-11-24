@@ -2,7 +2,7 @@
 const render = require('../render')
 const test = require('tape')
 const p = require('parse-element')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 
 test('parent', (t) => {
   const state = s({ first: true })
