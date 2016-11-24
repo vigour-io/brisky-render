@@ -178,7 +178,9 @@ test('basic - nested state edge case', t => {
         }
       }
     }
-  }, state)
+  }, state, (subs) => {
+    console.log(subs)
+  })
 
   console.log(state.client.get('menu').compute())
 
