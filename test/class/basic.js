@@ -1,10 +1,7 @@
-'use strict'
-require('brisky-core').prototype.inject(require('../'))
 const s = require('brisky-struct')
 const test = require('tape')
-const render = require('brisky-core/render')
-const isNode = require('is-node')
-// require('./style.css')
+const render = require('../../lib/render')
+const isNode = typeof window === 'undefined'
 
 test('basic - static class name', t => {
   var elem

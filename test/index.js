@@ -24,3 +24,5 @@ require('./any')
 require('./group')
 
 require('./attr')
+
+require('./class')
