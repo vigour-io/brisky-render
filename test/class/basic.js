@@ -139,7 +139,6 @@ test('basic - toggle class name', t => {
   t.equals(elem.className, 'hello', 'initial class')
   state.set({ thing: false })
   state.thing.set(false)
-  console.log(elem.className)
   t.equals(elem.className, isNode ? void 0 : '', 'set thing to false')
   t.end()
 })
@@ -178,25 +177,15 @@ test('basic - nested state edge case', t => {
         }
       }
     }
-  }, state, (subs) => {
-    console.log(subs)
-  })
-
-  console.log(state.client.get('menu').compute())
+  }, state)
 
   state.clients.client.menu.set(true)
-
-  console.log(state.client.get('menu').compute())
 
   t.equals(app.childNodes[0].className, 'active on', 'set menu to "true"')
   state.clients.client.menu.set('bla')
 
-  console.log(state.client.get('menu').compute())
-
   t.equals(app.childNodes[0].className, 'active off', 'set menu to "bla"')
   state.clients.client.menu.set(false)
-
-  console.log(state.client.get('menu').compute())
 
   t.equals(app.childNodes[0].className, 'active ', 'set menu to "false"')
 
