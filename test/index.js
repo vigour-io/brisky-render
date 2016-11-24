@@ -22,3 +22,5 @@ require('./property')
 require('./any')
 
 require('./group')
+
+require('./attr')
