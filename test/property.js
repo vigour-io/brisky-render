@@ -15,7 +15,9 @@ test('property - cachedNode + context', t => {
       }
     },
     flurps: { type: 'elem' },
-    override: { type: 'elem', class: 'haha' }
+    override: {
+      type: 'elem', class: 'haha'
+    }
   },
   {},
   (s, t, app) => { elem = app })
