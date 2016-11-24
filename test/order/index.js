@@ -1,2 +1,2 @@
-// require('./basic')
+require('./basic')
 require('./context')

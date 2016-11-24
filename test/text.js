@@ -2,9 +2,9 @@
 const render = require('../render')
 const test = require('tape')
 const p = require('parse-element')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 
-test('text', (t) => {
+test('text', t => {
   const state = s({ text: 'some text' })
   t.equal(
     p(render({ text: 'hello' })),
@@ -47,7 +47,7 @@ test('text', (t) => {
     'updated text'
   )
 
-  state.text.remove()
+  state.text.set(null)
 
   t.equal(
     p(app),
@@ -58,7 +58,7 @@ test('text', (t) => {
   t.end()
 })
 
-test('text - path subscription', (t) => {
+test('text - path subscription', t => {
   const state = s({
     first: { second: 'a' }
   })
@@ -68,12 +68,12 @@ test('text - path subscription', (t) => {
   }, state)
 
   t.equal(p(app), '<div>a</div>', 'correct html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })
 
-test('text - true subscription', (t) => {
+test('text - true subscription', t => {
   const state = s({
     first: { second: 'a' }
   })
@@ -87,7 +87,7 @@ test('text - true subscription', (t) => {
   state.first.second.set(void 0)
   t.equal(p(app), '<div></div>', 'set text to void 0')
 
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })
