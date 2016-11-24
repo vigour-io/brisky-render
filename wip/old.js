@@ -1,6 +1,6 @@
 const State = require('vigour-state')
 const render = require('brisky-core/render')
-const stats = require('./stats')
+// const stats = require('./stats')
 
 const state = new State({
   x: 'x!',
@@ -32,4 +32,4 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-stats(state)
+// stats(state)

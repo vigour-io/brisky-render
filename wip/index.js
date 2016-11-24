@@ -1,6 +1,6 @@
 const struct = require('brisky-struct')
 const render = require('../render')
-const stats = require('./stats')
+// const stats = require('./stats')
 
 const state = struct({
   x: 'x!',
@@ -34,4 +34,4 @@ document.body.appendChild(app)
 
 state.x.set('!!!!')
 
-stats(state)
+// stats(state)
