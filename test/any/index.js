@@ -1,3 +1,3 @@
 // require('./mixed')
 require('./basic')
-// require('./merge')
+require('./merge')

@@ -1,4 +1,3 @@
-'use strict'
 const test = require('tape')
 const render = require('../../lib/render')
 const parse = require('parse-element')
