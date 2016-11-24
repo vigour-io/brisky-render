@@ -9,9 +9,11 @@ test('any - basic', t => {
   const app = {
     holder: {
       $: 'collection.$any',
-      child: {
-        tag: 'span',
-        title: { text: { $: 'title' } }
+      props: {
+        default: {
+          tag: 'span',
+          title: { text: { $: 'title' } }
+        }
       }
     }
   }
@@ -31,7 +33,7 @@ test('any - basic', t => {
     'create multiple rows'
   )
 
-  state.collection[0].remove()
+  state.collection[0].set(null)
   t.equal(
     parse(elem),
     '<div><div><span><div>b</div></span></div></div>',
@@ -88,7 +90,7 @@ test('any - reference', t => {
       purchases: {
         items: {
           paid_full: {
-            product: '$root.products.items.paid_full'
+            product: [ '@', 'root', 'products', 'items', 'paid_full' ]
           }
         }
       }
@@ -97,11 +99,11 @@ test('any - reference', t => {
 
   const app = {
     collection: {
-      $: '$root.user.purchases.items.$any',
-      child: {
-        $: 'product',
-        text: {
-          $: 'title'
+      $: 'root.user.purchases.items.$any',
+      props: {
+        default: {
+          $: 'product',
+          text: { $: 'title' }
         }
       }
     }
@@ -124,7 +126,7 @@ test('any - reference change', t => {
       fields2: {
         items: [ 3, 4 ]
       },
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -132,8 +134,8 @@ test('any - reference change', t => {
     $: 'holder.current',
     page: {
       $: 'items.$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: { text: { $: true } }
       }
     }
   }, state)

@@ -11,8 +11,6 @@ require('./parent')
 
 require('./html') // needs switch
 
-// require('./group')
-
 require('./clone')
 require('./subscribe') // switch and resubscribe
 require('./reference')
@@ -21,4 +19,6 @@ require('./reference')
 // require('./sync') // not for now
 // require('./switch')
 require('./property')
-// require('./any')
+require('./any')
+
+require('./group')
