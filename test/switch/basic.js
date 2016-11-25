@@ -42,7 +42,7 @@ test('switch - basic', t => {
             }
           },
           $: 'navigation.$switch',
-          text: { $: true, $transform: val => val + ' switch' },
+          text: { $: true, $transform: val => val + ' SWITCH IT SELF' },
           props: {
             any: { type: 'spesh' }
           }
@@ -65,13 +65,17 @@ test('switch - basic', t => {
 
   var cnt = 0
   const defer = val => new Promise(
-    resolve => setTimeout(() => resolve(val), ++cnt * 1000)
+    resolve => setTimeout(() => resolve(val), ++cnt * 500)
   )
 
   state.set(defer({ items: [ 100 ] }))
   state.set(defer({ items: [ 2 ] }))
   state.set(defer({ items: [ 0 ] }))
   state.set(defer({ items: state.items.map(val => 0) }))
+  state.set(defer({ items: state.items.map((val, key) => key) }))
+  state.set(defer({ items: [ 2 ] }))
+  state.set(defer({ navigation: '🦄' }))
+  state.set(defer({ navigation: 0 }))
 
   if (document.body) {
     document.body.appendChild(app)
