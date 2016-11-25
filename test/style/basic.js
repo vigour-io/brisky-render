@@ -1,10 +1,8 @@
-'use strict'
-require('brisky-core').prototype.inject(require('../'))
 const test = require('tape')
 const s = require('brisky-struct')
 const p = require('parse-element')
 
-const render = require('brisky-core/render')
+const render = require('../../render')
 
 test('basic - static styles', t => {
   var elem = render({

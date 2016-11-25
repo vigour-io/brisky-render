@@ -1,10 +1,8 @@
-  'use strict'
-  const render = require('brisky-core/render')
-  require('brisky-core').prototype.inject(require('../'))
+  const render = require('../../render')
   const test = require('tape')
   const s = require('brisky-struct')
   const p = require('parse-element')
-  const isNode = require('vigour-util/is/node')
+  const isNode = typeof window !== 'undefined'
 
   test('context - static and state', t => {
     const state = s({

@@ -1,10 +1,8 @@
-'use strict'
-require('brisky-core').prototype.inject(require('../'))
 const test = require('tape')
 const s = require('brisky-struct')
-const render = require('brisky-core/render')
+const render = require('../../render')
 
-test('transform - static', (t) => {
+test('transform - static', t => {
   const elem = render({
     style: {
       transform: {
@@ -37,7 +35,7 @@ test('transform - state', (t) => {
   t.end()
 })
 
-test('transform - state - remove', (t) => {
+test('transform - state - remove', t => {
   const state = s({
     a: {
       y: 5
