@@ -10,24 +10,16 @@ test('switch - basic', t => {
     {
       holder: {
         tag: 'holder',
-
         text: { $: 'navigation', $transform: val => val + ' normal' },
-
-        // x: {
-          // tag: 'fragment',
         switcher: {
           $switch: (state, subs, tree, key) => {
-            console.log('switch it', state, subs, key)
             if (state.compute() === 100) {
-              console.log('??')
               return false
-            }
-            if (state.compute() === 2) {
-              console.log('SWITCH', subs.props[key].any)
+            } else if (state.compute() === 2) {
               return subs.props[key].any
+            } else {
+              return subs.props[key].self
             }
-            return subs.props[key].self
-            // return true
           },
           $: 'navigation.$switch',
           text: { $: true, $transform: val => val + ' switch' },
@@ -40,8 +32,6 @@ test('switch - basic', t => {
             }
           }
         },
-        // },
-
         bla: {
           text: { $: 'navigation', $transform: val => val + '?' }
         }
