@@ -58,7 +58,7 @@ test('switch - basic', t => {
     },
     state,
     (subs, tree) => {
-      console.log('SUBS:', subs, 'TREE:', tree)
+      // console.log('SUBS:', subs, 'TREE:', tree)
     }
   )
 
