@@ -2,7 +2,7 @@
   const test = require('tape')
   const s = require('brisky-struct')
   const p = require('parse-element')
-  const isNode = typeof window !== 'undefined'
+  const isNode = typeof window === 'undefined'
 
   test('context - static and state', t => {
     const state = s({
@@ -10,7 +10,7 @@
         1: {},
         2: {}
       },
-      client: '$root.clients.1'
+      client: [ '@', 'root', 'clients', 1 ]
     })
 
     const app = render(
@@ -33,7 +33,7 @@
         dimensions: { type: 'dimensions', $: 'client' },
         clients: {
           $: 'clients.$any',
-          child: { dimensions: { type: 'dimensions' } }
+          props: { default: { dimensions: { type: 'dimensions' } } }
         }
       },
     state
