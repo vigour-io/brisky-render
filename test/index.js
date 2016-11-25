@@ -27,4 +27,6 @@ require('./class') // test
 
 require('./any')
 
-require('./switch')
+require('./style') // transform switch!
+
+// require('./switch')
