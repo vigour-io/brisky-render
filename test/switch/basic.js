@@ -11,9 +11,7 @@ test('switch - basic', t => {
       types: {
         switcher: {
           $: '$switch',
-          // if you type switch autoamticly add $: '$switch' as a sub if it does not have $
           $switch: (s, subs, tree, key) => {
-            console.warn(s.path(), key)
             if (s.compute() > 1) {
               return subs.props[key].self
             }
@@ -28,41 +26,31 @@ test('switch - basic', t => {
           }
         }
       },
+      blax: { type: 'spesh' },
       blurf: { $: 'root.items.$any', props: { default: { type: 'element', text: '!!!' } } },
-      bla: { type: 'spesh' }
-
-      // fucked up merge shit going on again....
-      // x: {
-      //   $: 'root.items.$any',
-      //   props: {
-      //     default: { type: 'switcher' }
-      //   }
-      // },
-      // holder: {
-      //   tag: 'holder',
-      //   // text: { $: 'navigation', $transform: val => val + ' normal' },
-      //   switcher: {
-      //     $switch: (state, subs, tree, key) => {
-      //       if (state.compute() === 100) {
-      //         return false
-      //       } else if (state.compute() === 2) {
-      //         return subs.props[key].any
-      //       } else if (state.compute() !== 0) {
-      //         return subs.props[key].self
-      //       }
-      //     },
-      //     $: 'navigation.$switch',
-      //     text: { $: true, $transform: val => val + ' switch' },
-      //     props: {
-      //       any: {
-      //         type: 'spesh'
-      //       }
-      //     }
-      //   },
-      //   bla: {
-      //     text: { $: 'navigation', $transform: val => val + '?' }
-      //   }
-      // }
+      bla: { type: 'spesh' },
+      holder: {
+        text: { $: 'navigation', $transform: val => '🦄 switcher! ' + val },
+        switcher: {
+          $switch: (state, subs, tree, key) => {
+            if (state.compute() === 100) {
+              return false
+            } else if (state.compute() === 2) {
+              return subs.props[key].any
+            } else if (state.compute() !== 0) {
+              return subs.props[key].self
+            }
+          },
+          $: 'navigation.$switch',
+          text: { $: true, $transform: val => val + ' switch' },
+          props: {
+            any: { type: 'spesh' }
+          }
+        },
+        bla: {
+          text: { $: 'navigation', $transform: val => val + '?' }
+        }
+      }
     },
     state,
     (subs, tree) => {
@@ -72,21 +60,18 @@ test('switch - basic', t => {
 
   state.set({
     items: [ 1, 2, 3, 4 ],
-    // items: [ 1, 2, 3, 4 ],
     navigation: [ '@', 'root', 'items', 0 ]
   })
 
-  // setTimeout(() => {
-  //   state.set({ items: [ 100 ] })
-  // }, 500)
+  var cnt = 0
+  const defer = val => new Promise(
+    resolve => setTimeout(() => resolve(val), ++cnt * 1000)
+  )
 
-  // setTimeout(() => {
-  //   state.set({ items: [ 2 ] })
-  // }, 0)
-
-  // setTimeout(() => {
-  //   state.set({ navigation: 0 })
-  // }, 2000)
+  state.set(defer({ items: [ 100 ] }))
+  state.set(defer({ items: [ 2 ] }))
+  state.set(defer({ items: [ 0 ] }))
+  state.set(defer({ items: state.items.map(val => 0) }))
 
   if (document.body) {
     document.body.appendChild(app)
