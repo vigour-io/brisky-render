@@ -8,16 +8,28 @@ test('switch - basic', t => {
   const state = s({ field: { navigation: {} } })
   const app = render(
     {
+      types: {
+        spesh: {
+          // $: true,
+          // text: 'dirty',
+          // collection: {
+          $: 'root.items.$any',
+          props: {
+            default: { type: 'text', $: true }
+          }
+          // }
+        }
+      },
       holder: {
         tag: 'holder',
-        text: { $: 'navigation', $transform: val => val + ' normal' },
+        // text: { $: 'navigation', $transform: val => val + ' normal' },
         switcher: {
           $switch: (state, subs, tree, key) => {
             if (state.compute() === 100) {
               return false
             } else if (state.compute() === 2) {
               return subs.props[key].any
-            } else {
+            } else if (state.compute() !== 0) {
               return subs.props[key].self
             }
           },
@@ -25,16 +37,13 @@ test('switch - basic', t => {
           text: { $: true, $transform: val => val + ' switch' },
           props: {
             any: {
-              $: 'root.items.$any',
-              props: {
-                default: { type: 'text', $: true }
-              }
+              type: 'spesh'
             }
           }
         },
-        bla: {
-          text: { $: 'navigation', $transform: val => val + '?' }
-        }
+        // bla: {
+        //   text: { $: 'navigation', $transform: val => val + '?' }
+        // }
       }
     },
     state,
@@ -48,13 +57,17 @@ test('switch - basic', t => {
     navigation: [ '@', 'root', 'items', 0 ]
   })
 
-  setTimeout(() => {
-    state.set({ items: [ 100 ] })
-  }, 500)
+  // setTimeout(() => {
+  //   state.set({ items: [ 100 ] })
+  // }, 500)
 
   setTimeout(() => {
     state.set({ items: [ 2 ] })
-  }, 1000)
+  }, 0)
+
+  // setTimeout(() => {
+  //   state.set({ navigation: 0 })
+  // }, 2000)
 
   if (document.body) {
     document.body.appendChild(app)
