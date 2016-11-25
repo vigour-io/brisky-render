@@ -48,7 +48,11 @@ test('switch - basic', t => {
           }
         },
         bla: {
-          text: { $: 'navigation', $transform: val => val + '?' }
+          html: {
+            $: 'navigation',
+            $transform: val =>
+            `<div style="background-color:#eeeeff;">---- UNDER <b>${val}</b> SWITCH ------</div>`
+          }
         }
       }
     },
