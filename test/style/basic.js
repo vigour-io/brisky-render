@@ -1,12 +1,12 @@
 'use strict'
 require('brisky-core').prototype.inject(require('../'))
 const test = require('tape')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 const p = require('parse-element')
 
 const render = require('brisky-core/render')
 
-test('basic - static styles', function (t) {
+test('basic - static styles', t => {
   var elem = render({
     style: {
       padding: '100px',
@@ -29,7 +29,7 @@ test('basic - static styles', function (t) {
   t.end()
 })
 
-test('basic - state styles', function (t) {
+test('basic - state styles', t => {
   var elem = render({
     style: {
       display: {
@@ -66,7 +66,7 @@ test('basic - state styles', function (t) {
   t.end()
 })
 
-test('basic - state - px', function (t) {
+test('basic - state - px', t => {
   const state = s({
     width: 100
   })
@@ -83,7 +83,7 @@ test('basic - state - px', function (t) {
   t.end()
 })
 
-test('basic - context styles', function (t) {
+test('basic - context styles', t => {
   var elem = render({
     types: {
       thing: {

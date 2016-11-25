@@ -27,7 +27,8 @@
     "brisky-struct": "0.0.16",
     "bubleify": "0.5.1",
     "html-element": "^2.1.0",
-    "quick-hash": "^1.0.0"
+    "quick-hash": "^1.0.0",
+    "vigour-ua": "^2.0.0"
   },
   "devDependencies": {
     "brisky-performance": "^1.4.2",

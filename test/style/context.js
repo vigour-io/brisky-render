@@ -2,11 +2,11 @@
   const render = require('brisky-core/render')
   require('brisky-core').prototype.inject(require('../'))
   const test = require('tape')
-  const s = require('vigour-state/s')
+  const s = require('brisky-struct')
   const p = require('parse-element')
   const isNode = require('vigour-util/is/node')
 
-  test('context - static and state', function (t) {
+  test('context - static and state', t => {
     const state = s({
       clients: {
         1: {},

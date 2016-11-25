@@ -1,7 +1,7 @@
 'use strict'
 require('brisky-core').prototype.inject(require('../'))
 const test = require('tape')
-const s = require('vigour-state/s')
+const s = require('brisky-struct')
 const render = require('brisky-core/render')
 
 test('transform - static', (t) => {
