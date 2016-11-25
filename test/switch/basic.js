@@ -9,42 +9,57 @@ test('switch - basic', t => {
   const app = render(
     {
       types: {
+        switcher: {
+          tag: 'switch',
+          // $: '$switch',
+          // // if you type switch autoamticly add $: '$switch' as a sub if it does not have $
+          // $switch: (s, subs, tree, key) => {
+          //   if (s.compute() > 1) {
+          //     return subs.props[key].self
+          //   }
+          // },
+          text: { $: true }
+        },
         spesh: {
-          // $: true,
-          // text: 'dirty',
-          // collection: {
+          tag: 'spesh',
           $: 'root.items.$any',
           props: {
-            default: { type: 'text', $: true }
+            default: { type: 'switcher' }
           }
-          // }
         }
       },
-      holder: {
-        tag: 'holder',
-        // text: { $: 'navigation', $transform: val => val + ' normal' },
-        switcher: {
-          $switch: (state, subs, tree, key) => {
-            if (state.compute() === 100) {
-              return false
-            } else if (state.compute() === 2) {
-              return subs.props[key].any
-            } else if (state.compute() !== 0) {
-              return subs.props[key].self
-            }
-          },
-          $: 'navigation.$switch',
-          text: { $: true, $transform: val => val + ' switch' },
-          props: {
-            any: {
-              type: 'spesh'
-            }
-          }
-        },
+      bla: { type: 'spesh' }
+      // x: {
+      //   $: 'root.items.$any',
+      //   props: {
+      //     default: { type: 'switcher' }
+      //   }
+      // }
+      // holder: {
+      //   tag: 'holder',
+      //   // text: { $: 'navigation', $transform: val => val + ' normal' },
+      //   switcher: {
+      //     $switch: (state, subs, tree, key) => {
+      //       if (state.compute() === 100) {
+      //         return false
+      //       } else if (state.compute() === 2) {
+      //         return subs.props[key].any
+      //       } else if (state.compute() !== 0) {
+      //         return subs.props[key].self
+      //       }
+      //     },
+      //     $: 'navigation.$switch',
+      //     text: { $: true, $transform: val => val + ' switch' },
+      //     props: {
+      //       any: {
+      //         type: 'spesh'
+      //       }
+      //     }
+      //   }
         // bla: {
         //   text: { $: 'navigation', $transform: val => val + '?' }
         // }
-      }
+      // }
     },
     state,
     subs => {
@@ -54,6 +69,7 @@ test('switch - basic', t => {
 
   state.set({
     items: [ 1, 2, 3, 4 ],
+    // items: [ 1, 2, 3, 4 ],
     navigation: [ '@', 'root', 'items', 0 ]
   })
 
@@ -61,9 +77,9 @@ test('switch - basic', t => {
   //   state.set({ items: [ 100 ] })
   // }, 500)
 
-  setTimeout(() => {
-    state.set({ items: [ 2 ] })
-  }, 0)
+  // setTimeout(() => {
+  //   state.set({ items: [ 2 ] })
+  // }, 0)
 
   // setTimeout(() => {
   //   state.set({ navigation: 0 })
