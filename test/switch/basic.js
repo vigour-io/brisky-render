@@ -10,10 +10,10 @@ test('switch - basic', t => {
     {
       types: {
         switcher: {
-          tag: 'switch',
           $: '$switch',
           // if you type switch autoamticly add $: '$switch' as a sub if it does not have $
           $switch: (s, subs, tree, key) => {
+            console.warn(s.path(), key)
             if (s.compute() > 1) {
               return subs.props[key].self
             }
@@ -21,20 +21,23 @@ test('switch - basic', t => {
           text: { $: true }
         },
         spesh: {
-          tag: 'spesh',
+          text: 'SPESH',
           $: 'root.items.$any',
           props: {
             default: { type: 'switcher' }
           }
         }
       },
+      blurf: { $: 'root.items.$any', props: { default: { type: 'element', text: '!!!' } } },
       bla: { type: 'spesh' }
+
+      // fucked up merge shit going on again....
       // x: {
       //   $: 'root.items.$any',
       //   props: {
       //     default: { type: 'switcher' }
       //   }
-      // }
+      // },
       // holder: {
       //   tag: 'holder',
       //   // text: { $: 'navigation', $transform: val => val + ' normal' },
@@ -55,15 +58,15 @@ test('switch - basic', t => {
       //         type: 'spesh'
       //       }
       //     }
+      //   },
+      //   bla: {
+      //     text: { $: 'navigation', $transform: val => val + '?' }
       //   }
-        // bla: {
-        //   text: { $: 'navigation', $transform: val => val + '?' }
-        // }
       // }
     },
     state,
-    subs => {
-      console.log('SUBS:', subs)
+    (subs, tree) => {
+      console.log('SUBS:', subs, 'TREE:', tree)
     }
   )
 
