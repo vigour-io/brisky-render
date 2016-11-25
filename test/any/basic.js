@@ -48,25 +48,32 @@ test('any - basic', t => {
     )
   }
 
+  const ss = s({
+    collection: [
+      { title: 'b' }
+    ]
+  })
+
+  const x = render({
+    types: {
+      span: {
+        tag: 'span',
+        title: { text: { $: 'title' } }
+      },
+      collection: {
+        $: 'collection.$any',
+        props: { default: { type: 'span' } }
+      }
+    },
+    holder: { type: 'collection' }
+  }, ss)
+
   t.equal(
-    parse(
-      render({
-        types: {
-          span: {
-            tag: 'span',
-            title: { text: { $: 'title' } }
-          },
-          collection: {
-            $: 'collection.$any',
-            child: { type: 'span' }
-          }
-        },
-        holder: { type: 'collection' }
-      }, state)
-    ),
+    parse(x),
     '<div><div><span><div>b</div></span></div></div>',
     'context render'
   )
+
   t.end()
 })
 
