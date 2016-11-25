@@ -4,8 +4,6 @@ const parse = require('parse-element')
 const strip = require('strip-formatting')
 const s = require('brisky-struct')
 
-require('brisky-core').prototype.inject(require('../'))
-
 test('context - static class name', t => {
   const state = s({})
 
