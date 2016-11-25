@@ -11,13 +11,13 @@ test('switch - basic', t => {
       types: {
         switcher: {
           tag: 'switch',
-          // $: '$switch',
-          // // if you type switch autoamticly add $: '$switch' as a sub if it does not have $
-          // $switch: (s, subs, tree, key) => {
-          //   if (s.compute() > 1) {
-          //     return subs.props[key].self
-          //   }
-          // },
+          $: '$switch',
+          // if you type switch autoamticly add $: '$switch' as a sub if it does not have $
+          $switch: (s, subs, tree, key) => {
+            if (s.compute() > 1) {
+              return subs.props[key].self
+            }
+          },
           text: { $: true }
         },
         spesh: {
