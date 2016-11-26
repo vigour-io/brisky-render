@@ -29,5 +29,5 @@
 
 // require('./switch')
 
-console.log('wtf wtf')
 require('./class') // test
+// console.log('wtf wtf', global.briskystamp)
