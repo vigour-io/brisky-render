@@ -175,3 +175,31 @@ test('any - reference change', t => {
 
   t.end()
 })
+
+test('any - non path deep', t => {
+  const state = s({
+    a: 'a',
+    b: 'b'
+  })
+
+  var app = render({
+    $: '$any',
+    props: {
+      default: {
+        text: 'lullz'
+      }
+    }
+  }, state)
+
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>lullz</div>
+        <div>lullz</div>
+      </div>
+    `)
+  )
+
+  t.end()
+})
