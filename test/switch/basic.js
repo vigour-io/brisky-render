@@ -11,11 +11,7 @@ test('switch - basic', t => {
       types: {
         switcher: {
           $: '$switch',
-          $switch: (s, subs, tree, key) => {
-            if (s.compute() > 1) {
-              return subs.props[key].self
-            }
-          },
+          $switch: (s, subs, tree, key) => s.compute() > 1,
           text: { $: true }
         },
         spesh: {
@@ -44,10 +40,9 @@ test('switch - basic', t => {
             if (state.compute() === 100) {
               return false
             } else if (state.compute() === 2) {
-              return subs.props[key].any
-            } else if (state.compute() !== 0) {
-              return subs.props[key].self
+              return 'any'
             }
+            return state.compute() !== 0
           },
           $: 'navigation.$switch',
           text: { $: true, $transform: val => val + ' SWITCH IT SELF' },
