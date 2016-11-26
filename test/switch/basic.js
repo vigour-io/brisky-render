@@ -66,7 +66,7 @@ test('switch - basic', t => {
 
   var cnt = 0
   const defer = val => new Promise(
-    resolve => setTimeout(() => resolve(val), ++cnt * 500)
+    resolve => setTimeout(() => resolve(val), ++cnt * 3000)
   )
 
   state.set(defer({ items: [ 100 ] }))
