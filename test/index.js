@@ -1,8 +1,8 @@
 // require('./order')
 // require('./text')
-// require('./remove')
+// // require('./remove')
 
-// // // // // require('./widget')
+// // // // // // require('./widget')
 
 // require('./context') // needs switch
 // require('./render') // needs switch
@@ -12,22 +12,22 @@
 // require('./html') // needs switch
 
 // require('./clone')
-// // // require('./subscribe') // switch and resubscribe
+// // // // require('./subscribe') // switch and resubscribe
 // require('./reference')
-// // // // // require('./test')
-// // // // // require('./fragment') // switch && test
-// // // // // require('./sync') // not for now
+// // // // // // require('./test')
+// // // // // // require('./fragment') // switch && test
+// // // // // // require('./sync') // not for now
 // require('./property')
 
 // require('./group')
 
 // require('./attr')
 
-// require('./any')
+require('./any')
 
 // require('./style') // transform switch!
 
 // require('./switch')
 
-require('./class') // test
-// console.log('wtf wtf', global.briskystamp)
+// require('./class') // test
+// // console.log('wtf wtf', global.briskystamp)
