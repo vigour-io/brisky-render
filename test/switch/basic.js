@@ -59,12 +59,24 @@ test('switch - basic', t => {
         }
       }
     },
-    state
+    state,
+    subs => {
+      console.log(subs)
+    }
   )
 
   state.set({
     items: [ 1, 2, 3, 4 ],
     navigation: [ '@', 'root', 'items', 0 ]
+  })
+
+  state.set({
+    items: [{
+      loading: { val: true, on: (val, stamp, struct) => console.log('loading!', struct.compute()) }
+    }],
+    val: state.items[0].once(1).then(() => Promise.resolve({
+      items: [ { loading: false } ]
+    }))
   })
 
   var cnt = 0
@@ -138,10 +150,17 @@ test('switch - basic', t => {
 
   state.set(defer({ items: [ 2 ] }))
   state.set(defer({ items: [ 0 ] }))
-  state.set(defer({ items: state.items.map(val => 0) }))
+
+  const bs = require('brisky-stamp')
+
+  state.set(defer({ items: state.items.map(val => 0) }), bs.create('guilermo!!!!'))
+
   state.set(defer({ items: state.items.map((val, key) => key) }))
+
   state.set(defer({ items: [ 2 ] }))
+
   state.set(defer({ navigation: '🦄' }))
+
   state.set(defer({ navigation: 0 }))
 
   //  t.end()

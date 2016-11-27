@@ -16,6 +16,12 @@ const app = render({
     $: 'collection.$any',
     props: {
       default: {
+        style: {
+          border: '1px solid red',
+          background: '#333',
+          boxShadow: '10px 10px 10px blue',
+          textShadow: '0 0 2px pink'
+        },
         text: { $: true },
         blurx: { text: 'its blurx', bla: { text: 'rain' }, blurf: { text: 'again' } }
       }
