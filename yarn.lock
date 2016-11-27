@@ -702,15 +702,15 @@ brisky-performance@^1.4.2:
     quick-hash "^1.0.4"
     tape "^4.4.0"
 
-brisky-stamp@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-2.0.4.tgz#c9082857454dc0b7c01470e19056e7fbc4f43f0e"
+brisky-stamp@^2.0.4, brisky-stamp@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-2.1.0.tgz#f4217ee79fc7d25b0a782e41467f5c484f945303"
   dependencies:
     bubleify "0.5.1"
 
-brisky-struct@0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-0.0.17.tgz#258f13a7212595174a93232e8afbbf62871a9ed3"
+brisky-struct@0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-0.0.18.tgz#db0ea9fe1f3c7c3a160c40093c34b6ed5e928716"
   dependencies:
     brisky-stamp "^2.0.4"
     bubleify "0.5.1"
@@ -3270,8 +3270,8 @@ quick-hash@^1.0.0, quick-hash@^1.0.4:
     bubleify "^0.5.1"
 
 randomatic@^1.1.3:
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-1.1.5.tgz#5e9ef5f2d573c67bd2b8124ae90b5156e457840b"
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/randomatic/-/randomatic-1.1.6.tgz#110dcabff397e9dcff7c0789ccc0a49adf1ec5bb"
   dependencies:
     is-number "^2.0.2"
     kind-of "^3.0.2"
