@@ -3,16 +3,16 @@ const struct = require('brisky-struct')
 const render = require('../render')
 const stats = require('./stats')
 
-const state = struct({
-  x: 'x!',
-  collection: [ 1, 2 ]
-})
+const state = struct({ collection: [ 1, 2 ] })
+
+  --bg: rgb(38, 50, 56);
+  --white: white;
+  --fg: rgb(84, 206, 177);
+  --whitea: rgba(255, 255, 255, 0.5);
+  --fg2: rgb(128, 203, 196);
 
 const app = render({
-  bla: {
-    text: { $: 'x' }
-  },
-  xxxxx: {
+  collection: {
     $: 'collection.$any',
     props: {
       default: {
@@ -23,17 +23,10 @@ const app = render({
           textShadow: '0 0 2px pink'
         },
         text: { $: true },
-        blurx: { text: 'its blurx', bla: { text: 'rain' }, blurf: { text: 'again' } }
+        field: { text: 'static text' }
       }
     }
   },
-  blax: {
-    tag: 'fragment',
-    urk: {
-      text: { $: 'x', $transform: val => val + ' jawol fragment' }
-    }
-  },
-  text: 'hello'
 }, state)
 
 document.body.appendChild(app)
