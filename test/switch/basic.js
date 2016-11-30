@@ -59,24 +59,12 @@ test('switch - basic', t => {
         }
       }
     },
-    state,
-    subs => {
-      console.log(subs)
-    }
+    state
   )
 
   state.set({
     items: [ 1, 2, 3, 4 ],
     navigation: [ '@', 'root', 'items', 0 ]
-  })
-
-  state.set({
-    items: [{
-      loading: { val: true, on: (val, stamp, struct) => console.log('loading!', struct.compute()) }
-    }],
-    val: state.items[0].once(1).then(() => Promise.resolve({
-      items: [ { loading: false } ]
-    }))
   })
 
   var cnt = 0
@@ -162,8 +150,6 @@ test('switch - basic', t => {
   state.set(defer({ navigation: '🦄' }))
 
   state.set(defer({ navigation: 0 }))
-
-  //  t.end()
 
   state.get('navigation').once((t) => t.val === 0).then(() => {
     t.same(parse(app), strip(`
