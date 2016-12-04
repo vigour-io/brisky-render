@@ -137,7 +137,7 @@ test('basic - toggle class name', t => {
     class: { hello: { $: 'thing' } }
   }, state)
   t.equals(elem.className, 'hello', 'initial class')
-  state.set({ thing: false })
+  // state.set({ thing: false })
   state.thing.set(false)
   t.equals(elem.className, isNode ? void 0 : '', 'set thing to false')
   t.end()

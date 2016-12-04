@@ -1,5 +1,5 @@
 module.exports = (state, n) => {
-  if (!n) { n = 2e3 }
+  if (!n) { n = 5e3 }
   var cnt = 0
   const update = () => {
     var i = n
@@ -7,7 +7,7 @@ module.exports = (state, n) => {
     if (cnt > n) {
       cnt = 0
     }
-    var d = Date.now()
+    // var d = Date.now()
     var arr = []
     // arr[cnt] = 'ha' + cnt
     // arr[cnt + 100] = 'ha' + cnt
@@ -15,7 +15,7 @@ module.exports = (state, n) => {
     while (i--) { arr.push(i + cnt) }
     // }
     state.set({ collection: arr })
-    console.log(`n = ${n}`, Date.now() - d, 'ms')
+    // console.log(`n = ${n}`, Date.now() - d, 'ms')
     // global.requestAnimationFrame(update)
   }
   update()

@@ -10,6 +10,7 @@
     "dev": "nodemon test | tap-difflet",
     "dev-browser": "budo ./test/index.js -p 8080 --live",
     "cover": "istanbul cover --report none --print detail test/index.js",
+    "start": "budo ./wip -p 8080 --live",
     "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0) && standard"
   },
   "repository": {
