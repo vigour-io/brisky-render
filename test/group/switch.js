@@ -38,8 +38,6 @@ test('group - switch', t => {
     }
   }, state, s => { global.s = s })
 
-  document.appendChild(app)
-
   console.log(global.s)
   t.equal(p(app), '<div><div ab="- -"></div></div>', 'initial subscription')
   state.letters.set({ a: 'A' })
