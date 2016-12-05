@@ -23,7 +23,7 @@ test('group - combined', t => {
           node.style[target.get('style')] = target.get('template')
         },
         state (target, s, type, subs, tree, id, pid, store) {
-          var val = s && get(target, '$') ? target.compute(s) : target.compute()
+          var val = s && target.$ ? target.compute(s) : target.compute()
           const node = getParent(type, subs, tree, pid)
           val = (get(target, 'template') || val)
           for (let key in store) {
