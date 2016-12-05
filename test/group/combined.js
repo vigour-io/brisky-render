@@ -1,4 +1,3 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
@@ -124,7 +123,6 @@ test('group - combined', t => {
   function loop () {
     cnt++
     state.forEach((p, key) => update(cnt / 20, key))
-    window.requestAnimationFrame(loop)
   }
   loop()
   if ('body' in document) {
