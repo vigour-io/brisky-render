@@ -1,5 +1,5 @@
 // require('./combined')
-// require('./switch')
+require('./switch')
 // require('./mixed')
 // require('./remove')
 require('./basic')
