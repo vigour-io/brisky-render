@@ -30,7 +30,7 @@ test('group - mixed', t => {
   t.equal(p(app), '<div><div ab="A B"></div></div>', 'initial')
   state.something.letters.a.set('x')
   t.equal(p(app), '<div><div ab="x B"></div></div>', 'update')
-  state.something.letters.a.remove()
+  state.something.letters.a.set(null)
   t.equal(p(app), '<div><div ab="- B"></div></div>', 'remove')
   t.end()
 })
