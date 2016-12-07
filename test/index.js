@@ -10,8 +10,6 @@ require('./order')
 
 require('./text')
 
-require('./context') // needs switch
-
 require('./render') // needs switch
 
 require('./parent')
@@ -39,3 +37,5 @@ require('./switch') // needs remove listeners for NESTED test
 require('./test')
 
 require('./class')
+
+require('./context') // needs switch
