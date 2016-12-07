@@ -10,8 +10,6 @@ require('./order')
 
 require('./text')
 
-require('./render') // needs switch
-
 require('./parent')
 
 require('./html')
@@ -39,3 +37,5 @@ require('./test')
 require('./class')
 
 require('./context') // needs switch
+
+require('./render') // needs switch
