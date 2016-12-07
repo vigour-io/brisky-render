@@ -14,10 +14,9 @@ test('$switch - context - one level', t => {
     key: 'app',
     types: {
       page: {
-        tag: 'switcher',
         $: '$switch',
         $switch: (val) => 'sameAsAlways',
-        properties: {
+        props: {
           sameAsAlways: {
             tag: 'same',
             text: { $: true }
@@ -33,9 +32,7 @@ test('$switch - context - one level', t => {
     parse(app),
     strip(`
       <div>
-        <switcher>
-          <same>text</same>
-        </switcher>
+        <same>text</same>
       </div>
     `),
     'one level context'
@@ -54,10 +51,9 @@ test('$switch - context - deep', t => {
       page: {
         tag: 'page',
         switcher: {
-          tag: 'switcher',
           $: '$switch',
           $switch: (val) => 'sameAsAlways',
-          properties: {
+          props: {
             sameAsAlways: {
               tag: 'same',
               text: { $: true }
@@ -66,18 +62,14 @@ test('$switch - context - deep', t => {
         }
       }
     },
-    page: {
-      type: 'page'
-    }
+    page: { type: 'page' }
   }, state)
   t.same(
     parse(app),
     strip(`
       <div>
         <page>
-          <switcher>
-            <same>text</same>
-          </switcher>
+          <same>text</same>
         </page>
       </div>
     `),
@@ -92,11 +84,11 @@ test('$switch - context - deep', t => {
 test('$switch - context - double', t => {
   const state = s({
     a: 'A!',
-    field: { nest: '$root.a' },
+    field: { nest: [ '@', 'root', 'a' ] },
     flups: {
-      c: '$root.field'
+      c: [ '@', 'root', 'field' ]
     },
-    c: '$root.field'
+    c: [ '@', 'root', 'field' ]
   })
   const app = render({
     types: {
@@ -107,26 +99,23 @@ test('$switch - context - double', t => {
         text: { $: 'nest', $add: '-B' }
       },
       field: {
-        tag: 'x',
         $: 'nest.$switch',
-        properties: {
+        props: {
           a: { type: 'a' }
         }
       },
       c2: {
         tag: 'c2',
         bla: {
-          tag: 'bla',
           $: 'c.$switch',
-          properties: {
+          props: {
             field: { type: 'b' }
           }
         }
       },
       c: {
-        tag: 'c',
         $: 'c.$switch',
-        properties: {
+        props: {
           field: { type: 'field' }
         }
       }
@@ -138,7 +127,7 @@ test('$switch - context - double', t => {
       type: 'c2',
       tag: 'c4',
       bla: {
-        properties: {
+        props: {
           field: {
             type: 'a',
             tag: 'fragment',
@@ -151,26 +140,18 @@ test('$switch - context - double', t => {
 
   t.same(
     parse(app),
-    strip(`<div>
-      <c>
-        <x>
+    strip(`
+      <div>
+        <div>A!</div>
+        <c2>
           <div>A!</div>
-        </x>
-      </c>
-      <c2>
-        <bla>
-          <div>A!-B</div>
-        </bla>
-      </c2>
-      <c3>
-        <bla>
-          <div>A!-B</div>
-        </bla>
-      </c3>
-      <c4>
-        <bla>A!</bla>
-      </c4>
-    </div>`), 'correct ouput')
+        </c2>
+        <c3>
+          <div>A!</div>
+        </c3>
+        <c4>A!</c4>
+      </div>
+    `), 'correct ouput')
 
   if (document.body) {
     document.body.appendChild(app)

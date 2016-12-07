@@ -16,7 +16,7 @@ test('switch - property', t => {
             }
           }
         },
-        $: '$root.random',
+        $: 'root.random',
         $switch: () => true
       }
     },
