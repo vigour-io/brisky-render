@@ -3,7 +3,7 @@ const render = require('../render')
 const test = require('tape')
 const s = require('brisky-struct')
 const browser = require('./browser')
-const getParent = require('../lib/render/dom/parent')
+const parent = require('../lib/render/dom/parent')
 
 test('clone - reuse ', t => {
   const state = global.state = s({
@@ -39,7 +39,7 @@ test('clone - reuse ', t => {
                 node.setAttribute('src', t.compute())
               },
               state (t, s, type, subs, tree, id, pid, store) {
-                const node = getParent(tree, pid)
+                const node = parent(tree, pid)
                 node.setAttribute('src', t.compute(s))
               }
             }

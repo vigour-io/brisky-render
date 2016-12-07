@@ -1,7 +1,7 @@
 const render = require('../../render')
 const test = require('tape')
 const s = require('brisky-struct')
-const getParent = require('../../lib/render/dom/parent')
+const parent = require('../../lib/render/dom/parent')
 const p = require('parse-element')
 
 test('group - remove', t => {
@@ -15,7 +15,7 @@ test('group - remove', t => {
         subscriptionType: true,
         render: {
           state (target, s, type, subs, tree, id, pid, store) {
-            const node = getParent(tree, pid)
+            const node = parent(tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },

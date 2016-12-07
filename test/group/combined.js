@@ -2,7 +2,7 @@ const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 const s = require('brisky-struct')
-const getParent = require('../../lib/render/dom/parent')
+const parent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
 const fs = require('fs')
 const path = require('path')
@@ -23,7 +23,7 @@ test('group - combined', t => {
         },
         state (target, s, type, subs, tree, id, pid, store) {
           var val = s && target.$ ? target.compute(s) : target.compute()
-          const node = getParent(tree, pid)
+          const node = parent(tree, pid)
           val = (get(target, 'template') || val)
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])
