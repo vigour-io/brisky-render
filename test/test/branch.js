@@ -72,9 +72,6 @@ test('$switch (test) - branch', t => {
     '<div><holder><first></first></holder></div>',
     'set state.fields.second to false, show first'
   )
-
-  console.log('\n\n\n!!!!')
-
   state.set({ third: true })
   t.same(
     parse(app),

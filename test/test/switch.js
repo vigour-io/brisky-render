@@ -4,7 +4,7 @@ const parse = require('parse-element')
 const s = require('brisky-struct')
 const strip = require('strip-formatting')
 
-test('$test - $switch', t => {
+test('$switch (test) - $switch', t => {
   const state = s({
     field: { first: true },
     lulz: true,
@@ -14,22 +14,21 @@ test('$test - $switch', t => {
 
   var app = render({
     switcher: {
-      tag: 'switcher',
       $: 'navigation.$switch',
-      $switch: (state) => state.key,
-      properties: {
+      $switch: (state) => state.origin().key,
+      props: {
         field: {
           tag: 'field',
           first: {
             tag: 'first',
-            $: 'first.$test',
-            $test: (state) => state && state.compute() === true
+            $: 'first.$switch',
+            $switch: (state) => state && state.compute() === true
           }
         },
         lulz: {
           tag: 'lulz',
-          $: '$root.bla.$test',
-          $test: (state) => state && state.compute() === true
+          $: 'root.bla.$switch',
+          $switch: (state) => state && state.compute() === true
         }
       }
     }
@@ -37,35 +36,31 @@ test('$test - $switch', t => {
 
   t.same(
     parse(app),
-    '<div><switcher></switcher></div>',
+    '<div></div>',
     'correct html on intial state'
   )
 
-  state.navigation.set('$root.field')
+  state.navigation.set([ '@', 'root', 'field' ])
 
   t.same(
     parse(app),
     strip(`
       <div>
-        <switcher>
-          <field>
-            <first></first>
-          </field>
-        </switcher>
+        <field>
+          <first></first>
+        </field>
       </div>
     `),
     'set switcher'
   )
 
-  state.navigation.set('$root.lulz')
+  state.navigation.set([ '@', 'root', 'lulz' ])
 
   t.same(
     parse(app),
     strip(`
       <div>
-        <switcher>
-          <lulz></lulz>
-        </switcher>
+        <lulz></lulz>
       </div>
     `),
     'switch to other property'

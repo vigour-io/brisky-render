@@ -1,5 +1,5 @@
 require('./basic')
 require('./branch')
-// require('./switch')
+require('./switch')
 // require('./parent')
 // require('./any')

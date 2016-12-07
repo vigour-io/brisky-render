@@ -46,11 +46,7 @@ test('$switch (test) - basic', t => {
     }
   }, {
     thing: { title: 'a' }
-  }, s => {
-    console.log(s)
   })
-
-  console.log(parse(elem))
 
   t.equal(
     elem.childNodes.length,
