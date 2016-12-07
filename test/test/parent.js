@@ -150,69 +150,55 @@ test('$switch - parent + $switch + $any', t => {
           a: { number: 1000 },
           b: { number: 1000 }
         },
-        // text: [ '@', 'root', 'text' ]
+        text: [ '@', 'root', 'text' ]
       }
     },
-    // text: [ '@', 'root', 'title' ],
+    text: [ '@', 'root', 'title' ],
     current: [ '@', 'root', 'content', 'fields' ],
-    // title: 'count'
+    title: 'count'
   })
 
-  console.error(state.content.fields)
+  const elem = {
+    holder: {
+      $: 'current.$switch',
+      $switch: state => state.origin().key,
+      props: {
+        fields: {
+          $: 'items.$any',
+          props: {
+            default: {
+              $: '$switch',
+              $switch: state => {
+                return state.get('number').compute() > 100
+              },
+              nested: {
+                tag: 'nested',
+                text: {
+                  $: 'parent.parent.text'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  const app = render(elem, state)
 
-  // const elem = {
-  //   holder: {
-  //     $: 'current',
-  //     // $switch: state => {
-  //     //   console.error(state.origin().key)
-  //     //   return state.origin().key
-  //     // },
-  //     // props: {
-  //       fields: {
-  //         tag: 'hello',
-  //         text: {
-  //           $: true, // get origin does not work?????
-  //           $transform: (val) => {
-  //             console.log(val)
-  //             return 'lullz'
-  //           }
-  //         }
-  //         // $: 'items.$any',
-  //         // props: {
-  //         //   default: {
-  //         //     $: '$switch',
-  //         //     $switch: state => {
-  //         //       console.log('?????')
-  //         //       return state.get('number').compute() > 100
-  //         //     },
-  //         //     nested: {
-  //         //       tag: 'nested',
-  //         //       text: {
-  //         //         $: 'parent.parent.text'
-  //         //       }
-  //         //     }
-  //         //   }
-  //         // }
-  //       }
-  //     }
-  //   // }
-  // }
-  // const app = render(elem, state)
+  if ('body' in document) {
+    document.body.appendChild(app)
+  }
 
-  // if ('body' in document) {
-  //   document.body.appendChild(app)
-  // }
-
-  // t.equal(
-  //   parse(app),
-  //   '<div><div><div><nested>count</nested></div><div><nested>count</nested></div></div></div>',
-  //   'parent.parent over reference'
-  // )
-  // state.title.set('counter')
-  // t.equal(
-  //   parse(app),
-  //   '<div><div><div><nested>counter</nested></div><div><nested>counter</nested></div></div></div>',
-  //   'update title'
-  // )
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>count</nested></div><div><nested>count</nested></div></div></div>',
+    'parent.parent over reference'
+  )
+  state.title.set('counter')
+  t.equal(
+    parse(app),
+    '<div><div><div><nested>counter</nested></div><div><nested>counter</nested></div></div></div>',
+    'update title'
+  )
   t.end()
 })
