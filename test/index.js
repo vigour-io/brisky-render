@@ -9,13 +9,9 @@
 
 // require('./render') // needs switch
 
-// // require('./parent')
+// require('./parent')
 
 // require('./html') // needs switch
-
-// require('./clone')
-
-// require('./reference')
 
 // require('./clone')
 
@@ -26,7 +22,7 @@
 
 // require('./property')
 
-// require('./attr')
+require('./attr')
 
 // require('./any')
 
