@@ -23,7 +23,7 @@ test('group - combined', t => {
         },
         state (target, s, type, subs, tree, id, pid, store) {
           var val = s && target.$ ? target.compute(s) : target.compute()
-          const node = getParent(type, subs, tree, pid)
+          const node = getParent(tree, pid)
           val = (get(target, 'template') || val)
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])

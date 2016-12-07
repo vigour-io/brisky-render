@@ -39,7 +39,7 @@ test('clone - reuse ', t => {
                 node.setAttribute('src', t.compute())
               },
               state (t, s, type, subs, tree, id, pid, store) {
-                const node = getParent(type, subs, tree, pid)
+                const node = getParent(tree, pid)
                 node.setAttribute('src', t.compute(s))
               }
             }

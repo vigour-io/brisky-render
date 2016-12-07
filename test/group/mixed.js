@@ -15,7 +15,7 @@ test('group - mixed', t => {
         type: 'group',
         render: {
           state (target, s, type, subs, tree, id, pid, store) {
-            const node = getParent(type, subs, tree, pid)
+            const node = getParent(tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
