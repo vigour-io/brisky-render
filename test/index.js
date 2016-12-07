@@ -28,7 +28,7 @@
 
 // require('./attr')
 
-// require('./any')
+require('./any')
 
 // require('./style') // transform switch!
 // require('./class') // test
