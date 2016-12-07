@@ -1,4 +1,3 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const s = require('brisky-struct')
@@ -15,14 +14,14 @@ test('group - mixed', t => {
         $: 'something',
         type: 'group',
         render: {
-          state (target, s, type, stamp, subs, tree, id, pid, store) {
-            const node = getParent(type, stamp, subs, tree, pid)
+          state (target, s, type, subs, tree, id, pid, store) {
+            const node = getParent(type, subs, tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
         a: {
-          $: 'letters.a.$test',
-          $test: state => true
+          $: 'letters.a.$switch',
+          $switch: state => true
         },
         b: 'B'
       }
@@ -31,7 +30,7 @@ test('group - mixed', t => {
   t.equal(p(app), '<div><div ab="A B"></div></div>', 'initial')
   state.something.letters.a.set('x')
   t.equal(p(app), '<div><div ab="x B"></div></div>', 'update')
-  state.something.letters.a.remove()
+  state.something.letters.a.set(null)
   t.equal(p(app), '<div><div ab="- B"></div></div>', 'remove')
   t.end()
 })

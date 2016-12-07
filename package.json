@@ -4,10 +4,10 @@
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
   "main": "lib/element.js",
   "scripts": {
-    "test": "(ducktape; node test) | tap-difflet && standard",
+    "test": "(ducktape; node test) | tap-spec && standard",
     "wip": "budo ./wip -p 8080 --live",
     "wip-old": "budo ./wip/old.js -p 8081 --live",
-    "dev": "nodemon test | tap-difflet",
+    "dev": "nodemon test | tap-spec",
     "dev-browser": "budo ./test/index.js -p 8080 --live",
     "cover": "istanbul cover --report none --print detail test/index.js",
     "start": "budo ./wip -p 8080 --live",
@@ -42,7 +42,7 @@
     "pre-commit": "^1.1.3",
     "standard": "^8.0.0",
     "strip-formatting": "^1.0.2",
-    "tap-difflet": "0.6.0",
+    "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
   },
   "browser": {

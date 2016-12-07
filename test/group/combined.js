@@ -1,4 +1,3 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
@@ -7,6 +6,7 @@ const getParent = require('../../lib/render/dom/parent')
 const emos = require('../util/emojis')
 const fs = require('fs')
 const path = require('path')
+const { get } = require('brisky-struct/lib/get')
 
 test('group - combined', t => {
   const types = {
@@ -19,17 +19,17 @@ test('group - combined', t => {
       render: {
         static (target, node, store) {
           node.style.position = 'fixed'
-          node.style[target.style] = target.template
+          node.style[target.get('style')] = target.get('template')
         },
         state (target, s, type, subs, tree, id, pid, store) {
           var val = s && target.$ ? target.compute(s) : target.compute()
           const node = getParent(type, subs, tree, pid)
-          val = (target.template || val)
+          val = (get(target, 'template') || val)
           for (let key in store) {
             val = val.replace(`{${key}}`, store[key])
           }
           node.style.position = 'fixed'
-          node.style[target.style] = val
+          node.style[get(target, 'style')] = val
         }
       }
     }
@@ -51,26 +51,29 @@ test('group - combined', t => {
       style: 'transform',
       template: 'translate(0px, 1px)'
     },
-    child: {
-      tag: 'span',
-      $: '$test',
-      $test: (state) => {
-        const x = state[0] && state[0].compute()
-        const y = state[1] && state[1].compute()
-        return x > max / 2 && y > max / 2
-      },
-      title: {
-        tag: 'h1',
-        $: 'title',
-        text: { $: true }
-      },
-      animation: {
-        type: 'animation',
-        style: 'transform',
-        template: 'translate3d({x}px, {y}px, 0px) rotate({rotate}deg)',
-        x: { $: 0 },
-        y: { $: 1 },
-        rotate: { $: 2 }
+    props: {
+      default: {
+        tag: 'span',
+        $: '$switch',
+        $switch: (state) => {
+          state = state.origin()
+          const x = state[0] && state[0].compute()
+          const y = state[1] && state[1].compute()
+          return x > max / 2 && y > max / 2
+        },
+        title: {
+          tag: 'h1',
+          $: 'title',
+          text: { $: true }
+        },
+        animation: {
+          type: 'animation',
+          style: 'transform',
+          template: 'translate3d({x}px, {y}px, 0px) rotate({rotate}deg)',
+          x: { $: 0 },
+          y: { $: 1 },
+          rotate: { $: 2 }
+        }
       }
     }
   }
@@ -80,18 +83,21 @@ test('group - combined', t => {
       types,
       collection: {
         $: '$any',
-        child: {
-          type: 'poocircle'
+        props: {
+          default: {
+            type: 'poocircle'
+          }
         }
       },
       speshcollesh: {
         type: 'poocircle',
         $: '0.$any',
-        child: {
-          animation: {
-            x: { $transform: (val) => val * 2.5 - 0.75 * max },
-            y: { $transform: (val) => val * 2.5 - 1.5 * max }
-            // rotate: 360 // does not work for static...
+        props: {
+          default: {
+            animation: {
+              x: { $transform: (val) => val * 2.5 - 0.75 * max },
+              y: { $transform: (val) => val * 2.5 - 1.5 * max }
+            }
           }
         }
       }
