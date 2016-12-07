@@ -36,5 +36,5 @@ require('./attr')
 
 // require('./switch')
 
-require('./test')
+// require('./test')
 

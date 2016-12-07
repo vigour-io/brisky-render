@@ -78,11 +78,19 @@ test('state - src', t => {
   src = app.childNodes[0].getAttribute('src')
   t.equal(src, null, 'remove thumb')
   state.set({ thumb: 'x' })
-  t.equal(p(app), '<div><img src="x"></img></div>', 'type slider (type override)')
-  state.set({ thumb: 'y' })
-  t.equal(p(app), '<div><img src="y"></img></div>', 'type slider (type override)')
-  state.set({ thumb: void 0 })
-  t.equal(p(app), '<div><img></img></div>', 'type slider (type override)')
+  if ('body' in document) {
+    t.equal(p(app), '<div><img src="x"></div>', 'type slider (type override)')
+    state.set({ thumb: 'y' })
+    t.equal(p(app), '<div><img src="y"></div>', 'type slider (type override)')
+    state.set({ thumb: void 0 })
+    t.equal(p(app), '<div><img></div>', 'type slider (type override)')
+  } else {
+    t.equal(p(app), '<div><img src="x"></img></div>', 'type slider (type override)')
+    state.set({ thumb: 'y' })
+    t.equal(p(app), '<div><img src="y"></img></div>', 'type slider (type override)')
+    state.set({ thumb: void 0 })
+    t.equal(p(app), '<div><img></img></div>', 'type slider (type override)')
+  }
   t.end()
 })
 
