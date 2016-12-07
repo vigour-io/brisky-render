@@ -6,37 +6,36 @@
 
 // // // // // // // // require('./sync') // not for now
 
-require('./order')
+// require('./order')
 
-require('./text')
+// require('./text')
 
-require('./context') // needs switch
+// require('./context') // needs switch
 
-require('./render') // needs switch
+// require('./render') // needs switch
 
-require('./parent')
+// require('./parent')
 
-require('./html') // needs switch
+// require('./html') // needs switch
 
-require('./clone')
+// require('./clone')
 
-require('./reference')
+// require('./reference')
 
-require('./property')
+// require('./property')
 
-require('./attr')
+// require('./attr')
 
-require('./any')
+// require('./any')
 
-require('./style') // transform switch!
+// require('./style')
 
-require('./class') // test
+// require('./group')
 
-require('./group')
+// require('./subscribe') // object subs and resubscribe -- object travel
 
-require('./subscribe') // object subs and resubscribe -- object travel
+// require('./switch') // need many more tests
 
-require('./switch') // need many more tests
+// require('./test')
 
-require('./test')
-
+require('./class')

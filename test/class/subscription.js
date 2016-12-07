@@ -4,7 +4,7 @@ const render = require('../../lib/render')
 const strip = require('strip-formatting')
 const parse = require('parse-element')
 
-test('subscription - any + test - class false', t => {
+test('subscription - any + $switch - class false', t => {
   const state = s({
     todos: {
       1: { text: 'hello 1' },
@@ -16,19 +16,17 @@ test('subscription - any + test - class false', t => {
     todos: {
       tag: 'fragment',
       $: 'todos.$any',
-      child: {
-        text: { $: 'text' },
-        class: {
-          val: 'todo',
-          done: { $: 'done' },
-          party: {
-            $: 'text.$test',
-            $test: {
-              val (val) {
-                return val.compute().indexOf('party') !== -1
-              }
-            },
-            $type: 'boolean'
+      props: {
+        default: {
+          text: { $: 'text' },
+          class: {
+            val: 'todo',
+            done: { $: 'done' },
+            party: {
+              $: 'text.$switch',
+              $switch: val => val.compute().indexOf('party') !== -1,
+              $transform: val => val && true || false
+            }
           }
         }
       }
@@ -38,26 +36,26 @@ test('subscription - any + test - class false', t => {
   state.todos[1].set({ text: 'party boys' })
 
   t.same(
+    parse(app),
     strip(`
       <div>
         <div class="todo party">party boys</div>
         <div class="todo done">hello 2</div>
       </div>
     `),
-    parse(app),
     'initial subcription'
   )
 
   state.todos[1].text.set('hello')
   t.same(
+    parse(app),
     strip(`
       <div>
         <div class="todo">hello</div>
         <div class="todo done">hello 2</div>
       </div>
     `),
-    parse(app),
-    'initial subcription'
+    'set text'
   )
   t.end()
 })

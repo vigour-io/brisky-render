@@ -1,3 +1,3 @@
 require('./basic')
-// require('./context')
-// require('./subscription') test
+require('./context')
+require('./subscription')
