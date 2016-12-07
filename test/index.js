@@ -34,7 +34,7 @@ require('./group')
 
 require('./subscribe') // object subs and resubscribe -- object travel
 
-require('./switch') // need many more tests
+require('./switch') // needs remove listeners for NESTED test
 
 require('./test')
 
