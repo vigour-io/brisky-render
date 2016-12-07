@@ -34,8 +34,11 @@ test('$switch (test) - branch', t => {
           const $r = state.root()
           return 'third' in $r && $r.third.compute() === true
         },
-        // need to support this syntax
-        $: 'root.third'
+        root: {
+          third: true
+        }
+        // need to support this syntax -- maybe not
+        // $: 'root.third'
       }
     }
   }, state)
@@ -69,6 +72,9 @@ test('$switch (test) - branch', t => {
     '<div><holder><first></first></holder></div>',
     'set state.fields.second to false, show first'
   )
+
+  console.log('\n\n\n!!!!')
+
   state.set({ third: true })
   t.same(
     parse(app),

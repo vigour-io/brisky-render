@@ -28,17 +28,17 @@
 
 // require('./attr')
 
-require('./any')
+// require('./any')
 
 // require('./style') // transform switch!
 // require('./class') // test
 
-require('./group')
+// require('./group')
 
 // // console.log('wtf wtf', global.briskystamp)
 // require('./subscribe') // object subs and resubscribe -- object continuatian
 
-require('./switch')
+// require('./switch')
 
 require('./test')
 

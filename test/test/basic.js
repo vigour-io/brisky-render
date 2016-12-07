@@ -40,14 +40,8 @@ test('$switch (test) - basic', t => {
       tag: 'blurf',
       $: '$switch',
       $switch: {
-        val: (state) => {
-          const result = state.title.compute() === 'a'
-          // console.log('???', state.title.compute())
-          return result
-        },
-        $: {
-          title: {}
-        }
+        val: state => state.title.compute() === 'a',
+        title: true
       }
     }
   }, {
