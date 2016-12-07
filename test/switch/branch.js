@@ -11,10 +11,9 @@ test('switch - branch', t => {
       holder: {
         tag: 'holder',
         switcher: {
-          tag: 'switcher',
           $: 'field.navigation.$switch',
-          $switch: (state) => state.key,
-          properties: {
+          $switch: state => state.origin().key,
+          props: {
             first: {
               tag: 'first',
               text: { $: 'title' }
@@ -29,10 +28,9 @@ test('switch - branch', t => {
           tag: 'switchsecond',
           $: 'field',
           switcher: {
-            tag: 'switcher',
             $: 'navigation.$switch',
-            $switch: (state) => state.key,
-            properties: {
+            $switch: state => state.origin().key,
+            props: {
               first: {
                 tag: 'first',
                 text: { $: 'title' }
@@ -51,10 +49,9 @@ test('switch - branch', t => {
         field: {
           $: 'navigation',
           switcher: {
-            tag: 'switcher',
             $: '$switch',
-            $switch: (state) => state.key,
-            properties: {
+            $switch: state => state.origin().key,
+            props: {
               first: {
                 tag: 'first',
                 text: { $: 'title' }
@@ -76,14 +73,11 @@ test('switch - branch', t => {
     strip(`
       <div>
         <holder>
-          <switcher></switcher>
           <switchsecond>
-            <switcher></switcher>
           </switchsecond>
         </holder>
         <holder2>
           <div>
-          <switcher></switcher>
           </div>
         </holder2>
       </div>
@@ -97,7 +91,7 @@ test('switch - branch', t => {
       second: { rating: 100 }
     },
     field: {
-      navigation: '$root.items[0]'
+      navigation: [ '@', 'root', 'items', 'first' ]
     }
   })
 
@@ -106,20 +100,14 @@ test('switch - branch', t => {
     strip(`
       <div>
         <holder>
-          <switcher>
-            <first>first</first>
-          </switcher>
+          <first>first</first>
           <switchsecond>
-            <switcher>
-              <first>first</first>
-            </switcher>
+            <first>first</first>
           </switchsecond>
         </holder>
         <holder2>
           <div>
-          <switcher>
             <first>first</first>
-          </switcher>
           </div>
         </holder2>
       </div>
@@ -127,26 +115,20 @@ test('switch - branch', t => {
     'switch navigation to items[0]'
   )
 
-  state.field.navigation.set('$root.items[-1]')
+  state.field.navigation.set([ '@', 'root', 'items', 'second' ])
   t.equal(
     parse(app),
      strip(`
       <div>
         <holder>
-          <switcher>
-            <second>100</second>
-          </switcher>
+          <second>100</second>
           <switchsecond>
-            <switcher>
-              <second>100</second>
-            </switcher>
+            <second>100</second>
           </switchsecond>
         </holder>
         <holder2>
           <div>
-          <switcher>
             <second>100</second>
-          </switcher>
           </div>
         </holder2>
       </div>

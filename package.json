@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/vigour-io/brisky-core#readme",
   "dependencies": {
-    "brisky-stamp": "^2.1.1",
+    "brisky-stamp": "^2.1.2",
     "brisky-struct": "0.0.22",
     "bubleify": "0.5.1",
     "html-element": "^2.1.0",
