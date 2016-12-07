@@ -1,9 +1,8 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
 
-test('$test - basic', t => {
+test('$switch (test) - basic', t => {
   var elem = render({
     holder: {
       $: 'collection.$any',
@@ -65,127 +64,127 @@ test('$test - basic', t => {
     'simple test'
   )
 
-  // elem = render({
-  //   item: {
-  //     $: 'nested.thing.$switch',
-  //     $switch: {
-  //       val (state) {
-  //         return state.title.compute() === 'a'
-  //       },
-  //       $: {
-  //         title: {}
-  //       }
-  //     }
-  //   }
-  // }, {
-  //   nested: {
-  //     thing: { title: 'a' }
-  //   }
-  // })
+  elem = render({
+    item: {
+      $: 'nested.thing.$switch',
+      $switch: {
+        val (state) {
+          return state.title.compute() === 'a'
+        },
+        $: {
+          title: {}
+        }
+      }
+    }
+  }, {
+    nested: {
+      thing: { title: 'a' }
+    }
+  })
 
-  // t.equal(
-  //   elem.childNodes.length,
-  //   1,
-  //   'simple test nested'
-  // )
+  t.equal(
+    elem.childNodes.length,
+    1,
+    'simple test nested'
+  )
 
-  // elem = render({
-  //   holder: {
-  //     text: 'holder',
-  //     $: 'thing',
-  //     item: {
-  //       text: 'item',
-  //       $: '$switch',
-  //       $switch: {
-  //         val: (state) => {
-  //           return state.title.compute() === 'b' &&
-  //             state.root().nested.rootthing.title.compute() === 'a'
-  //         },
-  //         $: {
-  //           root: {
-  //             nested: {
-  //               rootthing: {}
-  //             }
-  //           }
-  //         }
-  //       },
-  //       title: {
-  //         text: { $: 'title' }
-  //       }
-  //     }
-  //   }
-  // }, {
-  //   thing: {
-  //     title: 'b'
-  //   },
-  //   nested: {
-  //     rootthing: { title: 'a' }
-  //   }
-  // })
+  elem = render({
+    holder: {
+      text: 'holder',
+      $: 'thing',
+      item: {
+        text: 'item',
+        $: '$switch',
+        $switch: {
+          val: (state) => {
+            return state.title.compute() === 'b' &&
+              state.root().nested.rootthing.title.compute() === 'a'
+          },
+          $: {
+            root: {
+              nested: {
+                rootthing: {}
+              }
+            }
+          }
+        },
+        title: {
+          text: { $: 'title' }
+        }
+      }
+    }
+  }, {
+    thing: {
+      title: 'b'
+    },
+    nested: {
+      rootthing: { title: 'a' }
+    }
+  })
 
-  // t.equal(
-  //   parse(elem),
-  //   '<div><div>holder<div>item<div>b</div></div></div></div>',
-  //   'simple test nested +  root'
-  // )
+  t.equal(
+    parse(elem),
+    '<div><div>holder<div>item<div>b</div></div></div></div>',
+    'simple test nested +  root'
+  )
 
-  // elem = render({
-  //   holder: {
-  //     text: 'holder',
-  //     $: 'thing',
-  //     item: {
-  //       text: 'item',
-  //       $: '$switch',
-  //       $switch: {
-  //         val: state => {
-  //           return state.title.compute() === 'b' &&
-  //             state.root().nested.rootthing.title.compute() === 'a'
-  //         },
-  //         $: {
-  //           root: {
-  //             nested: {
-  //               rootthing: true
-  //             }
-  //           }
-  //         }
-  //       },
-  //       title: {
-  //         text: { $: 'title' }
-  //       }
-  //     }
-  //   }
-  // }, {
-  //   thing: {
-  //     title: 'b'
-  //   },
-  //   nested: {
-  //     rootthing: { title: 'a' }
-  //   }
-  // })
+  elem = render({
+    holder: {
+      text: 'holder',
+      $: 'thing',
+      item: {
+        text: 'item',
+        $: '$switch',
+        $switch: {
+          val: state => {
+            return state.title.compute() === 'b' &&
+              state.root().nested.rootthing.title.compute() === 'a'
+          },
+          $: {
+            root: {
+              nested: {
+                rootthing: true
+              }
+            }
+          }
+        },
+        title: {
+          text: { $: 'title' }
+        }
+      }
+    }
+  }, {
+    thing: {
+      title: 'b'
+    },
+    nested: {
+      rootthing: { title: 'a' }
+    }
+  })
 
-  // t.equal(
-  //   parse(elem),
-  //   '<div><div>holder<div>item<div>b</div></div></div></div>',
-  //   'simple test nested +  root'
-  // )
+  t.equal(
+    parse(elem),
+    '<div><div>holder<div>item<div>b</div></div></div></div>',
+    'simple test nested +  root'
+  )
 
   t.end()
 })
 
-// test('$test - override test from type', t => {
-//   // use type and
-//   render({
-//     types: {
-//       thing: {
-//         text: { $: 'bla.$test' }
-//       }
-//     },
-//     jur: {
-//       type: 'thing',
-//       text: { $: 'a' }
-//     }
-//   }, {}, (subs) => {
-//     t.equal(subs.a._.tList[3].$test, null, 'should be null')
-//   })
-//   t.end()
-// })
+test('$switch (test) - override test from type', t => {
+  // use type and
+  render({
+    types: {
+      thing: {
+        text: { $: 'bla.$switch' }
+      }
+    },
+    jur: {
+      type: 'thing',
+      text: { $: 'a' }
+    }
+  }, {}, (subs) => {
+    t.equal(subs.a._.tList[3].$switch, null, 'should be null')
+  })
+  t.end()
+})
