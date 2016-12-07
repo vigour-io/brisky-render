@@ -1,43 +1,44 @@
-require('./order')
-require('./text')
-// require('./remove')
+// require('./order')
 
-// // // // // // // require('./widget')
+// require('./text')
+// // require('./remove')
 
-require('./context') // needs switch
-require('./render') // needs switch
+// // // // // // // // require('./widget')
 
+// require('./context') // needs switch
 
-// require('./parent')
+// require('./render') // needs switch
 
-require('./html') // needs switch
+// // require('./parent')
 
-require('./clone')
-require('./reference')
-
+// require('./html') // needs switch
 
 // require('./clone')
-// // // // // require('./subscribe') // switch and resubscribe
+
 // require('./reference')
-// // // // // // // require('./test')
-// // // // // // // require('./fragment') // switch && test
-// // // // // // // require('./sync') // not for now
+
+// require('./clone')
+
+// require('./reference')
+
+// // // // // // // // require('./fragment') // switch && test
+// // // // // // // // require('./sync') // not for now
+
 // require('./property')
 
 // require('./attr')
 
-require('./any')
+// require('./any')
 
-require('./style') // transform switch!
-require('./class') // test
+// require('./style') // transform switch!
+// require('./class') // test
 
 require('./group')
 
-
-// console.log('wtf wtf', global.briskystamp)
-// require('./subscribe') // switch and resubscribe
-
-// require('./test')
+// // console.log('wtf wtf', global.briskystamp)
+// require('./subscribe') // object subs and resubscribe -- object continuatian
 
 require('./switch')
+
+require('./test')
 

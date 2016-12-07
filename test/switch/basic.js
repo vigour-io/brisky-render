@@ -6,6 +6,9 @@ const strip = require('strip-formatting')
 
 test('switch - basic', t => {
   const state = s({ field: { navigation: {} } })
+
+  state.on('error', err => { throw err })
+
   const app = render(
     {
       types: {

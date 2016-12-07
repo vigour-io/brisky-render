@@ -40,18 +40,21 @@ test('$test - basic', t => {
     item: {
       tag: 'blurf',
       $: '$switch',
-      $switch: (state) => {
-        console.log('???', state.title.compute())
-        return state.title.compute() === 'a'
-      },
-        // $: {
-        //   title: {}
-        // }
-      // },
-      text: { $: 'title' }
+      $switch: {
+        val: (state) => {
+          const result = state.title.compute() === 'a'
+          // console.log('???', state.title.compute())
+          return result
+        },
+        $: {
+          title: {}
+        }
+      }
     }
   }, {
     thing: { title: 'a' }
+  }, s => {
+    console.log(s)
   })
 
   console.log(parse(elem))
