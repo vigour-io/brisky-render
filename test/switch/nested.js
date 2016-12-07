@@ -1,13 +1,13 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-const parse = require('parse-element')
+// const parse = require('parse-element')
 const s = require('brisky-struct')
-const strip = require('strip-formatting')
+// const strip = require('strip-formatting')
 
 test('switch - nested', t => {
   const state = s({ field: { navigation: {} } })
-  var cnt = 0
+  // var cnt = 0
   const app = render(
     {
       holder: {
@@ -32,7 +32,7 @@ test('switch - nested', t => {
                       on: {
                         remove (data) {
                           const node = data.target
-                          cnt++
+                          // cnt++
                           node.parentNode.removeChild(node)
                         }
                       }
