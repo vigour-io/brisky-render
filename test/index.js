@@ -36,6 +36,6 @@ require('./test')
 
 require('./class')
 
-require('./context') // needs switch
+require('./context')
 
-require('./render') // needs switch
+require('./render')
