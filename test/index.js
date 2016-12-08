@@ -1,6 +1,3 @@
-
-// // // // // // // // require('./widget')
-
 // // // // // // // // require('./fragment') // switch && test
 
 // // // // // // // // require('./sync') // not for now
@@ -40,3 +37,5 @@ require('./context')
 require('./render')
 
 require('./remove')
+
+require('./widget')
