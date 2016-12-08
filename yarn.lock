@@ -702,9 +702,9 @@ brisky-stamp@^2.1.1, brisky-stamp@^2.1.2:
   dependencies:
     bubleify "0.5.1"
 
-brisky-struct@0.0.22:
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-0.0.22.tgz#0178cce39176bcccd58445e4b00180959f6242f9"
+brisky-struct@0.0.23:
+  version "0.0.23"
+  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-0.0.23.tgz#5b01d06cf17d631b02fe9633328cd4a0b1dcc491"
   dependencies:
     brisky-stamp "^2.1.1"
     bubleify "0.5.1"

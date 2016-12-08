@@ -1,4 +1,3 @@
-'use strict'
 const render = require('../render')
 const test = require('tape')
 const s = require('brisky-struct')
