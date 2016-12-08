@@ -104,11 +104,67 @@ test('remove - mixed and context - root', t => {
     '<div>a<p><div>a</div><div>b</div></p></div>',
     'correct initial html'
   )
+
+  console.error('REMOVE')
   state.first.set(null)
   t.equal(
     p(app),
     '<div><p><div>b</div></p></div>',
     'removed node'
+  )
+  t.end()
+})
+
+test('remove - counter', t => {
+  var cnt = 0
+  const state = s({
+    first: { second: 'a' },
+    a: {
+      b: {
+        c: 'w0000t'
+      }
+    }
+  })
+  const app = render({
+    a: {
+      $: 'first',
+      b: {
+        text: { $: 'second' }
+      }
+    },
+    gurk: {
+      tag: 'fragment',
+      $: 'a.b',
+      hello: {
+        text: { $: 'c' }
+      }
+    },
+    text: { $: 'a.b.c' }
+  }, state, (subs, tree, elem, s, type, su, t) => {
+    console.warn('hello', s && s.path(), type, subs)
+    cnt++
+  })
+
+  t.equal(
+    p(app),
+    '<div><div><div>a</div></div><div>w0000t</div>w0000t</div>',
+    'correct initial html'
+  )
+
+  console.error('----REMOVE----')
+  cnt = 0
+  state.first.set(null)
+  t.equal(cnt, 1, 'fires once')
+  t.equal(
+    p(app),
+    '<div><div>w0000t</div>w0000t</div>',
+    'removed node'
+  )
+  state.a.b.set(null)
+  t.equal(
+    p(app),
+    '<div></div>',
+    'removed text'
   )
   t.end()
 })

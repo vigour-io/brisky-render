@@ -1,4 +1,3 @@
-// // require('./remove')
 
 // // // // // // // // require('./widget')
 
@@ -39,3 +38,5 @@ require('./class')
 require('./context')
 
 require('./render')
+
+require('./remove')
