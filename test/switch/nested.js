@@ -45,7 +45,7 @@ test('switch - nested', t => {
                           var fader = 3
                           const fade = () => {
                             fader--
-                            node.childNodes[0].innerHTML += '🐔'
+                            // node.childNodes[0].innerHTML += '🐔'
                             if (fader > 0) {
                               fade()
                             } else {
@@ -118,7 +118,7 @@ test('switch - nested', t => {
             <switchsecond>first?</switchsecond>
             </first>
               <div>
-                <div>🐔🐔🐔🐔</div>
+                <div>🐔</div>
                 💸!
               </div>
             </holder>
