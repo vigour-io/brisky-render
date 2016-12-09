@@ -1,4 +1,3 @@
-'use strict'
 const render = require('../../render')
 const test = require('tape')
 const parse = require('parse-element')
@@ -12,9 +11,9 @@ test('fragment - basic', t => {
     fragment: {
       tag: 'fragment',
       $: 'lulz',
-      b: { tag: 'b', $: '$root.b', text: { $: true } },
+      b: { tag: 'b', $: 'root.b', text: { $: true } },
       static: { text: 'sooo static' },
-      c: { text: { $: true, $prepend: 'frag: ' } }
+      c: { text: { $: true, $transform: val => 'frag: ' + val } }
     }
   }
 
@@ -79,7 +78,7 @@ test('fragment - basic', t => {
 
   state.set({ b: 'its b!' })
 
-  state.lol.lulz.remove()
+  state.lol.lulz.set(null)
 
   t.equal(parse(app), strip(`
     <div>

@@ -1,41 +1,41 @@
-// // // // // // // // require('./fragment') // switch && test
-
 // // // // // // // // require('./sync') // not for now
 
-// require('./order')
+require('./fragment')
 
-// require('./text')
+require('./order')
 
-// require('./parent')
+require('./text')
 
-// require('./html')
+require('./parent')
 
-// require('./clone')
+require('./html')
 
-// require('./reference')
+require('./clone')
 
-// require('./property')
+require('./reference')
 
-// require('./attr')
+require('./property')
 
-// require('./any')
+require('./attr')
 
-// require('./style')
+require('./any')
 
-// require('./group')
+require('./style')
 
-// require('./subscribe') // object subs and resubscribe -- object travel
+require('./group')
 
-// require('./test')
+require('./subscribe') // object subs and resubscribe -- object travel
 
-// require('./class')
+require('./test')
 
-// require('./context')
+require('./class')
 
-// require('./render')
+require('./context')
 
-// require('./remove')
+require('./render')
 
-// require('./widget')
+require('./remove')
 
-require('./switch') // needs remove listeners for NESTED test
+require('./widget')
+
+require('./switch')
