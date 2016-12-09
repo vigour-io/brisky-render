@@ -105,7 +105,6 @@ test('remove - mixed and context - root', t => {
     'correct initial html'
   )
 
-  console.error('REMOVE')
   state.first.set(null)
   t.equal(
     p(app),
@@ -141,7 +140,6 @@ test('remove - counter', t => {
     },
     text: { $: 'a.b.c' }
   }, state, (subs, tree, elem, s, type, su, t) => {
-    console.warn('hello', s && s.path(), type, subs)
     cnt++
   })
 
@@ -151,7 +149,6 @@ test('remove - counter', t => {
     'correct initial html'
   )
 
-  console.error('----REMOVE----')
   cnt = 0
   state.first.set(null)
   t.equal(cnt, 1, 'fires once')
