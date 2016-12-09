@@ -1,7 +1,7 @@
 const render = require('../../render')
 const test = require('tape')
 
-test('property - cachedNode + context', t => {
+test('events - basic', t => {
   const app = render({
     thing: {
       text: 'thing',
@@ -9,12 +9,12 @@ test('property - cachedNode + context', t => {
         fontSize: '200px'
       },
       on: {
-        click () {
-          console.log('clikerdiclickclick')
+        click (e) {
+          console.log('clikerdiclickclick', e)
         }
       }
     }
-  })
+  }, {})
   if (document.body) {
     document.body.appendChild(app)
   }
