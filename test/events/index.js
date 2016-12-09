@@ -15,6 +15,8 @@ test('property - cachedNode + context', t => {
       }
     }
   })
-  document.body.appendChild(app)
+  if (document.body) {
+    document.body.appendChild(app)
+  }
   t.end()
 })
