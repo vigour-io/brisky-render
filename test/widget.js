@@ -21,7 +21,7 @@ test('widgets', (t) => {
     holder: {
       $: 'holder',
       first: {
-        isWidget: true,
+        isWidget: true, // prob just allways add this
         on: {
           remove (data) {
             cnt++
