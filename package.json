@@ -47,6 +47,7 @@
   },
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
+    "./lib/events/listener": "./lib/events/listener/browser",
     "html-element": false
   },
   "browserify": {

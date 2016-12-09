@@ -1,10 +1,9 @@
-'use strict'
 const render = require('../render')
 const test = require('tape')
 const p = require('parse-element')
 const s = require('brisky-struct')
 
-test('parent', (t) => {
+test('parent', t => {
   const state = s({ first: true })
   const app = render({
     first: {
@@ -18,7 +17,7 @@ test('parent', (t) => {
   t.end()
 })
 
-test('parent - error', (t) => {
+test('parent - error', t => {
   var tree
   const state = s({})
   render({
