@@ -1,38 +1,40 @@
 'use strict'
 const render = require('../../render')
 const test = require('tape')
-// const parse = require('parse-element')
+const parse = require('parse-element')
 const s = require('brisky-struct')
-// const strip = require('strip-formatting')
+const strip = require('strip-formatting')
 
 test('switch - nested', t => {
   const state = s({ field: { navigation: {} } })
-  // var cnt = 0
+  var cnt = 0
   const app = render(
     {
       holder: {
         tag: 'holder',
         switcher: {
-          tag: 'switcher',
           $: 'field.navigation.$switch',
-          $switch: (state) => state.key,
-          properties: {
+          $switch: state => state.origin().key,
+          props: {
             first: {
               tag: 'first',
               nest: {
                 tag: 'switchsecond',
                 text: { $: 'title' },
                 switcher: {
-                  tag: 'switcher',
                   $: 'navigation.$switch',
-                  $switch: state => state.key,
-                  properties: {
+                  $switch: state => {
+                    console.warn('xxxx')
+                    return state.origin().key
+                  },
+                  props: {
                     first: {
                       text: { $: 'title' },
                       on: {
                         remove (data) {
+                          console.error('?????')
                           const node = data.target
-                          // cnt++
+                          cnt++
                           node.parentNode.removeChild(node)
                         }
                       }
@@ -52,7 +54,10 @@ test('switch - nested', t => {
         }
       }
     },
-    state
+    state,
+    s => {
+      // console.warn(s)
+    }
   )
 
   state.set({
@@ -77,25 +82,23 @@ test('switch - nested', t => {
     document.body.appendChild(app)
   }
 
-  // state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
-  // state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
-  // t.equal(cnt, 1, 'remove listener fired')
-  // // state.field.navigation.set('$root.items[-1]')
+  state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
+
+  state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
+
+  t.equal(cnt, 1, 'remove listener fired')
+  // state.field.navigation.set('$root.items[-1]')
   // t.equal(
   //   parse(app),
   //    strip(`
   //     <div>
   //       <holder>
-  //         <switcher>
-  //           <first>
-  //             <switchsecond>
-  //               first
-  //               <switcher>
-  //                 <div>100</div>
-  //               </switcher>
-  //             </switchsecond>
-  //           </first>
-  //         </switcher>
+  //         <first>
+  //           <switchsecond>
+  //             first
+  //             <div>100</div>
+  //           </switchsecond>
+  //         </first>
   //       </holder>
   //     </div>
   //   `),
@@ -107,9 +110,7 @@ test('switch - nested', t => {
   //    strip(`
   //     <div>
   //       <holder>
-  //         <switcher>
-  //           <second>100</second>
-  //         </switcher>
+  //         <second>100</second>
   //       </holder>
   //     </div>
   //   `),

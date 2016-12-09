@@ -2,40 +2,40 @@
 
 // // // // // // // // require('./sync') // not for now
 
-require('./order')
+// require('./order')
 
-require('./text')
+// require('./text')
 
-require('./parent')
+// require('./parent')
 
-require('./html')
+// require('./html')
 
-require('./clone')
+// require('./clone')
 
-require('./reference')
+// require('./reference')
 
-require('./property')
+// require('./property')
 
-require('./attr')
+// require('./attr')
 
-require('./any')
+// require('./any')
 
-require('./style')
+// require('./style')
 
-require('./group')
+// require('./group')
 
-require('./subscribe') // object subs and resubscribe -- object travel
+// require('./subscribe') // object subs and resubscribe -- object travel
+
+// require('./test')
+
+// require('./class')
+
+// require('./context')
+
+// require('./render')
+
+// require('./remove')
+
+// require('./widget')
 
 require('./switch') // needs remove listeners for NESTED test
-
-require('./test')
-
-require('./class')
-
-require('./context')
-
-require('./render')
-
-require('./remove')
-
-require('./widget')

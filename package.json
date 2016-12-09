@@ -2,7 +2,7 @@
   "name": "brisky-render",
   "version": "0.0.1",
   "description": "The core of Brisky, a js library for creating blazing fast web applications.",
-  "main": "lib/element.js",
+  "main": "./render.js",
   "scripts": {
     "test": "(ducktape; node test) | tap-spec && standard",
     "wip": "budo ./wip -p 8080 --live",
