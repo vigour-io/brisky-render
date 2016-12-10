@@ -126,11 +126,11 @@ test('group - combined', t => {
   }
   loop()
   const output = fs.readFileSync(path.join(__dirname, '/output.html'))
-
   if ('body' in document) {
     document.body.appendChild(app)
   } else {
     t.equal(parse(app), output.toString(), 'correct output')
+    // fs.writeFileSync(path.join(__dirname, '/outputx.html'), parse(app))
   }
   t.end()
 })

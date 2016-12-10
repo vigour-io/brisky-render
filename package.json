@@ -32,8 +32,8 @@
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "browserify-fs": "^1.0.0",
     "brisky-performance": "^1.4.2",
+    "brfs": "^1.4.3",
     "budo": "^9.0.0",
     "coveralls": "^2.11.12",
     "ducktape": "^1.0.1",
@@ -49,12 +49,12 @@
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
     "./lib/events/listener": "./lib/events/listener/browser",
-    "html-element": false,
-    "fs": "browserify-fs"
+    "html-element": false
   },
   "browserify": {
     "transform": [
-      "bubleify"
+      "bubleify",
+      "brfs"
     ]
   },
   "keywords": [
