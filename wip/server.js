@@ -23,6 +23,9 @@ const { parse } = require('url')
 // so vs document.createElement youre just finding the correct elements?
 
 // ok so comptess and test it
+
+const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
+
 const index = `
 <html>
 <head>
@@ -31,6 +34,7 @@ const index = `
   <div id="prerender">
     ${parseElement(app)}
   </div>
+  <script>${bridge}</script>
   <script src="build.min.js"></script>
 </body>
 </html>`

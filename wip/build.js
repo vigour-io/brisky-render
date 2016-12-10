@@ -1,5 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var d = Date.now()
+
 var struct = require('brisky-struct')
 var render = require('brisky-render')
 var stats = require('./stats')
@@ -35,8 +36,6 @@ stats(state)
 module.exports = app
 
 if (document.body) {
-  // console.log('lets wait rly long....')
-  // setTimeout(() => {
   console.log('re-render')
   var pr = document.getElementById('prerender')
   if (pr) {
@@ -50,7 +49,6 @@ if (document.body) {
   d = Date.now()
   state.collection.set(state.collection.map(function (p) { return p.compute() + '!'; }))
   console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  // }, 1e3)
 }
 
 },{"./stats":84,"brisky-render":47,"brisky-struct":55}],2:[function(require,module,exports){
