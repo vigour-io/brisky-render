@@ -9,7 +9,14 @@
   "dependencies": {
     "brisky-render": "git+https://github.com/vigour-io/brisky-render.git#feature/brisky-struct",
     "brisky-struct": "0.0.27",
+    "browserify": "^13.1.1",
     "parse-element": "^2.0.5",
-    "browserify": "^13.1.1"
+    "bubleify": "0.5.1",
+    "uglify-js": "2.7.5"
+  },
+  "browserify": {
+    "transform": [
+      "bubleify"
+    ]
   }
 }

@@ -32,7 +32,10 @@ console.log('strip require names', calc, 'kb', '-' + (prev - calc).toFixed(2), '
 fs.writeFileSync(__dirname + '/build.min.js', str)
 
 const uglifyJS = require('uglify-js')
-const file = uglifyJS.minify([ 'build.min.js' ], {
+
+console.log(__dirname + '/build.min.js')
+
+const file = uglifyJS.minify(__dirname + '/build.min.js', {
   compress: {
     dead_code: true,
     sequences: true,

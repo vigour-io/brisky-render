@@ -32,7 +32,6 @@
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "brfs": "^1.4.3",
     "brisky-performance": "^1.4.2",
     "budo": "^9.0.0",
     "coveralls": "^2.11.12",
@@ -53,8 +52,7 @@
   },
   "browserify": {
     "transform": [
-      "bubleify",
-      "brfs"
+      "bubleify"
     ]
   },
   "keywords": [
