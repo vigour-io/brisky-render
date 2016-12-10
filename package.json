@@ -48,6 +48,7 @@
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
     "./lib/events/listener": "./lib/events/listener/browser",
+    "./lib/property/style/type/index.js": "./lib/property/style/type/browser.js",
     "html-element": false
   },
   "browserify": {

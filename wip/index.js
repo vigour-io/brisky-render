@@ -29,16 +29,19 @@ const app = render({
   }
 }, state)
 
-document.body.appendChild(app)
+if (document.body) {
+  document.body.appendChild(app)
+}
 
 stats(state)
 
-console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+module.exports = app
+// console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
 
-d = Date.now()
-state.collection[state.collection.keys().length - 1].set('hello')
-console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+// d = Date.now()
+// state.collection[state.collection.keys().length - 1].set('hello')
+// console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
 
-d = Date.now()
-state.collection.set(state.collection.map(p => p.compute() + '!'))
-console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+// d = Date.now()
+// state.collection.set(state.collection.map(p => p.compute() + '!'))
+// console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
