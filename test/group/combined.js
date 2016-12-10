@@ -125,10 +125,11 @@ test('group - combined', t => {
     state.forEach((p, key) => update(cnt / 20, key))
   }
   loop()
+  const output = fs.readFileSync(path.join(__dirname, '/output.html'))
+
   if ('body' in document) {
     document.body.appendChild(app)
   } else {
-    const output = fs.readFileSync(path.join(__dirname, '/output.html'))
     t.equal(parse(app), output.toString(), 'correct output')
   }
   t.end()
