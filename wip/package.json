@@ -1,0 +1,15 @@
+{
+  "name": "example-dynamic",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "(ducktape; node test) | tap-spec && standard",
+    "build": "browserify index.js > build.js && node stripper.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "brisky-render": "git+https://github.com/vigour-io/brisky-render.git#feature/brisky-struct",
+    "brisky-struct": "0.0.27",
+    "parse-element": "^2.0.5",
+    "browserify": "^13.1.1"
+  }
+}

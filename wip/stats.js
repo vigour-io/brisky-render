@@ -1,5 +1,5 @@
 module.exports = (state, n) => {
-  if (!n) { n = 5e3 }
+  if (!n) { n = 100 }
   var cnt = 0
   const update = () => {
     var i = n
