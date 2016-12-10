@@ -38,7 +38,7 @@
     "ducktape": "^1.0.1",
     "istanbul": "^0.4.5",
     "nodemon": "^1.10.2",
-    "parse-element": "^2.0.4",
+    "parse-element": "^2.0.5",
     "pre-commit": "^1.1.3",
     "standard": "^8.0.0",
     "strip-formatting": "^1.0.2",
@@ -48,7 +48,6 @@
   "browser": {
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
     "./lib/events/listener": "./lib/events/listener/browser",
-    "./lib/property/style/type/index.js": "./lib/property/style/type/browser.js",
     "html-element": false
   },
   "browserify": {
