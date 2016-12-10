@@ -32,8 +32,8 @@
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "brisky-performance": "^1.4.2",
     "brfs": "^1.4.3",
+    "brisky-performance": "^1.4.2",
     "budo": "^9.0.0",
     "coveralls": "^2.11.12",
     "ducktape": "^1.0.1",
