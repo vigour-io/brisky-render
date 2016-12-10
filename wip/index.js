@@ -1,4 +1,5 @@
 var d = Date.now()
+
 const struct = require('brisky-struct')
 const render = require('brisky-render')
 const stats = require('./stats')
@@ -34,8 +35,18 @@ stats(state)
 module.exports = app
 
 if (document.body) {
-  // console.log('lets wait rly long....')
-  // setTimeout(() => {
+  const bridge = require('./bridge')
+  const raf = global.requestAnimationFrame
+  bridge.init({
+    version: '1.0.0',
+    namespaces: ['urn:x-cast:com.google.cast.sample.helloworld']
+  })
+
+  raf(() => bridge.post({
+    type: 'app',
+    method: 'hideSplash',
+    body: {}
+  }))
   console.log('re-render')
   const pr = document.getElementById('prerender')
   if (pr) {
@@ -49,5 +60,4 @@ if (document.body) {
   d = Date.now()
   state.collection.set(state.collection.map(p => p.compute() + '!'))
   console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  // }, 1e3)
 }

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "scripts": {
     "test": "(ducktape; node test) | tap-spec && standard",
+    "build-native": "browserify bridge > bridge.min.js",
     "build": "browserify index.js > build.js && node stripper.js",
     "start": "node server.js"
   },
