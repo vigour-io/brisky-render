@@ -15,9 +15,8 @@ test('fragment - nested', t => {
   const app = render(
     {
       switcher: {
-        tag: 'fragment',
         $: 'nav.$switch',
-        properties: {
+        props: {
           title: {
             $: true,
             tag: 'fragment',
@@ -26,16 +25,19 @@ test('fragment - nested', t => {
           fields: {
             tag: 'fragment',
             $: '$any',
-            child: {
-              $: '$test',
-              tag: 'fragment',
-              text: { $: 'title' },
-              field: {
-                text: { $: 'title', $transform: String.toUpperCase }
-              },
-              bla: {
+            props: {
+              default: {
                 tag: 'fragment',
-                text: { $: 'title' }
+                $: '$switch',
+                $switch: (val) => val.compute() !== false,
+                text: { $: 'title' },
+                field: {
+                  text: { $: 'title', $transform: String.toUpperCase }
+                },
+                bla: {
+                  tag: 'fragment',
+                  text: { $: 'title' }
+                }
               }
             }
           }
@@ -47,17 +49,17 @@ test('fragment - nested', t => {
   if ('body' in document) {
     document.body.appendChild(app)
   }
-  state.set({ nav: '$root.title' })
+  state.set({ nav: [ '@', 'root', 'title' ] })
   t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'initial subscription')
-  state.set({ nav: '$root.fields' })
-  t.equal(parse(app), '<div>a<div>a</div>a</div>', 'switch')
-  state.set({ nav: '$root.title' })
+  state.set({ nav: [ '@', 'root', 'fields' ] })
+  t.equal(parse(app), '<div>a<div>a</div>a</div>', 'switch') // <div>a<div>a</div>a<div></div></div>
+  state.set({ nav: [ '@', 'root', 'title' ] })
   t.equal(parse(app), '<div>¯\\_(ツ)_/¯</div>', 'remove previous')
   t.end()
 })
 
 test('fragment - nested - remove', t => {
-  const state = global.state = s({
+  const state = s({
     bla: '¯\\_(ツ)_/¯'
   })
   const app = render(
@@ -67,7 +69,8 @@ test('fragment - nested - remove', t => {
         b: {
           tag: 'fragment',
           c: {
-            $: 'bla.$test',
+            $: 'bla.$switch',
+            $switch: val => true,
             text: { $: true }
           }
         }
@@ -79,7 +82,7 @@ test('fragment - nested - remove', t => {
     document.body.appendChild(app)
   }
   t.equal(parse(app), '<div><div>¯\\_(ツ)_/¯</div></div>', 'initial subscription')
-  state.bla.remove()
+  state.bla.set(null)
   t.equal(parse(app), '<div></div>', 'remove state')
   t.end()
 })

@@ -18,29 +18,46 @@ test('switch - nested', t => {
           props: {
             first: {
               tag: 'first',
+              on: {
+                remove (data) {
+                  const node = data.target
+                  node.parentNode.removeChild(node)
+                }
+              },
               nest: {
                 tag: 'switchsecond',
-                text: { $: 'title' },
+                text: { $: 'title', $transform: val => val + '?' },
                 switcher: {
                   $: 'navigation.$switch',
                   $switch: state => {
-                    console.warn('xxxx')
                     return state.origin().key
                   },
                   props: {
                     first: {
-                      text: { $: 'title' },
+                      gucci: {
+                        text: '🐔'
+                      },
+                      text: { $: 'title', $transform: val => val + '!' },
                       on: {
                         remove (data) {
-                          console.error('?????')
                           const node = data.target
                           cnt++
-                          node.parentNode.removeChild(node)
+                          var fader = 3
+                          const fade = () => {
+                            fader--
+                            // node.childNodes[0].innerHTML += '🐔'
+                            if (fader > 0) {
+                              fade()
+                            } else {
+                              node.parentNode.removeChild(node)
+                            }
+                          }
+                          fade()
                         }
                       }
                     },
                     second: {
-                      text: { $: 'rating' }
+                      text: { $: 'rating', $transform: val => (new Array(val)).join('🌟') }
                     }
                   }
                 }
@@ -54,13 +71,11 @@ test('switch - nested', t => {
         }
       }
     },
-    state,
-    s => {
-      // console.warn(s)
-    }
+    state
   )
 
   state.set({
+    first: { title: '💸' },
     otheritems: {
       first: { title: 'first' },
       second: { rating: 100 }
@@ -70,11 +85,15 @@ test('switch - nested', t => {
         title: 'first',
         navigation: {}
       },
-      second: { rating: 100 }
+      second: {
+        rating: 5
+      }
     },
     field: {
       val: 'blurf',
-      navigation: [ '@', 'root', 'items', 'first' ]
+      navigation: {
+        val: [ '@', 'root', 'items', 'first' ]
+      }
     }
   })
 
@@ -83,39 +102,47 @@ test('switch - nested', t => {
   }
 
   state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
-
   state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
 
   t.equal(cnt, 1, 'remove listener fired')
-  // state.field.navigation.set('$root.items[-1]')
-  // t.equal(
-  //   parse(app),
-  //    strip(`
-  //     <div>
-  //       <holder>
-  //         <first>
-  //           <switchsecond>
-  //             first
-  //             <div>100</div>
-  //           </switchsecond>
-  //         </first>
-  //       </holder>
-  //     </div>
-  //   `),
-  //   'switch nested switcher to "$root.otheritems[1]"'
-  // )
-  // state.field.navigation.set([ '@', 'root', 'items', 'first' ])
-  // t.equal(
-  //   parse(app),
-  //    strip(`
-  //     <div>
-  //       <holder>
-  //         <second>100</second>
-  //       </holder>
-  //     </div>
-  //   `),
-  //   'switch switcher to "$root.items[1]"'
-  // )
+
+  state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
+  state.items.first.navigation.set([ '@', 'root', 'first' ])
+
+  t.equal(
+    parse(app),
+     strip(`
+      <div>
+        <holder>
+          <first>
+            <switchsecond>first?</switchsecond>
+            </first>
+              <div>
+                <div>🐔</div>
+                💸!
+              </div>
+            </holder>
+          </div>
+    `),
+    'switch nested switcher to "$root.otheritems[1]"'
+  )
+
+  state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
+
+  t.equal(
+    parse(app),
+     strip(`
+      <div>
+        <holder>
+          <first>
+            <switchsecond>first?</switchsecond>
+          </first>
+          <div>🌟🌟🌟🌟</div>
+        </holder>
+      </div>
+    `),
+    'switch nested switcher to "$root.otheritems[1]"'
+  )
 
   t.end()
 })
