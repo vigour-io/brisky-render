@@ -41,35 +41,33 @@ test('events - basic - prevent', (t) => {
     document.body.appendChild(app)
   }
   trigger(app.childNodes[0], 'mousedown')
-  // t.ok('prevent events')
+  t.ok('prevent events')
   t.end()
 })
 
-// make these cases easier
-
-// test('basic - up, move, down', (t) => {
-//   const cases = {
-//     move: [ 'mousemove', 'touchmove' ],
-//     down: [ 'mousedown', 'touchstart' ],
-//     up: [ 'mouseup', 'touchend' ]
-//   }
-//   for (let type in cases) {
-//     let cnt = 0
-//     let app = render({
-//       on: { [type] () {
-//         cnt++
-//       }}
-//     })
-//     if (!isNode) {
-//       document.body.appendChild(app)
-//     }
-//     for (let i in cases[type]) {
-//       trigger(app, cases[type][i])
-//     }
-//     t.equal(cnt, cases[type].length, `fired for each sub-type "${type}"`)
-//   }
-//   t.end()
-// })
+test('basic - up, move, down', (t) => {
+  const cases = {
+    move: [ 'mousemove', 'touchmove' ],
+    down: [ 'mousedown', 'touchstart' ],
+    up: [ 'mouseup', 'touchend' ]
+  }
+  for (let type in cases) {
+    let cnt = 0
+    let app = render({
+      on: { [type] () {
+        cnt++
+      }}
+    })
+    if (!isNode) {
+      document.body.appendChild(app)
+    }
+    for (let i in cases[type]) {
+      trigger(app, cases[type][i])
+    }
+    t.equal(cnt, cases[type].length, `fired for each sub-type "${type}"`)
+  }
+  t.end()
+})
 
 // test('basic - remove', (t) => {
 //   var remove = 0
