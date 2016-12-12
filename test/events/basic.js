@@ -18,31 +18,29 @@ test('events - basic - add events', (t) => {
 
 test('events - basic - prevent', (t) => {
   const elem = {
-    html: 'hello', // da fuq?
     style: {
       fontFamily: 'BlinkMacSystemFont',
       fontSize: '30px'
     },
     on: {
       mousedown () {
-        console.log('???')
-        // t.fail('should be prevented')
+        t.fail('should be prevented')
+      }
+    },
+    nest: {
+      html: 'hello',
+      on: {
+        mousedown (event) {
+          event.prevent = true
+        }
       }
     }
-    // nest: {
-    //   on: {
-    //     mousedown (event) {
-    //       // why does prevent not work????
-    //       event.prevent = true
-    //     }
-    //   }
-    // }
   }
   const app = render(elem)
   if (!isNode) {
     document.body.appendChild(app)
   }
-  // trigger(app.childNodes[0], 'mousedown')
+  trigger(app.childNodes[0], 'mousedown')
   // t.ok('prevent events')
   t.end()
 })
