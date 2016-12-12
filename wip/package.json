@@ -1,37 +1,23 @@
-var d = Date.now()
-const State = require('vigour-state')
-const render = require('brisky-core/render')
-const stats = require('./stats')
-
-const state = new State({
-  x: 'x!',
-  collection: [ 1, 2 ]
-})
-
-const app = render({
-  bla: {
-    text: { $: 'x' }
+{
+  "name": "example-dynamic",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "(ducktape; node test) | tap-spec && standard",
+    "build-native": "browserify bridge > bridge.min.js",
+    "build": "browserify index.js > build.js && node stripper.js",
+    "start": "node server.js"
   },
-  xxxxx: {
-    $: 'collection.$any',
-    child: {
-      text: { $: true },
-      blurx: { text: 'its blurx', bla: { text: 'rain' }, blurf: { text: 'again' } }
-    }
+  "dependencies": {
+    "brisky-render": "git+https://github.com/vigour-io/brisky-render.git#feature/brisky-struct",
+    "brisky-struct": "0.0.27",
+    "browserify": "^13.1.1",
+    "parse-element": "^2.0.5",
+    "bubleify": "0.5.1",
+    "uglify-js": "2.7.5"
   },
-  blax: {
-    tag: 'fragment',
-    urk: {
-      text: { $: 'x', $transform: val => val + ' jawol fragment' }
-    }
-  },
-  text: 'hello'
-}, state)
-
-console.log(app)
-document.body.appendChild(app)
-
-state.x.set('!!!!')
-
-stats(state)
-console.log('TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  "browserify": {
+    "transform": [
+      "bubleify"
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 var d = Date.now()
+
 const struct = require('brisky-struct')
-const render = require('../render')
+const render = require('brisky-render')
 const stats = require('./stats')
 
 const state = struct({ collection: [ 1, 2 ] })
@@ -29,19 +30,34 @@ const app = render({
   }
 }, state)
 
-if (document.body) {
-  document.body.appendChild(app)
-}
-
 stats(state)
 
 module.exports = app
-// console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
 
-// d = Date.now()
-// state.collection[state.collection.keys().length - 1].set('hello')
-// console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+if (document.body) {
+  const bridge = require('./bridge')
+  const raf = global.requestAnimationFrame
+  bridge.init({
+    version: '1.0.0',
+    namespaces: ['urn:x-cast:com.google.cast.sample.helloworld']
+  })
 
-// d = Date.now()
-// state.collection.set(state.collection.map(p => p.compute() + '!'))
-// console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  raf(() => bridge.post({
+    type: 'app',
+    method: 'hideSplash',
+    body: {}
+  }))
+  console.log('re-render')
+  const pr = document.getElementById('prerender')
+  if (pr) {
+    document.body.removeChild(pr)
+  }
+  document.body.appendChild(app)
+  console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  d = Date.now()
+  state.collection[state.collection.keys().length - 1].set('hello')
+  console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  d = Date.now()
+  state.collection.set(state.collection.map(p => p.compute() + '!'))
+  console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+}
