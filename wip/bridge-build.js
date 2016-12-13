@@ -1,3 +1,5 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (global){
 'use strict'
 /* if the bridge has not already been set up => setup the bridge */
 /* else use the previously set up bridge */
@@ -7,7 +9,7 @@ if (!global.ployNativeBridgeJs) {
 
   if (~navigator.userAgent.indexOf('ploy-native')) {
     if (jsBridge) {
-      postMessage = msg => jsBridge.postMessage(JSON.stringify(msg))
+      postMessage = function (msg) { return jsBridge.postMessage(JSON.stringify(msg)); }
     } else {
       jsBridge = global.webkit && global.webkit.messageHandlers.jsBridge
       postMessage = jsBridge && jsBridge.postMessage.bind(jsBridge)
@@ -17,9 +19,9 @@ if (!global.ployNativeBridgeJs) {
   }
 
   if (jsBridge) {
-    const batch = []
-    const store = {}
-    let ready
+    var batch = []
+    var store = {}
+    var ready
 
     exports.subscribe = function subscribe (id, listener) {
       if (ready) {
@@ -41,9 +43,9 @@ if (!global.ployNativeBridgeJs) {
     exports.unsubscribe = function unsubscribe (id, listener) {
       if (ready) {
         if (id in store) {
-          const listeners = store[id]
-          const length = listeners.length
-          for (let i = length - 1; i >= 0; i--) {
+          var listeners = store[id]
+          var length = listeners.length
+          for (var i = length - 1; i >= 0; i--) {
             if (listeners[i] === listener) {
               listeners.splice(i, 1)
               if (length === 1) {
@@ -81,7 +83,7 @@ if (!global.ployNativeBridgeJs) {
       postMessage({
         type: 'app',
         method: 'init',
-        body
+        body: body
       })
     }
 
@@ -90,11 +92,11 @@ if (!global.ployNativeBridgeJs) {
     global.handleNative = function handleNative (msg) {
       if (msg.id === 'app.init.ready') {
         ready = true
-        for (let i = 0, l = batch.length; i < l; i += 3) {
-          batch[i](batch[i + 1], batch[i + 2])
+        for (var i$1 = 0, l = batch.length; i$1 < l; i$1 += 3) {
+          batch[i$1](batch[i$1 + 1], batch[i$1 + 2])
         }
       } else {
-        const listeners = store[msg.id]
+        var listeners = store[msg.id]
         if (listeners) {
           for (var i = listeners.length - 1; i >= 0; i--) {
             listeners[i](msg)
@@ -114,13 +116,13 @@ if (!global.ployNativeBridgeJs) {
   module.exports = global.ployNativeBridgeJs
 }
 
-const bridge = require('./bridge')
-const raf = global.requestAnimationFrame
+var bridge = require('./bridge')
+var raf = global.requestAnimationFrame
 bridge.init({
   version: '1.0.0',
   namespaces: ['urn:x-cast:com.google.cast.sample.helloworld']
 })
-raf(() => {
+raf(function () {
   console.log('go bridge!')
   bridge.post({
     type: 'app',
@@ -128,3 +130,7 @@ raf(() => {
     body: {}
   })
 })
+
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./bridge":1}]},{},[1]);
