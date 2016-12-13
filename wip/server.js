@@ -26,14 +26,24 @@ const { parse } = require('url')
 
 const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
 
+// const index = `
+// <html>
+// <head>
+// </head>
+// <body>
+//   <div id="prerender">
+//     ${parseElement(app)}
+//   </div>
+//   <script>${bridge}</script>
+//   <script src="build.min.js"></script>
+// </body>
+// </html>`
+
 const index = `
 <html>
 <head>
 </head>
 <body>
-  <div id="prerender">
-    ${parseElement(app)}
-  </div>
   <script>${bridge}</script>
   <script src="build.min.js"></script>
 </body>
