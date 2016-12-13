@@ -1,4 +1,4 @@
-// // // // // // // // require('./sync') // not for now
+// // // // // // // require('./sync') // not for now
 
 require('./fragment')
 

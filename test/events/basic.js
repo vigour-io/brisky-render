@@ -4,7 +4,7 @@ const test = require('tape')
 const trigger = require('../../trigger')
 const isNode = typeof window === 'undefined'
 
-test('basic - add events', (t) => {
+test('events - basic - add events', (t) => {
   const elem = element.create({
     isWidget: true,
     on: { mousedown () {} }
@@ -16,14 +16,19 @@ test('basic - add events', (t) => {
   t.end()
 })
 
-test('basic - prevent', (t) => {
+test('events - basic - prevent', (t) => {
   const elem = {
+    style: {
+      fontFamily: 'BlinkMacSystemFont',
+      fontSize: '30px'
+    },
     on: {
       mousedown () {
         t.fail('should be prevented')
       }
     },
     nest: {
+      html: 'hello',
       on: {
         mousedown (event) {
           event.prevent = true
@@ -40,31 +45,29 @@ test('basic - prevent', (t) => {
   t.end()
 })
 
-// make these cases easier
-
-// test('basic - up, move, down', (t) => {
-//   const cases = {
-//     move: [ 'mousemove', 'touchmove' ],
-//     down: [ 'mousedown', 'touchstart' ],
-//     up: [ 'mouseup', 'touchend' ]
-//   }
-//   for (let type in cases) {
-//     let cnt = 0
-//     let app = render({
-//       on: { [type] () {
-//         cnt++
-//       }}
-//     })
-//     if (!isNode) {
-//       document.body.appendChild(app)
-//     }
-//     for (let i in cases[type]) {
-//       trigger(app, cases[type][i])
-//     }
-//     t.equal(cnt, cases[type].length, `fired for each sub-type "${type}"`)
-//   }
-//   t.end()
-// })
+test('basic - up, move, down', (t) => {
+  const cases = {
+    move: [ 'mousemove', 'touchmove' ],
+    down: [ 'mousedown', 'touchstart' ],
+    up: [ 'mouseup', 'touchend' ]
+  }
+  for (let type in cases) {
+    let cnt = 0
+    let app = render({
+      on: { [type] () {
+        cnt++
+      }}
+    })
+    if (!isNode) {
+      document.body.appendChild(app)
+    }
+    for (let i in cases[type]) {
+      trigger(app, cases[type][i])
+    }
+    t.equal(cnt, cases[type].length, `fired for each sub-type "${type}"`)
+  }
+  t.end()
+})
 
 // test('basic - remove', (t) => {
 //   var remove = 0
