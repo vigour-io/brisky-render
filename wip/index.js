@@ -1,7 +1,9 @@
 var d = Date.now()
 
 const struct = require('brisky-struct')
-const render = require('brisky-render')
+// const render = require('brisky-render')
+const render = require('../')
+
 const stats = require('./stats')
 
 const state = struct({ collection: [ 1, 2 ] })

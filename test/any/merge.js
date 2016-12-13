@@ -72,15 +72,6 @@ test('any - merge - multiple collections', t => {
   }
   const app = render(simple, { collection: [ { title: 1 }, { title: 2 } ] })
 
-  /*
-  `<div>
-    <b>1</b>
-    <b>1</b>
-    <b>2</b>
-    <b>2</b>
-  </div>`
-  */
-
   t.equal(
     parse(app),
     '<div><b>1</b><b>2</b><b>1</b><b>2</b></div>',
