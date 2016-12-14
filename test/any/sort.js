@@ -6,25 +6,31 @@ const s = require('brisky-struct')
 
 test('any - sort', t => {
   const app = {
-    holder: {
-      tag: 'holder',
-      $: 'collection.$any',
-      $any: (keys, state) => {
-        return keys.filter(val => val > 2)
-      },
-      props: {
-        default: {
-          title: { text: { $: true } }
+    types: {
+      holder: {
+        tag: 'holder',
+        $: 'collection.$any',
+        $any: (keys, state) => {
+          return keys.filter(val => val > 2)
+        },
+        props: {
+          default: {
+            title: { text: { $: true } }
+          }
         }
       }
-    }
+    },
+    a: { type: 'holder' },
+    b: { type: 'holder' }
   }
 
   const state = s({
     collection: [ 1, 2, 3, 4, 5 ]
   })
 
-  const elem = render(app, state)
+  const elem = render(app, state, (s, tree) => {
+    console.warn(s)
+  })
 
   // t.equal(
   //   parse(elem),
