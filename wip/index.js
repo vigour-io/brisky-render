@@ -1,7 +1,9 @@
 var d = Date.now()
 
 const struct = require('brisky-struct')
-const render = require('brisky-render')
+// const render = require('brisky-render')
+const render = require('../')
+
 const stats = require('./stats')
 
 const state = struct({ collection: [ 1, 2 ] })
@@ -35,18 +37,6 @@ stats(state)
 module.exports = app
 
 if (document.body) {
-  const bridge = require('./bridge')
-  const raf = global.requestAnimationFrame
-  bridge.init({
-    version: '1.0.0',
-    namespaces: ['urn:x-cast:com.google.cast.sample.helloworld']
-  })
-
-  raf(() => bridge.post({
-    type: 'app',
-    method: 'hideSplash',
-    body: {}
-  }))
   console.log('re-render')
   const pr = document.getElementById('prerender')
   if (pr) {
