@@ -1,57 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var d = Date.now()
-
-var struct = require('brisky-struct')
-var render = require('brisky-render')
-var stats = require('./stats')
-
-var state = struct({ collection: [ 1, 2 ] })
-
-var app = render({
-  collection: {
-    $: 'collection.$any',
-    props: {
-      default: {
-        style: {
-          border: 'rgb(84, 206, 177)',
-          margin: '5px',
-          background: 'rgb(38, 50, 56)',
-          color: 'rgb(128, 203, 196)',
-          fontFamily: 'courier',
-          textAlign: 'center',
-          padding: '10px'
-        },
-        text: { $: true },
-        field: { text: 'static text' },
-        other: { text: 'other field' },
-        field2: { text: 'static text' },
-        field3: { text: 'static text' }
-      }
-    }
-  }
-}, state)
-
-stats(state)
-
-module.exports = app
-
-if (document.body) {
-  console.log('re-render')
-  var pr = document.getElementById('prerender')
-  if (pr) {
-    document.body.removeChild(pr)
-  }
-  document.body.appendChild(app)
-  console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  d = Date.now()
-  state.collection[state.collection.keys().length - 1].set('hello')
-  console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  d = Date.now()
-  state.collection.set(state.collection.map(function (p) { return p.compute() + '!'; }))
-  console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-}
-
-},{"./stats":84,"brisky-render":47,"brisky-struct":55}],2:[function(require,module,exports){
 var struct = require('brisky-struct')
 
 var element = struct({
@@ -85,7 +32,7 @@ element.set({ types: { element: element } }, false)
 
 module.exports = element
 
-},{"./events":5,"./findindex":8,"./property":14,"./property/attr":10,"./property/class":11,"./property/group":12,"./property/html":13,"./property/style":15,"./property/text":20,"./render/dom/element":25,"./subscribe":32,"./widget":45,"brisky-struct":55}],3:[function(require,module,exports){
+},{"./events":4,"./findindex":7,"./property":13,"./property/attr":9,"./property/class":10,"./property/group":11,"./property/html":12,"./property/style":14,"./property/text":19,"./render/dom/element":24,"./subscribe":31,"./widget":44,"brisky-struct":58}],2:[function(require,module,exports){
 module.exports = exports = function attach (e, data) {
   var touch = e.changedTouches
   var ev = touch ? touch[0] : e
@@ -111,7 +58,7 @@ exports.start = function attachStartPos (data) {
   return data
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var attach = require('./attach')
 var bstamp = require('brisky-stamp')
 var restore = require('./restore')
@@ -144,24 +91,12 @@ module.exports = function (key, e) {
   } while ((t = t.parentNode))
 }
 
-},{"./attach":3,"./restore":7,"brisky-stamp":48}],5:[function(require,module,exports){
-var emitterProperty = require('brisky-struct/lib/struct').props.on.struct.props.default
-// make everything avaible on the top
+},{"./attach":2,"./restore":6,"brisky-stamp":46}],4:[function(require,module,exports){
+var emitterProperty = require('brisky-struct/lib/struct')
+  .props.on.struct.props.default
 var parent = require('../render/dom/parent')
-
 var delegate = require('./delegate')
-
 var listen = require('./listener')
-
- // addListener(key, (e) => delegate(key, e))
-
-// check if event allrdy there
-// delegate (+context)
-// subscribe
-
-// const register = () => {
-
-// }
 
 var cache = {}
 
@@ -176,20 +111,34 @@ exports.on = {
       }
       t._p.set({ hasEvents: true }, false)
       emitterProperty(t, val, key)
+    },
+    move: function (t, val) {
+      t.set({
+        mousemove: val,
+        touchmove: val
+      })
+    },
+    down: function (t, val) {
+      t.set({
+        mousedown: val,
+        touchstart: val
+      })
+    },
+    up: function (t, val) {
+      t.set({
+        touchend: val,
+        mouseup: val
+      })
     }
   }
 }
 
-// 'use strict'
-// const getParent = require('brisky-core/lib/render/dom/parent')
-
 exports.props = {
   hasEvents: {
-    // make a flag when subscribed or something
     type: 'property',
     // sync: false,
     // just do sync nicely and not like smelly ballz
-    // subscriptionType: 1, // make it spoecial -- need non-deep variant for this
+    subscriptionType: 1, // make it spoecial -- need non-deep variant for this
     $: true,
     render: {
       state: function state (target, s, type, subs, tree, id, pid) {
@@ -208,7 +157,7 @@ exports.props = {
   }
 }
 
-},{"../render/dom/parent":26,"./delegate":4,"./listener":6,"brisky-struct/lib/struct":66}],6:[function(require,module,exports){
+},{"../render/dom/parent":25,"./delegate":3,"./listener":5,"brisky-struct/lib/struct":69}],5:[function(require,module,exports){
 (function (global){
 var ua = require('vigour-ua/navigator') // again scope it differently this is bit dirty
 
@@ -255,7 +204,7 @@ var addEventListener = function addEventListener (key, listener, capture) {
 // }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"vigour-ua/navigator":83}],7:[function(require,module,exports){
+},{"vigour-ua/navigator":48}],6:[function(require,module,exports){
 module.exports = function (data) {
   var target = data.target
   var state = target._s
@@ -273,7 +222,7 @@ module.exports = function (data) {
   }
 }
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var ref = require('./get');
 var get$any = ref.get$any;
 var ref$1 = require('./get');
@@ -315,7 +264,7 @@ exports.define = {
   }
 }
 
-},{"./get":9,"brisky-struct/lib/get":54}],9:[function(require,module,exports){
+},{"./get":8,"brisky-struct/lib/get":57}],8:[function(require,module,exports){
 var getPath = function (t, path) {
   var i = 0
   var len = path.length
@@ -350,7 +299,7 @@ exports.getPath = getPath
 
 exports.isWidget = isWidget
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 var parent = require('../render/dom/parent')
 var ref = require('../render/static');
 var property = ref.property;
@@ -428,7 +377,7 @@ exports.props = {
   }
 }
 
-},{"../render/dom/parent":26,"../render/static":31}],11:[function(require,module,exports){
+},{"../render/dom/parent":25,"../render/static":30}],10:[function(require,module,exports){
 var parent = require('../render/dom/parent')
 var ref = require('../get');
 var get$ = ref.get$;
@@ -508,7 +457,7 @@ var parseKey = function (t, pid) {
   }
 }
 
-},{"../get":9,"../render/dom/parent":26,"brisky-struct/lib/get":54}],12:[function(require,module,exports){
+},{"../get":8,"../render/dom/parent":25,"brisky-struct/lib/get":57}],11:[function(require,module,exports){
 var ref = require('../render/static');
 var property = ref.property;
 var parent = require('../render/dom/parent')
@@ -600,15 +549,16 @@ exports.types = {
   }
 }
 
-},{"../get":9,"../render/dom/parent":26,"../render/static":31,"brisky-stamp":48}],13:[function(require,module,exports){
+},{"../get":8,"../render/dom/parent":25,"../render/static":30,"brisky-stamp":46}],12:[function(require,module,exports){
 var parent = require('../render/dom/parent')
 
-exports.props = {
+exports.types = {
   html: {
-    type: 'property',
+    type: 'element',
     render: {
       static: function static$1 (t, node) {
-        node.innerHTML = t.compute()
+        var val = t.compute()
+        node.innerHTML = val === void 0 ? '' : val
       },
       state: function state  (t, s, type, subs, tree, id, pid) {
         var node = parent(tree, pid)
@@ -637,7 +587,13 @@ exports.props = {
   }
 }
 
-},{"../render/dom/parent":26}],14:[function(require,module,exports){
+exports.props = {
+  html: {
+    type: 'html'
+  }
+}
+
+},{"../render/dom/parent":25}],13:[function(require,module,exports){
 var struct = require('brisky-struct')
 
 module.exports = struct({
@@ -662,7 +618,7 @@ module.exports = struct({
   // noReference: true,
 }, false)
 
-},{"../findindex":8,"../subscribe":32,"brisky-struct":55}],15:[function(require,module,exports){
+},{"../findindex":7,"../subscribe":31,"brisky-struct":58}],14:[function(require,module,exports){
 var parent = require('../../render/dom/parent')
 var ref = require('../../render/static');
 var property = ref.property;
@@ -671,10 +627,7 @@ var property = ref.property;
 var ua = require('vigour-ua/navigator')
 
 exports.types = {
-  style: require('./type')
-}
-
-exports.props = {
+  styleProp: require('./type'),
   style: {
     type: 'property',
     render: {
@@ -696,7 +649,7 @@ exports.props = {
       require('./transform')
     ],
     props: {
-      default: { type: 'style' },
+      default: { type: 'styleProp' },
       order: {
         // put ua info on top for server or from render for example
         // or add both for now
@@ -706,7 +659,13 @@ exports.props = {
   }
 }
 
-},{"../../render/dom/parent":26,"../../render/static":31,"./px":16,"./transform":17,"./type":18,"vigour-ua/navigator":83}],16:[function(require,module,exports){
+exports.props = {
+  style: {
+    type: 'style'
+  }
+}
+
+},{"../../render/dom/parent":25,"../../render/static":30,"./px":15,"./transform":16,"./type":17,"vigour-ua/navigator":48}],15:[function(require,module,exports){
 var parent = require('../../render/dom/parent')
 var unit = require('./util').appendUnit
 var pxval = { type: 'px' }
@@ -748,7 +707,7 @@ exports.types = {
 
 exports.props = props
 
-},{"../../render/dom/parent":26,"./util":19}],17:[function(require,module,exports){
+},{"../../render/dom/parent":25,"./util":18}],16:[function(require,module,exports){
 var parent = require('../../render/dom/parent')
 var prefix = require('vigour-ua/navigator').prefix
 var transform = prefix ? prefix + 'Transform' : 'transform'
@@ -798,7 +757,7 @@ function setTransform (val, store, node) {
   node.style[transform] = val
 }
 
-},{"../../get":9,"../../render/dom/parent":26,"./util":19,"vigour-ua/navigator":83}],18:[function(require,module,exports){
+},{"../../get":8,"../../render/dom/parent":25,"./util":18,"vigour-ua/navigator":48}],17:[function(require,module,exports){
 var parent = require('../../render/dom/parent')
 exports.properties = { name: true }
 
@@ -808,22 +767,22 @@ exports.render = {
   static: function static$1 (target, pnode) {
     pnode.style[target.name || target.key] = target.compute()
   },
-  state: function state (target, s, type, subs, tree, id, pid) {
+  state: function state (t, s, type, subs, tree, id, pid) {
     if (type !== 'remove') {
       var pnode = parent(tree, pid)
-      pnode.style[target.name || target.key] = s
-      ? target.compute(s, s)
-      : target.compute()
+      pnode.style[t.name || (t.key !== 'default' ? t.key : s.key)] = s
+      ? t.compute(s, s)
+      : t.compute()
     }
   }
 }
 
-},{"../../render/dom/parent":26}],19:[function(require,module,exports){
+},{"../../render/dom/parent":25}],18:[function(require,module,exports){
 exports.appendUnit = function (val, unit) { return typeof val === 'number' && !isNaN(val)
   ? val + unit
   : val; }
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict'
 var parent = require('../render/dom/parent')
 var append = require('../render/dom/create/append')
@@ -866,7 +825,7 @@ exports.types = {
 
 exports.props = { text: { type: 'text' } }
 
-},{"../render/dom/create/append":21,"../render/dom/parent":26}],21:[function(require,module,exports){
+},{"../render/dom/create/append":20,"../render/dom/parent":25}],20:[function(require,module,exports){
 var ref = require('../../fragment');
 var findParent = ref.findParent;
 var isFragment = ref.isFragment;
@@ -920,7 +879,8 @@ function findNode (order, pnode) {
   }
 }
 
-},{"../../fragment":27}],22:[function(require,module,exports){
+},{"../../fragment":26}],21:[function(require,module,exports){
+(function (global){
 var render = require('./render')
 var renderStatic = render.static
 var renderState = render.state
@@ -933,28 +893,38 @@ var ref = require('../../../get');
 var tag = ref.tag;
 
 exports.static = function (t, pnode) {
-  var node = renderStatic(t)
-  appendStatic(t, pnode, node)
-  if (t.hasEvents) { node._ = t }
-  return node
+  if (global.isPrerender) {
+
+  } else {
+    var node = renderStatic(t)
+    appendStatic(t, pnode, node)
+    if (t.hasEvents) { node._ = t }
+    return node
+  }
 }
 
 exports.state = function (t, state, type, subs, tree, id, pid, order) {
   var pnode = parent(tree, pid)
-  var node = renderState(t, type, subs, tree, id, pnode)
-  if (pnode) {
-    if (tag(t) !== 'fragment') {
-      appendState(t, pnode, node, subs, tree, id, order)
-    } else {
-      if (isFragment(pnode)) {
-        pnode.push(node)
+
+  if (global.isPrerender) {
+
+  } else {
+    var node = renderState(t, type, subs, tree, id, pnode)
+    if (pnode) {
+      if (tag(t) !== 'fragment') {
+        appendState(t, pnode, node, subs, tree, id, order)
+      } else {
+        if (isFragment(pnode)) {
+          pnode.push(node)
+        }
       }
     }
+    return node
   }
-  return node
 }
 
-},{"../../../get":9,"../../fragment":27,"../parent":26,"./append":21,"./render":23}],23:[function(require,module,exports){
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../../../get":8,"../../fragment":26,"../parent":25,"./append":20,"./render":22}],22:[function(require,module,exports){
 var ref = require('brisky-struct/lib/get');
 var get = ref.get;
 var fragment = require('./fragment')
@@ -1044,12 +1014,13 @@ exports.state = function (t, type, subs, tree, id, pnode) {
     tree._[id] = node
   }
   element(t, node)
+
   return node
 }
 
 // module.exports = require('./index')
 
-},{"../../../../get":9,"../../../static":31,"./fragment":24,"brisky-struct/lib/get":54}],24:[function(require,module,exports){
+},{"../../../../get":8,"../../../static":30,"./fragment":23,"brisky-struct/lib/get":57}],23:[function(require,module,exports){
 var parseStatic = require('../../../static')
 var elems = parseStatic.element
 
@@ -1060,7 +1031,7 @@ module.exports = function (target, pnode, id, tree) {
   return arr
 }
 
-},{"../../../static":31}],25:[function(require,module,exports){
+},{"../../../static":30}],24:[function(require,module,exports){
 var ref = require('./create');
 var createState = ref.state;
 var createStatic = ref.static;
@@ -1132,13 +1103,13 @@ exports.render = {
   }
 }
 
-},{"../../get":9,"../fragment":27,"./create":22,"./parent":26}],26:[function(require,module,exports){
+},{"../../get":8,"../fragment":26,"./create":21,"./parent":25}],25:[function(require,module,exports){
 var parent = function (tree, pid) { return tree._ && tree._[pid] ||
   tree._p && parent(tree._p, pid); }
 
 module.exports = parent
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 exports.findParent = function (pnode) {
   while (isFragment(pnode)) {
     pnode = pnode[0]
@@ -1152,7 +1123,7 @@ function isFragment (node) {
   return node instanceof Array
 }
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var struct = require('brisky-struct')
 var subscribe = require('brisky-struct/lib/subscribe').subscribe
 var render = require('./render')
@@ -1221,7 +1192,7 @@ module.exports = function (elem, state, cb) {
   }
 }
 
-},{"../element":2,"../get":9,"./render":29,"brisky-stamp":48,"brisky-struct":55,"brisky-struct/lib/subscribe":73}],29:[function(require,module,exports){
+},{"../element":1,"../get":8,"./render":28,"brisky-stamp":46,"brisky-struct":58,"brisky-struct/lib/subscribe":76}],28:[function(require,module,exports){
 var render = require('./state')
 
 module.exports = function (state, type, subs, tree) {
@@ -1243,7 +1214,7 @@ module.exports = function (state, type, subs, tree) {
   }
 }
 
-},{"./state":30}],30:[function(require,module,exports){
+},{"./state":29}],29:[function(require,module,exports){
 var widgets = require('../widget/widgets') // better to store on the root -- prevent mismatch
 var ref = require('../get');
 var isWidget = ref.isWidget;
@@ -1278,7 +1249,7 @@ var emitRemove = function (t, state, tree, id) {
 var onRemove = function (t, key) { return t.emitters && t.emitters.remove ||
   t.inherits && onRemove(t.inherits); }
 
-},{"../get":9,"../widget/widgets":46}],31:[function(require,module,exports){
+},{"../get":8,"../widget/widgets":45}],30:[function(require,module,exports){
 var isStatic = function (t) { return t.isStatic !== void 0
   ? t.isStatic
   : t.inherits && isStatic(t.inherits); }
@@ -1311,7 +1282,7 @@ exports.staticElements = staticElements
 
 exports.isStatic = isStatic
 
-},{}],32:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var globSwitch = require('./map/type/switcher/glob')
 var ref = require('../get');
 var get$any = ref.get$any;
@@ -1362,7 +1333,7 @@ exports.props = {
 exports.subscriptionType = 1
 exports.inject = require('./map')
 
-},{"../get":9,"./map":33,"./map/type/switcher/glob":42}],33:[function(require,module,exports){
+},{"../get":8,"./map":32,"./map/type/switcher/glob":41}],32:[function(require,module,exports){
 var iterator = require('./iterator')
 var switcher = require('./type/switcher')
 var any = require('./type/any')
@@ -1410,7 +1381,7 @@ module.exports = {
   }
 }
 
-},{"../../get":9,"./iterator":34,"./subscriber":38,"./type":41,"./type/any":40,"./type/switcher":43}],34:[function(require,module,exports){
+},{"../../get":8,"./iterator":33,"./subscriber":37,"./type":40,"./type/any":39,"./type/switcher":42}],33:[function(require,module,exports){
 var isNull = function (t) { return t.val === null || t.inherits && isNull(t.inherits); }
 var ref = require('brisky-struct/lib/get');
 var get = ref.get;
@@ -1442,7 +1413,7 @@ function exec (p, map, prevMap) {
   }
 }
 
-},{"brisky-struct/lib/get":54}],35:[function(require,module,exports){
+},{"brisky-struct/lib/get":57}],34:[function(require,module,exports){
 var mergeS = require('./subscriber/merge')
 var ref = require('../../get');
 var getPath = ref.getPath;
@@ -1518,7 +1489,7 @@ var merge = function (t, a, b) {
   }
 }
 
-},{"../../get":9,"./set":36,"./subscriber/merge":39,"./val":44}],36:[function(require,module,exports){
+},{"../../get":8,"./set":35,"./subscriber/merge":38,"./val":43}],35:[function(require,module,exports){
 'use strict'
 var setVal = require('./val')
 
@@ -1552,7 +1523,7 @@ module.exports = function set (target, val, map, path) {
   return val
 }
 
-},{"./val":44}],37:[function(require,module,exports){
+},{"./val":43}],36:[function(require,module,exports){
 var contextKey = function (t) { return t.storeContextKey !== void 0
   ? t.storeContextKey
   : t.inherits && contextKey(t.inherits); }
@@ -1578,7 +1549,7 @@ var genCid = function (t) {
   }
 }
 
-},{}],38:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var context = require('./context')
 
 module.exports = function (target, obs, type) {
@@ -1621,7 +1592,7 @@ var getParent = function (parent) {
   }
 }
 
-},{"./context":37}],39:[function(require,module,exports){
+},{"./context":36}],38:[function(require,module,exports){
 module.exports = function (a, b) {
   if (b.t) {
     if (!a.t) { a.t = {} }
@@ -1642,7 +1613,7 @@ module.exports = function (a, b) {
   }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 var merge = require('../merge')
 var subscriber = require('../subscriber')
 var iterator = require('../iterator')
@@ -1698,7 +1669,7 @@ module.exports = function (t, map) {
   return map
 }
 
-},{"../../../get":9,"../iterator":34,"../merge":35,"../subscriber":38,"../val":44}],41:[function(require,module,exports){
+},{"../../../get":8,"../iterator":33,"../merge":34,"../subscriber":37,"../val":43}],40:[function(require,module,exports){
 var merge = require('../merge')
 var iterator = require('../iterator')
 var subscriber = require('../subscriber')
@@ -1722,7 +1693,7 @@ module.exports = function (t, map) {
   return map
 }
 
-},{"../../../get":9,"../iterator":34,"../merge":35,"../subscriber":38,"../val":44}],42:[function(require,module,exports){
+},{"../../../get":8,"../iterator":33,"../merge":34,"../subscriber":37,"../val":43}],41:[function(require,module,exports){
 module.exports = function (t, subs, tree, key) {
   var computed = t.compute()
   if (computed) {
@@ -1767,7 +1738,7 @@ module.exports = function (t, subs, tree, key) {
   }
 }
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 var merge = require('../../merge')
 // const hash = require('quick-hash') // avoid this one
 var ref = require('../../../../get');
@@ -1877,7 +1848,7 @@ function mapSwitch (val, key, t, pmap, $) {
   return val
 }
 
-},{"../../../../get":9,"../../merge":35,"brisky-struct/lib/get":54}],44:[function(require,module,exports){
+},{"../../../../get":8,"../../merge":34,"brisky-struct/lib/get":57}],43:[function(require,module,exports){
 module.exports = function (target, map, val) {
   // if (target.sync === false) {
   //   if ((val === true && map.val !== val) || !map.val) {
@@ -1895,7 +1866,7 @@ module.exports = function (target, map, val) {
   }
 }
 
-},{}],45:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 var widgets = require('./widgets')
 
 exports.props = {
@@ -1913,14 +1884,10 @@ exports.props = {
   }
 }
 
-},{"./widgets":46}],46:[function(require,module,exports){
+},{"./widgets":45}],45:[function(require,module,exports){
 module.exports = []
 
-},{}],47:[function(require,module,exports){
-'use strict'
-module.exports = require('./lib/render')
-
-},{"./lib/render":28}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (global){
 if (global.briskystamp) {
   module.exports = global.briskystamp
@@ -2052,7 +2019,236 @@ if (global.briskystamp) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
+/**
+ * @function ua
+ * Returns an object representing the user agent including data such as browser, device and platform
+ * @param {string} _ua - the raw user agent string to be converted
+ * @param {string} obj - (optional) object to be merged to the output result
+ * @returns {object} object representing your user agent
+ */
+module.exports = exports = function (_ua, obj) {
+  if (typeof _ua === 'string') {
+    _ua = _ua.toLowerCase()
+  } else {
+    _ua = ''
+  }
+  if (obj === true) {
+    obj = exports
+  } else if (!obj) {
+    obj = {}
+  }
+  // _ua = 'webos; linux - large screen'
+  var _ff = 'firefox'
+  var _mac = 'mac'
+  var _chrome = 'chrome'
+  var _android = 'android'
+  var _wrapper = 'wrapper'
+  var _mobile = '.+mobile'
+  var _webkit = 'webkit'
+  var _ps = 'playstation'
+  var _xbox = 'xbox'
+  var _linux = 'linux'
+  var _castDetect = 'crkey'
+  var _chromecast = 'cast'
+  var _tablet = 'tablet'
+  var _windows = 'windows'
+  var _phone = 'phone'
+  var _firetv = 'firetv'
+  var _rikstv = 'rikstv'
+  var _facebook = 'facebook'
+  var _edge = 'edge'
+  var _version = 'version'
+  var _samsung = 'samsung'
+
+  /**
+   * browser detection
+   */
+  test.call(obj, _ua,
+    function (query, arr) {
+      obj.browser = arr[ 2 ] || query
+      var _v = _ua.match(
+        new RegExp('((([\\/ ]' + _version + '|' + arr[ 0 ] + '(?!.+' + _version + '))[\/ ])| rv:)([0-9]{1,4}\\.[0-9]{0,2})')
+      )
+      obj[_version] = _v ? Number(_v[4]) : 0
+      obj.prefix = arr[1]
+      // TODO: add prefix for opera v>12.15;
+      // TODO: windows check for ie 11 may be too general;
+    },
+    [ true, _webkit ],
+    [ '\\(' + _windows, 'ms', 'ie' ],
+    [ 'safari', _webkit ],
+    [ _ff, 'Moz' ],
+    [ 'opera', 'O' ],
+    [ 'msie', 'ms', 'ie' ],
+    [ _facebook ],
+    [ _chrome + '|crios\/', _webkit, _chrome ],
+    [ _edge, _webkit, _edge ]
+  )
+
+  /**
+   * platform detection
+   */
+  test.call(obj, _ua, 'platform',
+    [ true, _windows ],
+    [ _linux ],
+    [ 'lg.{0,3}netcast', 'lg' ], // TODO:propably need to add more!
+    [ _ff + _mobile, _ff ],
+    [ _mac + ' os x', _mac ], [ 'iphone|ipod|ipad', 'ios' ],
+    [ _xbox ],
+    [ _ps ],
+    [ _android ],
+    [ _windows ],
+    [ _castDetect, _chromecast ],
+    [ 'smart-tv;|;' + _samsung + ';smarttv', _samsung ], // SmartTV2013
+    [ _rikstv ]
+  )
+
+  /**
+   * device detection
+   */
+  test.call(obj, _ua, 'device',
+    [ true, 'desktop' ],
+    [ _windows + '.+touch|ipad|' + _android, _tablet ],
+    [
+      _phone + '|phone|(' +
+      _android + _mobile + ')|(' + _ff + _mobile +
+      ')|' + _windows + ' phone|iemobile', _phone
+    ],
+    [ _xbox + '|' + _ps, 'console' ],
+    [ 'tv|smarttv|googletv|appletv|hbbtv|pov_tv|netcast.tv|webos.+large', 'tv' ],
+    [ _castDetect, _chromecast ],
+    [ _tablet + '|amazon-fireos|nexus (?=[^1-6])\\d{1,2}', _tablet ],
+    [ 'aft[bsm]', _firetv ],
+    [ _rikstv ]
+  )
+
+  /**
+   * wrapped webview native app detection
+   */
+  test.call(obj, _ua, 'webview',
+    [ true, false ],
+    [  'crosswalk' ],
+    [ 'vigour-' + _wrapper, _wrapper ],
+    [ 'cordova' ],
+    [ 'ploy-native' ]
+  )
+
+  return obj
+
+  /**
+   * test
+   * search for regexps in the userAgent
+   * fn is a on succes callback
+   * check tests in https://github.com/faisalman/ua-parser-js to test for userAgents
+   * @method
+   */
+  function test (_ua, fn) {
+    for (
+      var tests = arguments, i = tests.length - 1, t = tests[i], query = t[0];
+      query !== true && !new RegExp(query).test(_ua) && i > 0;
+      t = tests[--i], query = t[0]
+    ); //eslint-disable-line
+    // this for has no body
+    if (fn.slice || fn.call(this, query, t)) {
+      this[fn] = t[1] === void 0 ? query : t[1]
+    }
+  }
+}
+
+},{}],48:[function(require,module,exports){
+'use strict'
+var ua = require('./')
+if (typeof window === 'undefined') {
+  ua.platform = 'node'
+} else {
+  ua(window.navigator.userAgent, exports)
+}
+
+},{"./":47}],49:[function(require,module,exports){
+'use strict'
+module.exports = require('./lib/render')
+
+},{"./lib/render":27}],50:[function(require,module,exports){
+var d = Date.now()
+
+var struct = require('brisky-struct')
+// const render = require('brisky-render')
+var render = require('../')
+
+var stats = require('./stats')
+
+var state = struct({ collection: [ 1, 2 ] })
+
+var app = render({
+  collection: {
+    $: 'collection.$any',
+    props: {
+      default: {
+        style: {
+          border: 'rgb(84, 206, 177)',
+          margin: '5px',
+          background: 'rgb(38, 50, 56)',
+          color: 'rgb(128, 203, 196)',
+          fontFamily: 'courier',
+          textAlign: 'center',
+          padding: '10px'
+        },
+        text: { $: true },
+        field: { text: 'static text' },
+        other: { text: 'other field' },
+        field2: { text: 'static text' },
+        field3: { text: 'static text' }
+      }
+    }
+  }
+}, state)
+
+stats(state)
+
+module.exports = app
+
+if (document.body) {
+  console.log('re-render')
+  var pr = document.getElementById('prerender')
+  if (pr) {
+    document.body.removeChild(pr)
+  }
+  document.body.appendChild(app)
+  console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  d = Date.now()
+  state.collection[state.collection.keys().length - 1].set('hello')
+  console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+  d = Date.now()
+  state.collection.set(state.collection.map(function (p) { return p.compute() + '!'; }))
+  console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
+}
+
+},{"../":49,"./stats":51,"brisky-struct":58}],51:[function(require,module,exports){
+module.exports = function (state, n) {
+  if (!n) { n = 3 }
+  var cnt = 0
+  var update = function () {
+    var i = n
+    cnt++
+    if (cnt > n) {
+      cnt = 0
+    }
+    // var d = Date.now()
+    var arr = []
+    // arr[cnt] = 'ha' + cnt
+    // arr[cnt + 100] = 'ha' + cnt
+    // if (cnt === 1) {
+    while (i--) { arr.push(i + cnt) }
+    // }
+    state.set({ collection: arr })
+    // console.log(`n = ${n}`, Date.now() - d, 'ms')
+    // global.requestAnimationFrame(update)
+  }
+  update()
+}
+
+},{}],52:[function(require,module,exports){
 var bs = require('brisky-stamp')
 var ref = require('./emit');
 var generic = ref.generic;
@@ -2071,7 +2267,7 @@ var extendSet = function (t, val, stamp) {
   }
 }
 
-var error = function (t, err, stamp) { return generic(root(t), 'error', err, stamp); }
+var error = function (t, err, stamp) { return err && generic(root(t), 'error', err, stamp); }
 
 var isGeneratorFunction = function (obj) {
   var constructor = obj.constructor
@@ -2196,7 +2392,7 @@ exports.iterator = iterator
 
 set = require('./manipulate').set
 
-},{"./emit":52,"./manipulate":58,"./traversal":79,"brisky-stamp":48}],50:[function(require,module,exports){
+},{"./emit":55,"./manipulate":61,"./traversal":82,"brisky-stamp":84}],53:[function(require,module,exports){
 var get = function (t) { return t.val !== void 0 ? t.val : t.inherits && get(t.inherits); }
 
 var origin = function (t) { return t.val && typeof t.val === 'object' && t.val.inherits
@@ -2232,7 +2428,7 @@ var compute = function (t, val, passon) {
 exports.origin = origin
 exports.compute = compute
 
-},{}],51:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 var ref = require('./get');
 var get = ref.get;
 var ref$1 = require('./keys');
@@ -2411,7 +2607,7 @@ exports.resolveContext = resolveContext
 exports.applyContext = applyContext
 exports.storeContext = storeContext
 
-},{"./get":54,"./keys":57,"./manipulate":58}],52:[function(require,module,exports){
+},{"./get":57,"./keys":60,"./manipulate":61}],55:[function(require,module,exports){
 var ref = require('./get');
 var getFn = ref.getFn;
 
@@ -2569,7 +2765,7 @@ exports.onData = onData
 exports.data = data
 exports.generic = generic
 
-},{"./get":54}],53:[function(require,module,exports){
+},{"./get":57}],56:[function(require,module,exports){
 var ref = require('./');
 var get = ref.get;
 var getOrigin = ref.getOrigin;
@@ -2612,7 +2808,7 @@ module.exports = function (t, key, val, stamp) {
   }
 }
 
-},{"../manipulate":58,"./":54}],54:[function(require,module,exports){
+},{"../manipulate":61,"./":57}],57:[function(require,module,exports){
 var get = function (t, key, noContext) {
   if (key in t) {
     var result = t[key]
@@ -2656,7 +2852,7 @@ exports.get = get
 exports.getDefault = getDefault
 exports.getOrigin = getOrigin
 
-},{}],55:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 var struct = require('./struct')
 var ref = require('./manipulate');
 var create = ref.create;
@@ -2664,7 +2860,7 @@ var set = ref.set;
 set(struct, { inject: require('./methods') })
 module.exports = function (val, stamp) { return create(struct, val, stamp); }
 
-},{"./manipulate":58,"./methods":60,"./struct":66}],56:[function(require,module,exports){
+},{"./manipulate":61,"./methods":63,"./struct":69}],59:[function(require,module,exports){
 var ref = require('./keys');
 var addKey = ref.addKey;
 var copy = ref.copy;
@@ -2759,7 +2955,7 @@ var instances = function (t, val, stamp, changed) {
 
 module.exports = instances
 
-},{"./emit":52,"./keys":57}],57:[function(require,module,exports){
+},{"./emit":55,"./keys":60}],60:[function(require,module,exports){
 var removeKey = function (t, key) {
   if (t._ks) {
     var keys = t._ks
@@ -2828,7 +3024,7 @@ exports.removeContextKey = removeContextKey
 exports.getKeys = getKeys
 exports.copy = copy
 
-},{}],58:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var ref = require('./emit');
 var data = ref.data;
 var ref$1 = require('./struct/listener');
@@ -3004,7 +3200,7 @@ iterator = require('./async').iterator
 var getApi = require('./get/api')
 var reference = function (t, val, stamp) { return set(t, getApi(t, val.slice(1), {}, stamp)); }
 
-},{"./async":49,"./context":51,"./emit":52,"./get/api":53,"./instances":56,"./property":63,"./remove":64,"./struct/listener":68,"./struct/types":70,"./uid":80}],59:[function(require,module,exports){
+},{"./async":52,"./context":54,"./emit":55,"./get/api":56,"./instances":59,"./property":66,"./remove":67,"./struct/listener":71,"./struct/types":73,"./uid":83}],62:[function(require,module,exports){
 var ref = require('../get');
 var get = ref.get;
 var ref$1 = require('../keys');
@@ -3042,7 +3238,7 @@ exports.define = {
   }
 }
 
-},{"../get":54,"../keys":57}],60:[function(require,module,exports){
+},{"../get":57,"../keys":60}],63:[function(require,module,exports){
 var ms = require('monotonic-timestamp')
 var ref = require('../compute');
 var compute = ref.compute;
@@ -3161,7 +3357,7 @@ exports.define = {
   keys: function keys () { return getKeys(this) }
 }
 
-},{"../compute":50,"../context":51,"../emit":52,"../get/api":53,"../keys":57,"../manipulate":58,"../once":62,"../serialize":65,"../subscribe":73,"../traversal":79,"../uid":80,"./functional":59,"./iterator":61,"brisky-stamp":48,"monotonic-timestamp":81}],61:[function(require,module,exports){
+},{"../compute":53,"../context":54,"../emit":55,"../get/api":56,"../keys":60,"../manipulate":61,"../once":65,"../serialize":68,"../subscribe":76,"../traversal":82,"../uid":83,"./functional":62,"./iterator":64,"brisky-stamp":84,"monotonic-timestamp":85}],64:[function(require,module,exports){
 var ref = require('../keys');
 var getKeys = ref.getKeys;
 var ref$1 = require('../get');
@@ -3185,7 +3381,7 @@ module.exports = function (struct) {
   }
 }
 
-},{"../get":54,"../keys":57}],62:[function(require,module,exports){
+},{"../get":57,"../keys":60}],65:[function(require,module,exports){
 var ref = require('./manipulate');
 var set = ref.set;
 var ref$1 = require('./compute');
@@ -3250,7 +3446,7 @@ var on = function (t, id, listener) {
   return t
 }
 
-},{"./compute":50,"./manipulate":58}],63:[function(require,module,exports){
+},{"./compute":53,"./manipulate":61}],66:[function(require,module,exports){
 var ref = require('./get');
 var get = ref.get;
 var ref$1 = require('./keys');
@@ -3286,7 +3482,7 @@ var getProp = function (t, key) { return t.props
 exports.getProp = getProp
 exports.property = property
 
-},{"./context":51,"./get":54,"./keys":57,"./manipulate":58}],64:[function(require,module,exports){
+},{"./context":54,"./get":57,"./keys":60,"./manipulate":61}],67:[function(require,module,exports){
 var ref = require('./get');
 var get = ref.get;
 var getFn = ref.getFn;
@@ -3406,7 +3602,7 @@ var removeContext = function (context, key, stamp) {
   }
 }
 
-},{"./emit":52,"./get":54,"./keys":57,"./struct/listener":68,"./uid":80}],65:[function(require,module,exports){
+},{"./emit":55,"./get":57,"./keys":60,"./struct/listener":71,"./uid":83}],68:[function(require,module,exports){
 var ref = require('./get');
 var get = ref.get;
 var ref$1 = require('./keys');
@@ -3440,7 +3636,7 @@ var serialize = function (t, fn) {
 
 module.exports = serialize
 
-},{"./get":54,"./keys":57,"./traversal":79}],66:[function(require,module,exports){
+},{"./get":57,"./keys":60,"./traversal":82}],69:[function(require,module,exports){
 var ref = require('../manipulate');
 var create = ref.create;
 var set = ref.set;
@@ -3563,7 +3759,7 @@ require('./on')(struct)
 
 module.exports = struct
 
-},{"../get":54,"../manipulate":58,"../property":63,"./inject":67,"./on":69,"./types":70}],67:[function(require,module,exports){
+},{"../get":57,"../manipulate":61,"../property":66,"./inject":70,"./on":72,"./types":73}],70:[function(require,module,exports){
 var ref = require('../manipulate');
 var set = ref.set;
 
@@ -3585,7 +3781,7 @@ module.exports = function (t, val, key, stamp) {
   return changed
 }
 
-},{"../manipulate":58}],68:[function(require,module,exports){
+},{"../manipulate":61}],71:[function(require,module,exports){
 var ref = require('../get');
 var getFn = ref.getFn;
 var get = function (t, key) { return t[key] || t.inherits && get(t.inherits, key); }
@@ -3699,7 +3895,7 @@ exports.addFn = addFn
 exports.listener = listener
 exports.replace = replace
 
-},{"../get":54}],69:[function(require,module,exports){
+},{"../get":57}],72:[function(require,module,exports){
 module.exports = function (struct) {
   var ref = require('../property');
   var property = ref.property;
@@ -3813,7 +4009,7 @@ module.exports = function (struct) {
   on.struct = onStruct
 }
 
-},{"../manipulate":58,"../property":63,"./listener":68}],70:[function(require,module,exports){
+},{"../manipulate":61,"../property":66,"./listener":71}],73:[function(require,module,exports){
 var ref = require('../manipulate');
 var create = ref.create;
 var ref$1 = require('../get');
@@ -3845,11 +4041,14 @@ var getType = function (parent, type, t) { return (!t || typeof type === 'string
 
 exports.getType = getType
 
-},{"../get":54,"../manipulate":58}],71:[function(require,module,exports){
+},{"../get":57,"../manipulate":61}],74:[function(require,module,exports){
 var ref = require('./property');
-var property = ref.property;
+var updateProperty = ref.update;
+var remove = require('./property/remove')
 var ref$1 = require('../keys');
 var getKeys = ref$1.getKeys;
+var ref$2 = require('../get');
+var getOrigin = ref$2.getOrigin;
 
 var inherits = function (key, t, index) {
   var i = 0
@@ -3863,7 +4062,6 @@ var inherits = function (key, t, index) {
   return true
 }
 
-// reintroduce $m whenever it feels like its going to help
 var parseKeys = function (t) {
   var keys = getKeys(t)
   var orig = t
@@ -3905,148 +4103,119 @@ var parseKeys = function (t) {
   return keys
 }
 
-var any = function (t, subs, cb, tree, removed) {
+var any = function (key, t, subs, cb, tree, removed) {
+  var branch = tree[key]
   if (removed || !t) {
-    if (tree.$any) {
-      removeFields(t, subs, cb, tree)
+    if (branch) {
+      removeFields(key, subs, branch, cb, tree)
       return true
     }
   } else {
     var keys = parseKeys(t)
+    if (subs.$keys) {
+      keys = subs.$keys(keys, t)
+    }
+
     if (keys) {
-      if (!tree.$any) {
-        create(keys, t, subs, cb, tree)
+      if (!branch) {
+        create(key, keys, t, subs, cb, tree)
         return true
       } else {
-        return update(keys, t, subs, cb, tree)
+        return update(key, keys, t, subs, cb, branch)
       }
-    } else if (tree.$any) {
-      removeFields(t, subs, cb, tree)
+    } else if (branch) {
+      removeFields(key, subs, branch, cb, tree)
       return true
     }
   }
 }
 
-module.exports = any
-
-var removeFields = function (t, subs, cb, tree) {
-  var branch = tree.$any
-  var $keys = branch.$keys
-  var len = $keys.length
-  for (var i = 0; i < len; i++) {
-    property($keys[i], t, subs, cb, branch, true)
+var composite = function (key, t, subs, cb, branch, removed, c) {
+  var changed
+  if (subs.$keys) {
+    var keys = subs.$keys(parseKeys(t), t)
+    for (var k in c) {
+      var y = branch.$keys[k].$c
+      var tt = keys && getOrigin(t, keys[k])
+      if (updateProperty(k, tt, subs, cb, branch.$keys, removed, y, branch)) {
+        changed = true
+      }
+    }
+  } else {
+    var keys$1 = branch.$keys
+    for (var k$1 in c) {
+      var target = keys$1[k$1]
+      if (target) {
+        if (updateProperty(k$1, target.$t, subs, cb, keys$1, removed, target.$c, branch)) {
+          changed = true
+        }
+      } else if (updateProperty(k$1, void 0, subs, cb, keys$1, removed, void 0, branch)) {
+        changed = true
+      }
+    }
   }
-  delete tree.$any
+
+  return changed
 }
 
-var create = function (keys, t, subs, cb, tree) {
+var create = function (key, keys, t, subs, cb, tree) {
   var len = keys.length
   var $keys = new Array(len)
-  var branch = tree.$any = { _p: tree, _key: '$any', $keys: $keys }
+  var branch = tree[key] = { _p: tree, _key: key, $keys: $keys }
   for (var i = 0; i < len; i++) {
-    var key = keys[i]
-    $keys[i] = key
-    property(key, t, subs, cb, branch)
+    var key$1 = keys[i]
+    var tt = getOrigin(t, key$1)
+    updateProperty(i, tt, subs, cb, $keys, void 0, branch)
   }
 }
 
-var modify = function (hot, $keys, t, subs, cb, branch) {
-  for (var i = 0, len = hot.length; i < len - 2; i += 3) {
-    var create = hot[i]
-    var remove = hot[i + 1]
-    if (remove) {
-      property(remove, t, subs, cb, branch, true)
-      $keys.pop() // measure speed of pop make this faster
-    }
-    if (create) {
-      var index = hot[i + 2]
-      property(create, t, subs, cb, branch)
-      $keys[index] = create
-    }
-  }
-}
-
-var update = function (keys, t, subs, cb, tree) {
-  var hot, changed
-  var branch = tree.$any
+var removeFields = function (key, subs, branch, cb, tre) {
   var $keys = branch.$keys
-  var len1 = $keys.length
-  var len2 = keys.length
-  var checks = len1
+  var i = $keys.length
+  while (i--) {
+    // console.log(i, $keys[0].$t.key)
+    // console.log('------>', i, subs)
+    remove(subs, cb, $keys[0])
+  }
+}
 
-  var len = len1 > len2 ? len1 : len2
-  for (var i = 0; i < len; i++) {
-    var key = keys[i]
-    var compare = $keys[i]
-    if (key === compare) {
-      checks--
-      changed = property(key, t, subs, cb, branch)
-    } else {
-      if (!hot) {
-        hot = [ key, compare, i ]
+var update = function (key, keys, t, subs, cb, branch) {
+  var changed
+  var $keys = branch.$keys
+  var len1 = keys.length
+  var len2 = $keys.length
+  if (len1 > len2) {
+    for (var i = 0; i < len1; i++) {
+      var key$1 = keys[i]
+      var tt = getOrigin(t, key$1)
+      if (updateProperty(i, tt, subs, cb, $keys, void 0, branch)) {
+        changed = true
+      }
+    }
+  } else { // some keys are removed
+    for (var i$1 = 0; i$1 < len2; i$1++) {
+      var key$2 = keys[i$1]
+      if (!key$2) {
+        remove(subs, cb, $keys[i$1])
+        len2--
+        i$1--
+        changed = true
       } else {
-        if (checks) {
-          var j = hot.length
-          var block
-          while (!block && (j -= 3) > -1) {
-            if (key !== void 0 && hot[j + 1] === key) {
-              $keys[i] = key
-              changed = property(key, t, subs, cb, branch)
-              if (compare === hot[j]) {
-                if (compare && $keys[hot[j + 2]] !== compare) {
-                  $keys[hot[j + 2]] = compare
-                }
-                hot.splice(j, 3)
-                checks--
-                block = true
-              } else {
-                hot[j + 1] = key = void 0
-                if (hot[j] === void 0) {
-                  hot.splice(j, 3) // splice is slow
-                  checks--
-                }
-                if (compare === void 0) { block = true }
-              }
-            } else if (compare !== void 0 && compare === hot[j]) {
-              var index = hot[j + 2]
-              $keys[index] = compare
-              changed = property(compare, t, subs, cb, branch)
-              if (key === hot[j + 1]) {
-                hot.splice(j, 3)
-                checks--
-                block = true
-              } else {
-                hot[j] = compare = void 0
-                if (hot[j + 1] === void 0) {
-                  hot.splice(j, 3)
-                  checks--
-                }
-                if (key === void 0) { block = true }
-              }
-            }
-          }
-          if (!block) {
-            hot.push(key, compare, i)
-          } else {
-            checks--
-          }
-        } else {
-          hot.push(key, void 0, i)
+        var tt$1 = getOrigin(t, key$2)
+        if (updateProperty(i$1, tt$1, subs, cb, $keys, void 0, branch)) {
+          changed = true
         }
       }
     }
   }
-  if (hot) {
-    modify(hot, $keys, t, subs, cb, branch)
-    changed = true
-  }
   return changed
 }
 
-},{"../keys":57,"./property":75}],72:[function(require,module,exports){
-var property, any, root, parent, $switch
+exports.any = any
+exports.composite = composite
 
-//   if (diff(t, subs, cb, branch, tree, void 0, branch.$c)) {
+},{"../get":57,"../keys":60,"./property":78,"./property/remove":79}],75:[function(require,module,exports){
+var property, any, root, parent, $switch, anyComposite
 
 var diff = function (t, subs, cb, tree, removed, composite) {
   var changed
@@ -4056,13 +4225,8 @@ var diff = function (t, subs, cb, tree, removed, composite) {
         var branch = tree[key]
         var c = branch.$c
         if (c) {
-          if (key === '$any') {
-            for (var k in c) {
-              var y = branch[k].$c
-              if (property(k, t, subs.$any, cb, branch, removed, y)) {
-                changed = true
-              }
-            }
+          if (key.indexOf('$any') === 0) {
+            changed = anyComposite(key, t, subs[key], cb, branch, removed, c)
           } else if (parse(key, t, subs, cb, tree, removed, c)) {
             changed = true
           }
@@ -4075,7 +4239,7 @@ var diff = function (t, subs, cb, tree, removed, composite) {
     }
   } else {
     for (var key$1 in subs) {
-      if (key$1 !== 'val' && key$1 !== 'props' && key$1 !== '_' && key$1 !== '$blockRemove') {
+      if (key$1 !== 'val' && key$1 !== 'props' && key$1 !== '_' && key$1 !== '$blockRemove' && key$1 !== '$keys') {
         if (parse(key$1, t, subs, cb, tree, removed, composite)) {
           changed = true
         }
@@ -4091,9 +4255,9 @@ var parse = function (key, t, subs, cb, tree, removed, composite) {
   } else if (key === 'parent') {
     return parent(t, subs.parent, cb, tree, removed)
   } else if (key[0] === '$') {
-    if (key === '$any') {
-      return any(t, subs.$any, cb, tree, removed, composite)
-    } else if (key.indexOf('$switch') === 0) {
+    if (key.indexOf('any') === 1) {
+      return any(key, t, subs[key], cb, tree, removed, composite)
+    } else if (key.indexOf('switch') === 1) {
       return $switch(key, t, subs, cb, tree, removed, composite)
     }
   } else {
@@ -4105,12 +4269,13 @@ exports.diff = diff
 exports.parse = parse
 
 property = require('./property').property
-any = require('./any')
+any = require('./any').any
+anyComposite = require('./any').composite
 root = require('./root')
 parent = require('./parent')
 $switch = require('./switch')
 
-},{"./any":71,"./parent":74,"./property":75,"./root":77,"./switch":78}],73:[function(require,module,exports){
+},{"./any":74,"./parent":77,"./property":78,"./root":80,"./switch":81}],76:[function(require,module,exports){
 var ref = require('./diff');
 var diff = ref.diff;
 var bs = require('brisky-stamp')
@@ -4177,7 +4342,7 @@ var parse = function (subs) {
 exports.subscribe = subscribe
 exports.parse = parse
 
-},{"./diff":72,"brisky-stamp":48}],74:[function(require,module,exports){
+},{"./diff":75,"brisky-stamp":84}],77:[function(require,module,exports){
 var ref = require('./diff');
 var diff = ref.diff;
 var ref$1 = require('../traversal');
@@ -4256,20 +4421,21 @@ var composite = function (tree) {
   }
 }
 
-},{"../get":54,"../traversal":79,"./diff":72}],75:[function(require,module,exports){
+},{"../get":57,"../traversal":82,"./diff":75}],78:[function(require,module,exports){
 var ref = require('../diff');
 var diff = ref.diff;
 var remove = require('./remove')
 var ref$1 = require('../../get');
 var getOrigin = ref$1.getOrigin;
 
-var update = function (key, t, subs, cb, tree, c) {
+var update = function (key, t, subs, cb, tree, c, parent) {
   var branch = tree[key]
   var changed
   if (t) {
+    // dont do 0 do it by default
     var stamp = t.tStamp || 0 // needs to use stamp as well (if dstamp is gone)
     if (!branch) {
-      branch = tree[key] = { _p: tree, _key: key, $t: t }
+      branch = tree[key] = { _p: parent || tree, _key: key, $t: t }
       branch.$ = stamp
       if (subs.val) { cb(t, 'new', subs, branch) }
       diff(t, subs, cb, branch, void 0, c)
@@ -4303,7 +4469,6 @@ var property = function (key, t, subs, cb, tree, removed, composite) {
     }
   } else {
     t = getOrigin(t, key)
-    // if (t) {
     changed = update(
       key,
       t,
@@ -4312,7 +4477,6 @@ var property = function (key, t, subs, cb, tree, removed, composite) {
       tree,
       composite
     )
-    // }
   }
   return changed
 }
@@ -4320,7 +4484,7 @@ var property = function (key, t, subs, cb, tree, removed, composite) {
 exports.property = property
 exports.update = update
 
-},{"../../get":54,"../diff":72,"./remove":76}],76:[function(require,module,exports){
+},{"../../get":57,"../diff":75,"./remove":79}],79:[function(require,module,exports){
 var ref = require('../diff');
 var diff = ref.diff;
 
@@ -4331,8 +4495,24 @@ var remove = function (subs, cb, tree) {
     diff(t, subs, cb, tree, true)
   }
   var key = tree._key
-  if (tree.$c) { composite(tree._p, key) }
-  delete tree._p[key]
+  var parent = tree._p
+  if (tree.$c) { composite(parent, key) } // will this work?
+  if (parent.$keys) {
+    // make a fast splice
+    // console.log('-----', key, parent.$keys[key])
+    // console.log(parent.$keys.map(val => val._key))
+    // make this faster....
+    parent.$keys.splice(key, 1)
+    var i = parent.$keys.length - key
+    // can become a lot faster -- maybe we can even ignore the _key field alltogether?
+    // lets try it
+    while (i--) {
+      parent.$keys[i]._key = i
+    }
+    // need to map all keys...
+  } else {
+    delete parent[key]
+  }
 }
 
 var empty = function (obj) {
@@ -4423,7 +4603,7 @@ var clearRootComposite = function (tree) {
 
 module.exports = remove
 
-},{"../diff":72}],77:[function(require,module,exports){
+},{"../diff":75}],80:[function(require,module,exports){
 var ref = require('./diff');
 var diff = ref.diff;
 var ref$1 = require('../traversal');
@@ -4461,7 +4641,7 @@ var composite = function (tree) {
   }
 }
 
-},{"../traversal":79,"./diff":72}],78:[function(require,module,exports){
+},{"../traversal":82,"./diff":75}],81:[function(require,module,exports){
 var ref = require('./diff');
 var diff = ref.diff;
 var remove = require('./property/remove')
@@ -4546,9 +4726,7 @@ var body = function (key, t, subs, cb, tree, removed, $switch, diffit, composite
 var isSwitched = function (a, b, branch, t) {
   if (t) {
     var o = origin(t)
-    // console.log(branch)
     var b$1 = branch.$origin
-    // console.log(o.path(), b.path())
     if (b$1 !== o) {
       branch.$origin = o
       return true
@@ -4580,7 +4758,7 @@ var isSwitched = function (a, b, branch, t) {
 
 module.exports = $switch
 
-},{"../compute":50,"./diff":72,"./property":75,"./property/remove":76}],79:[function(require,module,exports){
+},{"../compute":53,"./diff":75,"./property":78,"./property/remove":79}],82:[function(require,module,exports){
 // will combined lookup
 var parent = function (t) {
   if (t.context) {
@@ -4631,12 +4809,144 @@ exports.path = path
 exports.parent = parent
 exports.root = root
 
-},{}],80:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var cnt = 1e4 // so now a limition becomes 10k fns normal
 var uid = function (t) { return t._uid || (t._uid = ++cnt) }
 module.exports = uid
 
-},{}],81:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
+(function (global){
+if (global.briskystamp) {
+  module.exports = global.briskystamp
+} else {
+  global.briskystamp = exports
+
+  var on
+
+  exports.cnt = 0
+  // add timestamp option -- maybe allways use it
+
+  exports.create = function (type, src, override) {
+    var stamp = override || ++exports.cnt
+    if (type) {
+      stamp = type + '-' + stamp
+    }
+    if (src) {
+      stamp = src + '|' + stamp
+    }
+    return stamp
+  }
+
+  exports.on = function (fn) {
+    if (!on) {
+      on = [ fn ]
+    } else {
+      on.push(fn)
+    }
+  }
+
+  exports.close = function () {
+    if (on) {
+      for (var i = 0; i < on.length; i++) {
+        on[i]()
+      }
+      on = false
+    }
+  }
+
+  exports.clear = function () { on = false }
+
+  exports.parse = function (stamp) {
+    var parsed = {}
+    var src = exports.src(stamp)
+    var type = exports.type(stamp)
+    if (src || type) {
+      if (src) {
+        parsed.src = src
+        if (type) {
+          parsed.type = type
+          parsed.val = stamp.slice(stamp.indexOf(type) + type.length + 1)
+        } else {
+          parsed.val = stamp.slice(stamp.indexOf('|') + 1)
+        }
+      } else {
+        parsed.type = type
+        parsed.val = stamp.slice(stamp.indexOf(type) + type.length + 1)
+      }
+    } else {
+      parsed.val = stamp
+    }
+    return parsed
+  }
+
+  exports.src = function (stamp) {
+    if (typeof stamp === 'string') {
+      for (var i = 1, len = stamp.length - 2; i < len; i++) {
+        if (stamp.charAt(i) === '|') {
+          return stamp.slice(0, i)
+        }
+      }
+    }
+  }
+
+  exports.val = function (stamp) {
+    if (typeof stamp === 'string') {
+      for (var i = stamp.length - 1; i > 0; i--) {
+        if (stamp.charAt(i) === '-') {
+          return stamp.slice(i + 1)
+        }
+      }
+      for (var i$1 = 1, len = stamp.length - 2; i$1 < len; i$1++) {
+        if (stamp.charAt(i$1) === '|') {
+          return stamp.slice(i$1 + 1)
+        }
+      }
+      return stamp
+    } else {
+      return stamp
+    }
+  }
+
+  exports.hasSrc = function (stamp) {
+    if (typeof stamp === 'string') {
+      for (var i = 1, len = stamp.length - 2; i < len; i++) {
+        if (stamp.charAt(i) === '|') {
+          return i
+        }
+      }
+    }
+  }
+
+  exports.setSrc = function (stamp, val) { return val + '|' + stamp; }
+
+  exports.type = function (stamp, src) {
+    if (typeof stamp === 'string') {
+      var index
+      if (!src) {
+        src = -1
+        for (var j = 1; j < stamp.length - 2; j++) {
+          if (stamp.charAt(j) === '|') {
+            src = j
+            break
+          }
+        }
+      }
+      for (var i = stamp.length - 2; i > src + 1; i--) {
+        var char = stamp.charAt(i)
+        if (char === '-') {
+          index = i
+          break
+        }
+      }
+      if (index) {
+        return stamp.slice(src + 1, index)
+      }
+    }
+  }
+}
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],85:[function(require,module,exports){
 // If `Date.now()` is invoked twice quickly, it's possible to get two
 // identical time stamps. To avoid generation duplications, subsequent
 // calls are manually ordered to force uniqueness.
@@ -4683,174 +4993,4 @@ function timestamp() {
   return adjusted
 }
 
-},{}],82:[function(require,module,exports){
-/**
- * @function ua
- * Returns an object representing the user agent including data such as browser, device and platform
- * @param {string} _ua - the raw user agent string to be converted
- * @param {string} obj - (optional) object to be merged to the output result
- * @returns {object} object representing your user agent
- */
-module.exports = exports = function (_ua, obj) {
-  if (typeof _ua === 'string') {
-    _ua = _ua.toLowerCase()
-  } else {
-    _ua = ''
-  }
-  if (obj === true) {
-    obj = exports
-  } else if (!obj) {
-    obj = {}
-  }
-  // _ua = 'webos; linux - large screen'
-  var _ff = 'firefox'
-  var _mac = 'mac'
-  var _chrome = 'chrome'
-  var _android = 'android'
-  var _wrapper = 'wrapper'
-  var _mobile = '.+mobile'
-  var _webkit = 'webkit'
-  var _ps = 'playstation'
-  var _xbox = 'xbox'
-  var _linux = 'linux'
-  var _castDetect = 'crkey'
-  var _chromecast = 'cast'
-  var _tablet = 'tablet'
-  var _windows = 'windows'
-  var _phone = 'phone'
-  var _firetv = 'firetv'
-  var _rikstv = 'rikstv'
-  var _facebook = 'facebook'
-  var _edge = 'edge'
-  var _version = 'version'
-  var _samsung = 'samsung'
-
-  /**
-   * browser detection
-   */
-  test.call(obj, _ua,
-    function (query, arr) {
-      obj.browser = arr[ 2 ] || query
-      var _v = _ua.match(
-        new RegExp('((([\\/ ]' + _version + '|' + arr[ 0 ] + '(?!.+' + _version + '))[\/ ])| rv:)([0-9]{1,4}\\.[0-9]{0,2})')
-      )
-      obj[_version] = _v ? Number(_v[4]) : 0
-      obj.prefix = arr[1]
-      // TODO: add prefix for opera v>12.15;
-      // TODO: windows check for ie 11 may be too general;
-    },
-    [ true, _webkit ],
-    [ '\\(' + _windows, 'ms', 'ie' ],
-    [ 'safari', _webkit ],
-    [ _ff, 'Moz' ],
-    [ 'opera', 'O' ],
-    [ 'msie', 'ms', 'ie' ],
-    [ _facebook ],
-    [ _chrome + '|crios\/', _webkit, _chrome ],
-    [ _edge, _webkit, _edge ]
-  )
-
-  /**
-   * platform detection
-   */
-  test.call(obj, _ua, 'platform',
-    [ true, _windows ],
-    [ _linux ],
-    [ 'lg.{0,3}netcast', 'lg' ], // TODO:propably need to add more!
-    [ _ff + _mobile, _ff ],
-    [ _mac + ' os x', _mac ], [ 'iphone|ipod|ipad', 'ios' ],
-    [ _xbox ],
-    [ _ps ],
-    [ _android ],
-    [ _windows ],
-    [ _castDetect, _chromecast ],
-    [ 'smart-tv;|;' + _samsung + ';smarttv', _samsung ], // SmartTV2013
-    [ _rikstv ]
-  )
-
-  /**
-   * device detection
-   */
-  test.call(obj, _ua, 'device',
-    [ true, 'desktop' ],
-    [ _windows + '.+touch|ipad|' + _android, _tablet ],
-    [
-      _phone + '|phone|(' +
-      _android + _mobile + ')|(' + _ff + _mobile +
-      ')|' + _windows + ' phone|iemobile', _phone
-    ],
-    [ _xbox + '|' + _ps, 'console' ],
-    [ 'tv|smarttv|googletv|appletv|hbbtv|pov_tv|netcast.tv|webos.+large', 'tv' ],
-    [ _castDetect, _chromecast ],
-    [ _tablet + '|amazon-fireos|nexus (?=[^1-6])\\d{1,2}', _tablet ],
-    [ 'aft[bsm]', _firetv ],
-    [ _rikstv ]
-  )
-
-  /**
-   * wrapped webview native app detection
-   */
-  test.call(obj, _ua, 'webview',
-    [ true, false ],
-    [  'crosswalk' ],
-    [ 'vigour-' + _wrapper, _wrapper ],
-    [ 'cordova' ],
-    [ 'ploy-native' ]
-  )
-
-  return obj
-
-  /**
-   * test
-   * search for regexps in the userAgent
-   * fn is a on succes callback
-   * check tests in https://github.com/faisalman/ua-parser-js to test for userAgents
-   * @method
-   */
-  function test (_ua, fn) {
-    for (
-      var tests = arguments, i = tests.length - 1, t = tests[i], query = t[0];
-      query !== true && !new RegExp(query).test(_ua) && i > 0;
-      t = tests[--i], query = t[0]
-    ); //eslint-disable-line
-    // this for has no body
-    if (fn.slice || fn.call(this, query, t)) {
-      this[fn] = t[1] === void 0 ? query : t[1]
-    }
-  }
-}
-
-},{}],83:[function(require,module,exports){
-'use strict'
-var ua = require('./')
-if (typeof window === 'undefined') {
-  ua.platform = 'node'
-} else {
-  ua(window.navigator.userAgent, exports)
-}
-
-},{"./":82}],84:[function(require,module,exports){
-module.exports = function (state, n) {
-  if (!n) { n = 100 }
-  var cnt = 0
-  var update = function () {
-    var i = n
-    cnt++
-    if (cnt > n) {
-      cnt = 0
-    }
-    // var d = Date.now()
-    var arr = []
-    // arr[cnt] = 'ha' + cnt
-    // arr[cnt + 100] = 'ha' + cnt
-    // if (cnt === 1) {
-    while (i--) { arr.push(i + cnt) }
-    // }
-    state.set({ collection: arr })
-    // console.log(`n = ${n}`, Date.now() - d, 'ms')
-    // global.requestAnimationFrame(update)
-  }
-  update()
-}
-
-},{}]},{},[1]);
+},{}]},{},[50]);

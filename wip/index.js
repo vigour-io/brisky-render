@@ -30,7 +30,9 @@ const app = render({
       }
     }
   }
-}, state)
+}, state, (s, tree) => {
+  console.log(s, tree)
+})
 
 stats(state)
 
@@ -38,10 +40,16 @@ module.exports = app
 
 if (document.body) {
   console.log('re-render')
-  const pr = document.getElementById('prerender')
-  if (pr) {
-    document.body.removeChild(pr)
-  }
+
+  // app
+  console.log(app)
+
+  document.body.childNodes
+
+  // const pr = document.getElementById('prerender')
+  // if (pr) {
+  //   document.body.removeChild(pr)
+  // }
   document.body.appendChild(app)
   console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
   d = Date.now()

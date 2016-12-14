@@ -26,18 +26,39 @@ const { parse } = require('url')
 
 const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
 
+// const index = `
+// <html>
+// <head>
+// </head>
+// <body>
+//   <div id="prerender">
+//     ${parseElement(app)}
+//   </div>
+//   <script>${bridge}</script>
+//   <script src="build.min.js"></script>
+// </body>
+// </html>`
+
 const index = `
 <html>
 <head>
 </head>
 <body>
-  <div id="prerender">
-    ${parseElement(app)}
-  </div>
+  ${parseElement(app)}
   <script>${bridge}</script>
-  <script src="build.min.js"></script>
+  <script src="http://localhost:8080/wip"></script>
 </body>
 </html>`
+
+// const index = `
+// <html>
+// <head>
+// </head>
+// <body>
+//   <script>${bridge}</script>
+//   <script src="build.min.js"></script>
+// </body>
+// </html>`
 
 const build = fs.readFileSync(__dirname + '/build.min.js') //eslint-disable-line
 
