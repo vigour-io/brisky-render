@@ -44,10 +44,21 @@ const index = `
 <head>
 </head>
 <body>
+  ${parseElement(app)}
   <script>${bridge}</script>
-  <script src="build.min.js"></script>
+  <script src="http://localhost:8080/wip"></script>
 </body>
 </html>`
+
+// const index = `
+// <html>
+// <head>
+// </head>
+// <body>
+//   <script>${bridge}</script>
+//   <script src="build.min.js"></script>
+// </body>
+// </html>`
 
 const build = fs.readFileSync(__dirname + '/build.min.js') //eslint-disable-line
 

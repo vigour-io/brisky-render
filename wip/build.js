@@ -32,7 +32,7 @@ element.set({ types: { element: element } }, false)
 
 module.exports = element
 
-},{"./events":4,"./findindex":7,"./property":13,"./property/attr":9,"./property/class":10,"./property/group":11,"./property/html":12,"./property/style":14,"./property/text":19,"./render/dom/element":24,"./subscribe":31,"./widget":44,"brisky-struct":92}],2:[function(require,module,exports){
+},{"./events":4,"./findindex":7,"./property":13,"./property/attr":9,"./property/class":10,"./property/group":11,"./property/html":12,"./property/style":14,"./property/text":19,"./render/dom/element":24,"./subscribe":31,"./widget":44,"brisky-struct":58}],2:[function(require,module,exports){
 module.exports = exports = function attach (e, data) {
   var touch = e.changedTouches
   var ev = touch ? touch[0] : e
@@ -157,7 +157,7 @@ exports.props = {
   }
 }
 
-},{"../render/dom/parent":25,"./delegate":3,"./listener":5,"brisky-struct/lib/struct":103}],5:[function(require,module,exports){
+},{"../render/dom/parent":25,"./delegate":3,"./listener":5,"brisky-struct/lib/struct":69}],5:[function(require,module,exports){
 (function (global){
 var ua = require('vigour-ua/navigator') // again scope it differently this is bit dirty
 
@@ -264,7 +264,7 @@ exports.define = {
   }
 }
 
-},{"./get":8,"brisky-struct/lib/get":91}],8:[function(require,module,exports){
+},{"./get":8,"brisky-struct/lib/get":57}],8:[function(require,module,exports){
 var getPath = function (t, path) {
   var i = 0
   var len = path.length
@@ -457,7 +457,7 @@ var parseKey = function (t, pid) {
   }
 }
 
-},{"../get":8,"../render/dom/parent":25,"brisky-struct/lib/get":91}],11:[function(require,module,exports){
+},{"../get":8,"../render/dom/parent":25,"brisky-struct/lib/get":57}],11:[function(require,module,exports){
 var ref = require('../render/static');
 var property = ref.property;
 var parent = require('../render/dom/parent')
@@ -618,7 +618,7 @@ module.exports = struct({
   // noReference: true,
 }, false)
 
-},{"../findindex":7,"../subscribe":31,"brisky-struct":92}],14:[function(require,module,exports){
+},{"../findindex":7,"../subscribe":31,"brisky-struct":58}],14:[function(require,module,exports){
 var parent = require('../../render/dom/parent')
 var ref = require('../../render/static');
 var property = ref.property;
@@ -880,6 +880,7 @@ function findNode (order, pnode) {
 }
 
 },{"../../fragment":26}],21:[function(require,module,exports){
+(function (global){
 var render = require('./render')
 var renderStatic = render.static
 var renderState = render.state
@@ -892,27 +893,37 @@ var ref = require('../../../get');
 var tag = ref.tag;
 
 exports.static = function (t, pnode) {
-  var node = renderStatic(t)
-  appendStatic(t, pnode, node)
-  if (t.hasEvents) { node._ = t }
-  return node
+  if (global.isPrerender) {
+
+  } else {
+    var node = renderStatic(t)
+    appendStatic(t, pnode, node)
+    if (t.hasEvents) { node._ = t }
+    return node
+  }
 }
 
 exports.state = function (t, state, type, subs, tree, id, pid, order) {
   var pnode = parent(tree, pid)
-  var node = renderState(t, type, subs, tree, id, pnode)
-  if (pnode) {
-    if (tag(t) !== 'fragment') {
-      appendState(t, pnode, node, subs, tree, id, order)
-    } else {
-      if (isFragment(pnode)) {
-        pnode.push(node)
+
+  if (global.isPrerender) {
+
+  } else {
+    var node = renderState(t, type, subs, tree, id, pnode)
+    if (pnode) {
+      if (tag(t) !== 'fragment') {
+        appendState(t, pnode, node, subs, tree, id, order)
+      } else {
+        if (isFragment(pnode)) {
+          pnode.push(node)
+        }
       }
     }
+    return node
   }
-  return node
 }
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"../../../get":8,"../../fragment":26,"../parent":25,"./append":20,"./render":22}],22:[function(require,module,exports){
 var ref = require('brisky-struct/lib/get');
 var get = ref.get;
@@ -1009,7 +1020,7 @@ exports.state = function (t, type, subs, tree, id, pnode) {
 
 // module.exports = require('./index')
 
-},{"../../../../get":8,"../../../static":30,"./fragment":23,"brisky-struct/lib/get":91}],23:[function(require,module,exports){
+},{"../../../../get":8,"../../../static":30,"./fragment":23,"brisky-struct/lib/get":57}],23:[function(require,module,exports){
 var parseStatic = require('../../../static')
 var elems = parseStatic.element
 
@@ -1181,7 +1192,7 @@ module.exports = function (elem, state, cb) {
   }
 }
 
-},{"../element":1,"../get":8,"./render":28,"brisky-stamp":46,"brisky-struct":92,"brisky-struct/lib/subscribe":110}],28:[function(require,module,exports){
+},{"../element":1,"../get":8,"./render":28,"brisky-stamp":46,"brisky-struct":58,"brisky-struct/lib/subscribe":76}],28:[function(require,module,exports){
 var render = require('./state')
 
 module.exports = function (state, type, subs, tree) {
@@ -1402,7 +1413,7 @@ function exec (p, map, prevMap) {
   }
 }
 
-},{"brisky-struct/lib/get":91}],34:[function(require,module,exports){
+},{"brisky-struct/lib/get":57}],34:[function(require,module,exports){
 var mergeS = require('./subscriber/merge')
 var ref = require('../../get');
 var getPath = ref.getPath;
@@ -1837,7 +1848,7 @@ function mapSwitch (val, key, t, pmap, $) {
   return val
 }
 
-},{"../../../../get":8,"../../merge":34,"brisky-struct/lib/get":91}],43:[function(require,module,exports){
+},{"../../../../get":8,"../../merge":34,"brisky-struct/lib/get":57}],43:[function(require,module,exports){
 module.exports = function (target, map, val) {
   // if (target.sync === false) {
   //   if ((val === true && map.val !== val) || !map.val) {
@@ -2213,138 +2224,30 @@ if (document.body) {
   console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
 }
 
-},{"../":49,"./stats":85,"brisky-struct":58}],51:[function(require,module,exports){
-(function (global){
-if (global.briskystamp) {
-  module.exports = global.briskystamp
-} else {
-  global.briskystamp = exports
-
-  var on
-
-  exports.cnt = 0
-  // add timestamp option -- maybe allways use it
-
-  exports.create = function (type, src, override) {
-    var stamp = override || ++exports.cnt
-    if (type) {
-      stamp = type + '-' + stamp
+},{"../":49,"./stats":51,"brisky-struct":58}],51:[function(require,module,exports){
+module.exports = function (state, n) {
+  if (!n) { n = 3 }
+  var cnt = 0
+  var update = function () {
+    var i = n
+    cnt++
+    if (cnt > n) {
+      cnt = 0
     }
-    if (src) {
-      stamp = src + '|' + stamp
-    }
-    return stamp
+    // var d = Date.now()
+    var arr = []
+    // arr[cnt] = 'ha' + cnt
+    // arr[cnt + 100] = 'ha' + cnt
+    // if (cnt === 1) {
+    while (i--) { arr.push(i + cnt) }
+    // }
+    state.set({ collection: arr })
+    // console.log(`n = ${n}`, Date.now() - d, 'ms')
+    // global.requestAnimationFrame(update)
   }
-
-  exports.on = function (fn) {
-    if (!on) {
-      on = [ fn ]
-    } else {
-      on.push(fn)
-    }
-  }
-
-  exports.close = function () {
-    if (on) {
-      for (var i = 0; i < on.length; i++) {
-        on[i]()
-      }
-      on = false
-    }
-  }
-
-  exports.clear = function () { on = false }
-
-  exports.parse = function (stamp) {
-    var parsed = {}
-    var src = exports.src(stamp)
-    var type = exports.type(stamp)
-    if (src || type) {
-      if (src) {
-        parsed.src = src
-        if (type) {
-          parsed.type = type
-          parsed.val = stamp.slice(stamp.indexOf(type) + type.length + 1)
-        } else {
-          parsed.val = stamp.slice(stamp.indexOf('|') + 1)
-        }
-      } else {
-        parsed.type = type
-        parsed.val = stamp.slice(stamp.indexOf(type) + type.length + 1)
-      }
-    } else {
-      parsed.val = stamp
-    }
-    return parsed
-  }
-
-  exports.src = function (stamp) {
-    if (typeof stamp === 'string') {
-      for (var i = 1, len = stamp.length - 2; i < len; i++) {
-        if (stamp.charAt(i) === '|') {
-          return stamp.slice(0, i)
-        }
-      }
-    }
-  }
-
-  exports.val = function (stamp) {
-    if (typeof stamp === 'string') {
-      for (var i = stamp.length - 1; i > 0; i--) {
-        if (stamp.charAt(i) === '-') {
-          return stamp.slice(i + 1)
-        }
-      }
-      for (var i$1 = 1, len = stamp.length - 2; i$1 < len; i$1++) {
-        if (stamp.charAt(i$1) === '|') {
-          return stamp.slice(i$1 + 1)
-        }
-      }
-      return stamp
-    } else {
-      return stamp
-    }
-  }
-
-  exports.hasSrc = function (stamp) {
-    if (typeof stamp === 'string') {
-      for (var i = 1, len = stamp.length - 2; i < len; i++) {
-        if (stamp.charAt(i) === '|') {
-          return i
-        }
-      }
-    }
-  }
-
-  exports.setSrc = function (stamp, val) { return val + '|' + stamp; }
-
-  exports.type = function (stamp, src) {
-    if (typeof stamp === 'string') {
-      var index
-      if (!src) {
-        src = -1
-        for (var j = 1; j < stamp.length - 2; j++) {
-          if (stamp.charAt(j) === '|') {
-            src = j
-            break
-          }
-        }
-      }
-      for (var i = stamp.length - 2; i > src + 1; i--) {
-        var char = stamp.charAt(i)
-        if (char === '-') {
-          index = i
-          break
-        }
-      }
-      if (index) {
-        return stamp.slice(src + 1, index)
-      }
-    }
-  }
+  update()
 }
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],52:[function(require,module,exports){
 var bs = require('brisky-stamp')
 var ref = require('./emit');
@@ -2364,7 +2267,7 @@ var extendSet = function (t, val, stamp) {
   }
 }
 
-var error = function (t, err, stamp) { return generic(root(t), 'error', err, stamp); }
+var error = function (t, err, stamp) { return err && generic(root(t), 'error', err, stamp); }
 
 var isGeneratorFunction = function (obj) {
   var constructor = obj.constructor
@@ -2489,7 +2392,7 @@ exports.iterator = iterator
 
 set = require('./manipulate').set
 
-},{"./emit":55,"./manipulate":61,"./traversal":82,"brisky-stamp":51}],53:[function(require,module,exports){
+},{"./emit":55,"./manipulate":61,"./traversal":82,"brisky-stamp":84}],53:[function(require,module,exports){
 var get = function (t) { return t.val !== void 0 ? t.val : t.inherits && get(t.inherits); }
 
 var origin = function (t) { return t.val && typeof t.val === 'object' && t.val.inherits
@@ -3454,7 +3357,7 @@ exports.define = {
   keys: function keys () { return getKeys(this) }
 }
 
-},{"../compute":53,"../context":54,"../emit":55,"../get/api":56,"../keys":60,"../manipulate":61,"../once":65,"../serialize":68,"../subscribe":76,"../traversal":82,"../uid":83,"./functional":62,"./iterator":64,"brisky-stamp":51,"monotonic-timestamp":84}],64:[function(require,module,exports){
+},{"../compute":53,"../context":54,"../emit":55,"../get/api":56,"../keys":60,"../manipulate":61,"../once":65,"../serialize":68,"../subscribe":76,"../traversal":82,"../uid":83,"./functional":62,"./iterator":64,"brisky-stamp":84,"monotonic-timestamp":85}],64:[function(require,module,exports){
 var ref = require('../keys');
 var getKeys = ref.getKeys;
 var ref$1 = require('../get');
@@ -4140,9 +4043,12 @@ exports.getType = getType
 
 },{"../get":57,"../manipulate":61}],74:[function(require,module,exports){
 var ref = require('./property');
-var property = ref.property;
+var updateProperty = ref.update;
+var remove = require('./property/remove')
 var ref$1 = require('../keys');
 var getKeys = ref$1.getKeys;
+var ref$2 = require('../get');
+var getOrigin = ref$2.getOrigin;
 
 var inherits = function (key, t, index) {
   var i = 0
@@ -4156,7 +4062,6 @@ var inherits = function (key, t, index) {
   return true
 }
 
-// reintroduce $m whenever it feels like its going to help
 var parseKeys = function (t) {
   var keys = getKeys(t)
   var orig = t
@@ -4198,148 +4103,119 @@ var parseKeys = function (t) {
   return keys
 }
 
-var any = function (t, subs, cb, tree, removed) {
+var any = function (key, t, subs, cb, tree, removed) {
+  var branch = tree[key]
   if (removed || !t) {
-    if (tree.$any) {
-      removeFields(t, subs, cb, tree)
+    if (branch) {
+      removeFields(key, subs, branch, cb, tree)
       return true
     }
   } else {
     var keys = parseKeys(t)
+    if (subs.$keys) {
+      keys = subs.$keys(keys, t)
+    }
+
     if (keys) {
-      if (!tree.$any) {
-        create(keys, t, subs, cb, tree)
+      if (!branch) {
+        create(key, keys, t, subs, cb, tree)
         return true
       } else {
-        return update(keys, t, subs, cb, tree)
+        return update(key, keys, t, subs, cb, branch)
       }
-    } else if (tree.$any) {
-      removeFields(t, subs, cb, tree)
+    } else if (branch) {
+      removeFields(key, subs, branch, cb, tree)
       return true
     }
   }
 }
 
-module.exports = any
-
-var removeFields = function (t, subs, cb, tree) {
-  var branch = tree.$any
-  var $keys = branch.$keys
-  var len = $keys.length
-  for (var i = 0; i < len; i++) {
-    property($keys[i], t, subs, cb, branch, true)
+var composite = function (key, t, subs, cb, branch, removed, c) {
+  var changed
+  if (subs.$keys) {
+    var keys = subs.$keys(parseKeys(t), t)
+    for (var k in c) {
+      var y = branch.$keys[k].$c
+      var tt = keys && getOrigin(t, keys[k])
+      if (updateProperty(k, tt, subs, cb, branch.$keys, removed, y, branch)) {
+        changed = true
+      }
+    }
+  } else {
+    var keys$1 = branch.$keys
+    for (var k$1 in c) {
+      var target = keys$1[k$1]
+      if (target) {
+        if (updateProperty(k$1, target.$t, subs, cb, keys$1, removed, target.$c, branch)) {
+          changed = true
+        }
+      } else if (updateProperty(k$1, void 0, subs, cb, keys$1, removed, void 0, branch)) {
+        changed = true
+      }
+    }
   }
-  delete tree.$any
+
+  return changed
 }
 
-var create = function (keys, t, subs, cb, tree) {
+var create = function (key, keys, t, subs, cb, tree) {
   var len = keys.length
   var $keys = new Array(len)
-  var branch = tree.$any = { _p: tree, _key: '$any', $keys: $keys }
+  var branch = tree[key] = { _p: tree, _key: key, $keys: $keys }
   for (var i = 0; i < len; i++) {
-    var key = keys[i]
-    $keys[i] = key
-    property(key, t, subs, cb, branch)
+    var key$1 = keys[i]
+    var tt = getOrigin(t, key$1)
+    updateProperty(i, tt, subs, cb, $keys, void 0, branch)
   }
 }
 
-var modify = function (hot, $keys, t, subs, cb, branch) {
-  for (var i = 0, len = hot.length; i < len - 2; i += 3) {
-    var create = hot[i]
-    var remove = hot[i + 1]
-    if (remove) {
-      property(remove, t, subs, cb, branch, true)
-      $keys.pop() // measure speed of pop make this faster
-    }
-    if (create) {
-      var index = hot[i + 2]
-      property(create, t, subs, cb, branch)
-      $keys[index] = create
-    }
-  }
-}
-
-var update = function (keys, t, subs, cb, tree) {
-  var hot, changed
-  var branch = tree.$any
+var removeFields = function (key, subs, branch, cb, tre) {
   var $keys = branch.$keys
-  var len1 = $keys.length
-  var len2 = keys.length
-  var checks = len1
+  var i = $keys.length
+  while (i--) {
+    // console.log(i, $keys[0].$t.key)
+    // console.log('------>', i, subs)
+    remove(subs, cb, $keys[0])
+  }
+}
 
-  var len = len1 > len2 ? len1 : len2
-  for (var i = 0; i < len; i++) {
-    var key = keys[i]
-    var compare = $keys[i]
-    if (key === compare) {
-      checks--
-      changed = property(key, t, subs, cb, branch)
-    } else {
-      if (!hot) {
-        hot = [ key, compare, i ]
+var update = function (key, keys, t, subs, cb, branch) {
+  var changed
+  var $keys = branch.$keys
+  var len1 = keys.length
+  var len2 = $keys.length
+  if (len1 > len2) {
+    for (var i = 0; i < len1; i++) {
+      var key$1 = keys[i]
+      var tt = getOrigin(t, key$1)
+      if (updateProperty(i, tt, subs, cb, $keys, void 0, branch)) {
+        changed = true
+      }
+    }
+  } else { // some keys are removed
+    for (var i$1 = 0; i$1 < len2; i$1++) {
+      var key$2 = keys[i$1]
+      if (!key$2) {
+        remove(subs, cb, $keys[i$1])
+        len2--
+        i$1--
+        changed = true
       } else {
-        if (checks) {
-          var j = hot.length
-          var block
-          while (!block && (j -= 3) > -1) {
-            if (key !== void 0 && hot[j + 1] === key) {
-              $keys[i] = key
-              changed = property(key, t, subs, cb, branch)
-              if (compare === hot[j]) {
-                if (compare && $keys[hot[j + 2]] !== compare) {
-                  $keys[hot[j + 2]] = compare
-                }
-                hot.splice(j, 3)
-                checks--
-                block = true
-              } else {
-                hot[j + 1] = key = void 0
-                if (hot[j] === void 0) {
-                  hot.splice(j, 3) // splice is slow
-                  checks--
-                }
-                if (compare === void 0) { block = true }
-              }
-            } else if (compare !== void 0 && compare === hot[j]) {
-              var index = hot[j + 2]
-              $keys[index] = compare
-              changed = property(compare, t, subs, cb, branch)
-              if (key === hot[j + 1]) {
-                hot.splice(j, 3)
-                checks--
-                block = true
-              } else {
-                hot[j] = compare = void 0
-                if (hot[j + 1] === void 0) {
-                  hot.splice(j, 3)
-                  checks--
-                }
-                if (key === void 0) { block = true }
-              }
-            }
-          }
-          if (!block) {
-            hot.push(key, compare, i)
-          } else {
-            checks--
-          }
-        } else {
-          hot.push(key, void 0, i)
+        var tt$1 = getOrigin(t, key$2)
+        if (updateProperty(i$1, tt$1, subs, cb, $keys, void 0, branch)) {
+          changed = true
         }
       }
     }
   }
-  if (hot) {
-    modify(hot, $keys, t, subs, cb, branch)
-    changed = true
-  }
   return changed
 }
 
-},{"../keys":60,"./property":78}],75:[function(require,module,exports){
-var property, any, root, parent, $switch
+exports.any = any
+exports.composite = composite
 
-//   if (diff(t, subs, cb, branch, tree, void 0, branch.$c)) {
+},{"../get":57,"../keys":60,"./property":78,"./property/remove":79}],75:[function(require,module,exports){
+var property, any, root, parent, $switch, anyComposite
 
 var diff = function (t, subs, cb, tree, removed, composite) {
   var changed
@@ -4349,13 +4225,8 @@ var diff = function (t, subs, cb, tree, removed, composite) {
         var branch = tree[key]
         var c = branch.$c
         if (c) {
-          if (key === '$any') {
-            for (var k in c) {
-              var y = branch[k].$c
-              if (property(k, t, subs.$any, cb, branch, removed, y)) {
-                changed = true
-              }
-            }
+          if (key.indexOf('$any') === 0) {
+            changed = anyComposite(key, t, subs[key], cb, branch, removed, c)
           } else if (parse(key, t, subs, cb, tree, removed, c)) {
             changed = true
           }
@@ -4368,7 +4239,7 @@ var diff = function (t, subs, cb, tree, removed, composite) {
     }
   } else {
     for (var key$1 in subs) {
-      if (key$1 !== 'val' && key$1 !== 'props' && key$1 !== '_' && key$1 !== '$blockRemove') {
+      if (key$1 !== 'val' && key$1 !== 'props' && key$1 !== '_' && key$1 !== '$blockRemove' && key$1 !== '$keys') {
         if (parse(key$1, t, subs, cb, tree, removed, composite)) {
           changed = true
         }
@@ -4384,9 +4255,9 @@ var parse = function (key, t, subs, cb, tree, removed, composite) {
   } else if (key === 'parent') {
     return parent(t, subs.parent, cb, tree, removed)
   } else if (key[0] === '$') {
-    if (key === '$any') {
-      return any(t, subs.$any, cb, tree, removed, composite)
-    } else if (key.indexOf('$switch') === 0) {
+    if (key.indexOf('any') === 1) {
+      return any(key, t, subs[key], cb, tree, removed, composite)
+    } else if (key.indexOf('switch') === 1) {
       return $switch(key, t, subs, cb, tree, removed, composite)
     }
   } else {
@@ -4398,7 +4269,8 @@ exports.diff = diff
 exports.parse = parse
 
 property = require('./property').property
-any = require('./any')
+any = require('./any').any
+anyComposite = require('./any').composite
 root = require('./root')
 parent = require('./parent')
 $switch = require('./switch')
@@ -4470,7 +4342,7 @@ var parse = function (subs) {
 exports.subscribe = subscribe
 exports.parse = parse
 
-},{"./diff":75,"brisky-stamp":51}],77:[function(require,module,exports){
+},{"./diff":75,"brisky-stamp":84}],77:[function(require,module,exports){
 var ref = require('./diff');
 var diff = ref.diff;
 var ref$1 = require('../traversal');
@@ -4556,13 +4428,14 @@ var remove = require('./remove')
 var ref$1 = require('../../get');
 var getOrigin = ref$1.getOrigin;
 
-var update = function (key, t, subs, cb, tree, c) {
+var update = function (key, t, subs, cb, tree, c, parent) {
   var branch = tree[key]
   var changed
   if (t) {
+    // dont do 0 do it by default
     var stamp = t.tStamp || 0 // needs to use stamp as well (if dstamp is gone)
     if (!branch) {
-      branch = tree[key] = { _p: tree, _key: key, $t: t }
+      branch = tree[key] = { _p: parent || tree, _key: key, $t: t }
       branch.$ = stamp
       if (subs.val) { cb(t, 'new', subs, branch) }
       diff(t, subs, cb, branch, void 0, c)
@@ -4596,7 +4469,6 @@ var property = function (key, t, subs, cb, tree, removed, composite) {
     }
   } else {
     t = getOrigin(t, key)
-    // if (t) {
     changed = update(
       key,
       t,
@@ -4605,7 +4477,6 @@ var property = function (key, t, subs, cb, tree, removed, composite) {
       tree,
       composite
     )
-    // }
   }
   return changed
 }
@@ -4624,8 +4495,24 @@ var remove = function (subs, cb, tree) {
     diff(t, subs, cb, tree, true)
   }
   var key = tree._key
-  if (tree.$c) { composite(tree._p, key) }
-  delete tree._p[key]
+  var parent = tree._p
+  if (tree.$c) { composite(parent, key) } // will this work?
+  if (parent.$keys) {
+    // make a fast splice
+    // console.log('-----', key, parent.$keys[key])
+    // console.log(parent.$keys.map(val => val._key))
+    // make this faster....
+    parent.$keys.splice(key, 1)
+    var i = parent.$keys.length - key
+    // can become a lot faster -- maybe we can even ignore the _key field alltogether?
+    // lets try it
+    while (i--) {
+      parent.$keys[i]._key = i
+    }
+    // need to map all keys...
+  } else {
+    delete parent[key]
+  }
 }
 
 var empty = function (obj) {
@@ -4839,9 +4726,7 @@ var body = function (key, t, subs, cb, tree, removed, $switch, diffit, composite
 var isSwitched = function (a, b, branch, t) {
   if (t) {
     var o = origin(t)
-    // console.log(branch)
     var b$1 = branch.$origin
-    // console.log(o.path(), b.path())
     if (b$1 !== o) {
       branch.$origin = o
       return true
@@ -4930,2643 +4815,6 @@ var uid = function (t) { return t._uid || (t._uid = ++cnt) }
 module.exports = uid
 
 },{}],84:[function(require,module,exports){
-// If `Date.now()` is invoked twice quickly, it's possible to get two
-// identical time stamps. To avoid generation duplications, subsequent
-// calls are manually ordered to force uniqueness.
-
-var _last = 0
-var _count = 1
-var adjusted = 0
-var _adjusted = 0
-
-module.exports =
-function timestamp() {
-  /**
-  Returns NOT an accurate representation of the current time.
-  Since js only measures time as ms, if you call `Date.now()`
-  twice quickly, it's possible to get two identical time stamps.
-  This function guarantees unique but maybe inaccurate results
-  on each call.
-  **/
-  //uncomment this wen
-  var time = Date.now()
-  //time = ~~ (time / 1000) 
-  //^^^uncomment when testing...
-
-  /**
-  If time returned is same as in last call, adjust it by
-  adding a number based on the counter. 
-  Counter is incremented so that next call get's adjusted properly.
-  Because floats have restricted precision, 
-  may need to step past some values...
-  **/
-  if (_last === time)  {
-    do {
-      adjusted = time + ((_count++) / (_count + 999))
-    } while (adjusted === _adjusted)
-    _adjusted = adjusted
-  }
-  // If last time was different reset timer back to `1`.
-  else {
-    _count = 1
-    adjusted = time
-  }
-  _adjusted = adjusted
-  _last = time
-  return adjusted
-}
-
-},{}],85:[function(require,module,exports){
-module.exports = function (state, n) {
-  if (!n) { n = 5e3 }
-  var cnt = 0
-  var update = function () {
-    var i = n
-    cnt++
-    if (cnt > n) {
-      cnt = 0
-    }
-    // var d = Date.now()
-    var arr = []
-    // arr[cnt] = 'ha' + cnt
-    // arr[cnt + 100] = 'ha' + cnt
-    // if (cnt === 1) {
-    while (i--) { arr.push(i + cnt) }
-    // }
-    state.set({ collection: arr })
-    // console.log(`n = ${n}`, Date.now() - d, 'ms')
-    // global.requestAnimationFrame(update)
-  }
-  update()
-}
-
-},{}],86:[function(require,module,exports){
-var bs = require('brisky-stamp')
-var ref = require('./emit');
-var generic = ref.generic;
-var ref$1 = require('./traversal');
-var root = ref$1.root;
-var uid = 0
-var set
-
-var extendSet = function (t, val, stamp) {
-  if (stamp) {
-    stamp = bs.create(bs.type(stamp), bs.src(stamp))
-    set(t, val, stamp)
-    bs.close(stamp)
-  } else {
-    set(t, val)
-  }
-}
-
-var error = function (t, err, stamp) { return err && generic(root(t), 'error', err, stamp); }
-
-var isGeneratorFunction = function (obj) {
-  var constructor = obj.constructor
-  return constructor && (constructor.name === 'GeneratorFunction' ||
-    constructor.displayName === 'GeneratorFunction') ||
-    typeof constructor.prototype.next === 'function'
-}
-
-var generator = function (t, val, stamp) { return iterator(t, val(t, stamp), stamp); }
-
-var promiseQueue = function (t, uid, val, error) {
-  if (t.async) {
-    for (var i = 0, end = t.async.length - 2; i < end; i += 3) {
-      if (t.async[i + 2] === uid) {
-        t.async[i] = val
-        t.async[i + 2] = void 0
-        if (i === 0) { execPromise(t) }
-        break
-      }
-    }
-  }
-}
-
-var done = function (t) {
-  t.async.splice(0, 3)
-  if (t.async.length) { queue(t) }
-  if (t.async && !t.async.length) {
-    delete t.async
-  }
-}
-
-var queue = function (t) {
-  var async = t.async[0]
-  if (async && async.next) {
-    execIterator(t, async, t.async[1], t.async[2], done)
-  } else if (!t.async[2]) {
-    execPromise(t)
-  }
-}
-
-var execPromise = function (t) {
-  var async = t.async[0]
-  if (async !== void 0) {
-    if (Array.isArray(async)) {
-      for (var i = 0, len = async.length; i < len; i++) {
-        extendSet(t, async[i], t.async[1])
-      }
-    } else {
-      extendSet(t, async, t.async[1])
-    }
-  }
-  done(t)
-}
-
-var next = function (iteratee, t, stamp, val) {
-  try {
-    return iteratee.next()
-  } catch (err) {
-    error(t, err, stamp)
-    done(t)
-  }
-}
-
-var execIterator = function (t, iteratee, stamp, id, done, val) {
-  if (t.async && t.async[2] === id) {
-    if (!val || !val.done) {
-      if (val !== void 0) {
-        if (
-          val.value &&
-          typeof val.value === 'object' &&
-          typeof val.value.then === 'function'
-        ) {
-          val.value.then(function (resolved) {
-            if (t.async && t.async[2] === id) {
-              extendSet(t, resolved, stamp)
-              execIterator(t, iteratee, stamp, id, done, next(iteratee, t, stamp))
-            }
-          })
-        } else {
-          extendSet(t, val.value, stamp)
-          execIterator(t, iteratee, stamp, id, done, next(iteratee, t, stamp))
-        }
-      } else {
-        execIterator(t, iteratee, stamp, id, done, next(iteratee, t, stamp))
-      }
-    } else if (val.done) {
-      done(t)
-    }
-  }
-}
-
-var iterator = function (t, iteratee, stamp, val) {
-  var id = ++uid
-  if (!t.async) {
-    t.async = [ iteratee, stamp, id ]
-    queue(t)
-  } else {
-    t.async.push(iteratee, stamp, id)
-  }
-}
-
-var promise = function (t, promise, stamp) {
-  var id = ++uid
-  if (!t.async) {
-    t.async = [ void 0, stamp, id ]
-    queue(t)
-  } else {
-    t.async.push(void 0, stamp, id)
-  }
-  promise
-    .then(function (val) { return promiseQueue(t, id, val); })
-    .catch(function (err) {
-      error(t, err, stamp)
-      promiseQueue(t, id, void 0, err)
-    })
-}
-
-exports.isGeneratorFunction = isGeneratorFunction
-exports.promise = promise
-exports.generator = generator
-exports.iterator = iterator
-
-set = require('./manipulate').set
-
-},{"./emit":89,"./manipulate":95,"./traversal":116,"brisky-stamp":118}],87:[function(require,module,exports){
-var get = function (t) { return t.val !== void 0 ? t.val : t.inherits && get(t.inherits); }
-
-var origin = function (t) { return t.val && typeof t.val === 'object' && t.val.inherits
-  ? origin(t.val) : t; }
-
-var transform = function (t) { return t.$transform !== void 0
-  ? t.$transform
-  : t.inherits && transform(t.inherits); }
-
-var compute = function (t, val, passon) {
-  if (val === void 0) {
-    val = t.val
-    if (val === void 0) { val = get(t.inherits) }
-  }
-  if (val) {
-    var type = typeof val
-    if (type === 'object') {
-      if (val.inherits) {
-        var v = val
-        val = compute(val)
-        if (val === void 0) {
-          val = v
-        }
-      }
-    } else if (type === 'function') {
-      val = val(val, passon || t)
-    }
-  }
-  var trans = transform(t)
-  return trans ? trans(val, passon || t) : val
-}
-
-exports.origin = origin
-exports.compute = compute
-
-},{}],88:[function(require,module,exports){
-var ref = require('./get');
-var get = ref.get;
-var ref$1 = require('./keys');
-var removeContextKey = ref$1.removeContextKey;
-var ref$2 = require('./manipulate');
-var create = ref$2.create;
-
-var resolveContext = function (t, val, stamp) {
-  var level = t.contextLevel
-  var cntx = t.context
-  var key
-  if (cntx.context) {
-    cntx = resolveContext(cntx, void 0, stamp)
-  }
-  if (level > 1) {
-    var path = []
-    var parent = t._p
-    while (--level) {
-      path.unshift(parent.key)
-      parent = parent._p
-    }
-    key = path[0]
-    var inherits = get(cntx, key, true)
-    contextProperty(cntx, void 0, stamp, key, inherits)
-    inherits.context = null
-    inherits.contextLevel = null
-    cntx = cntx[key]
-    for (var i = 1, len = path.length; i < len; i++) {
-      key = path[i]
-      inherits = get(cntx, key, true)
-      cntx[key] = create(inherits, void 0, stamp, cntx, key)
-      inherits.context = null
-      inherits.contextLevel = null
-      cntx = cntx[key]
-    }
-    key = t.key
-  } else {
-    key = t.key
-  }
-  t.context = null
-  t.contextLevel = null
-  return contextProperty(cntx, val, stamp, key, get(cntx, key, true))
-}
-
-var contextProperty = function (t, val, stamp, key, property) {
-  if (val === null) {
-    removeContextProperty(t, key)
-    return val
-  } else {
-    var result = create(property, val, stamp, t, key)
-    t[key] = result
-    return result
-  }
-}
-
-var removeContextProperty = function (t, key) {
-  t[key] = void 0
-  removeContextKey(t, key)
-}
-
-/**
- * @function storeContext
- * stores context for reapplying with applyContext
- * @todo: needs perf optmization
- * @return {array} returns store
- */
-var storeContext = function (t) {
-  var context = t.context
-  if (context) {
-    var arr = []
-    var level = t.contextLevel
-    while (context) {
-      arr.push(context, level)
-      level = context.contextLevel
-      context = context.context
-    }
-    return arr
-  }
-}
-
-/**
- * @function applyContext
- * applies context to base
- */
-var applyContext = function (t, store) {
-  if (store) {
-    var l = store.length
-    var ret
-    for (var i = 0, target = t; i < l; i = i + 2) {
-      var context = store[i]
-      var level = store[i + 1]
-      var path = [ target ]
-      var newTarget = setContext(target, context, level, path)
-      var base = handleChange(target, context, path, level)
-      if (ret === void 0 && base !== void 0) {
-        ret = base
-      }
-      if (newTarget) {
-        target = newTarget
-      }
-    }
-    return ret
-  }
-}
-
-var handleChange = function (target, context, path, level) {
-  var newContext, newLevel
-  var travelTaget = context
-  if (context._p && context._p[context.key] === null) {
-    return null
-  }
-  for (var i = 0, len = path.length; i < len; i++) {
-    var segment = path[i]
-    var field = get(travelTaget, segment.key)
-    // delete does not work.... like this does not set null anymore
-    if (!field || field.val === null) {
-      removeContext(target, level)
-      return null
-    } else if (field !== segment) {
-      segment.context = null
-      segment.contextLevel = null
-      newContext = field
-      newLevel = len - (i + 1)
-    }
-    travelTaget = field
-    if (i === len - 1) {
-      target = travelTaget
-    }
-  }
-  if (newContext) {
-    if (!newLevel) {
-      removeContext(target, level)
-    } else {
-      setContext(target, newContext, newLevel)
-    }
-    return target
-  }
-}
-
-var setContext = function (target, context, level, path) {
-  if (level) {
-    target.contextLevel = level
-    target.context = context
-    if (level > 1) {
-      var p = target._p
-      for (var i = 1; p && i < level; i++) {
-        if (path) { path.unshift(p) }
-        p.context = context
-        p.contextLevel = target.contextLevel - i
-        p = p._p
-      }
-    }
-    return context
-  }
-}
-
-var removeContext = function (target, level) {
-  if (level) {
-    target.contextLevel = null
-    target.context = null
-    if (level > 1) {
-      var p = target._p
-      for (var i = 1; p && i < level; i++) {
-        p.context = null
-        p.contextLevel = null
-        p = p._p
-      }
-    }
-  }
-}
-
-exports.contextProperty = contextProperty
-exports.resolveContext = resolveContext
-
-// split off apply/store
-exports.applyContext = applyContext
-exports.storeContext = storeContext
-
-},{"./get":91,"./keys":94,"./manipulate":95}],89:[function(require,module,exports){
-var ref = require('./get');
-var getFn = ref.getFn;
-
-var onData = function (t) { return t.emitters && t.emitters.data ||
-  t.inherits && onData(t.inherits); }
-
-var onGeneric = function (t, key) { return t.emitters && t.emitters[key] ||
-  t.inherits && onGeneric(t.inherits, key); }
-
-var updateContext = function (context, t, val, stamp, key, resolve, level, j, fn) {
-  if (!(key in context)) {
-    var n = j
-    if (resolve.context !== context) {
-      resolve.context = context
-      resolve.contextLevel = level
-      while (n--) { fn[n](val, stamp, t) }
-      if (context._p) {
-        if (emitContext(t, val, stamp, context._p, context.key, context, 1, j, fn)) {
-          context.context = null
-          context.contextPath = null
-        }
-      }
-      if (context.instances) {
-        var i = context.instances.length
-        while (i--) {
-          updateContext(context.instances[i], t, val, stamp, key, resolve, level, j, fn)
-        }
-      }
-    }
-    return true
-  }
-}
-
-var emitContext = function (t, val, stamp, parent, key, resolve, level, j, fn) {
-  var clear
-  if (parent._c !== t) {
-    if (parent.instances) {
-      var i = parent.instances.length
-      while (i--) {
-        if (updateContext(parent.instances[i], t, val, stamp, key, resolve, level, j, fn)) {
-          clear = true
-        }
-      }
-    }
-    if (parent._p) {
-      if (emitContext(t, val, stamp, parent._p, parent.key, resolve, level + 1, j, fn)) {
-        clear = true
-      }
-    }
-  }
-  return clear
-}
-
-var fn = function (t, val, stamp, emitter) {
-  var listeners = getFn(emitter)
-  if (listeners) {
-    var i = listeners.length
-    if (i && t._p) {
-      if (emitContext(t, val, stamp, t._p, t.key, t, 1, i, listeners)) {
-        t.context = null
-        t.contextPath = null
-      }
-    }
-    while (i--) { listeners[i](val, stamp, t) }
-  } else {
-    emitter.listeners = []
-  }
-}
-
-// need to be able to pass a tStamp (void 0 for incoming hub stuff)
-/*
-if (parent._emitters._data.base) {
-  parent._emitters._data.base.each(function (p) {
-    looper(p, val, stamp)
-  })
-}
-*/
-
-// needs base and ofc context! and instances!
-// so emitters seem pretty perfect for this job...
-
-var execSubs = function (p, stamp) {
-  var i = p.subscriptions.length
-  while (i--) { p.subscriptions[i](stamp) }
-}
-
-// this is wrong need to do it differently
-var setStamp = function (t, stamp) {
-  t.tStamp = stamp
-  if (t._p) {
-    var p = t._p
-    while (p && p.tStamp !== stamp) {
-      // need to update t.stamps on things that are referenced
-      // also need to handle stamp + tStamp
-      p.tStamp = stamp
-      // can also be on thing it inherits from ?
-      // no exception for subs
-      if (p.emitters && p.emitters.data && p.emitters.data.struct) {
-        var i = p.emitters.data.struct.length
-        while (i--) {
-          setStamp(p.emitters.data.struct[i], stamp)
-        }
-      }
-      if (p.subscriptions) { execSubs(p, stamp) }
-      p = p._p
-    }
-  }
-  if (t.subscriptions) {
-    execSubs(t, stamp)
-  }
-}
-
-var data = function (t, val, stamp) {
-  if (t.stamp !== stamp) {
-    t.stamp = stamp
-    setStamp(t, stamp)
-    var own = t.emitters && t.emitters.data
-    if (own) {
-      var struct = own.struct
-      fn(t, val, stamp, own)
-      if (struct) {
-        var i = struct.length
-        while (i--) { updateStruct(struct[i], val, stamp) }
-      }
-    } else {
-      var emitter = onData(t.inherits)
-      if (emitter) { fn(t, val, stamp, emitter) }
-    }
-  }
-}
-
-var updateStruct = function (t, val, stamp) {
-  // should allready update all tStamps
-  data(t, val, stamp)
-  if (t.instances) {
-    var i = t.instances.length
-    while (i--) {
-      if (t.instances[i].val === void 0) {
-        updateStruct(t.instances[i], val, stamp)
-      }
-    }
-  }
-}
-
-var generic = function (t, type, val, stamp) {
-  if (type === 'data') {
-    data(t, val, stamp)
-  } else {
-    var emitter = onGeneric(t, type)
-    if (emitter) { fn(t, val, stamp, emitter) }
-  }
-}
-
-exports.onData = onData
-exports.data = data
-exports.generic = generic
-
-},{"./get":91}],90:[function(require,module,exports){
-var ref = require('./');
-var get = ref.get;
-var getOrigin = ref.getOrigin;
-var ref$1 = require('../manipulate');
-var set = ref$1.set;
-
-module.exports = function (t, key, val, stamp) {
-  var bind
-  if (typeof key === 'object') {
-    if (val !== void 0) {
-      for (var i = 0, len = key.length; t && i < len; i++) {
-        bind = t
-        t = getOrigin(t, key[i])
-        if (!t) {
-          var obj;
-          set(bind, ( obj = {}, obj[key[i]] = i === len - 1 ? val : {}, obj ), stamp)
-          t = get(bind, key[i])
-        }
-        if (typeof t === 'function') { t = bind[key[i]]() }
-      }
-    } else {
-      for (var i$1 = 0, len$1 = key.length; t && i$1 < len$1; i$1++) {
-        bind = t
-        t = get(t, key[i$1]) || getOrigin(t, key[i$1])
-        if (typeof t === 'function') { t = bind[key[i$1]]() }
-      }
-    }
-    return t
-  } else {
-    bind = t
-    t = getOrigin(t, key)
-    if (!t && val !== void 0) {
-      var obj$1;
-      set(bind, ( obj$1 = {}, obj$1[key] = val, obj$1 ), stamp)
-      t = get(bind, key)
-    } else {
-      if (typeof t === 'function') { t = bind[key]() }
-    }
-    return t
-  }
-}
-
-},{"../manipulate":95,"./":91}],91:[function(require,module,exports){
-var get = function (t, key, noContext) {
-  if (key in t) {
-    var result = t[key]
-    if (!noContext && result && result.inherits) {
-      if (t.context) {
-        result.context = t.context
-        result.contextLevel = t.contextLevel + 1
-      } else if (result.context) {
-        result.context = null
-        result.contextLevel = null
-      }
-    }
-    return result
-  } else if (t.inherits) {
-    var result$1 = get(t.inherits, key, true)
-    if (!noContext && result$1 && result$1.inherits) {
-      result$1.context = t
-      result$1.contextLevel = 1
-    }
-    return result$1
-  }
-}
-
-var getOrigin = function (t, key) {
-  if (t) {
-    var result = get(t, key)
-    if (result !== void 0 && result !== null) {
-      return result
-    } else {
-      return (t = t.val) && typeof t === 'object' && t.inherits && getOrigin(t, key)
-    }
-  }
-}
-
-var getFn = function (t) { return t.fn || t.inherits && getFn(t.inherits); }
-
-var getDefault = function (t) { return t.props && t.props.default.struct || getDefault(t.inherits); }
-
-exports.getFn = getFn
-exports.get = get
-exports.getDefault = getDefault
-exports.getOrigin = getOrigin
-
-},{}],92:[function(require,module,exports){
-var struct = require('./struct')
-var ref = require('./manipulate');
-var create = ref.create;
-var set = ref.set;
-set(struct, { inject: require('./methods') })
-module.exports = function (val, stamp) { return create(struct, val, stamp); }
-
-},{"./manipulate":95,"./methods":97,"./struct":103}],93:[function(require,module,exports){
-var ref = require('./keys');
-var addKey = ref.addKey;
-var copy = ref.copy;
-var ref$1 = require('./emit');
-var data = ref$1.data;
-
-var update = function (t, val, key, resolved) {
-  if (!(key in t)) {
-    if (key !== 'val') {
-      if (val[key] !== null) {
-        if (!resolved) {
-          if (t._ks) {
-            addKey(t, key)
-          } else {
-            copy(t)
-            return 1
-          }
-        }
-      }
-    }
-    return true
-  } else {
-    if (val[key] === null && t[key]) {
-      if (!t._ks) {
-        copy(t)
-        addKey(t, key)
-        return 1
-      } else {
-        addKey(t, key) // no update
-      }
-    }
-  }
-}
-
-var propertyKeys = function (t, val, stamp, changed, resolved) {
-  var j = changed.length
-  var inherits
-  if (t.instances) {
-    while (j--) {
-      var key = changed[j]
-      var res = update(t, val, key, resolved)
-      if (res) {
-        if (res !== true) { resolved = res }
-        if (!inherits) {
-          inherits = [ key ]
-        } else {
-          inherits.push(key)
-        }
-      }
-    }
-    if (inherits) {
-      if (stamp) { data(t, val, stamp) }
-      propertyChange(t, val, stamp, inherits, resolved)
-    }
-  } else {
-    while (j--) {
-      inherits = update(t, val, changed[j], resolved)
-      if (inherits === 1) { resolved = inherits }
-    }
-    if (inherits && stamp) { data(t, val, stamp) }
-  }
-}
-
-var propertyChange = function (t, val, stamp, changed, resolved) {
-  var instances = t.instances
-  var i = instances.length
-  while (i--) {
-    var instance = instances[i]
-    propertyKeys(instance, val, stamp, changed, resolved)
-  }
-}
-
-var valChange = function (t, val, stamp, changed) {
-  var instances = t.instances
-  var i = instances.length
-  while (i--) {
-    var instance = instances[i]
-    if (instance.val === void 0) {
-      if (stamp) { data(instance, val, stamp) }
-      if (instance.instances) { valChange(instance, val, stamp, changed) }
-    }
-  }
-}
-
-var instances = function (t, val, stamp, changed) {
-  if (changed === true) {
-    valChange(t, val, stamp, changed)
-  } else {
-    propertyChange(t, val, stamp, changed)
-  }
-}
-
-module.exports = instances
-
-},{"./emit":89,"./keys":94}],94:[function(require,module,exports){
-var removeKey = function (t, key) {
-  if (t._ks) {
-    var keys = t._ks
-    var i = keys.length
-    while (i--) {
-      if (keys[i] === key) {
-        keys.splice(i, 1)
-        break
-      }
-    }
-  }
-}
-
-var removeContextKey = function (t, key) {
-  if (!t._ks) {
-    var keys = getKeys(t.inherits)
-    if (keys) {
-      var b = []
-      for (var i = 0, j = 0, len = keys.length; i < len; i++) {
-        if (keys[i] === key) {
-          j = 1
-        } else {
-          b[i - j] = keys[i]
-        }
-      }
-      t._ks = b
-    }
-  } else {
-    removeKey(t, key)
-  }
-}
-
-var copy = function (t) {
-  var keys = getKeys(t.inherits)
-  if (keys) {
-    var len = keys.length
-    var i = len
-    var b = t._ks = []
-    while (i--) { b[i] = keys[i] }
-    return len
-  }
-}
-
-var addKey = function (t, key) {
-  if (!t._ks) {
-    var keys = getKeys(t.inherits)
-    if (keys) {
-      var len = keys.length
-      var i = len
-      var b = t._ks = []
-      while (i--) { b[i] = keys[i] }
-      b[len] = key
-    } else {
-      t._ks = [ key ]
-    }
-  } else {
-    t._ks.push(key)
-  }
-}
-
-var getKeys = function (t) { return t._ks || t.inherits && getKeys(t.inherits); }
-
-exports.removeKey = removeKey
-exports.addKey = addKey
-exports.removeContextKey = removeContextKey
-exports.getKeys = getKeys
-exports.copy = copy
-
-},{}],95:[function(require,module,exports){
-var ref = require('./emit');
-var data = ref.data;
-var ref$1 = require('./struct/listener');
-var listener = ref$1.listener;
-var uid = require('./uid')
-var instances = require('./instances')
-var remove = require('./remove')
-
-var resolveContext, getProp, getType, promise, generator, isGeneratorFunction, iterator
-
-var create = function (t, val, stamp, parent, key) {
-  var instance
-  if (parent) {
-    if (val && typeof val === 'object' && val.type) {
-      t = getType(parent, val.type, t) || t
-    }
-    instance = new t.Constructor()
-    instance._p = parent
-    instance.inherits = t
-    if (key !== void 0) {
-      instance.key = key
-      parent[key] = instance
-    }
-  } else {
-    instance = new t.Constructor()
-    instance.inherits = t
-  }
-  if (t.instances !== false) {
-    if (!t.instances) {
-      t.instances = [ instance ]
-    } else {
-      t.instances.push(instance)
-    }
-  }
-  if (val !== void 0) {
-    set(instance, val, stamp)
-  }
-  return instance
-}
-
-var set = function (t, val, stamp) {
-  var changed
-  if (t.context) {
-    return resolveContext(t, val, stamp)
-  } else {
-    var type = typeof val
-    if (type === 'function') {
-      if (isGeneratorFunction(val)) {
-        generator(t, val, stamp)
-      } else {
-        changed = setVal(t, val)
-      }
-    } else if (type === 'object') {
-      if (!val) {
-        remove(t, stamp)
-        return true
-      } else {
-        if (val.inherits) {
-          changed = setVal(t, val, true)
-        } else if (val.then && typeof val.then === 'function') {
-          promise(t, val, stamp)
-        } else if (val.next && typeof val.next === 'function') {
-          iterator(t, val, stamp)
-        } else if (val[0] && val[0] === '@') {
-          changed = reference(t, val, stamp)
-        } else {
-          if (t.instances) {
-            for (var key in val) {
-              if (
-                key !== 'val'
-                  ? getProp(t, key)(t, val[key], key, stamp)
-                  : setVal(t, val.val, 1, stamp)
-              ) {
-                if (!changed) {
-                  changed = [ key ]
-                } else {
-                  changed.push(key)
-                }
-              }
-            }
-          } else {
-            for (var key$1 in val) {
-              if (
-                key$1 !== 'val'
-                  ? getProp(t, key$1)(t, val[key$1], key$1, stamp)
-                  : setVal(t, val.val, 1, stamp)
-              ) {
-                changed = true
-              }
-            }
-          }
-        }
-      }
-    } else {
-      changed = setVal(t, val)
-    }
-  }
-  if (changed) {
-    if (stamp) { data(t, val, stamp) }
-    if (t.instances) { instances(t, val, stamp, changed) }
-  }
-  return changed
-}
-
-var getOnProp = function (t) { return t.props && t.props.on || getOnProp(t.inherits); }
-
-var onContext = function (t, context) {
-  if (t.emitters) {
-    if (context) {
-      t.emitters.context = context
-      t.emitters.contextLevel = 1
-    }
-  } else if (t.inherits) {
-    onContext(t.inherits, context || t)
-  }
-}
-
-var setVal = function (t, val, ref, stamp) {
-  if (t.val !== val) {
-    if (t.val && typeof t.val === 'object' && t.val.inherits) {
-      listener(t.val.emitters.data, null, uid(t))
-    }
-    if (ref) {
-      if (ref === 1) {
-        if (typeof val === 'object') {
-          if (!val.inherits) {
-            if (val.then && typeof val.then === 'function') {
-              promise(t, val, stamp)
-              return
-            } else if (val.next && typeof val.next === 'function') {
-              iterator(t, val, stamp)
-              return
-            } else if (val[0] && val[0] === '@') {
-              return reference(t, val, stamp)
-            }
-            t.val = val
-            return true
-          }
-        } else {
-          t.val = val
-          return true
-        }
-      }
-      t.val = val
-      if (val.emitters) {
-        if (!val.emitters.data) {
-          getOnProp(val)(val, { data: void 0 }, 'on')
-        }
-        listener(val.emitters.data, t, uid(t))
-      } else {
-        onContext(val)
-        getOnProp(val)(val, { data: void 0 }, 'on')
-        listener(val.emitters.data, t, uid(t))
-      }
-    } else {
-      t.val = val
-    }
-    return true
-  }
-}
-
-exports.set = set
-exports.create = create
-
-resolveContext = require('./context').resolveContext
-getProp = require('./property').getProp
-getType = require('./struct/types').getType
-promise = require('./async').promise
-isGeneratorFunction = require('./async').isGeneratorFunction
-generator = require('./async').generator
-iterator = require('./async').iterator
-
-var getApi = require('./get/api')
-var reference = function (t, val, stamp) { return set(t, getApi(t, val.slice(1), {}, stamp)); }
-
-},{"./async":86,"./context":88,"./emit":89,"./get/api":90,"./instances":93,"./property":100,"./remove":101,"./struct/listener":105,"./struct/types":107,"./uid":117}],96:[function(require,module,exports){
-var ref = require('../get');
-var get = ref.get;
-var ref$1 = require('../keys');
-var getKeys = ref$1.getKeys;
-// add every, find, sort, slice
-
-exports.define = {
-  reduce: function reduce (fn, start) {
-    var this$1 = this;
-
-    return (getKeys(this) || []).map(function (key) { return get(this$1, key); }).reduce(fn, start)
-  },
-  map: function map (fn, callee) {
-    var this$1 = this;
-
-    return (getKeys(this) || []).map(function (val, key, array) { return fn(get(this$1, val), key, array); })
-  },
-  filter: function filter (fn) {
-    var this$1 = this;
-
-    return (getKeys(this) || []).map(function (key) { return get(this$1, key); }).filter(fn)
-  },
-  forEach: function forEach (fn) {
-    var this$1 = this;
-
-    var keys = getKeys(this)
-    if (keys) {
-      keys = keys.concat()  // bit slow but usefull for remove for example
-      for (var i = 0, len = keys.length; i < len; i++) {
-        var key = keys[i]
-        var r = get(this$1, key)
-        if (r) { fn(r, key, this$1) }
-      }
-    }
-  }
-}
-
-},{"../get":91,"../keys":94}],97:[function(require,module,exports){
-var ms = require('monotonic-timestamp')
-var ref = require('../compute');
-var compute = ref.compute;
-var origin = ref.origin;
-var ref$1 = require('../traversal');
-var parent = ref$1.parent;
-var root = ref$1.root;
-var path = ref$1.path;
-var ref$2 = require('../manipulate');
-var create = ref$2.create;
-var set = ref$2.set;
-var ref$3 = require('../keys');
-var getKeys = ref$3.getKeys;
-var ref$4 = require('../emit');
-var generic = ref$4.generic;
-var ref$5 = require('../context');
-var applyContext = ref$5.applyContext;
-var storeContext = ref$5.storeContext;
-var once = require('../once')
-var getApi = require('../get/api')
-var bs = require('brisky-stamp')
-var ref$6 = require('../subscribe');
-var subscribe = ref$6.subscribe;
-var parse = ref$6.parse;
-var uid = require('../uid')
-
-var chain = function (c, t) { return c === null || c && c !== true ? c : t; }
-var serialize = require('../serialize')
-
-exports.inject = [
-  require('./functional'),
-  require('./iterator')
-  // require('../debug')
-]
-
-var listenerId = 0
-exports.define = {
-  uid: function uid$1 () { return uid(this) },
-  applyContext: function applyContext$1 (context) { return applyContext(this, context) },
-  storeContext: function storeContext$1 () { return storeContext(this) },
-  serialize: function serialize$1 (fn) { return serialize(this, fn) },
-  root: function root$1 () { return root(this) },
-  path: function path$1 () { return path(this) },
-  parent: function parent$1 (fn) {
-    if (fn !== void 0) {
-      if (typeof fn === 'function') {
-        var p = this
-        while (p) {
-          var result = fn(p)
-          if (result) { return result }
-          p = parent(p)
-        }
-      } else {
-        var p$1 = this
-        while (fn-- && p$1) { p$1 = parent(p$1) }
-        return p$1
-      }
-    } else {
-      return parent(this)
-    }
-  },
-  emit: function emit (type, val, stamp) {
-    if (stamp === void 0) {
-      stamp = bs.create()
-      generic(this, type, val, stamp)
-      bs.close(stamp)
-    } else {
-      generic(this, type, val, stamp)
-    }
-    return this
-  },
-  subscribe: function subscribe$1 (subs, cb, raw) {
-    return subscribe(this, !raw ? parse(subs) : subs, cb)
-  },
-  once: function once$1 (check, callback) { return once(this, check, callback) },
-  on: function on (type, val, id) {
-    if (typeof type === 'function') {
-      val = type
-      type = 'data'
-    }
-    if (!id) { id = ++listenerId }
-    var temp = { on: {} } // problem with buble cant set [type] : { [id] }
-    var obj;
-    temp.on[type] = ( obj = {}, obj[id] = val, obj )
-    return chain(set(this, temp), this)
-  },
-  set: function set$1 (val, stamp) {
-    if (stamp === void 0) {
-      stamp = bs.create()
-      var ret = chain(set(this, val, stamp), this)
-      bs.close(stamp)
-      return ret
-    } else {
-      return chain(set(this, val, stamp), this)
-    }
-  },
-  create: function create$1 (val, stamp) {
-    if (stamp === void 0) {
-      stamp = bs.create()
-      var ret = create(this, val, stamp)
-      bs.close(stamp)
-      return ret
-    } else {
-      return create(this, val, stamp)
-    }
-  },
-  // add api as a mehtod perhaps?
-  get: function get (key, val, stamp) { return getApi(this, key, val, stamp) },
-  push: function push (val, stamp) {
-    var key = ms()
-    var obj;
-    return chain(set(this, ( obj = {}, obj[key] = val, obj ), stamp), this)[key]
-  },
-  compute: function compute$1 (val) { return compute(this, val) },
-  origin: function origin$1 () { return origin(this) },
-  keys: function keys () { return getKeys(this) }
-}
-
-},{"../compute":87,"../context":88,"../emit":89,"../get/api":90,"../keys":94,"../manipulate":95,"../once":99,"../serialize":102,"../subscribe":110,"../traversal":116,"../uid":117,"./functional":96,"./iterator":98,"brisky-stamp":118,"monotonic-timestamp":119}],98:[function(require,module,exports){
-var ref = require('../keys');
-var getKeys = ref.getKeys;
-var ref$1 = require('../get');
-var get = ref$1.get;
-
-module.exports = function (struct) {
-  if (typeof Symbol !== 'undefined') {
-    struct.Constructor.prototype[Symbol.iterator] = function () {
-      var keys = getKeys(this)
-      var t = this
-      var i = 0
-      return {
-        throw: function () {},
-        // add handle for removal / change of keys
-        next: function () { return ({
-          value: get(t, keys[i++]),
-          done: i === keys.length + 1
-        }); }
-      }
-    }
-  }
-}
-
-},{"../get":91,"../keys":94}],99:[function(require,module,exports){
-var ref = require('./manipulate');
-var set = ref.set;
-var ref$1 = require('./compute');
-var compute = ref$1.compute;
-var uid = 0
-
-module.exports = function (t, check, callback) {
-  var id = 'O' + ++uid
-  if (!callback) {
-    var promise
-    if (check === void 0) {
-      promise = new Promise(function (resolve) { return on(t, id, function (t, val, stamp) {
-        resolve(t, val, stamp)
-        return true
-      }); })
-    } else {
-      promise = new Promise(function (resolve) {
-        if (!evaluate(resolve, check, t)) {
-          on(t, id, function (val, stamp, t) { return evaluate(resolve, check, t, val, stamp); })
-        }
-      })
-    }
-    return promise
-  } else {
-    if (check === void 0) {
-      on(t, id, function (val, stamp, t) {
-        callback(val, stamp, t)
-        return true
-      })
-    } else {
-      if (!evaluate(callback, check, t)) {
-        on(t, id, function (val, stamp, t) { return evaluate(callback, check, t, val, stamp); })
-      }
-    }
-    return id
-  }
-}
-
-var evaluate = function (resolve, check, t, val, stamp) {
-  if (typeof check === 'function'
-      ? check(t, val, stamp)
-      : compute(t) == check //eslint-disable-line
-    ) {
-    resolve(val, stamp, t)
-    return true
-  }
-}
-
-var on = function (t, id, listener) {
-  var obj;
-  var context = set(t, {
-    on: {
-      data: ( obj = {}, obj[id] = function (val, stamp, t) {
-        if (listener(val, stamp, t)) {
-          var obj;
-            set(t, { on: { data: ( obj = {}, obj[id] = null, obj ) } })
-        }
-      }, obj )
-    }
-  })
-  if (context && context.inherits) { t = context }
-  return t
-}
-
-},{"./compute":87,"./manipulate":95}],100:[function(require,module,exports){
-var ref = require('./get');
-var get = ref.get;
-var ref$1 = require('./keys');
-var addKey = ref$1.addKey;
-var ref$2 = require('./manipulate');
-var create = ref$2.create;
-var set = ref$2.set;
-var ref$3 = require('./context');
-var contextProperty = ref$3.contextProperty;
-
-var property = function (t, val, key, stamp, struct) {
-  var changed
-  var result = get(t, key)
-  if (result && result.inherits) {
-    if (result.context) {
-      contextProperty(t, val, stamp, key, result)
-    } else {
-      set(result, val, stamp)
-      changed = val === null
-    }
-  } else {
-    changed = true
-    addKey(t, key)
-    create(struct, val, stamp, t, key)
-  }
-  return changed
-}
-
-var getProp = function (t, key) { return t.props
-  ? key in t.props && t.props[key] || t.props.default
-  : getProp(t.inherits, key); }
-
-exports.getProp = getProp
-exports.property = property
-
-},{"./context":88,"./get":91,"./keys":94,"./manipulate":95}],101:[function(require,module,exports){
-var ref = require('./get');
-var get = ref.get;
-var getFn = ref.getFn;
-var ref$1 = require('./keys');
-var removeKey = ref$1.removeKey;
-var getKeys = ref$1.getKeys;
-var ref$2 = require('./emit');
-var data = ref$2.data;
-var onData = ref$2.onData;
-var ref$3 = require('./struct/listener');
-var listener = ref$3.listener;
-var uid = require('./uid')
-
-var remove = module.exports = function (t, stamp, instance, from) {
-  if (t._async) { delete t._async }
-
-  if (t.val && typeof t.val === 'object' && t.val.inherits) {
-    listener(t.val.emitters.data, null, uid(t))
-  }
-
-  if (!instance && t.inherits.instances) {
-    var instances$1 = t.inherits.instances
-    var i = instances$1.length
-    while (i--) {
-      if (instances$1[i] === t) { instances$1.splice(i, 1) }
-    }
-  }
-
-  var instances = t.instances
-  if (instances) {
-    var i$1 = instances.length
-    while (i$1--) { remove(instances[i$1], stamp, true) }
-    t.instances = null
-  }
-
-  // remove struct emitters
-  if (t.emitters && t.emitters.data && t.emitters.data.struct) {
-    var s = t.emitters.data.struct.length
-    while (s--) { t.emitters.data.struct[s].val = null }
-  }
-
-  if (stamp) {
-    data(t, null, stamp)
-    if (t._ks) {
-      var keys = t._ks
-      for (var i$2 = 0, len = keys.length; i$2 < len; i$2++) {
-        if (keys[i$2] in t) {
-          remove(t[keys[i$2]], stamp, false, true)
-          i$2--
-          len--
-        } else {
-          removeContext(t, keys[i$2], stamp)
-        }
-      }
-    } else {
-      var keys$1 = getKeys(t)
-      if (keys$1) {
-        for (var i$3 = 0, len$1 = keys$1.length; i$3 < len$1; i$3++) {
-          removeContext(t, keys$1[i$3], stamp)
-        }
-      }
-    }
-  } else if (t._ks) {
-    var keys$2 = t._ks
-    for (var i$4 = 0, len$2 = keys$2.length; i$4 < len$2; i$4++) {
-      if (keys$2[i$4] in t) {
-        remove(t[keys$2[i$4]], stamp, false, true)
-        i$4--
-        len$2--
-      }
-    }
-  }
-
-  removeFromParent(t._p, t.key, stamp, false, from)
-}
-
-var removeFromParent = function (parent, key, stamp, instance, from) {
-  if (parent && key) {
-    if (!instance || parent._ks) {
-      removeKey(parent, key)
-      if (instance) {
-        if (key in parent) { delete parent[key] }
-      } else {
-        parent[key] = null
-      }
-    }
-    if (!from && stamp) { data(parent, null, stamp) }
-    var instances = parent.instances
-    if (instances) {
-      var i = instances.length
-      while (i--) {
-        removeFromParent(instances[i], key, stamp, true)
-      }
-    }
-  }
-}
-
-var removeContext = function (context, key, stamp) {
-  var t = get(context, key)
-  if (t) {
-    var emitter = onData(t)
-    if (emitter) {
-      var listeners = getFn(emitter)
-      if (listeners) {
-        var i = listeners.length
-        while (i--) { listeners[i](null, stamp, t) }
-      }
-    }
-    var keys = getKeys(t)
-    if (keys) {
-      for (var i$1 = 0, len = keys.length; i$1 < len; i$1++) {
-        removeContext(t, keys[i$1], stamp)
-      }
-    }
-    t.context = null
-    t.contextLevel = null
-  }
-}
-
-},{"./emit":89,"./get":91,"./keys":94,"./struct/listener":105,"./uid":117}],102:[function(require,module,exports){
-var ref = require('./get');
-var get = ref.get;
-var ref$1 = require('./keys');
-var getKeys = ref$1.getKeys;
-var ref$2 = require('./traversal');
-var path = ref$2.path;
-var getVal = function (t) { return t.val !== void 0 ? t.val : t.inherits && getVal(t.inherits); }
-
-var serialize = function (t, fn) {
-  var result = {}
-  var val = getVal(t)
-  var keys = getKeys(t)
-  if (val && typeof val === 'object' && val.inherits) {
-    var p = path(val) // memoized paths later
-    val = [ '@' ]
-    var i = p.length
-    while (i--) { val[i + 1] = p[i] }
-  }
-  if (keys) {
-    for (var i$1 = 0, len = keys.length; i$1 < len; i$1++) {
-      var key = keys[i$1]
-      var keyResult = serialize(get(t, key), fn)
-      if (keyResult !== void 0) { result[key] = keyResult }
-    }
-    if (val !== void 0) { result.val = val }
-  } else if (val !== void 0) {
-    result = val
-  }
-  return fn ? fn(t, result) : result
-}
-
-module.exports = serialize
-
-},{"./get":91,"./keys":94,"./traversal":116}],103:[function(require,module,exports){
-var ref = require('../manipulate');
-var create = ref.create;
-var set = ref.set;
-var ref$1 = require('../property');
-var property = ref$1.property;
-var ref$2 = require('./types');
-var types = ref$2.types;
-var type = ref$2.type;
-var ref$3 = require('../get');
-var getDefault = ref$3.getDefault;
-var inject = require('./inject')
-var CONSTRUCTOR = 'Constructor'
-var struct = {}
-
-var getProps = function (t) { return t.props || getProps(t.inherits); }
-
-var props = {
-  types: types,
-  type: type,
-  inject: inject,
-  async: function (t, val) {
-    if (t.async && !val) { delete t.async }
-  },
-  key: function (t, val) { t.key = val },
-  instances: function (t, val) { t.instances = val },
-  $transform: function (t, val) { t.$transform = val },
-  reset: function (t, val, stamp) {
-    t.forEach(val === true
-      ? function (p) { return p.set(null, stamp); }
-      : function (p, key) { return val.indexOf(key) === -1 && p.set(null, stamp); }
-    )
-  },
-  props: function (t, val, key, stamp) {
-    var props = t.props
-    if (!props) {
-      var previous = getProps(t)
-      props = t.props = {}
-      if (previous) {
-        for (var key$1 in previous) {
-          props[key$1] = previous[key$1]
-        }
-      }
-    }
-    for (var key$2 in val) {
-      parse(t, val[key$2], key$2, stamp, props)
-    }
-  }
-}
-
-var simple = function (t, val, key) { t[key] = val }
-
-var notSelf = function (t, key, struct) { return t.props &&
-  t.props[key] && t.props[key].struct === struct ||
-  t.inherits && notSelf(t.inherits, key, struct); }
-
-var parse = function (t, val, key, stamp, props) {
-  if (val === true) {
-    props[key] = simple
-  } else if (val === null) {
-    if (props[key]) { delete props[key] }
-  } else if (typeof val !== 'function') {
-    var struct
-    if (typeof val === 'object' && val.inherits) {
-      struct = val
-    } else if (val === 'self') {
-      struct = t
-    } else {
-      var inherit = props[key] && props[key].struct
-      if (inherit) {
-        if (notSelf(t.inherits, key, inherit)) {
-          struct = create(inherit, val, void 0, t)
-        } else {
-          set(inherit, val)
-          return
-        }
-      } else {
-        struct = create(getDefault(t), val, void 0, t)
-      }
-    }
-    var definition = function (t, val, key, stamp) { return property(t, val, key, stamp, struct); }
-    definition.struct = struct
-    props[key] = definition
-  } else {
-    props[key] = val
-  }
-}
-
-var define = function (t, value, key) {
-  Object.defineProperty(t, key, { configurable: true, value: value })
-  return t
-}
-
-var createConstructor = function (t, Inherit) {
-  function Struct () {}
-  if (Inherit) { Struct.prototype = new Inherit() }
-  define(Struct.prototype, Struct, CONSTRUCTOR)
-  define(t, Struct, CONSTRUCTOR)
-  return Struct
-}
-
-struct.instances = false
-struct.props = props
-struct.types = { struct: struct }
-
-createConstructor(struct)
-struct.props.define = function (t, val) {
-  var proto
-  if (!t.hasOwnProperty(CONSTRUCTOR)) {
-    createConstructor(t, t.Constructor)
-  }
-  proto = t.Constructor.prototype
-  for (var key in val) { define(t, val[key], key) }
-  for (var key$1 in val) { define(proto, val[key$1], key$1) }
-}
-
-props.default = function (t, val, key, stamp) { return property(t, val, key, stamp, struct); }
-props.default.struct = struct
-
-require('./on')(struct)
-
-module.exports = struct
-
-},{"../get":91,"../manipulate":95,"../property":100,"./inject":104,"./on":106,"./types":107}],104:[function(require,module,exports){
-var ref = require('../manipulate');
-var set = ref.set;
-
-var inject = function (t, val, stamp) { return typeof val === 'function'
-  ? val(t, val, stamp)
-  : set(t, val, stamp); }
-
-module.exports = function (t, val, key, stamp) {
-  var changed
-  if (Array.isArray(val)) {
-    for (var i = 0, len = val.length; i < len; i++) {
-      if (inject(t, val[i], stamp)) {
-        changed = true
-      }
-    }
-  } else {
-    changed = inject(t, val, stamp)
-  }
-  return changed
-}
-
-},{"../manipulate":95}],105:[function(require,module,exports){
-var ref = require('../get');
-var getFn = ref.getFn;
-var get = function (t, key) { return t[key] || t.inherits && get(t.inherits, key); }
-
-var listener = function (t, val, key, stamp) {
-  if (key in t) {
-    var result = t[key]
-    if (result) {
-      if (result !== val) {
-        var isFn = typeof result === 'function'
-        replace(isFn ? t.fn : t.struct, result, val)
-        if (val === null) {
-          delete t[key]
-        } else {
-          t[key] = val
-        }
-      }
-    } else {
-      add(t, val, key)
-    }
-  } else {
-    var result$1 = get(t.inherits, key)
-    if (result$1 && typeof result$1 === 'function') {
-      if (result$1 !== val) {
-        if (t.fn) {
-          replace(t.fn, result$1, val)
-        } else {
-          t.fn = copyContext(getFn(t), result$1, val)
-        }
-        t[key] = val
-      }
-    } else {
-      add(t, val, key)
-    }
-  }
-}
-
-var add = function (t, val, key) {
-  if (typeof val === 'function') {
-    addFn(t, val)
-  } else {
-    addStruct(t, val)
-  }
-  t[key] = val
-}
-
-var copyContext = function (arr, val, replacement) {
-  var b = []
-  if (!replacement) {
-    for (var i = 0, j = 0, len = arr.length; i < len; i++) {
-      if (arr[i] === val) {
-        j = 1
-      } else {
-        b[i - j] = arr[i]
-      }
-    }
-  } else {
-    var i$1 = arr.length
-    while (i$1--) {
-      if (arr[i$1] === val) {
-        b[i$1] = replacement
-      } else {
-        b[i$1] = arr[i$1]
-      }
-    }
-  }
-  return b
-}
-
-var replace = function (arr, val, replacement) {
-  for (var i = 0, len = arr.length; i < len; i++) {
-    if (arr[i] === val) {
-      if (replacement) {
-        arr.splice(i, 1, replacement)
-      } else {
-        arr.splice(i, 1)
-      }
-      break
-    }
-  }
-}
-
-var create = function (arr, val) {
-  if (arr) {
-    var i = arr.length
-    var b = [ val ]
-    while (i--) { b[i + 1] = arr[i] }
-    return b
-  } else {
-    return [ val ]
-  }
-}
-
-var addFn = function (t, val) {
-  if (!t.fn) {
-    t.fn = create(getFn(t), val)
-  } else {
-    t.fn.unshift(val)
-  }
-}
-
-var addStruct = function (t, val) {
-  if (!t.struct) {
-    t.struct = [ val ]
-  } else {
-    t.struct.unshift(val)
-  }
-}
-
-exports.addFn = addFn
-exports.listener = listener
-exports.replace = replace
-
-},{"../get":91}],106:[function(require,module,exports){
-module.exports = function (struct) {
-  var ref = require('../property');
-  var property = ref.property;
-  var ref$1 = require('../manipulate');
-  var create = ref$1.create;
-  var set = ref$1.set;
-  var ref$2 = require('./listener');
-  var listener = ref$2.listener;
-  var addFn = ref$2.addFn;
-  var replace = ref$2.replace;
-
-  var emitter = create(struct, {
-    instances: false,
-    props: { default: listener }
-  })
-
-  var update = function (t, val, key, original) {
-    if (!(key in t)) {
-      var field = val[key]
-      if (!field || typeof field === 'function') {
-        if (field === null) {
-          replace(t.fn, original[key])
-        } else {
-          addFn(t, field)
-        }
-        return true
-      }
-    }
-  }
-
-  var instances = function (t, val, original, fields) {
-    var i = t.instances.length
-    while (i--) {
-      var instance = t.instances[i]
-      if (instance.fn) {
-        if (!fields) { fields = Object.keys(val) }  // can use something else for perf
-        var j = fields.length
-        if (instance.instances) {
-          var inherits
-          while (j--) {
-            var key = fields[j]
-            if (update(instance, val, key, original)) {
-              if (!inherits) {
-                inherits = [ key ]
-              } else {
-                inherits.push(key)
-              }
-            }
-          }
-          if (inherits) { instances(instance, val, original, inherits) }
-        } else {
-          while (j--) { update(instance, val, fields[j], original) }
-        }
-      } else if (instance.instances) {
-        instances(instance, val, original, fields)
-      }
-    }
-  }
-
-  var emitterProperty = function (t, val, key, stamp) {
-    if (val && key in t && t.instances) {
-      var field = t[key]
-      if (field) { instances(field, val, field) }
-    }
-    return property(t, val, key, stamp, emitter)
-  }
-  emitterProperty.struct = emitter
-
-  var getOn = function (t) { return t.emitters || t.inherits && getOn(t.inherits); }
-
-  var onStruct = create(struct, {
-    instances: false,
-    props: {
-      default: emitterProperty
-    }
-  })
-
-  var on = function (t, val, key, stamp) {
-    if (val) {
-      if (typeof val === 'function') {
-        val = { data: { _val: val } }
-      } else {
-        for (var key$1 in val) {
-          var emitter = val[key$1]
-          if (emitter) {
-            if (typeof emitter === 'function') {
-              val[key$1] = { _val: emitter }
-            } else {
-              if (emitter.val) {
-                emitter._val = emitter.val
-                delete emitter.val
-              }
-            }
-          }
-        }
-      }
-    }
-    var result = getOn(t)
-    if (result) {
-      if (!t.emitters) {
-        t.emitters = create(result, val, stamp, t, key)
-      } else {
-        set(result, val, stamp)
-      }
-    } else {
-      t.emitters = create(onStruct, val, stamp, t, key)
-    }
-  }
-
-  struct.props.on = on
-  on.struct = onStruct
-}
-
-},{"../manipulate":95,"../property":100,"./listener":105}],107:[function(require,module,exports){
-var ref = require('../manipulate');
-var create = ref.create;
-var ref$1 = require('../get');
-var getDefault = ref$1.getDefault;
-
-exports.types = function (t, val) {
-  if (!t.types) { t.types = {} }
-  for (var key in val) {
-    var prop = val[key]
-    if (typeof prop === 'object' && prop.inherits) {
-      t.types[key] = prop
-    } else {
-      t.types[key] = create(getDefault(t), prop, void 0, t)
-    }
-  }
-}
-
-exports.type = function (t, val) {
-  t.type = val
-  // console.log('when not of the same type remove it', t.key, val)
-}
-
-var getType = function (parent, type, t) { return (!t || typeof type === 'string' || typeof type === 'number') &&
-  (
-    parent.types && parent.types[type] ||
-    parent.inherits && getType(parent.inherits, type) ||
-    parent._p && getType(parent._p, type)
-  ); }
-
-exports.getType = getType
-
-},{"../get":91,"../manipulate":95}],108:[function(require,module,exports){
-var ref = require('./property');
-var updateProperty = ref.update;
-var remove = require('./property/remove')
-var ref$1 = require('../keys');
-var getKeys = ref$1.getKeys;
-var ref$2 = require('../get');
-var getOrigin = ref$2.getOrigin;
-
-var inherits = function (key, t, index) {
-  var i = 0
-  while (i < index && t && typeof t === 'object' && t.inherits) {
-    i++
-    if (key in t) {
-      return false
-    }
-    t = t.val
-  }
-  return true
-}
-
-var parseKeys = function (t) {
-  var keys = getKeys(t)
-  var orig = t
-  t = t.val
-  if (t && typeof t === 'object' && t.inherits) {
-    var combined
-    var index = 1
-    while (t && typeof t === 'object' && t.inherits) {
-      var k = getKeys(t)
-      var kl = k && k.length
-      if (kl) {
-        if (!combined) {
-          if (keys) {
-            combined = []
-            for (var j = 0, len = keys.length; j < len; j++) {
-              combined[j] = keys[j]
-            }
-            for (var i = 0; i < kl; i++) {
-              if (inherits(k[i], orig, index)) {
-                combined.push(k[i])
-              }
-            }
-          } else {
-            keys = k
-          }
-        } else {
-          for (var i$1 = 0; i$1 < kl; i$1++) {
-            if (inherits(k[i$1], orig, index)) {
-              combined.push(k[i$1])
-            }
-          }
-        }
-      }
-      index++
-      t = t.val
-    }
-    return combined || keys
-  }
-  return keys
-}
-
-var any = function (key, t, subs, cb, tree, removed) {
-  var branch = tree[key]
-  if (removed || !t) {
-    if (branch) {
-      removeFields(key, subs, branch, cb, tree)
-      return true
-    }
-  } else {
-    var keys = parseKeys(t)
-    if (subs.$keys) {
-      keys = subs.$keys(keys, t)
-    }
-
-    if (keys) {
-      if (!branch) {
-        create(key, keys, t, subs, cb, tree)
-        return true
-      } else {
-        return update(key, keys, t, subs, cb, branch)
-      }
-    } else if (branch) {
-      removeFields(key, subs, branch, cb, tree)
-      return true
-    }
-  }
-}
-
-var composite = function (key, t, subs, cb, branch, removed, c) {
-  var changed
-  if (subs.$keys) {
-    var keys = subs.$keys(parseKeys(t), t)
-    for (var k in c) {
-      var y = branch.$keys[k].$c
-      var tt = keys && getOrigin(t, keys[k])
-      if (updateProperty(k, tt, subs, cb, branch.$keys, removed, y, branch)) {
-        changed = true
-      }
-    }
-  } else {
-    var keys$1 = branch.$keys
-    for (var k$1 in c) {
-      var target = keys$1[k$1]
-      if (target) {
-        if (updateProperty(k$1, target.$t, subs, cb, keys$1, removed, target.$c, branch)) {
-          changed = true
-        }
-      } else if (updateProperty(k$1, void 0, subs, cb, keys$1, removed, void 0, branch)) {
-        changed = true
-      }
-    }
-  }
-
-  return changed
-}
-
-var create = function (key, keys, t, subs, cb, tree) {
-  var len = keys.length
-  var $keys = new Array(len)
-  var branch = tree[key] = { _p: tree, _key: key, $keys: $keys }
-  for (var i = 0; i < len; i++) {
-    var key$1 = keys[i]
-    var tt = getOrigin(t, key$1)
-    updateProperty(i, tt, subs, cb, $keys, void 0, branch)
-  }
-}
-
-var removeFields = function (key, subs, branch, cb, tre) {
-  var $keys = branch.$keys
-  var i = $keys.length
-  while (i--) {
-    // console.log(i, $keys[0].$t.key)
-    // console.log('------>', i, subs)
-    remove(subs, cb, $keys[0])
-  }
-}
-
-var update = function (key, keys, t, subs, cb, branch) {
-  var changed
-  var $keys = branch.$keys
-  var len1 = keys.length
-  var len2 = $keys.length
-  if (len1 > len2) {
-    for (var i = 0; i < len1; i++) {
-      var key$1 = keys[i]
-      var tt = getOrigin(t, key$1)
-      if (updateProperty(i, tt, subs, cb, $keys, void 0, branch)) {
-        changed = true
-      }
-    }
-  } else { // some keys are removed
-    for (var i$1 = 0; i$1 < len2; i$1++) {
-      var key$2 = keys[i$1]
-      if (!key$2) {
-        remove(subs, cb, $keys[i$1])
-        len2--
-        i$1--
-        changed = true
-      } else {
-        var tt$1 = getOrigin(t, key$2)
-        if (updateProperty(i$1, tt$1, subs, cb, $keys, void 0, branch)) {
-          changed = true
-        }
-      }
-    }
-  }
-  return changed
-}
-
-exports.any = any
-exports.composite = composite
-
-},{"../get":91,"../keys":94,"./property":112,"./property/remove":113}],109:[function(require,module,exports){
-var property, any, root, parent, $switch, anyComposite
-
-var diff = function (t, subs, cb, tree, removed, composite) {
-  var changed
-  if (composite) {
-    for (var key in composite) {
-      if (key in tree) {
-        var branch = tree[key]
-        var c = branch.$c
-        if (c) {
-          if (key.indexOf('$any') === 0) {
-            changed = anyComposite(key, t, subs[key], cb, branch, removed, c)
-          } else if (parse(key, t, subs, cb, tree, removed, c)) {
-            changed = true
-          }
-        } else {
-          if (parse(key, t, subs, cb, tree, removed)) {
-            changed = true
-          }
-        }
-      }
-    }
-  } else {
-    for (var key$1 in subs) {
-      if (key$1 !== 'val' && key$1 !== 'props' && key$1 !== '_' && key$1 !== '$blockRemove' && key$1 !== '$keys') {
-        if (parse(key$1, t, subs, cb, tree, removed, composite)) {
-          changed = true
-        }
-      }
-    }
-  }
-  return changed
-}
-
-var parse = function (key, t, subs, cb, tree, removed, composite) {
-  if (key === 'root') {
-    return root(t, subs.root, cb, tree, removed)
-  } else if (key === 'parent') {
-    return parent(t, subs.parent, cb, tree, removed)
-  } else if (key[0] === '$') {
-    if (key.indexOf('any') === 1) {
-      return any(key, t, subs[key], cb, tree, removed, composite)
-    } else if (key.indexOf('switch') === 1) {
-      return $switch(key, t, subs, cb, tree, removed, composite)
-    }
-  } else {
-    return property(key, t, subs[key], cb, tree, removed, composite)
-  }
-}
-
-exports.diff = diff
-exports.parse = parse
-
-property = require('./property').property
-any = require('./any').any
-anyComposite = require('./any').composite
-root = require('./root')
-parent = require('./parent')
-$switch = require('./switch')
-
-},{"./any":108,"./parent":111,"./property":112,"./root":114,"./switch":115}],110:[function(require,module,exports){
-var ref = require('./diff');
-var diff = ref.diff;
-var bs = require('brisky-stamp')
-
-// add ref supports here -- use references field in prop or even simpler
-var subscribe = function (t, subs, cb, tree) {
-  var inProgress
-
-  var listen = function (t, fn) { return t.subscriptions.push(function () {
-    if (!inProgress) {
-      inProgress = true
-      bs.on(function () {
-        inProgress = false
-        fn()
-      })
-    }
-  }); }
-
-  if (!t.subscriptions) { t.subscriptions = [] }
-  if (!tree) { tree = {} }
-
-  if (subs.val) {
-    if (subs.val === true) {
-      listen(t, function () {
-        cb(t, 'update', subs, tree)
-        diff(t, subs, cb, tree)
-      })
-    } else {
-      listen(t, function () { return diff(t, subs, cb, tree); })
-    }
-    cb(t, 'new', subs, tree)
-  } else {
-    listen(t, function () { return diff(t, subs, cb, tree); })
-  }
-  diff(t, subs, cb, tree)
-  return tree
-}
-
-var parse = function (subs) {
-  if (subs) {
-    if (subs === true) {
-      return { val: true }
-    }
-    var result = {}
-    for (var key in subs) {
-      var sub = subs[key]
-      if (key === 'val' || key === '_') {
-        result[key] = sub
-      } else {
-        var type = typeof sub
-        if (type === 'object') {
-          result[key] = parse(sub)
-        } else if (type === 'function') {
-          result[key] = sub
-        } else {
-          result[key] = { val: sub }
-        }
-      }
-    }
-    return result
-  }
-}
-
-exports.subscribe = subscribe
-exports.parse = parse
-
-},{"./diff":109,"brisky-stamp":118}],111:[function(require,module,exports){
-var ref = require('./diff');
-var diff = ref.diff;
-var ref$1 = require('../traversal');
-var root = ref$1.root;
-var ref$2 = require('../get');
-var getOrigin = ref$2.getOrigin;
-
-module.exports = function (t, subs, cb, tree, removed) {
-  var branch = tree.parent
-  if (!removed && t) {
-    if (!branch) {
-      branch = tree.parent = { _p: tree, _key: 'parent' }
-      composite(tree)
-    }
-    return diff(getParent(t, tree), subs, cb, branch)
-  } else if (branch) {
-    diff(branch.$t, subs, cb, branch, true)
-    return true
-  }
-}
-
-var get = function (t, path) {
-  var i = path.length
-  while (i--) {
-    if (path[i] === 'root') {
-      t = root(t)
-    } else {
-      t = getOrigin(t, path[i])
-    }
-  }
-  return t
-}
-
-var getParent = function (t, tree) {
-  var path = []
-  var cnt = 1
-  var i = 0
-  while (tree) {
-    if (tree._key && tree._key[0] !== '$') {
-      if (tree._key === 'parent') {
-        cnt++
-      } else {
-        if (cnt) {
-          cnt--
-        } else {
-          path[i++] = tree._key
-        }
-      }
-    }
-    tree = tree._p
-  }
-  return get(root(t), path)
-}
-
-var composite = function (tree) {
-  var key = 'parent'
-  var parentcounter = 1
-  while (tree._p && parentcounter) {
-    var tkey = tree._key
-    if (tkey !== 'parent') {
-      if (parentcounter === 1 && tkey !== 'root') { // && tkey !== '$any'
-        if (!tree.$c) { tree.$c = {} }
-        if (!(key in tree.$c) || tree.$c[key] !== 'root') {
-          tree.$c[key] = 'parent'
-        }
-      }
-      key = tkey
-      tree = tree._p
-      if (key[0] !== '$') {
-        parentcounter--
-      }
-    } else {
-      parentcounter++
-      tree = tree._p
-    }
-  }
-}
-
-},{"../get":91,"../traversal":116,"./diff":109}],112:[function(require,module,exports){
-var ref = require('../diff');
-var diff = ref.diff;
-var remove = require('./remove')
-var ref$1 = require('../../get');
-var getOrigin = ref$1.getOrigin;
-
-var update = function (key, t, subs, cb, tree, c, parent) {
-  var branch = tree[key]
-  var changed
-  if (t) {
-    // dont do 0 do it by default
-    var stamp = t.tStamp || 0 // needs to use stamp as well (if dstamp is gone)
-    if (!branch) {
-      branch = tree[key] = { _p: parent || tree, _key: key, $t: t }
-      branch.$ = stamp
-      if (subs.val) { cb(t, 'new', subs, branch) }
-      diff(t, subs, cb, branch, void 0, c)
-      changed = true
-    } else if (branch.$ !== stamp || branch.$t !== t) {
-      branch.$t = t
-      branch.$ = stamp
-      if (subs.val === true) { cb(t, 'update', subs, branch) }
-      diff(t, subs, cb, branch, void 0, c)
-      changed = true
-    } else if (branch.$c) {
-      if (diff(t, subs, cb, branch, void 0, branch.$c)) {
-        changed = true // cover this
-      }
-      if (changed && subs.val === true) { cb(t, 'update', subs, branch) }
-    }
-  } else if (branch) {
-    remove(subs, cb, branch)
-    changed = true
-  }
-  return changed
-}
-
-var property = function (key, t, subs, cb, tree, removed, composite) {
-  var changed
-  if (removed) {
-    var branch = tree[key]
-    if (branch) {
-      remove(subs, cb, branch)
-      changed = true
-    }
-  } else {
-    t = getOrigin(t, key)
-    changed = update(
-      key,
-      t,
-      subs,
-      cb,
-      tree,
-      composite
-    )
-  }
-  return changed
-}
-
-exports.property = property
-exports.update = update
-
-},{"../../get":91,"../diff":109,"./remove":113}],113:[function(require,module,exports){
-var ref = require('../diff');
-var diff = ref.diff;
-
-var remove = function (subs, cb, tree) {
-  var t = tree.$t
-  if (subs.val) { cb(t, 'remove', subs, tree) }
-  if (!subs.$blockRemove) {
-    diff(t, subs, cb, tree, true)
-  }
-  var key = tree._key
-  var parent = tree._p
-  if (tree.$c) { composite(parent, key) } // will this work?
-  if (parent.$keys) {
-    // make a fast splice
-    // console.log('-----', key, parent.$keys[key])
-    // console.log(parent.$keys.map(val => val._key))
-    // make this faster....
-    parent.$keys.splice(key, 1)
-    var i = parent.$keys.length - key
-    // can become a lot faster -- maybe we can even ignore the _key field alltogether?
-    // lets try it
-    while (i--) {
-      parent.$keys[i]._key = i
-    }
-    // need to map all keys...
-  } else {
-    delete parent[key]
-  }
-}
-
-var empty = function (obj) {
-  for (var key in obj) {
-    return false
-  }
-  return true
-}
-
-var composite = function (tree, key) {
-  var rootClear
-  while (tree) {
-    if (tree.$c) {
-      if (tree.$c[key]) {
-        if (tree.$c[key] === 'root') { rootClear = true }
-        delete tree.$c[key]
-        if (empty(tree.$c)) {
-          delete tree.$c
-          key = tree._key
-          tree = tree._p
-        } else {
-          if (rootClear) {
-            var block
-            for (var i in tree.$c) {
-              if (tree.$c[i] === 'root') {
-                block = true
-                break
-              }
-            }
-            if (!block) { clearRootComposite(tree) }
-          }
-          break
-        }
-      }
-    } else {
-      if (rootClear && tree._key === 'parent') {
-        clearRootComposite(tree)
-      }
-      break
-    }
-  }
-}
-
-var clearRootComposite = function (tree) {
-  tree = tree._p
-  var key = 'parent'
-  var cnt = 0
-  while (tree) {
-    if (key === 'root') {
-      break
-    } else {
-      if (key === 'parent') {
-        cnt++
-      } else if (key[0] !== '$') {
-        cnt--
-      }
-      if (tree.$c && tree.$c[key]) {
-        if (cnt > 0) {
-          tree.$c[key] = 'parent'
-          for (var i in tree.$c) {
-            if (i !== key) {
-              if (tree.$c[i] === 'root') {
-                tree = false
-              }
-            }
-          }
-          if (tree) {
-            key = tree._key
-            tree = tree._p
-          }
-        } else {
-          delete tree.$c[key]
-          if (empty(tree.$c)) {
-            delete tree.$c
-            key = tree._key
-            tree = tree._p
-          } else {
-            break
-          }
-        }
-      } else {
-        key = tree._key
-        tree = tree._p
-      }
-    }
-  }
-}
-
-module.exports = remove
-
-},{"../diff":109}],114:[function(require,module,exports){
-var ref = require('./diff');
-var diff = ref.diff;
-var ref$1 = require('../traversal');
-var root = ref$1.root;
-
-module.exports = function (t, subs, cb, tree, removed) {
-  var branch = tree.root
-  if (t && !removed) {
-    if (!branch) {
-      branch = tree.root = { _key: 'root', _p: tree }
-      composite(tree)
-    }
-    return diff(root(t), subs, cb, branch)
-  } else if (branch) {
-    diff(branch.$t, subs, cb, branch, true)
-    return true
-  }
-}
-
-var composite = function (tree) {
-  var key = 'root'
-  while (
-    tree._p &&
-    (!(tree.$c) ||
-    !(key in tree.$c) ||
-    tree.$c[key] !== 'root')
-  ) {
-    var tkey = tree._key
-    if (tkey !== 'parent' && tkey !== 'root') { // && tkey !== '$any'
-      if (!('$c' in tree)) { tree.$c = {} }
-      tree.$c[key] = 'root'
-    }
-    key = tkey
-    tree = tree._p
-  }
-}
-
-},{"../traversal":116,"./diff":109}],115:[function(require,module,exports){
-var ref = require('./diff');
-var diff = ref.diff;
-var remove = require('./property/remove')
-var ref$1 = require('./property');
-var update = ref$1.update;
-var ref$2 = require('../compute');
-var origin = ref$2.origin;
-
-var driver = function (t, type) {}
-
-var driverChange = function (key, tkey, t, subs, cb, tree, removed, composite) {
-  var branch = tree[key]
-  if (diff(t, subs, driver, branch, removed, composite)) {
-    return body(tkey, t, subs, cb, tree, removed, subs.val, false, composite)
-  }
-}
-
-var $switch = function (key, t, subs, cb, tree, removed, composite) {
-  var $switch = subs[key]
-  if (!$switch) {
-    var tkey = key.slice(0, -1) // this means from composite
-    driverChange(key, tkey, t, subs[tkey], cb, tree, removed, composite)
-  } else {
-    if ($switch.val) {
-      var dKey = key + '*'
-      var driverBranch = tree[dKey]
-      if (driverBranch) {
-        if (diff(t, $switch, driver, driverBranch, removed, composite)) {
-          return body(key, t, subs, cb, tree, removed, $switch.val, true, composite)
-        } else {
-          var branch = tree[key]
-          if (branch) { update(key, t, branch.$subs, cb, tree, removed, composite) }
-        }
-      } else if (!driverBranch) {
-        create(dKey, t, $switch, driver, tree, composite)
-        return body(key, t, subs, cb, tree, removed, $switch.val, true, composite)
-      }
-    } else {
-      return body(key, t, subs, cb, tree, removed, $switch, true, composite)
-    }
-  }
-}
-
-var create = function (key, t, subs, cb, tree, composite) {
-  var branch = tree[key] = {
-    _p: tree,
-    _key: key,
-    $subs: subs
-  }
-  return diff(t, subs, cb, branch, void 0, composite)
-}
-
-var body = function (key, t, subs, cb, tree, removed, $switch, diffit, composite) {
-  var result
-  if (!removed && t) { result = $switch(t, subs, tree, key) }
-  var branch = tree[key]
-  if (!result) {
-    if (branch) {
-      remove(branch.$subs, cb, branch)
-      return true
-    }
-  } else {
-    if (!branch) {
-      update(key, t, result, cb, tree, void 0, composite)
-      branch = tree[key]
-      branch.$subs = result
-      branch.$origin = origin(t)
-      return true
-    } else if (isSwitched(branch.$subs, result, branch, t)) {
-      remove(branch.$subs, cb, branch)
-      update(key, t, result, cb, tree, void 0, composite)
-      branch = tree[key]
-      branch.$subs = result
-      branch.$origin = origin(t)
-      return true
-    } else if (diffit) {
-      return update(key, t, result, cb, tree, removed, composite)
-    }
-  }
-}
-
-var isSwitched = function (a, b, branch, t) {
-  if (t) {
-    var o = origin(t)
-    var b$1 = branch.$origin
-    if (b$1 !== o) {
-      branch.$origin = o
-      return true
-    }
-  }
-
-  if (a === b) {
-    return false // test
-  } else {
-    if (a._) {
-      return a._ !== b._
-    }
-    for (var key in a) {
-      if (a[key] !== b[key]) {
-        if (typeof a[key] === 'function' && typeof b[key] === 'function') {
-          if (a[key].toString() !== b[key].toString()) {
-            return true
-          }
-        } else if (typeof a[key] !== 'object' || typeof b[key] !== 'object' || isSwitched(a[key], b[key])) {
-          return true
-        }
-      }
-    }
-    for (var key$1 in b) {
-      if (key$1 !== 'props' && !a[key$1]) { return true }
-    }
-  }
-}
-
-module.exports = $switch
-
-},{"../compute":87,"./diff":109,"./property":112,"./property/remove":113}],116:[function(require,module,exports){
-// will combined lookup
-var parent = function (t) {
-  if (t.context) {
-    if (t.contextLevel === 1) {
-      return t.context
-    } else {
-      t._p.contextLevel = t.contextLevel - 1
-      t._p.context = t.context
-      return t._p
-    }
-  } else {
-    return t._p
-  }
-}
-
-var root = function (t) {
-  var p = t
-  while (p) {
-    t = p
-    p = parent(p)
-  }
-  return t
-}
-
-var path = function (t) {
-  var result = []
-  var parent = t
-  while (parent) {
-    if (parent.context) {
-      var i = parent.contextLevel
-      var p = parent
-      while (i--) {
-        result.unshift(p.key)
-        p = p._p
-      }
-      parent = parent.context
-    } else if (parent.key) {
-      result.unshift(parent.key)
-      parent = parent._p
-    } else {
-      break
-    }
-  }
-  return result
-}
-
-exports.path = path
-exports.parent = parent
-exports.root = root
-
-},{}],117:[function(require,module,exports){
-var cnt = 1e4 // so now a limition becomes 10k fns normal
-var uid = function (t) { return t._uid || (t._uid = ++cnt) }
-module.exports = uid
-
-},{}],118:[function(require,module,exports){
 (function (global){
 if (global.briskystamp) {
   module.exports = global.briskystamp
@@ -7698,6 +4946,51 @@ if (global.briskystamp) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],119:[function(require,module,exports){
-arguments[4][84][0].apply(exports,arguments)
-},{"dup":84}]},{},[50]);
+},{}],85:[function(require,module,exports){
+// If `Date.now()` is invoked twice quickly, it's possible to get two
+// identical time stamps. To avoid generation duplications, subsequent
+// calls are manually ordered to force uniqueness.
+
+var _last = 0
+var _count = 1
+var adjusted = 0
+var _adjusted = 0
+
+module.exports =
+function timestamp() {
+  /**
+  Returns NOT an accurate representation of the current time.
+  Since js only measures time as ms, if you call `Date.now()`
+  twice quickly, it's possible to get two identical time stamps.
+  This function guarantees unique but maybe inaccurate results
+  on each call.
+  **/
+  //uncomment this wen
+  var time = Date.now()
+  //time = ~~ (time / 1000) 
+  //^^^uncomment when testing...
+
+  /**
+  If time returned is same as in last call, adjust it by
+  adding a number based on the counter. 
+  Counter is incremented so that next call get's adjusted properly.
+  Because floats have restricted precision, 
+  may need to step past some values...
+  **/
+  if (_last === time)  {
+    do {
+      adjusted = time + ((_count++) / (_count + 999))
+    } while (adjusted === _adjusted)
+    _adjusted = adjusted
+  }
+  // If last time was different reset timer back to `1`.
+  else {
+    _count = 1
+    adjusted = time
+  }
+  _adjusted = adjusted
+  _last = time
+  return adjusted
+}
+
+},{}]},{},[50]);
