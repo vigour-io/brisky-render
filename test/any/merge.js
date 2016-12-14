@@ -46,11 +46,6 @@ test('any - merge', t => {
       </div>
     `)
   )
-
-  if (document.body) {
-    document.body.appendChild(elem)
-  }
-
   t.end()
 })
 
@@ -101,7 +96,6 @@ test('any - merge - multiple collections - scoped sub', t => {
   }
 
   const app = render(simple, { collection: [ { title: 1 }, { title: 2 } ] })
-
   t.equal(
     parse(app),
     '<div><div><b>1</b><b>2</b><b>1</b><b>2</b></div></div>',
