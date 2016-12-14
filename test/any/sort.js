@@ -72,15 +72,11 @@ test('any - sort', t => {
     d: {
       $any: {
         val: (keys, state) => {
-
           var x = keys.filter(
-          val => {
-            console.log('??????', val, state[val].compute(), state.root().query.compute() == state[val].compute(), state.root().james.compute() == state[val].compute())
-            return state.root().query.compute() == state[val].compute() || state.root().james.compute() == state[val].compute()
-          }
-        )
-
-          console.log(x)
+            val => {
+              return state.root().query.compute() == state[val].compute() || state.root().james.compute() == state[val].compute() //eslint-disable-line
+            }
+          )
           return x
         },
         root: {
@@ -106,13 +102,11 @@ test('any - sort', t => {
 
   state.collection.set(state.collection.map(val => ({ val: val.compute(), color: 'rgb(' + val.compute() * 20 + ', 100, 100)' })))
 
-  const elem = render(app, state, (a, b, c, s, t) => {
-    if (s) console.warn(t, s.path())
-  })
+  const elem = render(app, state)
 
   var cnt = 0
   const defer = (val) => new Promise(resolve => {
-    setTimeout(() => console.log('\nset!') || resolve(val), (++cnt))
+    setTimeout(() => resolve(val), (++cnt))
   })
 
   state.collection.set(defer({ 0: 6 }))
