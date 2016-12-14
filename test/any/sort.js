@@ -9,17 +9,29 @@ test('any - sort', t => {
     types: {
       holder: {
         style: {
-          padding: '20px',
-          fontSize: '40px'
+          borderTop: '1px solid #333',
+          padding: '50px',
+          textAlign: 'center'
         },
-        tag: 'holder',
         $: 'collection.$any',
         $any: (keys, state) => keys.concat().sort(
           (a, b) => state.get(a).compute() > state.get(b).compute() ? -1 : 1
-        ),
+        ).slice(0, 3),
         props: {
           default: {
-            title: { text: { $: true } }
+            style: {
+              display: 'inline-block',
+              fontSize: '40px',
+              borderRadius: '50%',
+              margin: '15px',
+              textAlign: 'center',
+              padding: '5px',
+              background: '#333',
+              width: '50px',
+              height: '50px',
+              color: '#eee'
+            },
+            text: { $: true }
           }
         }
       }
@@ -44,7 +56,16 @@ test('any - sort', t => {
   })
 
   console.log('go go go')
-  state.collection[0].set(6)
+
+  var cnt = 0
+  const defer = (val) => new Promise(resolve => {
+    setTimeout(() => resolve(val), (++cnt) * 500)
+  })
+
+  state.collection.set(defer({ 0: 6 }))
+  state.collection.set(defer({ 3: 7 }))
+  state.collection.set(defer({ 4: 1 }))
+  state.collection.set(defer({ 0: 1 }))
 
   // t.equal(
   //   parse(elem),
