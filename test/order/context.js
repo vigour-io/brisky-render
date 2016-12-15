@@ -1,5 +1,5 @@
 'use strict'
-const render = require('../../render')
+const render = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 const struct = require('brisky-struct')

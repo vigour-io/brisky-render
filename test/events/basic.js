@@ -1,4 +1,4 @@
-const render = require('../../render')
+const render = require('../../')
 const element = require('../../lib/element')
 const test = require('tape')
 const trigger = require('../../trigger')

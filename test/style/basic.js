@@ -2,7 +2,7 @@ const test = require('tape')
 const s = require('brisky-struct')
 const p = require('parse-element')
 
-const render = require('../../render')
+const render = require('../../')
 
 test('basic - static styles', t => {
   var elem = render({

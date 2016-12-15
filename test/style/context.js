@@ -1,4 +1,4 @@
-  const render = require('../../render')
+  const render = require('../../')
   const test = require('tape')
   const s = require('brisky-struct')
   const p = require('parse-element')
