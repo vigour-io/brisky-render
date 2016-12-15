@@ -5,6 +5,15 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
+  "browser": {
+    "dist/index.js": "./dist/index.browser.js",
+    "dist/index.es.js": "./dist/index.browser.js",
+    "./dist/index.js": "./dist/index.browser.js",
+    "./dist/index.es.js": "./dist/index.browser.js",
+    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
+    "./lib/events/listener": "./lib/events/listener/browser",
+    "html-element/global-shim": false
+  },
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c rollup.config.test.js -w",
@@ -55,11 +64,6 @@
     "strip-formatting": "^1.0.2",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0"
-  },
-  "browser": {
-    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
-    "./lib/events/listener": "./lib/events/listener/browser",
-    "html-element/global-shim": false
   },
   "standard": {
     "ignore": [
