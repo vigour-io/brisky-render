@@ -1,6 +1,5 @@
 const http = require('http')
 const fs = require('fs')
-const app = require('./index.js')
 const parseElement = require('parse-element')
 const zlib = require('zlib')
 const { parse } = require('url')
@@ -24,66 +23,69 @@ const { parse } = require('url')
 
 // ok so comptess and test it
 
-const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
+// const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
 
-// const index = `
-// <html>
-// <head>
-// </head>
-// <body>
-//   <div id="prerender">
-//     ${parseElement(app)}
-//   </div>
-//   <script>${bridge}</script>
-//   <script src="build.min.js"></script>
-// </body>
-// </html>`
 
-const index = `
-<html>
-<head>
-</head>
-<body>
-  ${parseElement(app)}
-  <script>${bridge}</script>
-  <script src="http://localhost:8080/wip"></script>
-</body>
-</html>`
+// console.log(app)
+//
 
-// const index = `
-// <html>
-// <head>
-// </head>
-// <body>
-//   <script>${bridge}</script>
-//   <script src="build.min.js"></script>
-// </body>
-// </html>`
 
-const build = fs.readFileSync(__dirname + '/build.min.js') //eslint-disable-line
-
-const obj = {}
-zlib.gzip(index, (err, data) => {
-  obj.gzip = err ? index : data
-})
-
-zlib.gzip(build, (err, data) => {
-  obj.build = err ? build : data
-})
-
+// needs to be a seperate one...
+// const app = require('./dist/index.prerender.dev.js')
+// console.log(a)
 // add build as well..
+
+  // ({ exports: {} })
+  // fs.writeFileSync(__dirname + '/fn.js', app)
+  // console.log('???', app, app({ exports: {} }))
+
 http.createServer((req, res) => {
+  const app = new Function('module', fs.readFileSync(__dirname + '/dist/index.prerender.dev.js') + ';return module.exports;') //eslint-disable-line
+
+  global.navigator = {
+    userAgent: req.headers['user-agent']
+  }
+
+  const a = app({ exports: {} })(global)
+
+  const index = `
+  <html>
+  <head>
+  <script>
+   document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+          ':35729/livereload.js?snipver=1"></' + 'script>');
+  </script>
+  </head>
+  <body>
+    ${parseElement(a)}
+    <script src="build.min.js"></script>
+  </body>
+  </html>`
+
+  // const build =
+  const build = fs.readFileSync(__dirname + '/dist/index.browser.dev.js') //eslint-disable-line
+  const obj = {}
+
   const url = parse(req.url)
   console.log(url.path)
   res.setHeader('Content-Encoding', 'gzip')
   if (url.path === '/build.min.js') {
+    zlib.gzip(build, (err, data) => {
+    obj.build = err ? build : data
     res.setHeader('Content-Length', Buffer.byteLength(obj.build))
     res.end(obj.build)
+  })
+
   } else if (url.path === '/favicon.ico') {
     res.end('')
   } else {
-    res.setHeader('Content-Length', Buffer.byteLength(obj.gzip))
+     zlib.gzip(index, (err, data) => {
+    obj.gzip = err ? index : data
+      res.setHeader('Content-Length', Buffer.byteLength(obj.gzip))
     res.end(obj.gzip)
+  })
+
+
   }
 }).listen(3030)
 
@@ -91,3 +93,4 @@ http.createServer((req, res) => {
   // dependencies :  { brisky-render, brisky-struct }
   // need build script as well (browerify > build.min.js)
 */
+console.log('start server')
