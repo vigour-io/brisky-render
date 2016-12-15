@@ -83,6 +83,9 @@ test('any - sort', t => {
           query: true,
           james: true
         },
+        parent: {
+          blurf: true
+        },
         color: {
           val: true,
           smurf: true
