@@ -1,9 +1,9 @@
 'use strict'
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 const moons = require('../util/emojis').moons
 const nature = require('../util/emojis')
 

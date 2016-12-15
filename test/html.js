@@ -1,8 +1,8 @@
 'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 
 test('html', t => {
   const state = s({ text: 'some text' })

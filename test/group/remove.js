@@ -1,7 +1,7 @@
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
-const s = require('brisky-struct')
-const parent = require('../../lib/render/dom/parent')
+const { create: s } = require('brisky-struct')
+const { parent } = require('../../')
 const p = require('parse-element')
 
 test('group - remove', t => {

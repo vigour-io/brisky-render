@@ -1,10 +1,10 @@
 'use strict'
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const struct = require('brisky-struct')
+const { create: struct } = require('brisky-struct')
 const strip = require('strip-formatting')
-const element = require('../../lib/element')
+const { element } = require('../../')
 
 test('order - context', t => {
   const state = struct({

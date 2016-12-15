@@ -1,7 +1,7 @@
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 
 test('$switch (test) - branch', t => {
   const state = s({ fields: { first: true } })

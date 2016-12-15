@@ -1,4 +1,4 @@
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 

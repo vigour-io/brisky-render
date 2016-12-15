@@ -1,8 +1,8 @@
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 
 test('any - sort', t => {
   const app = {

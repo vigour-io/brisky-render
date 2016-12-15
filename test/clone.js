@@ -1,8 +1,8 @@
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 const browser = require('./browser')
-const parent = require('../lib/render/dom/parent')
+const { parent } = require('../')
 
 test('clone - reuse ', t => {
   const state = global.state = s({

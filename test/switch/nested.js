@@ -1,8 +1,8 @@
 'use strict'
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 const strip = require('strip-formatting')
 
 test('switch - nested', t => {

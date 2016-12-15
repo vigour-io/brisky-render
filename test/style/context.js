@@ -1,6 +1,6 @@
-  const render = require('../../')
+  const { render } = require('../../')
   const test = require('tape')
-  const s = require('brisky-struct')
+  const { create: s } = require('brisky-struct')
   const p = require('parse-element')
   const isNode = typeof window === 'undefined'
 

@@ -1,5 +1,5 @@
 'use strict'
-const render = require('brisky-core/render')
+const { render } = require('brisky-core/render')
 const Element = require('brisky-core')
 const test = require('tape')
 const s = require('vigour-state/s')

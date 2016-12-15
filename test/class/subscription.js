@@ -1,6 +1,6 @@
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 const test = require('tape')
-const render = require('../../lib/render')
+const { render } = require('../../')
 const strip = require('strip-formatting')
 const parse = require('parse-element')
 

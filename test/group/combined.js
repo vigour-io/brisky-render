@@ -1,12 +1,12 @@
-const render = require('../../')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('brisky-struct')
-const parent = require('../../lib/render/dom/parent')
+const { create: s } = require('brisky-struct')
+const { parent } = require('../../')
 const emos = require('../util/emojis')
 const fs = require('fs')
 const path = require('path')
-const { get } = require('brisky-struct/lib/get')
+const { get } = require('brisky-struct')
 
 test('group - combined', t => {
   const types = {
@@ -129,8 +129,7 @@ test('group - combined', t => {
     document.body.appendChild(app)
   } else {
     const output = fs.readFileSync(path.join(__dirname, '/output.html'))
-    t.equal(parse(app), output.toString(), 'correct output')
-    // fs.writeFileSync(path.join(__dirname, '/outputx.html'), parse(app))
+    t.equal(parse(app).replace(/(\d+)\.\d+/g, '$1'), output.toString().replace(/(\d+)\.\d+/g, '$1'), 'correct output')
   }
   t.end()
 })

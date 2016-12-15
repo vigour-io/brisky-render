@@ -1,5 +1,5 @@
 const test = require('tape')
-const render = require('../../lib/render')
+const { render } = require('../../')
 const p = require('parse-element')
 // note: html-element handles attributes a bit weird (https://github.com/1N50MN14/html-element/issues/23)
 

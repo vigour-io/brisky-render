@@ -1,6 +1,6 @@
 const test = require('tape')
-const render = require('../render')
-const s = require('brisky-struct')
+const { render } = require('../')
+const { create: s } = require('brisky-struct')
 
 test('widgets', (t) => {
   // do more on remove tests

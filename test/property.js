@@ -1,5 +1,5 @@
 'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 
 test('property - cachedNode + context', t => {

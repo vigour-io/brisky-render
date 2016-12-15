@@ -1,5 +1,5 @@
 'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 
 // remove the val from sync perhaps just call it true / 1

@@ -1,7 +1,7 @@
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 const p = require('parse-element')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 
 test('parent', t => {
   const state = s({ first: true })

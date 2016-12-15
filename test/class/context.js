@@ -1,8 +1,8 @@
 const test = require('tape')
-const render = require('../../lib/render')
+const { render } = require('../../')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
-const s = require('brisky-struct')
+const { create: s } = require('brisky-struct')
 
 test('context - static class name', t => {
   const state = s({})
