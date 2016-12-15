@@ -1,6 +1,6 @@
-const { render } = require('../../')
-const test = require('tape')
-const parse = require('parse-element')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
 
 test('$switch (test) - basic', t => {
   var elem = render({

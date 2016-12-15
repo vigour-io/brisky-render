@@ -41,19 +41,19 @@ const file = uglifyJS.minify(__dirname + '/bridge.min.js', {
     drop_debugger: true,
     unsafe: true,
     unsafe_comps: true,
-    conditionals  : true,
-    comparisons   : true,
-    evaluate      : true,
-    booleans      : true,
-    loops         : true,
-    unused        : true,
-    hoist_funs    : true,
-    hoist_vars    : false,
-    if_return     : true,
-    join_vars     : true,
-    cascade       : true,
-    side_effects  : true,
-    global_defs   : {}
+    conditionals: true,
+    comparisons: true,
+    evaluate: true,
+    booleans: true,
+    loops: true,
+    unused: true,
+    hoist_funs: true,
+    hoist_vars: false,
+    if_return: true,
+    join_vars: true,
+    cascade: true,
+    side_effects: true,
+    global_defs: {}
   }
 })
 
@@ -207,13 +207,11 @@ prev = calc
 var calc = size(str)
 console.log('replace props', calc, 'kb', '-' + (prev - calc).toFixed(2), 'kb')
 
-
 str = str.replace(/Cannot find module|MODULE_NOT_FOUND/g, '')
 prev = calc
 var calc = size(str)
 console.log('replace "Cannot find module, MODULE_NOT_FOUND"', calc, 'kb', '-' + (prev - calc).toFixed(2), 'kb')
 
+console.log('saved', ((1 - calc / start) * 100).toFixed(), '% ->', size(str), 'kb')
 
-console.log('saved', ((1 - calc / start ) * 100).toFixed(), '% ->', size(str), 'kb')
-
-fs.writeFileSync(__dirname +'/bridge.min.js', str)
+fs.writeFileSync(__dirname + '/bridge.min.js', str)

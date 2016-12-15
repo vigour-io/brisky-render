@@ -1,8 +1,8 @@
 'use strict'
-const { render } = require('../../')
-const test = require('tape')
-const parse = require('parse-element')
-const strip = require('strip-formatting')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import strip from 'strip-formatting'
 
 test('switch - property', t => {
   const app = render(

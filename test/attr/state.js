@@ -1,7 +1,7 @@
-const test = require('tape')
-const { render } = require('../../')
-const { create: s } = require('brisky-struct')
-const p = require('parse-element')
+import test from 'tape'
+import { render, attr } from '../../'
+import { create as s } from 'brisky-struct'
+import p from 'parse-element'
 
 test('state', t => {
   var elem, attr1, attr2
@@ -119,7 +119,6 @@ test('state - value', t => {
 test('state - gaurd against too many updates', t => {
   var cntRender = 0
   var cnt = 0
-  const { attr } = require('../../')
   const propRender = attr.props.attr.props.default.render.state
   const state = s()
   const app = render({

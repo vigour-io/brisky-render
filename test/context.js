@@ -1,7 +1,6 @@
 'use strict'
-const test = require('tape')
-const { element } = require('../')
-const { render } = require('../')
+import test from 'tape'
+import { render, element } from '../'
 
 test('context', t => {
   const types = {

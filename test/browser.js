@@ -1,5 +1,5 @@
 'use strict'
-module.exports = function (app) {
+export default function (app) {
   if ('body' in document) {
     document.body.appendChild(app)
   }

@@ -1,8 +1,7 @@
-const { render } = require('../../')
-const test = require('tape')
-const { create: s } = require('brisky-struct')
-const { parent } = require('../../')
-const p = require('parse-element')
+import { render, parent } from '../../'
+import test from 'tape'
+import { create as s } from 'brisky-struct'
+import p from 'parse-element'
 
 test('group - remove', t => {
   const state = s({ letters: { a: 'a', b: 'b' } })

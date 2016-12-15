@@ -1,11 +1,10 @@
 'use strict'
-const { render } = require('../../')
-const test = require('tape')
-const parse = require('parse-element')
-const strip = require('strip-formatting')
-const { create: s } = require('brisky-struct')
-const moons = require('../util/emojis').moons
-const nature = require('../util/emojis')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import strip from 'strip-formatting'
+import { create as s } from 'brisky-struct'
+import { moons, nature } from '../util/emojis'
 
 test('$switch (test) - parent', t => {
   const state = s()

@@ -7,8 +7,9 @@
   "jsnext:main": "dist/index.es.js",
   "scripts": {
     "build": "rollup -c",
-    "watch": "rollup -c -w",
-    "test": "(ducktape; node test) | tap-spec && standard",
+    "watch": "rollup -c rollup.config.test.js -w",
+    "pretest": "rollup -c && rollup -c rollup.config.test.js",
+    "test": "node dist/test/index.js | tap-spec && standard",
     "wip": "budo ./wip -p 8080 --live",
     "wip-old": "budo ./wip/old.js -p 8081 --live",
     "dev": "nodemon test | tap-spec",
@@ -39,7 +40,6 @@
     "brisky-performance": "^1.4.2",
     "budo": "^9.0.0",
     "coveralls": "^2.11.12",
-    "ducktape": "^1.0.1",
     "istanbul": "^0.4.5",
     "nodemon": "^1.10.2",
     "parse-element": "^2.0.5",
@@ -58,9 +58,9 @@
     "./lib/events/listener": "./lib/events/listener/browser",
     "html-element": false
   },
-  "browserify": {
-    "transform": [
-      "bubleify"
+  "standard": {
+    "ignore": [
+      "/wip/"
     ]
   },
   "keywords": [

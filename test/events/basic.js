@@ -1,7 +1,6 @@
-const { render } = require('../../')
-const { element } = require('../../')
-const test = require('tape')
-const trigger = require('../../trigger')
+import { render, element } from '../../'
+import test from 'tape'
+import trigger from '../../trigger'
 const isNode = typeof window === 'undefined'
 
 test('events - basic - add events', (t) => {

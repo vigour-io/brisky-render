@@ -1,9 +1,9 @@
 'use strict'
-const { render } = require('../../')
-const test = require('tape')
-const parse = require('parse-element')
-const { create: s } = require('brisky-struct')
-const strip = require('strip-formatting')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import { create as s } from 'brisky-struct'
+import strip from 'strip-formatting'
 
 test('$switch (test) - $any', t => {
   const state = s({

@@ -1,8 +1,8 @@
-const { create: s } = require('brisky-struct')
-const test = require('tape')
-const { render } = require('../../')
-const strip = require('strip-formatting')
-const parse = require('parse-element')
+import { create as s } from 'brisky-struct'
+import test from 'tape'
+import { render } from '../../'
+import strip from 'strip-formatting'
+import parse from 'parse-element'
 
 test('subscription - any + $switch - class false', t => {
   const state = s({

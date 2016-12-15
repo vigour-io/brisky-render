@@ -1,8 +1,8 @@
 'use strict'
-const { render } = require('../')
-const test = require('tape')
-const { create: s } = require('brisky-struct')
-const p = require('parse-element')
+import { render } from '../'
+import test from 'tape'
+import { create as s } from 'brisky-struct'
+import p from 'parse-element'
 
 test('render - $any on top', t => {
   const state = s([ 1, 2 ])

@@ -1,6 +1,6 @@
-const { create: s } = require('brisky-struct')
-const test = require('tape')
-const { render } = require('../../')
+import { create as s } from 'brisky-struct'
+import test from 'tape'
+import { render } from '../../'
 const isNode = typeof window === 'undefined'
 
 test('basic - static class name', t => {

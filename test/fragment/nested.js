@@ -1,8 +1,8 @@
 'use strict'
-const { render } = require('../../')
-const test = require('tape')
-const parse = require('parse-element')
-const { create: s } = require('brisky-struct')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import { create as s } from 'brisky-struct'
 
 test('fragment - nested', t => {
   const state = global.state = s({

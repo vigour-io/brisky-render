@@ -1,8 +1,8 @@
 'use strict'
-const test = require('tape')
-const { render } = require('brisky-core/render')
-const s = require('vigour-state/s')
-const Element = require('brisky-core')
+import test from 'tape'
+import { render } from 'brisky-core/render'
+import s from 'vigour-state/s'
+import Element from 'brisky-core'
 
 test('property', (t) => {
   const state = s({ something: true })

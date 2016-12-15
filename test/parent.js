@@ -1,7 +1,7 @@
-const { render } = require('../')
-const test = require('tape')
-const p = require('parse-element')
-const { create: s } = require('brisky-struct')
+import { render } from '../'
+import test from 'tape'
+import p from 'parse-element'
+import { create as s } from 'brisky-struct'
 
 test('parent', t => {
   const state = s({ first: true })
