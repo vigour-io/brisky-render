@@ -1,7 +1,6 @@
 import test from 'tape'
 import { create as s } from 'brisky-struct'
 import p from 'parse-element'
-
 import { render } from '../../'
 
 test('basic - static styles', t => {

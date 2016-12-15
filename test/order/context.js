@@ -1,4 +1,3 @@
-
 import { render, element } from '../../'
 import test from 'tape'
 import parse from 'parse-element'

@@ -1,4 +1,3 @@
-
 import { render } from '../'
 import test from 'tape'
 import { create as s } from 'brisky-struct'
