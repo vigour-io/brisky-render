@@ -1,4 +1,4 @@
-'use strict'
+
 import { render } from 'brisky-core/render'
 import Element from 'brisky-core'
 import test from 'tape'

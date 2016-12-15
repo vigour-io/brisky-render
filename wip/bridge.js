@@ -1,4 +1,4 @@
-'use strict'
+
 /* if the bridge has not already been set up => setup the bridge */
 /* else use the previously set up bridge */
 if (!global.ployNativeBridgeJs) {

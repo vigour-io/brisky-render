@@ -765,7 +765,7 @@
   ? val + unit
   : val }
 }, {}], 19: [function (require, module, exports) {
-  'use strict'
+
   var parent = require('../render/dom/parent')
   var append = require('../render/dom/create/append')
   var appendStatic = append.static
@@ -1456,7 +1456,7 @@
     }
   }
 }, {'../../get': 8, './set': 35, './subscriber/merge': 38, './val': 43}], 35: [function (require, module, exports) {
-  'use strict'
+
   var setVal = require('./val')
 
   module.exports = function set (target, val, map, path) {
@@ -2110,7 +2110,7 @@
     }
   }
 }, {}], 48: [function (require, module, exports) {
-  'use strict'
+
   var ua = require('./')
   if (typeof window === 'undefined') {
     ua.platform = 'node'
@@ -2118,7 +2118,7 @@
     ua(window.navigator.userAgent, exports)
   }
 }, {'./': 47}], 49: [function (require, module, exports) {
-  'use strict'
+
   module.exports = require('./lib/render')
 }, {'./lib/render': 27}], 50: [function (require, module, exports) {
   var d = Date.now()

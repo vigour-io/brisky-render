@@ -1,4 +1,4 @@
-'use strict'
+
 import test from 'tape'
 import { render } from 'brisky-core/render'
 import s from 'vigour-state/s'

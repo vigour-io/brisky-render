@@ -1,4 +1,4 @@
-'use strict'
+
 import test from 'tape'
 import trigger from '../trigger'
 import isNode from 'vigour-util/is/node'

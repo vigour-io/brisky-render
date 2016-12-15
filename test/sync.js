@@ -1,4 +1,4 @@
-'use strict'
+
 import { render } from '../'
 import test from 'tape'
 
