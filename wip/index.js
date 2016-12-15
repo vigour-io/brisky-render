@@ -2,7 +2,7 @@ var d = Date.now()
 
 import { create as struct } from 'brisky-struct'
 
-import { render } from '../lib'
+import { render } from 'brisky-render'
 
 // import navigator from 'vigour-ua/navigator'
 
@@ -24,9 +24,7 @@ const app = render({
   bla: {
     tag: 'input',
     attr: {
-      value: {
-        $: 'bla'
-      }
+      value: { $: 'bla' }
     },
     on: {
       input: ({ target, state }, stamp) => {
@@ -38,8 +36,7 @@ const app = render({
     $: 'collection.$any',
     $any: {
       val: (keys, state) => {
-        console.log(keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute'])))
-        return keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute']))
+        return keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
       },
       root: {
         bla: true
@@ -48,19 +45,20 @@ const app = render({
     props: {
       default: {
         style: {
-          border: '1px solid blue',
-          margin: '20px',
+          border: '11px solid rgb(20,50,50)',
+          margin: '50px',
           background: color,
-          color: 'rgb(221, 03, 196)',
-          fontFamily: 'courier',
+          color: '#eee',
+          fontFamily: 'helvetica neue',
           textAlign: 'center',
-          padding: '10px'
+          padding: '30px',
+          borderRadius: '10px'
         },
         text: { $: true },
         field: { text: 'static' },
-        other: { text: 'xrx' },
-        field2: { text: 'hxxe' },
-        field3: { text: 'static text' }
+        other: { text: 'static' },
+        field2: { text: 'static' },
+        field3: { text: 'static' }
       }
     }
   }
