@@ -7,8 +7,8 @@ import attach from '../lib/attach'
 import isNode from 'vigour-util/is/node'
 
 Element.prototype.inject(
-  require('../lib'),
-  require('../lib/basic')
+  import '../lib',
+  import '../lib/basic'
 )
 
 test('attach - position', (t) => {

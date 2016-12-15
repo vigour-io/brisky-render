@@ -1,5 +1,5 @@
-require('./basic')
-require('./branch')
-require('./switch')
-require('./parent')
-require('./any')
+import './basic'
+import './branch'
+import './switch'
+import './parent'
+import './any'

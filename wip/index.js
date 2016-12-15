@@ -1,10 +1,10 @@
 var d = Date.now()
 
-const struct = require('brisky-struct')
-// const render = require('brisky-render')
-const render = require('../')
+import { create as struct } from 'brisky-struct'
+// import render from 'brisky-render'
+import { render } from '../'
 
-const stats = require('./stats')
+import stats from './stats'
 
 const state = struct({ collection: [ 1, 2 ] })
 
@@ -36,7 +36,7 @@ const app = render({
 
 stats(state)
 
-module.exports = app
+export default app
 
 if (document.body) {
   console.log('re-render')

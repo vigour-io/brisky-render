@@ -6,8 +6,8 @@ import trigger from '../trigger'
 import isNode from 'vigour-util/is/node'
 
 Element.prototype.inject(
-  require('../lib'),
-  require('../lib/basic')
+  import '../lib',
+  import '../lib/basic'
 )
 
 test('context - fire events - restore context', function (t) {

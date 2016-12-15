@@ -1,7 +1,7 @@
 import { render, element } from '../../'
 import test from 'tape'
 import parse from 'parse-element'
-const { create: struct } = require('brisky-struct')
+import { create as struct } from 'brisky-struct'
 import strip from 'strip-formatting'
 
 test('order - context', t => {

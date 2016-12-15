@@ -1,43 +1,43 @@
-// // // // // // // require('./sync') // not for now
+// // // // // // // import './sync' // not for now
 
-require('./fragment')
+import './fragment'
 
-require('./order')
+import './order'
 
-require('./text')
+import './text'
 
-require('./parent')
+import './parent'
 
-require('./html')
+import './html'
 
-require('./clone')
+import './clone'
 
-require('./reference')
+import './reference'
 
-require('./property')
+import './property'
 
-require('./attr')
+import './attr'
 
-require('./style')
+import './style'
 
-require('./group')
+import './group'
 
-require('./subscribe') // object subs and resubscribe -- object travel
+import './subscribe' // object subs and resubscribe -- object travel
 
-require('./test')
+import './test'
 
-require('./class')
+import './class'
 
-require('./context')
+import './context'
 
-require('./render')
+import './render'
 
-require('./remove')
+import './remove'
 
-require('./widget')
+import './widget'
 
-require('./switch')
+import './switch'
 
-require('./events')
+import './events'
 
-require('./any')
+import './any'
