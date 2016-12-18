@@ -22,11 +22,17 @@ if (global.navigator.userAgent.indexOf('Firefox/') > -1) {
 
 const state = hub({
   bla: 'x',
-  url: 'ws://localhost:3031',
-  collection: {
-    a: 'a'
-  }
+  url: 'ws://localhost:3031'
 })
+
+const add = (state) => {
+  const collection = state.get('collection', {})
+  collection.push({
+    val: 'hello!',
+    x: (collection.keys() || []).length * 2,
+    y: (collection.keys() || []).length * 2
+  })
+}
 
 const app = render({
   attr: { id: 'app' },
@@ -35,22 +41,64 @@ const app = render({
     text: 'ADD ROW',
     on: {
       click ({ state }) {
-        console.log(state.collection)
-        // state.collection.set({
-        //   [Date.now()]: 'hello!'
-        // })
-        state.collection.push('hello!')
+        add(state)
+      }
+    }
+  },
+  pages: {
+    switchit: {
+      text: 'GO SWITCH',
+      on: {
+        click ({ state }) {
+          state.set({
+            page: [ '@', 'root', 'pages', 'b' ]
+          })
+          console.log('????', state.page)
+        }
+      }
+    },
+    page: {
+      $: 'page.$switch',
+      props: {
+        a: {
+          text: 'page-a',
+          fields: {
+            $: '$any',
+            props: {
+              default: {
+                text: { $: 'title' }
+              }
+            }
+          }
+        },
+        b: {
+          text: 'page-b',
+          fields: {
+            $: '$any',
+            props: {
+              default: {
+                text: { $: 'title' },
+                description: { $: 'description' }
+              }
+            }
+          }
+        }
       }
     }
   },
   bla: {
     tag: 'input',
     attr: {
-      value: { $: 'bla' }
+      value: { $: 'collection', $transform: val => val.keys().length }
     },
     on: {
       input: ({ target, state }, stamp) => {
-        state.set({ bla: target.value }, stamp)
+        var nr = Number(target.value) - state.get('collection', { a: 'a' }).keys().length
+        if (nr > 0) {
+          while (nr--) {
+            add(state)
+          }
+        }
       }
     }
   },
@@ -67,20 +115,55 @@ const app = render({
     props: {
       default: {
         style: {
-          border: '11px solid rgb(20,50,50)',
-          margin: '50px',
+          border: '1px solid rgb(120,50,50)',
+          margin: '5px',
+          position: 'absolute',
+          // display: 'inline-block',
           background: color,
           color: '#eee',
           fontFamily: 'helvetica neue',
           textAlign: 'center',
-          padding: '20px',
-          borderRadius: '10px'
+          padding: '10px',
+          borderRadius: '10px',
+          width: '100px',
+          // transition: 'transform 0.05s',
+          height: '100px',
+          zIndex: {
+            $: 'active', $transform: (val) => val ? 1 : 0
+          },
+          opacity: {
+            $: 'active', $transform: (val) => val ? 0.5 : 1
+          },
+          transform: {
+            x: { $: 'x' },
+            y: { $: 'y' },
+            scale: { $: 'active', $transform: (val) => val ? 3 : 1 }
+          }
         },
-        text: { $: true },
+        text: {
+          $: true
+          // $transform: (val, t) => {
+          //   return t.get([ 'x', 'compute' ]) + ' : ' + t.get([ 'y', 'compute' ])
+          // }
+        },
         field: { text: 'static' },
         other: { text: 'static' },
         field2: { text: 'static' },
-        field3: { text: 'static' }
+        field3: { text: 'static' },
+        on: {
+          click: ({ state }) => {
+            state.set({ active: !state.get([ 'active', 'compute' ]) })
+          },
+          move: ({ state, x, y, target }, stamp) => {
+            if (state.get([ 'active', 'compute' ])) {
+              // const rect = target.getBoundingClientRect()
+              state.set({
+                x: x - 75,
+                y: y - 75
+              }, stamp)
+            }
+          }
+        }
       }
     }
   }

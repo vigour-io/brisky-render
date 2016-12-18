@@ -13,6 +13,7 @@ export default {
       browser: true
     }),
     commonjs()
+    // buble()
   ],
   targets: [
     {
