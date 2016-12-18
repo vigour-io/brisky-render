@@ -22,12 +22,27 @@ if (global.navigator.userAgent.indexOf('Firefox/') > -1) {
 
 const state = hub({
   bla: 'x',
-  url: 'ws://localhost:3031'
+  url: 'ws://localhost:3031',
+  collection: {
+    a: 'a'
+  }
 })
 
 const app = render({
   attr: { id: 'app' },
   text: global.navigator.userAgent,
+  button: {
+    text: 'ADD ROW',
+    on: {
+      click ({ state }) {
+        console.log(state.collection)
+        // state.collection.set({
+        //   [Date.now()]: 'hello!'
+        // })
+        state.collection.push('hello!')
+      }
+    }
+  },
   bla: {
     tag: 'input',
     attr: {
