@@ -13,7 +13,7 @@ state.on('error', err => {
   console.log('!', err)
 })
 
-const fields = (new Array(10)).map((val, key) => {
+const fields = [ 1, 2, 3 ].map((val, key) => {
   return {
     title: 'title' + key,
     description: 'description! ' + key
@@ -22,13 +22,22 @@ const fields = (new Array(10)).map((val, key) => {
 
 const pages = {
   fields,
-  a: [ '@', 'parent', 'fields' ],
-  b: [ '@', 'parent', 'fields' ]
+  a: { fields: [ '@', 'parent', 'parent', 'fields' ] },
+  b: { title: 'ITS B', fields: [ '@', 'parent', 'parent', 'fields' ] }
 }
 
 state.set({
   pages
 })
+
+state.subscribe({
+  page: { val: true }
+}, (t, type) => {
+  // console.log('-------->', t.path(), type, t.origin().path())
+})
+
+console.log(state.pages.a.origin() === state.pages.fields)
+console.log(state.pages.fields.keys())
 
 // var cnt = 0
 // var dir = 1

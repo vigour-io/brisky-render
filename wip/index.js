@@ -50,10 +50,11 @@ const app = render({
       text: 'GO SWITCH',
       on: {
         click ({ state }) {
+          const key = state.page && state.page.origin().key
           state.set({
-            page: [ '@', 'root', 'pages', 'b' ]
+            page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
           })
-          console.log('????', state.page)
+          console.log('???xxx?', state.page)
         }
       }
     },
@@ -63,7 +64,7 @@ const app = render({
         a: {
           text: 'page-a',
           fields: {
-            $: '$any',
+            $: 'fields.$any',
             props: {
               default: {
                 text: { $: 'title' }
@@ -72,13 +73,16 @@ const app = render({
           }
         },
         b: {
-          text: 'page-b',
+          text: '===> page-b <===',
+          title: {
+            text: { $: 'title' }
+          },
           fields: {
-            $: '$any',
+            $: 'fields.$any',
             props: {
               default: {
                 text: { $: 'title' },
-                description: { $: 'description' }
+                description: { text: { $: 'description' } }
               }
             }
           }
