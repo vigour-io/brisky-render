@@ -25,10 +25,8 @@ const { parse } = require('url')
 
 // const bridge = fs.readFileSync(__dirname + '/bridge.min.js').toString()
 
-
 // console.log(app)
 //
-
 
 // needs to be a seperate one...
 // const app = require('./dist/index.prerender.dev.js')
@@ -40,13 +38,15 @@ const { parse } = require('url')
   // console.log('???', app, app({ exports: {} }))
 
 http.createServer((req, res) => {
-  const app = new Function('module', fs.readFileSync(__dirname + '/dist/index.prerender.dev.js') + ';return module.exports;') //eslint-disable-line
+  // const app = new Function('module', fs.readFileSync(__dirname + '/dist/index.prerender.dev.js') + ';return module.exports;') //eslint-disable-line
 
-  global.navigator = {
-    userAgent: req.headers['user-agent']
-  }
+  // global.navigator = {
+  //   userAgent: req.headers['user-agent']
+  // }
 
-  const a = app({ exports: {} })(global)
+  // const a = app({ exports: {} })(global)
+
+  //  ${parseElement(a)}
 
   const index = `
   <html>
@@ -57,7 +57,6 @@ http.createServer((req, res) => {
   </script>
   </head>
   <body>
-    ${parseElement(a)}
     <script src="build.min.js"></script>
   </body>
   </html>`

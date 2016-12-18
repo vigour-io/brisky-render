@@ -1,8 +1,8 @@
 import resolve from 'rollup-plugin-node-resolve'
 // import builtins from 'rollup-plugin-node-builtins'
 import commonjs from 'rollup-plugin-commonjs'
-// import buble from 'rollup-plugin-buble'
-// import fs from 'fs'
+import buble from 'rollup-plugin-buble'
+import fs from 'fs'
 
 export default {
   entry: './index.js',

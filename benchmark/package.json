@@ -5,17 +5,13 @@
     "test": "(ducktape; node test) | tap-spec && standard",
     "build": "rollup -c",
     "live": "node live.js",
-    "w": "rollup -c rollup.config.dev.js -w",
-    "dev": "rollup -c rollup.pre.js -w & rollup -c rollup.config.dev.js -w",
+    "dev": "rollup -c rollup.config.dev.js -w",
     "start": "node server.js"
   },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "dependencies": {
-    "brisky-render": "git+https://github.com/vigour-io/brisky-render.git#feature/rollup",
-    "brisky-struct": "git+https://github.com/vigour-io/brisky-struct.git#feature/rollup",
-    "hub.js": "0.0.1",
     "livereload": "^0.6.0",
     "parse-element": "^2.0.5",
     "uglify-js": "2.7.5",

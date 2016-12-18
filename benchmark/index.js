@@ -4,10 +4,6 @@ import { create as struct } from 'brisky-struct'
 
 import { render } from 'brisky-render'
 
-import hub from 'hub.js'
-
-console.log('yo hubs!')
-
 // import navigator from 'vigour-ua/navigator'
 
 console.log('!!!', global.navigator.userAgent)
@@ -18,12 +14,9 @@ if (global.navigator.userAgent.indexOf('Firefox/') > -1) {
   color = 'blue'
 }
 
-// import stats from './stats'
+import stats from './stats'
 
-const state = hub({
-  bla: 'x',
-  url: 'ws://localhost:3031'
-})
+const state = struct({ collection: [ 1, 2 ], bla: 1 })
 
 const app = render({
   attr: { id: 'app' },
@@ -41,14 +34,14 @@ const app = render({
   },
   collection: {
     $: 'collection.$any',
-    // $any: {
-    //   val: (keys, state) => {
-    //     return keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
-    //   },
-    //   root: {
-    //     bla: true
-    //   }
-    // },
+    $any: {
+      val: (keys, state) => {
+        return keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
+      },
+      root: {
+        bla: true
+      }
+    },
     props: {
       default: {
         style: {
@@ -72,17 +65,15 @@ const app = render({
 
 }, state)
 
-global.state = state
+stats(state, 3)
 
-// stats(state, 3)
-
-// export default app
+export default app
 
 if (document.body) {
   console.log('re-render')
 
   // app
-  // console.log(app)
+  console.log(app)
 
   document.body.childNodes
 
