@@ -40,58 +40,58 @@ const add = (state, stamp) => {
 const app = render({
   attr: { id: 'app' },
   text: global.navigator.userAgent,
-  // button: {
-  //   text: 'ADD ROW',
-  //   on: {
-  //     click ({ state }, stamp) {
-  //       add(state, stamp)
-  //     }
-  //   }
-  // },
-  // pages: {
-  //   // switchit: {
-  //   //   text: 'GO SWITCH',
-  //   //   on: {
-  //   //     click ({ state }, stamp) {
-  //   //       const key = state.page && state.page.origin().key
-  //   //       state.set({
-  //   //         page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
-  //   //       }, stamp)
-  //   //     }
-  //   //   }
-  //   // },
-  //   page: {
-  //     $: 'page.$switch',
-  //     props: {
-  //       a: {
-  //         text: 'page-a',
-  //         fields: {
-  //           $: 'fields.$any',
-  //           props: {
-  //             default: {
-  //               text: { $: 'title' }
-  //             }
-  //           }
-  //         }
-  //       },
-  //       b: {
-  //         text: '===> page-b <===',
-  //         title: {
-  //           text: { $: 'title' }
-  //         },
-  //         fields: {
-  //           $: 'fields.$any',
-  //           props: {
-  //             default: {
-  //               text: { $: 'title' },
-  //               description: { text: { $: 'description' } }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
+  button: {
+    text: 'ADD ROW',
+    on: {
+      click ({ state }, stamp) {
+        add(state, stamp)
+      }
+    }
+  },
+  pages: {
+    switchit: {
+      text: 'GO SWITCH',
+      on: {
+        click ({ state }, stamp) {
+          const key = state.page && state.page.origin().key
+          state.set({
+            page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
+          }, stamp)
+        }
+      }
+    },
+    page: {
+      $: 'page.$switch',
+      props: {
+        a: {
+          text: 'page-a',
+          fields: {
+            $: 'fields.$any',
+            props: {
+              default: {
+                text: { $: 'title' }
+              }
+            }
+          }
+        },
+        b: {
+          text: '===> page-b <===',
+          title: {
+            text: { $: 'title' }
+          },
+          fields: {
+            $: 'fields.$any',
+            props: {
+              default: {
+                text: { $: 'title' },
+                description: { text: { $: 'description' } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   // blurf: {
   //   tag: 'input',
   //   attr: {
@@ -131,16 +131,15 @@ const app = render({
         // for api allways pass an empty array
         // here something is still pretty wrong
         //           // .filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
-
         // make a super efficient sort later on
-
         // so were going to get subs.props.cache for these things -- there is a lot to be gained here
+
+        // cached options for everything will come in struct this will make it possible to kill it with perf!
         return keys && keys.slice(0, 3)
           // keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ])).slice(0, 3)
           // .sort((a, b) => {
           //   return state[a].compute() < state[b].compute() ? 1 : -1
           // })
-
       },
       root: { bla: true }
     },
