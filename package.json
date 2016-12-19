@@ -40,9 +40,8 @@
   "dependencies": {
     "brisky-stamp": "^2.1.2",
     "brisky-struct": "0.0.28",
-    "bubleify": "0.5.1",
     "html-element": "^2.1.0",
-    "quick-hash": "^1.0.0",
+    "quick-hash": "^1.0.1",
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
