@@ -39,7 +39,7 @@
   "homepage": "https://github.com/vigour-io/brisky-core#readme",
   "dependencies": {
     "brisky-stamp": "^2.1.2",
-    "brisky-struct": "0.0.28",
+    "brisky-struct": "0.0.0",
     "html-element": "^2.1.0",
     "quick-hash": "^1.0.1",
     "vigour-ua": "^2.2.3"
