@@ -135,8 +135,8 @@ const app = render({
         // make a super efficient sort later on
 
         // so were going to get subs.props.cache for these things -- there is a lot to be gained here
-        return keys &&
-          keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ])).slice(0, 3)
+        return keys && keys.slice(0, 3)
+          // keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ])).slice(0, 3)
           // .sort((a, b) => {
           //   return state[a].compute() < state[b].compute() ? 1 : -1
           // })

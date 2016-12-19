@@ -1,9 +1,16 @@
 const hub = require('hub.js')
+
+var arr = []
+let i = 5e4
+while (i--) {
+  arr.push(i)
+}
+
 const state = hub({
   port: 3031,
   title: 'its fun!',
   bla: 1,
-  collection: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
+  collection: arr
 })
 console.log('start dat hub')
 
