@@ -92,6 +92,7 @@ const app = render({
   bla: {
     tag: 'input',
     attr: {
+      // this is too heavy constantly fires --- lets cache before setting value (else very annoying)
       value: { $: 'collection', $transform: val => val.keys().length }
     },
     on: {
@@ -145,9 +146,6 @@ const app = render({
         },
         text: {
           $: true
-          // $transform: (val, t) => {
-          //   return t.get([ 'x', 'compute' ]) + ' : ' + t.get([ 'y', 'compute' ])
-          // }
         },
         field: { text: 'static' },
         other: { text: 'static' },

@@ -62,9 +62,9 @@ http.createServer((req, res) => {
   </html>`
 
   // const build =
-  // const build = fs.readFileSync(__dirname + '/dist/index.browser.dev.js') //eslint-disable-line
+  const build = fs.readFileSync(__dirname + '/dist/index.browser.dev.js') //eslint-disable-line
 
-  const build = fs.readFileSync(__dirname + '/dist/buble.js') //eslint-disable-line
+  // const build = fs.readFileSync(__dirname + '/dist/buble.js') //eslint-disable-line
   const obj = {}
 
   const url = parse(req.url)
