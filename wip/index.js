@@ -1,6 +1,6 @@
 var d = Date.now()
 
-import { create as struct } from 'brisky-struct'
+// import { create as struct } from 'brisky-struct'
 
 import { render } from 'brisky-render'
 
@@ -18,20 +18,23 @@ if (global.navigator.userAgent.indexOf('Firefox/') > -1) {
   color = 'blue'
 }
 
+// const c = global.briskystamp.create
+// global.briskystamp.create = function () {
+//   const r = c.apply(this, arguments)
+//   console.error('CREATE STAMP', r)
+//   return r
+// }
+
 // import stats from './stats'
 
 const state = hub({
-  bla: 'x',
   url: 'ws://localhost:3031'
 })
 
-const add = (state) => {
+const add = (state, stamp) => {
   const collection = state.get('collection', {})
-  collection.push({
-    val: 'hello!',
-    x: (collection.keys() || []).length * 2,
-    y: (collection.keys() || []).length * 2
-  })
+  const index = Number(collection.keys()[collection.keys().length - 1]) + 1 || 0
+  collection.set({ [index]: index }, stamp)
 }
 
 const app = render({
@@ -40,8 +43,8 @@ const app = render({
   button: {
     text: 'ADD ROW',
     on: {
-      click ({ state }) {
-        add(state)
+      click ({ state }, stamp) {
+        add(state, stamp)
       }
     }
   },
@@ -49,11 +52,11 @@ const app = render({
     switchit: {
       text: 'GO SWITCH',
       on: {
-        click ({ state }) {
+        click ({ state }, stamp) {
           const key = state.page && state.page.origin().key
           state.set({
             page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
-          })
+          }, stamp)
         }
       }
     },
@@ -89,40 +92,60 @@ const app = render({
       }
     }
   },
-  bla: {
+  blurf: {
     tag: 'input',
     attr: {
-      // this is too heavy constantly fires --- lets cache before setting value (else very annoying)
-      value: { $: 'collection', $transform: val => val.keys().length }
+      value: { $: 'bla' }
     },
     on: {
       input: ({ target, state }, stamp) => {
-        var nr = Number(target.value) - state.get('collection', { a: 'a' }).keys().length
+        state.set({ bla: target.value })
+      }
+    }
+  },
+  bla: {
+    tag: 'input',
+    attr: {
+      // $: 'collection', $transform: val => val.keys().length  need sync false!
+      placeholder: 'fill in a #'
+    },
+    on: {
+      input: ({ target, state }, stamp) => {
+        const keys = state.get('collection', { a: 'a' }).keys()
+        const len = keys.length
+        var nr = (Number(target.value) || 0) - len
         if (nr > 0) {
           while (nr--) {
-            add(state)
+            add(state, stamp)
           }
+        } else if (!target.value) { //eslint-disable-line
+          state.collection.set({ reset: true }, stamp)
         }
       }
     }
   },
   collection: {
     $: 'collection.$any',
-    // $any: {
-    //   val: (keys, state) => {
-    //     return keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
-    //   },
-    //   root: {
-    //     bla: true
-    //   }
-    // },
+    $any: {
+      val: (keys, state) => {
+        // for api allways pass an empty array
+        // here something is still pretty wrong
+        return keys && keys
+          .filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
+          .sort((a, b) => {
+            return state[a].compute() < state[b].compute() ? 1 : -1
+          })
+          .slice(0, 3)
+      },
+      root: { bla: true }
+    },
     props: {
       default: {
         style: {
           border: '1px solid rgb(120,50,50)',
           margin: '5px',
-          position: 'absolute',
-          // display: 'inline-block',
+          // position: 'absolute',
+          display: 'inline-block',
           background: color,
           color: '#eee',
           fontFamily: 'helvetica neue',
@@ -131,39 +154,53 @@ const app = render({
           borderRadius: '10px',
           width: '100px',
           // transition: 'transform 0.05s',
-          height: '100px',
           zIndex: {
             $: 'active', $transform: (val) => val ? 1 : 0
           },
           opacity: {
             $: 'active', $transform: (val) => val ? 0.5 : 1
-          },
-          transform: {
-            x: { $: 'x' },
-            y: { $: 'y' },
-            scale: { $: 'active', $transform: (val) => val ? 3 : 1 }
           }
+          // transform: {
+          //   x: { $: 'x' },
+          //   y: { $: 'y' },
+          //   scale: { $: 'active', $transform: (val) => val ? 3 : 1 }
+          // }
         },
         text: {
           $: true
         },
-        field: { text: 'static' },
-        other: { text: 'static' },
-        field2: { text: 'static' },
-        field3: { text: 'static' },
-        on: {
-          click: ({ state }) => {
-            state.set({ active: !state.get([ 'active', 'compute' ]) })
+        field: { text: 'a' },
+        other: { text: 'b' },
+        field2: { text: 'c' },
+        field3: { text: 'd' },
+        remove: {
+          tag: 'button',
+          text: 'REMOVE',
+          style: {
+            padding: '20px',
+            backgroundColor: '#pink'
           },
-          move: ({ state, x, y, target }, stamp) => {
-            if (state.get([ 'active', 'compute' ])) {
-              // const rect = target.getBoundingClientRect()
-              state.set({
-                x: x - 75,
-                y: y - 75
-              }, stamp)
-            }
+          on: {
+            down: ({ state }, stamp) => state.set(null, stamp)
           }
+        },
+        on: {
+          // down: ({ state }) => {
+          //   state.set({ active: !state.get([ 'active', 'compute' ]) })
+          // },
+          // up: ({ state }) => {
+          //   console.log('not removed?')
+          //   state.set({ active: false })
+          // },
+          // move: ({ state, x, y, target }, stamp) => {
+          //   if (state.get([ 'active', 'compute' ])) {
+          //     // const rect = target.getBoundingClientRect()
+          //     state.set({
+          //       x: x - 75,
+          //       y: y - 75
+          //     }, stamp)
+          //   }
+          // }
         }
       }
     }
@@ -179,23 +216,5 @@ global.state = state
 
 if (document.body) {
   console.log('re-render')
-
-  // app
-  // console.log(app)
-
-  document.body.childNodes
-
-  // need to do id
-  // const pr = document.getElementById('app')
-  // if (pr) {
-  //   document.body.removeChild(pr)
-  // }
   document.body.appendChild(app)
-  // console.log('CREATE TOTAL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  // d = Date.now()
-  // state.collection[state.collection.keys().length - 1].set('hello')
-  // console.log('UPDATE ONE:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
-  // d = Date.now()
-  // state.collection.set(state.collection.map(p => p.compute() + '!'))
-  // console.log('UPDATE ALL:', Date.now() - d, 'ms', document.getElementsByTagName('*').length, 'dom elements')
 }

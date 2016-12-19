@@ -2,10 +2,8 @@ const hub = require('hub.js')
 const state = hub({
   port: 3031,
   title: 'its fun!',
-  bla: 'OK!',
-  collection: {
-    a: 'from ze hubs'
-  }
+  bla: 1,
+  collection: [ 0, 1, 2, 3, 4, 5, 6, 7, 8 ]
 })
 console.log('start dat hub')
 
@@ -62,5 +60,5 @@ function animate () {
   state.collection.set(x)
   setTimeout(animate, 10)
 }
-animate()
+// animate()
 // animate on the hub!
