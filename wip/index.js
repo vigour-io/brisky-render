@@ -40,58 +40,58 @@ const add = (state, stamp) => {
 const app = render({
   attr: { id: 'app' },
   text: global.navigator.userAgent,
-  button: {
-    text: 'ADD ROW',
-    on: {
-      click ({ state }, stamp) {
-        add(state, stamp)
-      }
-    }
-  },
-  pages: {
-    // switchit: {
-    //   text: 'GO SWITCH',
-    //   on: {
-    //     click ({ state }, stamp) {
-    //       const key = state.page && state.page.origin().key
-    //       state.set({
-    //         page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
-    //       }, stamp)
-    //     }
-    //   }
-    // },
-    page: {
-      $: 'page.$switch',
-      props: {
-        a: {
-          text: 'page-a',
-          fields: {
-            $: 'fields.$any',
-            props: {
-              default: {
-                text: { $: 'title' }
-              }
-            }
-          }
-        },
-        b: {
-          text: '===> page-b <===',
-          title: {
-            text: { $: 'title' }
-          },
-          fields: {
-            $: 'fields.$any',
-            props: {
-              default: {
-                text: { $: 'title' },
-                description: { text: { $: 'description' } }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
+  // button: {
+  //   text: 'ADD ROW',
+  //   on: {
+  //     click ({ state }, stamp) {
+  //       add(state, stamp)
+  //     }
+  //   }
+  // },
+  // pages: {
+  //   // switchit: {
+  //   //   text: 'GO SWITCH',
+  //   //   on: {
+  //   //     click ({ state }, stamp) {
+  //   //       const key = state.page && state.page.origin().key
+  //   //       state.set({
+  //   //         page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
+  //   //       }, stamp)
+  //   //     }
+  //   //   }
+  //   // },
+  //   page: {
+  //     $: 'page.$switch',
+  //     props: {
+  //       a: {
+  //         text: 'page-a',
+  //         fields: {
+  //           $: 'fields.$any',
+  //           props: {
+  //             default: {
+  //               text: { $: 'title' }
+  //             }
+  //           }
+  //         }
+  //       },
+  //       b: {
+  //         text: '===> page-b <===',
+  //         title: {
+  //           text: { $: 'title' }
+  //         },
+  //         fields: {
+  //           $: 'fields.$any',
+  //           props: {
+  //             default: {
+  //               text: { $: 'title' },
+  //               description: { text: { $: 'description' } }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
   // blurf: {
   //   tag: 'input',
   //   attr: {
@@ -103,27 +103,27 @@ const app = render({
   //     }
   //   }
   // },
-  bla: {
-    tag: 'input',
-    attr: {
-      // $: 'collection', $transform: val => val.keys().length  need sync false!
-      placeholder: 'fill in a #'
-    },
-    on: {
-      input: ({ target, state }, stamp) => {
-        const keys = state.get('collection', { a: 'a' }).keys()
-        const len = keys.length
-        var nr = (Number(target.value) || 0) - len
-        if (nr > 0) {
-          while (nr--) {
-            add(state, stamp)
-          }
-        } else if (!target.value) { //eslint-disable-line
-          state.collection.set({ reset: true }, stamp)
-        }
-      }
-    }
-  },
+  // bla: {
+  //   tag: 'input',
+  //   attr: {
+  //     // $: 'collection', $transform: val => val.keys().length  need sync false!
+  //     placeholder: 'fill in a #'
+  //   },
+  //   on: {
+  //     input: ({ target, state }, stamp) => {
+  //       const keys = state.get('collection', { a: 'a' }).keys()
+  //       const len = keys.length
+  //       var nr = (Number(target.value) || 0) - len
+  //       if (nr > 0) {
+  //         while (nr--) {
+  //           add(state, stamp)
+  //         }
+  //       } else if (!target.value) { //eslint-disable-line
+  //         state.collection.set({ reset: true }, stamp)
+  //       }
+  //     }
+  //   }
+  // },
   collection: {
     $: 'collection.$any',
     $any: {
