@@ -45,8 +45,6 @@
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "brisky-performance": "^1.4.2",
-    "budo": "^9.0.0",
     "coveralls": "^2.11.12",
     "istanbul": "^0.4.5",
     "nodemon": "^1.10.2",
