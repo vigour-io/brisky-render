@@ -10,6 +10,13 @@ export default {
     commonjs()
   ],
   sourceMap: true,
+  external: [
+    'brisky-stamp',
+    'brisky-struct',
+    'html-element',
+    'quick-hash',
+    'vigour-ua'
+  ],
   targets: [
     { dest: 'dist/index.js', format: 'cjs' },
     { dest: 'dist/index.es.js', format: 'es' }

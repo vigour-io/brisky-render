@@ -12,6 +12,13 @@ export default {
     }),
     commonjs()
   ],
+  external: [
+    'brisky-stamp',
+    'brisky-struct',
+    'html-element',
+    'quick-hash',
+    'vigour-ua'
+  ],
   targets: [
     // { dest: 'dist/test/index.js', format: 'cjs' },
     // { dest: 'dist/test/index.es.js', format: 'es' },
