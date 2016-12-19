@@ -30,11 +30,11 @@ state.set({
   pages
 })
 
-state.subscribe({
-  page: { val: true }
-}, (t, type) => {
-  // console.log('-------->', t.path(), type, t.origin().path())
-})
+// state.subscribe({
+//   page: { val: true }
+// }, (t, type) => {
+//   // console.log('-------->', t.path(), type, t.origin().path())
+// })
 
 console.log(state.pages.a.origin() === state.pages.fields)
 console.log(state.pages.fields.keys())
@@ -63,3 +63,4 @@ console.log(state.pages.fields.keys())
 //   setTimeout(animate, 10)
 // }
 // animate()
+// animate on the hub!

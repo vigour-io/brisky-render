@@ -54,7 +54,6 @@ const app = render({
           state.set({
             page: [ '@', 'root', 'pages', key === 'b' ? 'a' : 'b' ]
           })
-          console.log('???xxx?', state.page)
         }
       }
     },
