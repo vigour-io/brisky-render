@@ -17,7 +17,8 @@ export default {
     'brisky-struct',
     'html-element',
     'quick-hash',
-    'vigour-ua'
+    'vigour-ua',
+    'vigour-ua/navigator'
   ],
   targets: [
     // { dest: 'dist/test/index.js', format: 'cjs' },
