@@ -20,6 +20,7 @@
     "pretest": "rollup -c && rollup -c rollup.config.test.js",
     "test": "node dist/test/index.js | tap-spec && standard",
     "wip": "budo ./wip -p 8080 --live",
+    "postinstall": "[ -d dist ] || npm run build",
     "wip-old": "budo ./wip/old.js -p 8081 --live",
     "dev": "nodemon test | tap-spec",
     "dev-browser": "budo ./test/index.js -p 8080 --live",
