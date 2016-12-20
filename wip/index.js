@@ -4,7 +4,7 @@ var d = Date.now()
 
 import { render } from 'brisky-render'
 
-// import hub from 'hub.js'
+import hub from 'hub.js'
 
 console.log('yo hubs!')
 
@@ -27,11 +27,11 @@ if (global.navigator.userAgent.indexOf('Firefox/') > -1) {
 
 // import stats from './stats'
 
-// const state = hub({
-//   url: 'ws://localhost:3031'
-// })
+const state = hub({
+  url: 'ws://localhost:3031'
+})
 
-const state = {}
+// const state = {}
 
 const add = (state, stamp) => {
   const collection = state.get('collection', {})
