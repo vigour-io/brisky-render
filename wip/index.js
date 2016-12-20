@@ -71,7 +71,7 @@ const app = render({
             $: 'fields.$any',
             props: {
               default: {
-                text: { $: 'title' }
+                text: { $: true }
               }
             }
           }
@@ -85,15 +85,15 @@ const app = render({
             $: 'fields.$any',
             props: {
               default: {
-                text: { $: 'title' },
-                description: { text: { $: 'description' } }
+                text: { $: true }
+                // description: { text: { $: 'description' } }
               }
             }
           }
         }
       }
     }
-  },
+  }
   // blurf: {
   //   tag: 'input',
   //   attr: {
@@ -126,91 +126,91 @@ const app = render({
   //     }
   //   }
   // },
-  collection: {
-    $: 'collection.$any',
-    $any: {
-      val: (keys, state) => {
-        // for api allways pass an empty array
-        // here something is still pretty wrong
-        //           // .filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
-        // make a super efficient sort later on
-        // so were going to get subs.props.cache for these things -- there is a lot to be gained here
+  // collection: {
+  //   $: 'collection.$any',
+  //   $any: {
+  //     val: (keys, state) => {
+  //       // for api allways pass an empty array
+  //       // here something is still pretty wrong
+  //       //           // .filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ]))
+  //       // make a super efficient sort later on
+  //       // so were going to get subs.props.cache for these things -- there is a lot to be gained here
 
-        // cached options for everything will come in struct this will make it possible to kill it with perf!
-        return keys && keys.slice(0, 3)
-          // keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ])).slice(0, 3)
-          // .sort((a, b) => {
-          //   return state[a].compute() < state[b].compute() ? 1 : -1
-          // })
-      },
-      root: { bla: true }
-    },
-    props: {
-      default: {
-        style: {
-          border: '1px solid rgb(120,50,50)',
-          margin: '5px',
-          // position: 'absolute',
-          display: 'inline-block',
-          background: color,
-          color: '#eee',
-          fontFamily: 'helvetica neue',
-          textAlign: 'center',
-          padding: '10px',
-          borderRadius: '10px',
-          width: '100px',
-          // transition: 'transform 0.05s',
-          zIndex: {
-            $: 'active', $transform: (val) => val ? 1 : 0
-          },
-          opacity: {
-            $: 'active', $transform: (val) => val ? 0.5 : 1
-          }
-          // transform: {
-          //   x: { $: 'x' },
-          //   y: { $: 'y' },
-          //   scale: { $: 'active', $transform: (val) => val ? 3 : 1 }
-          // }
-        },
-        text: {
-          $: true
-        },
-        field: { text: 'a' },
-        other: { text: 'b' },
-        field2: { text: 'c' },
-        field3: { text: 'd' },
-        remove: {
-          tag: 'button',
-          text: 'REMOVE',
-          style: {
-            padding: '20px',
-            backgroundColor: '#pink'
-          },
-          on: {
-            down: ({ state }, stamp) => state.set(null, stamp)
-          }
-        }
-        // on: {
-          // down: ({ state }) => {
-          //   state.set({ active: !state.get([ 'active', 'compute' ]) })
-          // },
-          // up: ({ state }) => {
-          //   console.log('not removed?')
-          //   state.set({ active: false })
-          // },
-          // move: ({ state, x, y, target }, stamp) => {
-          //   if (state.get([ 'active', 'compute' ])) {
-          //     // const rect = target.getBoundingClientRect()
-          //     state.set({
-          //       x: x - 75,
-          //       y: y - 75
-          //     }, stamp)
-          //   }
-          // }
-        // }
-      }
-    }
-  }
+  //       // cached options for everything will come in struct this will make it possible to kill it with perf!
+  //       return keys && keys.slice(0, 3)
+  //         // keys.filter(key => state.get(key).compute() > state.root().get([ 'bla', 'compute' ])).slice(0, 3)
+  //         // .sort((a, b) => {
+  //         //   return state[a].compute() < state[b].compute() ? 1 : -1
+  //         // })
+  //     },
+  //     root: { bla: true }
+  //   },
+  //   props: {
+  //     default: {
+  //       style: {
+  //         border: '1px solid rgb(120,50,50)',
+  //         margin: '5px',
+  //         // position: 'absolute',
+  //         display: 'inline-block',
+  //         background: color,
+  //         color: '#eee',
+  //         fontFamily: 'helvetica neue',
+  //         textAlign: 'center',
+  //         padding: '10px',
+  //         borderRadius: '10px',
+  //         width: '100px',
+  //         // transition: 'transform 0.05s',
+  //         zIndex: {
+  //           $: 'active', $transform: (val) => val ? 1 : 0
+  //         },
+  //         opacity: {
+  //           $: 'active', $transform: (val) => val ? 0.5 : 1
+  //         }
+  //         // transform: {
+  //         //   x: { $: 'x' },
+  //         //   y: { $: 'y' },
+  //         //   scale: { $: 'active', $transform: (val) => val ? 3 : 1 }
+  //         // }
+  //       },
+  //       text: {
+  //         $: true
+  //       },
+  //       field: { text: 'a' },
+  //       other: { text: 'b' },
+  //       field2: { text: 'c' },
+  //       field3: { text: 'd' },
+  //       remove: {
+  //         tag: 'button',
+  //         text: 'REMOVE',
+  //         style: {
+  //           padding: '20px',
+  //           backgroundColor: '#pink'
+  //         },
+  //         on: {
+  //           down: ({ state }, stamp) => state.set(null, stamp)
+  //         }
+  //       }
+  //       // on: {
+  //         // down: ({ state }) => {
+  //         //   state.set({ active: !state.get([ 'active', 'compute' ]) })
+  //         // },
+  //         // up: ({ state }) => {
+  //         //   console.log('not removed?')
+  //         //   state.set({ active: false })
+  //         // },
+  //         // move: ({ state, x, y, target }, stamp) => {
+  //         //   if (state.get([ 'active', 'compute' ])) {
+  //         //     // const rect = target.getBoundingClientRect()
+  //         //     state.set({
+  //         //       x: x - 75,
+  //         //       y: y - 75
+  //         //     }, stamp)
+  //         //   }
+  //         // }
+  //       // }
+  //     }
+  //   }
+  // }
 
 }, state)
 
