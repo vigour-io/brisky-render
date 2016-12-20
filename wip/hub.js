@@ -1,7 +1,7 @@
 const hub = require('hub.js')
 
 var arr = []
-let i = 5e4
+let i = 1
 while (i--) {
   arr.push(i)
 }
