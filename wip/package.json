@@ -15,7 +15,7 @@
   "dependencies": {
     "brisky-render": "git+ssh://git@github.com/vigour-io/brisky-render#feature/hub",
     "brisky-struct": "git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup",
-    "hub.js": "git+ssh://git@github.com/vigour-io/brisky-struct#master",
+    "hub.js": "git+ssh://git@github.com/vigour-io/hub.js#master",
     "livereload": "^0.6.0",
     "parse-element": "^2.0.5",
     "rollup": "^0.37.0",
