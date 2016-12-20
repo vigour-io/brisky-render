@@ -2,7 +2,7 @@
   "name": "example-wip-rollup",
   "version": "0.0.1",
   "scripts": {
-    "test": "node test | tap-spec && standard",
+    "test": "echo nope",
     "build": "rollup -c",
     "live": "node live.js",
     "w": "rollup -c rollup.config.dev.js -w",
