@@ -5,11 +5,11 @@ const envs = require('rollup-plugin-envs')
 module.exports = [{
   entry: './index.js',
   plugins: [
-    {
-      load (id) {
-        console.log(id)
-      }
-    },
+    // {
+    //   load (id) {
+    //     console.log(id)
+    //   }
+    // },
     resolve({
       jsnext: true,
       main: true,
