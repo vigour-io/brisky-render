@@ -13,7 +13,7 @@
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
   "dependencies": {
-    "brisky-render": "git+ssh://git@github.com/vigour-io/brisky-struct#feature/hub",
+    "brisky-render": "git+ssh://git@github.com/vigour-io/brisky-render#feature/hub",
     "brisky-struct": "git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup",
     "hub.js": "git+ssh://git@github.com/vigour-io/brisky-struct#master",
     "livereload": "^0.6.0",

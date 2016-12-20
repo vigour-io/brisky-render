@@ -62,7 +62,7 @@ http.createServer((req, res) => {
   </html>`
 
   // const build =
-  const build = fs.readFileSync(__dirname + '/dist/vigour-ua|navigator.browser:false:vigour-ua|navigator.version:10:vigour-ua|navigator.platform:false.js') //eslint-disable-line
+  const build = fs.readFileSync(__dirname + '/dist/index.browser.dev.js') //eslint-disable-line
 
   // const build = fs.readFileSync(__dirname + '/dist/buble.js') //eslint-disable-line
   const obj = {}
