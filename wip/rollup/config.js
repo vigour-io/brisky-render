@@ -1,27 +1,48 @@
 const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const envs = require('rollup-plugin-envs')
+const hub = require('rollup-plugin-hub')
+const pkg = require('../package.json')
+const deps = Object.keys(pkg.dependencies)
+let entry
 
 module.exports = [{
-  entry: './index.js',
+  entry: 'src/index.js', // app prerender
   plugins: [
-    // {
-    //   load (id) {
-    //     console.log(id)
-    //   }
-    // },
-    resolve({
-      jsnext: true,
-      main: true,
-      browser: true
-    }),
-    commonjs()//,
-    // envs({
-    //   import: [ 'vigour-ua/navigator' ]
-    // })
+    resolve(),
+    envs({ imports: [ 'vigour-ua/navigator' ] }),
+    commonjs()
   ],
-  dest: 'dist/index.browser.dev.js',
+  format: 'cjs',
+  dest: 'dist/app/envs.json'
+}, {
+  entry: 'src/state.js', // state
+  plugins: [
+    resolve()
+  ],
+  external: deps,
+  format: 'cjs',
+  dest: 'dist/state/index.js'
+}, {
+  entry: 'server/render.js', // render // server
+  plugins: [
+    resolve()
+  ],
+  external: deps,
+  format: 'cjs',
+  dest: 'dist/render/index.js'
+}, {
+  entry: 'server/browser.js', // client build // server
+  plugins: [
+    resolve({ browser: true }),
+    envs({
+      imports: [ 'vigour-ua/navigator' ]
+    }),
+    commonjs(),
+    hub()
+  ],
   format: 'iife',
-  moduleName: 'wip',
-  intro: 'var global = window;'
+  moduleName: 'app',
+  intro: 'var global = window;',
+  dest: 'dist/browser/envs.json'
 }]

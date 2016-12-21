@@ -1,5 +1,5 @@
 const fs = require('fs')
-const original = fs.readFileSync(__dirname + '/build.js')
+const original = fs.readFileSync(__dirname + '/dist/index.browser.dev.js')
 const size = val => (encodeURI(val.split(/%..|./).length - 1) / 1024).toFixed(2)
 
 var str = original.toString()
@@ -7,27 +7,35 @@ var prev = size(str)
 console.log('original', prev, 'kb')
 var start = prev
 
-var requires = original.toString().match(/require\(.*?\)/g)
-if (requires) {
-  console.log(requires.length)
-  var obj = {}
-  requires.forEach(val => {
-    obj[val.match(/require\((.*?)\)/)[1]] = true
-  })
-  console.log(Object.keys(obj).length)
-}
-var cnt = 0
+// var requires = original.toString().match(/require\(.*?\)/g)
+// if (requires) {
+//   console.log(requires.length)
+//   var obj = {}
+//   requires.forEach(val => {
+//     obj[val.match(/require\((.*?)\)/)[1]] = true
+//   })
+//   console.log(Object.keys(obj).length)
+// }
+// var cnt = 0
 
-// so lets fix this first
+// // so lets fix this first
 
-for (var i in obj) {
-  cnt++
-  str = str.split(i).join(cnt)
-  str = str.split(i.replace(/'/g, '"')).join(cnt)
-}
+// for (var i in obj) {
+//   cnt++
+//   str = str.split(i).join(cnt)
+//   str = str.split(i.replace(/'/g, '"')).join(cnt)
+// }
+// buble!
+var buble = require( 'buble' );
+
+str = buble.transform( str ).code // { code: ..., map: ... }
+
+// var stripDebug = require('strip-debug')
+
+// str = stripDebug(str)
 
 var calc = size(str)
-console.log('strip require names', calc, 'kb', '-' + (prev - calc).toFixed(2), 'kb')
+// console.log('strip require names', calc, 'kb', '-' + (prev - calc).toFixed(2), 'kb')
 
 fs.writeFileSync(__dirname + '/build.min.js', str)
 
