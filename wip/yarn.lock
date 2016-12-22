@@ -140,6 +140,10 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
+bowser@^1.0.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.6.0.tgz#37fc387b616cb6aef370dab4d6bd402b74c5c54d"
+
 brace-expansion@^1.0.0:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.6.tgz#7197d7eaa9b87e648390ea61fc66c84427420df9"
@@ -157,26 +161,33 @@ braces@^1.8.2:
 
 "brisky-render@git+ssh://git@github.com/vigour-io/brisky-render#feature/hub":
   version "0.0.1"
-  resolved "git+ssh://git@github.com/vigour-io/brisky-render#853d8533576d901035196a49c9c724e246dabdd8"
+  resolved "git+ssh://git@github.com/vigour-io/brisky-render#cc877bc7f8aefbec5276db5a1b0571d01f552722"
   dependencies:
     brisky-stamp "^2.1.2"
     brisky-struct "git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup"
     html-element "^2.1.0"
     quick-hash "^1.0.1"
+    styletron "^2.2.0"
+    styletron-utils "^2.2.1"
     vigour-ua "^2.2.3"
 
-brisky-stamp@^2.1.2, brisky-stamp@^2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-2.1.6.tgz#ab9446091ad386210376e1d799fcd93bc1f382e5"
+brisky-stamp@^2.1.2:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-2.1.7.tgz#22d1726efb5156e1b51c30a3167f6ec18f14150e"
   dependencies:
     bubleify "0.5.1"
 
+brisky-stamp@^3.0.8:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-3.0.10.tgz#9ad18cbf92852b17d49b5e4905f19c814d1ff80c"
+  dependencies:
+    global "^4.3.1"
+
 "brisky-struct@git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup":
   version "0.0.33"
-  resolved "git+ssh://git@github.com/vigour-io/brisky-struct#db2776f21bef616893a49733725bb27211ce9148"
+  resolved "git+ssh://git@github.com/vigour-io/brisky-struct#a16752edabd056c28f0de60672df07eb198c6b51"
   dependencies:
-    brisky-stamp "^2.1.6"
-    monotonic-timestamp "0.0.9"
+    brisky-stamp "^3.0.8"
 
 browser-resolve@^1.11.0:
   version "1.11.2"
@@ -338,6 +349,10 @@ delayed-stream@~1.0.0:
 delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
+
+dom-walk@^0.1.0:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
@@ -505,6 +520,13 @@ glob@^7.0.5:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+global@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/global/-/global-4.3.1.tgz#5f757908c7cbabce54f386ae440e11e26b7916df"
+  dependencies:
+    min-document "^2.19.0"
+    process "~0.5.1"
+
 graceful-fs@^4.1.2:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
@@ -561,14 +583,17 @@ http-signature@~1.1.0:
 
 "hub.js@git+ssh://git@github.com/vigour-io/hub.js#master":
   version "0.0.0"
-  resolved "git+ssh://git@github.com/vigour-io/hub.js#e915e95b3c8ff6f3a30b58e63c0bbc2269965066"
+  resolved "git+ssh://git@github.com/vigour-io/hub.js#9fed6dafdaa19a9bf1113b75b96c109bdb000403"
   dependencies:
-    brisky-stamp "^2.1.6"
+    brisky-stamp "^3.0.8"
     brisky-struct "git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup"
-    monotonic-timestamp "^0.0.9"
-    quick-hash "^1.0.1"
+    string-hash "^1.1.0"
     uws "0.12.0"
     vigour-ua "^2.0.0"
+
+hyphenate-style-name@^1.0.1:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
 
 indexof@0.0.1:
   version "0.0.1"
@@ -588,6 +613,13 @@ inherits@2, inherits@^2.0.1, inherits@~2.0.0, inherits@~2.0.1:
 ini@~1.3.0:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
+
+inline-style-prefixer@^2.0.1:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-2.0.5.tgz#c153c7e88fd84fef5c602e95a8168b2770671fe7"
+  dependencies:
+    bowser "^1.0.0"
+    hyphenate-style-name "^1.0.1"
 
 is-binary-path@^1.0.0:
   version "1.0.1"
@@ -778,6 +810,12 @@ mime-types@^2.1.12, mime-types@~2.1.7:
   dependencies:
     mime-db "~1.25.0"
 
+min-document@^2.19.0:
+  version "2.19.0"
+  resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+  dependencies:
+    dom-walk "^0.1.0"
+
 minimatch@^3.0.0, minimatch@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.3.tgz#2a4e4090b96b2db06a9d7df01055a62a77c9b774"
@@ -792,23 +830,19 @@ minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
-"mkdirp@>=0.5 0", mkdirp@~0.5.1:
+"mkdirp@>=0.5 0", mkdirp@^0.5.1, mkdirp@~0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
-
-monotonic-timestamp@0.0.9, monotonic-timestamp@^0.0.9:
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/monotonic-timestamp/-/monotonic-timestamp-0.0.9.tgz#5ba5adc7aac85e1d7ce77be847161ed246b39603"
 
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
 
 nan@^2.3.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.4.0.tgz#fb3c59d45fe4effe215f0b890f8adf6eb32d2232"
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
 
 node-pre-gyp@^0.6.29:
   version "0.6.32"
@@ -916,6 +950,10 @@ preserve@^0.2.0:
 process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
+
+process@~0.5.1:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/process/-/process-0.5.2.tgz#1638d8a8e34c2f440a91db95ab9aeb677fc185cf"
 
 punycode@^1.4.1:
   version "1.4.1"
@@ -1091,9 +1129,9 @@ rollup-plugin-buble@^0.15.0:
     buble "^0.15.0"
     rollup-pluginutils "^1.5.0"
 
-rollup-plugin-commonjs@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-6.0.0.tgz#af61d38ec6bc81c6a2c3b5199f520eed9a2368db"
+rollup-plugin-commonjs@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-6.0.1.tgz#d6587badda75b6f7e6bc351e616da7802e6082b8"
   dependencies:
     acorn "^4.0.1"
     estree-walker "^0.3.0"
@@ -1101,12 +1139,14 @@ rollup-plugin-commonjs@^6.0.0:
     resolve "^1.1.7"
     rollup-pluginutils "^1.5.1"
 
-rollup-plugin-envs@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-envs/-/rollup-plugin-envs-0.2.4.tgz#e4ff3c06a3a8d194974baeb8fcf788cc0df832fe"
+rollup-plugin-envs@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-envs/-/rollup-plugin-envs-0.3.3.tgz#f1f3f6e53880c9aeea328eb685ddcef5598a9de4"
   dependencies:
     javascript-stringify "^1.5.0"
+    mkdirp "^0.5.1"
     rollup-pluginutils "^1.5.2"
+    string-hash "^1.1.1"
     unflatten "^1.0.4"
 
 rollup-plugin-node-resolve@^2.0.0:
@@ -1137,9 +1177,9 @@ rollup-watch@^2.5.0:
   dependencies:
     semver "^5.1.0"
 
-rollup@^0.37.0:
-  version "0.37.2"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.37.2.tgz#cc159d20a2f3615ccc2248a4385aacbb3d6d6042"
+rollup@^0.38.0:
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-0.38.0.tgz#b58d99538ad96dd1c0239f1de383a80b0e067f70"
   dependencies:
     source-map-support "^0.4.0"
 
@@ -1175,8 +1215,8 @@ source-map-resolve@^0.5.0:
     urix "^0.1.0"
 
 source-map-support@^0.4.0:
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.6.tgz#32552aa64b458392a85eab3b0b5ee61527167aeb"
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.4.7.tgz#7a7988e0e66241c778c78dd179199bb6bcd35bd6"
   dependencies:
     source-map "^0.5.3"
 
@@ -1202,6 +1242,10 @@ sshpk@^1.7.0:
     jodid25519 "^1.0.0"
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
+
+string-hash@^1.1.0, string-hash@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/string-hash/-/string-hash-1.1.1.tgz#8e85bed291e0763b8f6809d9c3368fea048db3dc"
 
 string-width@^1.0.1:
   version "1.0.2"
@@ -1237,6 +1281,35 @@ strip-debug@^1.1.1:
 strip-json-comments@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-1.0.4.tgz#1e15fbcac97d3ee99bf2d73b4c656b082bbafb91"
+
+styletron-client@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/styletron-client/-/styletron-client-2.2.0.tgz#6bb20ab9397bd3a0f8ade72de290407270b63b1a"
+  dependencies:
+    styletron-core "^2.2.0"
+
+styletron-core@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/styletron-core/-/styletron-core-2.2.0.tgz#d968fe79d216296c5e421ffbbe9f5943e40a7f84"
+
+styletron-server@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/styletron-server/-/styletron-server-2.2.0.tgz#1f20ddb47077e4ae7e8fc564596f0eb9df04fb9a"
+  dependencies:
+    styletron-core "^2.2.0"
+
+styletron-utils@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/styletron-utils/-/styletron-utils-2.2.1.tgz#34cad76539f087bd10cdb00abc0e1a9accdc1807"
+  dependencies:
+    inline-style-prefixer "^2.0.1"
+
+styletron@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/styletron/-/styletron-2.2.0.tgz#0a59f5ea9cc0b5857719b1be28cf4fd621b0e7b4"
+  dependencies:
+    styletron-client "^2.2.0"
+    styletron-server "^2.2.0"
 
 supports-color@^0.2.0:
   version "0.2.0"
