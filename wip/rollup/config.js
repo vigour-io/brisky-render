@@ -33,9 +33,7 @@ module.exports = [{
   entry: 'server/browser.js', // client build // server
   plugins: [
     resolve({ browser: true }),
-    envs({
-      imports: [ 'vigour-ua/navigator' ]
-    }),
+    envs({ imports: [ 'vigour-ua/navigator' ] }),
     commonjs(),
     hub(),
     sourcemaps()
