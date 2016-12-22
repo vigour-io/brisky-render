@@ -13,8 +13,9 @@ export default (body, state) => {
       </html>`
   } else {
     setTimeout(() => {
-      document.body.removeChild(document.getElementById('pre-render-remove'))
-      document.body.appendChild(render(body, state))
+      var x = render(body, state)
+      // document.body.removeChild(document.getElementById('pre-render-remove'))
+      document.body.appendChild(x)
     }, 1000)
   }
 }

@@ -35,7 +35,7 @@
     "html-element": "^2.1.0",
     "styletron": "^2.2.0",
     "styletron-utils": "^2.2.1",
-    "quick-hash": "^1.0.1",
+    "string-hash": "^1.0.1",
     "vigour-ua": "^2.2.3"
   },
   "devDependencies": {

@@ -1,5 +1,8 @@
 import hub from 'hub.js'
 
-export default hub({
+const x = global.state = hub({
+  // id: 'GURRR',
   url: 'ws://localhost:3031'
 })
+
+export default x

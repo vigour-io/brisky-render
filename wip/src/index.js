@@ -6,8 +6,10 @@ const add = (state, stamp) => {
   collection.set({ [index]: index }, stamp)
 }
 
+console.log('yuzi success')
+
 export const body = {
-  balls: { text: 'poop' },
+  balls: { text: { $: 'title' } },
   attr: { id: 'app' },
   firefox: {
     text: 'firefox:' + (ua.browser === 'firefox'),
