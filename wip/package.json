@@ -1,23 +1,32 @@
 {
-  "name": "example-dynamic",
+  "name": "example-wip-rollup",
   "version": "0.0.1",
   "scripts": {
-    "test": "(ducktape; node test) | tap-spec && standard",
-    "build-native": "browserify -t bubleify bridge.js > bridge-build.js && node stripper2.js",
-    "build": "browserify index.js > build.js && node stripper.js",
-    "start": "node server.js"
+    "test": "node test | tap-spec && standard",
+    "build": "node rollup/build",
+    "dev": "node rollup/watch"
   },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
   "dependencies": {
-    "brisky-render": "git+https://github.com/vigour-io/brisky-render.git#feature/brisky-struct",
-    "brisky-struct": "0.0.27",
-    "browserify": "^13.1.1",
+    "brisky-render": "git+ssh://git@github.com/vigour-io/brisky-render#feature/hub",
+    "brisky-struct": "git+ssh://git@github.com/vigour-io/brisky-struct#feature/rollup",
+    "hub.js": "git+ssh://git@github.com/vigour-io/hub.js#master",
+    "livereload": "^0.6.0",
     "parse-element": "^2.0.5",
-    "bubleify": "0.5.1",
-    "uglify-js": "2.7.5"
+    "rollup": "^0.37.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^6.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.1",
+    "uglify-js": "2.7.5",
+    "vigour-ua": "^2.2.3"
   },
-  "browserify": {
-    "transform": [
-      "bubleify"
-    ]
+  "devDependencies": {
+    "buble": "^0.15.1",
+    "rollup-plugin-envs": "^0.2.4",
+    "rollup-watch": "^2.5.0",
+    "strip-debug": "^1.1.1"
   }
 }

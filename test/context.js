@@ -1,7 +1,5 @@
-'use strict'
-const test = require('tape')
-const element = require('../lib/element')
-const render = require('../render')
+import test from 'tape'
+import { render, element } from '../'
 
 test('context', t => {
   const types = {

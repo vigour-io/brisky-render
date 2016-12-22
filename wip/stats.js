@@ -1,4 +1,4 @@
-module.exports = (state, n) => {
+export default (state, n) => {
   if (!n) { n = 3 }
   var cnt = 0
   const update = () => {

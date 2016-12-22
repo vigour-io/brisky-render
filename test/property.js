@@ -1,6 +1,5 @@
-'use strict'
-const render = require('../render')
-const test = require('tape')
+import { render } from '../'
+import test from 'tape'
 
 test('property - cachedNode + context', t => {
   var elem

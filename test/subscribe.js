@@ -1,7 +1,7 @@
-const render = require('../render')
-const test = require('tape')
-const s = require('brisky-struct')
-const p = require('parse-element')
+import { render } from '../'
+import test from 'tape'
+import { create as s } from 'brisky-struct'
+import p from 'parse-element'
 
 test('subscribe - merge', t => {
   const state = s({

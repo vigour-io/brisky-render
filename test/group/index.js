@@ -1,5 +1,5 @@
-require('./switch')
-require('./mixed')
-require('./basic')
-require('./remove')
-require('./combined')
+import './switch'
+import './mixed'
+import './basic'
+import './remove'
+import './combined'

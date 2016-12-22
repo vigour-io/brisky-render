@@ -1,12 +1,10 @@
-const render = require('../../render')
-const test = require('tape')
-const parse = require('parse-element')
-const s = require('brisky-struct')
-const parent = require('../../lib/render/dom/parent')
-const emos = require('../util/emojis')
-const fs = require('fs')
-const path = require('path')
-const { get } = require('brisky-struct/lib/get')
+import { render, parent } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import { create as s, get } from 'brisky-struct'
+import { moons } from '../util/emojis'
+import fs from 'fs'
+import path from 'path'
 
 test('group - combined', t => {
   const types = {
@@ -107,10 +105,10 @@ test('group - combined', t => {
 
   function update (cnt, field) {
     const set = {}
-    const d = Math.ceil(65 / emos.moons.length)
+    const d = Math.ceil(65 / moons.length)
     for (let i = 1; i < 65; i++) {
       set[i] = {
-        title: emos.moons[(i / d) | 0],
+        title: moons[(i / d) | 0],
         0: Math.cos((i + cnt) / 10) * (max / 2 * (1.1 * field + 2.1)) + max / 2,
         1: Math.sin((i + cnt) / 10) * (max / 2 * (1.1 * field + 2.1)) + max,
         2: cnt * 100 + i
@@ -128,9 +126,8 @@ test('group - combined', t => {
   if ('body' in document) {
     document.body.appendChild(app)
   } else {
-    const output = fs.readFileSync(path.join(__dirname, '/output.html'))
-    t.equal(parse(app), output.toString(), 'correct output')
-    // fs.writeFileSync(path.join(__dirname, '/outputx.html'), parse(app))
+    const output = fs.readFileSync(path.join(process.cwd(), 'test/group/output.html'))
+    t.equal(parse(app).replace(/(\d+)\.\d+/g, '$1'), output.toString().replace(/(\d+)\.\d+/g, '$1'), 'correct output')
   }
   t.end()
 })

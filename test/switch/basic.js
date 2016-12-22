@@ -1,8 +1,9 @@
-const render = require('../../render')
-const test = require('tape')
-const parse = require('parse-element')
-const s = require('brisky-struct')
-const strip = require('strip-formatting')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import { create as s } from 'brisky-struct'
+import strip from 'strip-formatting'
+import bs from 'brisky-stamp'
 
 test('switch - basic', t => {
   const state = s({ field: { navigation: {} } })
@@ -141,8 +142,6 @@ test('switch - basic', t => {
 
   state.set(defer({ items: [ 2 ] }))
   state.set(defer({ items: [ 0 ] }))
-
-  const bs = require('brisky-stamp')
 
   state.set(defer({ items: state.items.map(val => 0) }), bs.create('guilermo!!!!'))
 

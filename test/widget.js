@@ -1,6 +1,6 @@
-const test = require('tape')
-const render = require('../render')
-const s = require('brisky-struct')
+import test from 'tape'
+import { render } from '../'
+import { create as s } from 'brisky-struct'
 
 test('widgets', (t) => {
   // do more on remove tests

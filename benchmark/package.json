@@ -1,0 +1,26 @@
+{
+  "name": "example-wip-rollup",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "(ducktape; node test) | tap-spec && standard",
+    "build": "rollup -c",
+    "live": "node live.js",
+    "dev": "rollup -c rollup.config.dev.js -w",
+    "start": "node server.js"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "dependencies": {
+    "livereload": "^0.6.0",
+    "parse-element": "^2.0.5",
+    "uglify-js": "2.7.5",
+    "rollup": "^0.37.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^6.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0"
+  },
+  "devDependencies": {
+    "rollup-watch": "^2.5.0"
+  }
+}

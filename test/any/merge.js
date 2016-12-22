@@ -1,9 +1,8 @@
-'use strict'
-const render = require('../../render')
-const test = require('tape')
-const parse = require('parse-element')
-const strip = require('strip-formatting')
-const s = require('brisky-struct')
+import { render } from '../../'
+import test from 'tape'
+import parse from 'parse-element'
+import strip from 'strip-formatting'
+import { create as s } from 'brisky-struct'
 
 test('any - merge', t => {
   const app = {

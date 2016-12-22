@@ -1,8 +1,7 @@
-const render = require('../../render')
-const test = require('tape')
-const s = require('brisky-struct')
-const parent = require('../../lib/render/dom/parent')
-const p = require('parse-element')
+import { render, parent } from '../../'
+import test from 'tape'
+import { create as s } from 'brisky-struct'
+import p from 'parse-element'
 
 test('group - switch', t => {
   const state = s({

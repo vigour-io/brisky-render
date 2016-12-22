@@ -1,6 +1,6 @@
-const test = require('tape')
-const s = require('brisky-struct')
-const render = require('../../render')
+import test from 'tape'
+import { create as s } from 'brisky-struct'
+import { render } from '../../'
 
 test('transform - static', t => {
   const elem = render({

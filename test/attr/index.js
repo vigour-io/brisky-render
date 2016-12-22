@@ -1,2 +1,2 @@
-require('./state')
-require('./static')
+import './state'
+import './static'
