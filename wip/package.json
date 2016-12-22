@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "buble": "^0.15.1",
-    "rollup-plugin-envs": "^0.3.3",
+    "rollup-plugin-envs": "^1.0.0",
     "rollup-watch": "^2.5.0",
     "strip-debug": "^1.1.1"
   }
