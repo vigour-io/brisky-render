@@ -1,17 +1,17 @@
-import { render } from 'brisky-core/render'
-import Element from 'brisky-core'
-import test from 'tape'
-import trigger from '../trigger'
+const { render } = require('brisky-core/render')
+const Element = require('brisky-core')
+const test = require('tape')
+const trigger = require('../trigger')
 const Event = global.Event
-import attach from '../lib/attach'
-import isNode from 'vigour-util/is/node'
+const attach = require('../lib/attach')
+const isNode = require('vigour-util/is/node')
 
 Element.prototype.inject(
-  import '../lib',
-  import '../lib/basic'
+  require('../lib'),
+  require('../lib/basic')
 )
 
-test('attach - position', (t) => {
+test('attach - position', t => {
   var result, upResult
   const app = render({
     a: {

@@ -1,8 +1,8 @@
-import test from 'tape'
-import { render } from '../'
-import { create as s } from 'brisky-struct'
+const test = require('tape')
+const { render } = require('../')
+const { create: s } = require('brisky-struct')
 
-test('widgets', (t) => {
+test('widgets', t => {
   // do more on remove tests
   const state = s({ holder: true })
   var cnt = 0

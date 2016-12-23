@@ -1,3 +1,3 @@
-import './basic'
-import './transform'
-import './context'
+require('./basic')
+require('./transform')
+require('./context')

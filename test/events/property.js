@@ -1,9 +1,9 @@
-import test from 'tape'
-import { render } from 'brisky-core/render'
-import s from 'vigour-state/s'
-import Element from 'brisky-core'
+const test = require('tape')
+const { render } = require('brisky-core/render')
+const s = require('vigour-state/s')
+const Element = require('brisky-core')
 
-test('property', (t) => {
+test('property', t => {
   const state = s({ something: true })
   const elem = new Element({
     node: {
@@ -17,7 +17,7 @@ test('property', (t) => {
   t.end()
 })
 
-test('property - deep', (t) => {
+test('property - deep', t => {
   const state = s({ something: true })
   const elem = new Element({
     node: {
@@ -36,7 +36,7 @@ test('property - deep', (t) => {
   t.end()
 })
 
-test('property - reference', (t) => {
+test('property - reference', t => {
   const state = s({
     a: { field: true },
     b: { field: true },

@@ -15,6 +15,7 @@
   "scripts": {
     "build": "node rollup/build",
     "dev": "node rollup/watch & nodemon --harmony-async-await test/index.js",
+    "dev-browser": "budo test/index.js --live --- -g bubleify",
     "pretest": "npm run build && standard",
     "prepublish": "npm run build",
     "test": "node test/index.js",
@@ -35,17 +36,18 @@
   "dependencies": {
     "brisky-stamp": "^3.0.11",
     "brisky-struct": "^1.0.2",
+    "html-element": "^2.1.0",
+    "string-hash": "^1.1.0",
     "styletron": "^2.2.0",
     "styletron-utils": "^2.2.1",
-    "string-hash": "^1.1.0",
-    "vigour-ua": "^2.2.3",
-    "html-element": "^2.1.0"
+    "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "source-map-support": "^0.4.7",
-    "nyc": "^10.0.0",
+    "budo": "^9.3.0",
+    "bubleify": "0.5.1",
     "coveralls": "^2.11.12",
     "nodemon": "^1.10.2",
+    "nyc": "^10.0.0",
     "parse-element": "^2.0.5",
     "pre-commit": "^1.1.3",
     "rollup": "^0.37.0",
@@ -55,6 +57,7 @@
     "rollup-plugin-node-globals": "^1.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-watch": "^2.5.0",
+    "source-map-support": "^0.4.7",
     "standard": "^8.0.0",
     "strip-formatting": "^1.0.2",
     "tap-spec": "^4.1.1",

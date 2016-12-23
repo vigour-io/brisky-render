@@ -1,13 +1,13 @@
-import { render } from 'brisky-core/render'
-import Element from 'brisky-core'
-import test from 'tape'
-import s from 'vigour-state/s'
-import trigger from '../trigger'
-import isNode from 'vigour-util/is/node'
+const { render } = require('brisky-core/render')
+const Element = require('brisky-core')
+const test = require('tape')
+const s = require('vigour-state/s')
+const trigger = require('../trigger')
+const isNode = require('vigour-util/is/node')
 
 Element.prototype.inject(
-  import '../lib',
-  import '../lib/basic'
+  require('../lib'),
+  require('../lib/basic')
 )
 
 test('context - fire events - restore context', function (t) {

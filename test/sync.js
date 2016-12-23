@@ -1,8 +1,8 @@
-import { render } from '../'
-import test from 'tape'
+const { render } = require('../')
+const test = require('tape')
 
 // remove the val from sync perhaps just call it true / 1
-test('sync - basic', (t) => {
+test('sync - basic', t => {
   var subs
   render({
     $: 'field',
@@ -31,7 +31,7 @@ test('sync - basic', (t) => {
   t.end()
 })
 
-test('sync - $any', (t) => {
+test('sync - $any', t => {
   var subs
   render({
     a: {
@@ -66,7 +66,7 @@ test('sync - $any', (t) => {
   t.end()
 })
 
-test('sync - $switch', (t) => {
+test('sync - $switch', t => {
   var subs
   render({
     a: {

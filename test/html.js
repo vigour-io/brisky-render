@@ -1,7 +1,7 @@
-import { render } from '../'
-import test from 'tape'
-import parse from 'parse-element'
-import { create as s } from 'brisky-struct'
+const { render } = require('../')
+const test = require('tape')
+const parse = require('parse-element')
+const { create: s } = require('brisky-struct')
 
 test('html', t => {
   const state = s({ text: 'some text' })
@@ -54,7 +54,7 @@ test('html', t => {
   t.end()
 })
 
-test('html - switch', (t) => {
+test('html - switch', t => {
   const state = s({
     a: {
       y: [ '@', 'root', 'hello' ]

@@ -1,10 +1,10 @@
-import { render, parent } from '../../'
-import test from 'tape'
-import parse from 'parse-element'
-import { create as s, get } from 'brisky-struct'
-import { moons } from '../util/emojis'
-import fs from 'fs'
-import path from 'path'
+const { render, parent } = require('../../')
+const test = require('tape')
+const parse = require('parse-element')
+const { create: s, get } = require('brisky-struct')
+const { moons } = require('../util/emojis')
+const fs = require('fs')
+const path = require('path')
 
 test('group - combined', t => {
   const types = {

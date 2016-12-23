@@ -1,8 +1,8 @@
-import test from 'tape'
-import { render } from '../../'
-import parse from 'parse-element'
-import strip from 'strip-formatting'
-import { create as s } from 'brisky-struct'
+const test = require('tape')
+const { render } = require('../../')
+const parse = require('parse-element')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
 
 test('context - static class name', t => {
   const state = s({})

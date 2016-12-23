@@ -1,7 +1,8 @@
-import { render } from '../'
-import test from 'tape'
-import p from 'parse-element'
-import { create as s } from 'brisky-struct'
+const { render } = require('../')
+const test = require('tape')
+const p = require('parse-element')
+const { create: s } = require('brisky-struct')
+const bs = require('brisky-stamp')
 
 test('parent', t => {
   const state = s({ first: true })
@@ -34,6 +35,7 @@ test('parent - error', t => {
   try {
     state.set({ first: 'hello' })
   } catch (e) {
+    bs.inProgress = false // clear this in bs
     t.ok(true, 'throws error when no parent')
     t.end()
   }

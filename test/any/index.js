@@ -1,4 +1,4 @@
-import './mixed'
-import './basic'
-import './merge'
-import './sort'
+require('./mixed')
+require('./basic')
+require('./merge')
+// require('./sort')

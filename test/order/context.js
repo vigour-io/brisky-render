@@ -1,8 +1,8 @@
-import { render, element } from '../../'
-import test from 'tape'
-import parse from 'parse-element'
-import { create as struct } from 'brisky-struct'
-import strip from 'strip-formatting'
+const { render, element } = require('../../')
+const test = require('tape')
+const parse = require('parse-element')
+const { create: struct } = require('brisky-struct')
+const strip = require('strip-formatting')
 
 test('order - context', t => {
   const state = struct({

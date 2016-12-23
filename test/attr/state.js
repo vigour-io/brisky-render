@@ -1,7 +1,7 @@
-import test from 'tape'
-import { render, attr } from '../../'
-import { create as s } from 'brisky-struct'
-import p from 'parse-element'
+const test = require('tape')
+const { render, attr } = require('../../')
+const { create: s } = require('brisky-struct')
+const p = require('parse-element')
 
 test('state', t => {
   var elem, attr1, attr2

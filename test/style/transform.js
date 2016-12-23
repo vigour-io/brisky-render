@@ -1,6 +1,6 @@
-import test from 'tape'
-import { create as s } from 'brisky-struct'
-import { render } from '../../'
+const test = require('tape')
+const { create: s } = require('brisky-struct')
+const { render } = require('../../')
 
 test('transform - static', t => {
   const elem = render({
@@ -15,7 +15,7 @@ test('transform - static', t => {
   t.end()
 })
 
-test('transform - state', (t) => {
+test('transform - state', t => {
   const state = s({
     x: -5,
     y: 5,

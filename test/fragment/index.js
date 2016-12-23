@@ -1,2 +1,2 @@
-import './basic'
-import './nested'
+require('./basic')
+require('./nested')

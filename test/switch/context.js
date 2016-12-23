@@ -1,8 +1,8 @@
-import { render } from '../../'
-import test from 'tape'
-import parse from 'parse-element'
-import strip from 'strip-formatting'
-import { create as s } from 'brisky-struct'
+const { render } = require('../../')
+const test = require('tape')
+const parse = require('parse-element')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
 
 test('$switch - context - one level', t => {
   const state = s({
