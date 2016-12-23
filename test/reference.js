@@ -48,106 +48,106 @@ test('reference - basic', t => {
   t.end()
 })
 
-// test('reference - $any', t => {
-//   const state = s({
-//     holder: {
-//       fields: [ 1, 2 ],
-//       fields2: [ 3, 4 ],
-//       current: [ '@', 'root', 'holder', 'fields' ]
-//     }
-//   })
+test('reference - $any', t => {
+  const state = s({
+    holder: {
+      fields: [ 1, 2 ],
+      fields2: [ 3, 4 ],
+      current: [ '@', 'root', 'holder', 'fields' ]
+    }
+  })
 
-//   const app = render({
-//     $: 'holder.current',
-//     page: {
-//       $: '$any',
-//       props: {
-//         default: {
-//           text: { $: true }
-//         }
-//       }
-//     }
-//   }, state)
+  const app = render({
+    $: 'holder.current',
+    page: {
+      $: '$any',
+      props: {
+        default: {
+          text: { $: true }
+        }
+      }
+    }
+  }, state)
 
-//   if (document && document.body) {
-//     document.body.appendChild(app)
-//   }
+  if (document && document.body) {
+    document.body.appendChild(app)
+  }
 
-//   t.same(
-//     parse(app),
-//     strip(`
-//       <div>
-//         <div>
-//           <div>1</div>
-//           <div>2</div>
-//         </div>
-//       </div>
-//     `)
-//   )
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>1</div>
+          <div>2</div>
+        </div>
+      </div>
+    `)
+  )
 
-//   state.holder.current.set(state.holder.fields2)
+  state.holder.current.set(state.holder.fields2)
 
-//   t.same(
-//     parse(app),
-//     strip(`
-//       <div>
-//         <div>
-//           <div>3</div>
-//           <div>4</div>
-//         </div>
-//       </div>
-//     `)
-//   )
-//   t.end()
-// })
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>3</div>
+          <div>4</div>
+        </div>
+      </div>
+    `)
+  )
+  t.end()
+})
 
-// test('reference - root - $any', t => {
-//   const state = s({
-//     fields: [ 1, 2 ],
-//     fields2: [ 3, 4 ],
-//     current: [ '@', 'parent', 'fields' ]
-//   })
+test('reference - root - $any', t => {
+  const state = s({
+    fields: [ 1, 2 ],
+    fields2: [ 3, 4 ],
+    current: [ '@', 'parent', 'fields' ]
+  })
 
-//   const app = render({
-//     $: 'current',
-//     page: {
-//       $: '$any',
-//       props: {
-//         default: {
-//           text: { $: true }
-//         }
-//       }
-//     }
-//   }, state)
+  const app = render({
+    $: 'current',
+    page: {
+      $: '$any',
+      props: {
+        default: {
+          text: { $: true }
+        }
+      }
+    }
+  }, state)
 
-//   if (document && document.body) {
-//     document.body.appendChild(app)
-//   }
+  if (document && document.body) {
+    document.body.appendChild(app)
+  }
 
-//   t.same(
-//     parse(app),
-//     strip(`
-//       <div>
-//         <div>
-//           <div>1</div>
-//           <div>2</div>
-//         </div>
-//       </div>
-//     `)
-//   )
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>1</div>
+          <div>2</div>
+        </div>
+      </div>
+    `)
+  )
 
-//   state.current.set(state.fields2)
+  state.current.set(state.fields2)
 
-//   t.same(
-//     parse(app),
-//     strip(`
-//       <div>
-//         <div>
-//           <div>3</div>
-//           <div>4</div>
-//         </div>
-//       </div>
-//     `)
-//   )
-//   t.end()
-// })
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>
+          <div>3</div>
+          <div>4</div>
+        </div>
+      </div>
+    `)
+  )
+  t.end()
+})
