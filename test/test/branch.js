@@ -1,10 +1,9 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
+const { create: s } = require('brisky-struct')
 
-test('$test - branch', function (t) {
+test('$switch (test) - branch', t => {
   const state = s({ fields: { first: true } })
   var app = render({
     holder: {
@@ -12,8 +11,8 @@ test('$test - branch', function (t) {
       $: 'fields',
       first: {
         tag: 'first',
-        $: '$test',
-        $test (state) {
+        $: '$switch',
+        $switch (state) {
           return 'first' in state &&
             state.first.compute() === true &&
             state.get('second', {}).compute() !== true
@@ -21,21 +20,25 @@ test('$test - branch', function (t) {
       },
       second: {
         tag: 'second',
-        $: '$test',
-        $test (state) {
+        $: '$switch',
+        $switch (state) {
           return 'second' in state && state.second.compute() === true
         }
       }
     },
     third: {
       tag: 'third',
-      $: 'fields.$test',
-      $test: {
+      $: 'fields.$switch',
+      $switch: {
         val (state) {
-          const $r = state.getRoot()
+          const $r = state.root()
           return 'third' in $r && $r.third.compute() === true
         },
-        $: '$root.third'
+        root: {
+          third: true
+        }
+        // need to support this syntax -- maybe not
+        // $: 'root.third'
       }
     }
   }, state)

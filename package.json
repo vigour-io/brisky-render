@@ -1,58 +1,67 @@
 {
-  "name": "brisky-core",
-  "version": "1.8.3",
-  "description": "The core of Brisky, a js library for creating blazing fast web applications.",
-  "main": "lib/element.js",
+  "name": "brisky-render",
+  "version": "0.0.1",
+  "description": "A js library for creating blazing fast ui's",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "jsnext:main": "dist/index.es.js",
+  "browser": {
+    "./dist/index.js": "./dist/browser.js",
+    "./dist/index.es.js": "./dist/browser.es.js",
+    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
+    "./lib/events/listener": "./lib/events/listener/browser",
+    "html-element/global-shim": false
+  },
   "scripts": {
-    "test": "(ducktape; node test) | tap-difflet && standard",
-    "dev": "nodemon test | tap-difflet",
-    "dev-browser": "budo ./test/index.js -p 8080 --live",
-    "cover": "istanbul cover --report none --print detail test/index.js",
-    "docs": "node_modules/vigour-doc/bin/vdoc",
-    "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0) && standard"
+    "build": "node rollup/build",
+    "dev": "node rollup/watch & nodemon --harmony-async-await test/index.js",
+    "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
+    "pretest": "npm run build && standard",
+    "prepublish": "npm run build",
+    "test": "node test/index.js",
+    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && yarn && npm run build )",
+    "cover": "nyc npm test",
+    "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vigour-io/brisky-core.git"
+    "url": "git+https://github.com/vigour-io/brisky-render.git"
   },
   "author": "vigour.io <dev@vigour.io>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vigour-io/brisky-core/issues"
+    "url": "https://github.com/vigour-io/brisky-render/issues"
   },
-  "homepage": "https://github.com/vigour-io/brisky-core#readme",
+  "homepage": "https://github.com/vigour-io/brisky-render#readme",
   "dependencies": {
-    "bubleify": "0.5.1",
+    "brisky-stamp": "^3.0.11",
+    "brisky-struct": "^1.0.2",
     "html-element": "^2.1.0",
-    "vigour-observable": "^3.1.18",
-    "vigour-stamp": "^1.4.0",
-    "vigour-state": "^4.6.3",
-    "vigour-ua": "^2.1.0",
-    "vigour-util": "^3.3.2",
-    "quick-hash": "^1.0.0"
+    "string-hash": "^1.1.0",
+    "styletron": "^2.2.0",
+    "styletron-utils": "^2.2.1",
+    "vigour-ua": "^2.2.3"
   },
   "devDependencies": {
-    "ducktape": "^1.0.1",
-    "budo": "^9.0.0",
+    "budo": "^9.3.0",
+    "bubleify": "0.5.1",
     "coveralls": "^2.11.12",
-    "istanbul": "^0.4.5",
     "nodemon": "^1.10.2",
-    "vigour-performance": "^1.0.0",
+    "nyc": "^10.0.0",
+    "parse-element": "^2.0.5",
     "pre-commit": "^1.1.3",
+    "rollup": "^0.37.0",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^6.0.0",
+    "rollup-plugin-node-builtins": "^2.0.0",
+    "rollup-plugin-node-globals": "^1.1.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-watch": "^2.5.0",
+    "source-map-support": "^0.4.7",
     "standard": "^8.0.0",
-    "tap-difflet": "0.6.0",
-    "tape": "^4.6.0",
-    "vigour-doc": "^1.1.6",
-    "parse-element": "^2.0.4"
-  },
-  "browser": {
-    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
-    "html-element": false
-  },
-  "browserify": {
-    "transform": [
-      "bubleify"
-    ]
+    "strip-formatting": "^1.0.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0"
   },
   "keywords": [
     "reactive",

@@ -1,33 +1,37 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
-const s = require('vigour-state/s')
-const moons = require('../util/emojis').moons
-const nature = require('../util/emojis')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
+const { moons, nature } = require('../util/emojis')
 
-test('$test - $parent', function (t) {
+test('$switch (test) - parent', t => {
   const state = s()
 
   const emojis = {
-    $: 'moons.$test',
-    $test: {
+    $: 'moons.$switch',
+    $switch: {
       val (state, tree) {
-        const focus = state.lookUp('focus')
+        const focus = state.parent(t => t.get('focus'))
         return focus && focus.compute()
       },
-      $: '$parent.$parent.focus'
+      parent: {
+        parent: {
+          focus: true
+        }
+      }
     },
-    child: {
-      tag: 'span',
-      child: 'Constructor'
+    props: {
+      default: {
+        tag: 'span',
+        props: { default: 'self' }
+      }
     },
     moon: {
       $: 0,
       text: { $: true },
       nature: {
-        $: '$parent.$parent.nature',
+        $: 'parent.parent.nature',
         text: { $: 0 }
       }
     }
@@ -35,7 +39,7 @@ test('$test - $parent', function (t) {
 
   const types = { emojis }
 
-  var app = render({
+  const app = render({
     types,
     holder: {
       tag: 'holder',
@@ -44,7 +48,7 @@ test('$test - $parent', function (t) {
       text: { $: 'title' },
       b: {
         type: 'emojis',
-        $: 'deep.moons.$test'
+        $: 'deep.moons.$switch'
       }
     }
   }, state)
@@ -81,7 +85,7 @@ test('$test - $parent', function (t) {
       </holder>
     </div>
     `),
-    'set $root.focus to true'
+    'set root.focus to true'
   )
 
   state.set({ emojis: { focus: true } })
@@ -125,10 +129,6 @@ test('$test - $parent', function (t) {
     'set emoji title'
   )
 
-  if ('body' in document) {
-    document.body.appendChild(app)
-  }
-
   state.set({ focus: false, emojis: { focus: false } })
 
   t.same(
@@ -140,7 +140,7 @@ test('$test - $parent', function (t) {
   t.end()
 })
 
-test('$test - $parent + $switch + $any', function (t) {
+test('$switch (test) - parent + $switch + $any', t => {
   const state = s({
     content: {
       fields: {
@@ -148,30 +148,32 @@ test('$test - $parent + $switch + $any', function (t) {
           a: { number: 1000 },
           b: { number: 1000 }
         },
-        text: '$root.text'
+        text: [ '@', 'root', 'text' ]
       }
     },
-    text: '$root.title',
-    current: '$root.content.fields',
+    text: [ '@', 'root', 'title' ],
+    current: [ '@', 'root', 'content', 'fields' ],
     title: 'count'
   })
+
   const elem = {
     holder: {
-      tag: 'fragment',
       $: 'current.$switch',
-      $switch: (state) => state.key,
-      properties: {
+      $switch: state => state.origin().key,
+      props: {
         fields: {
           $: 'items.$any',
-          child: {
-            $: '$test',
-            $test: (state) => {
-              return state.number.compute() > 100
-            },
-            nested: {
-              tag: 'nested',
-              text: {
-                $: '$parent.$parent.text'
+          props: {
+            default: {
+              $: '$switch',
+              $switch: state => {
+                return state.get('number').compute() > 100
+              },
+              nested: {
+                tag: 'nested',
+                text: {
+                  $: 'parent.parent.text'
+                }
               }
             }
           }
@@ -180,10 +182,11 @@ test('$test - $parent + $switch + $any', function (t) {
     }
   }
   const app = render(elem, state)
+
   t.equal(
     parse(app),
     '<div><div><div><nested>count</nested></div><div><nested>count</nested></div></div></div>',
-    '$parent.$parent over reference'
+    'parent.parent over reference'
   )
   state.title.set('counter')
   t.equal(

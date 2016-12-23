@@ -1,23 +1,26 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
-const s = require('vigour-state/s')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
 
-test('any - merge', function (t) {
+test('any - merge', t => {
   const app = {
     holder: {
       tag: 'holder',
       $: 'collection.$any',
-      child: {
-        tag: 'span',
-        title: { text: { $: 'title' } }
+      props: {
+        default: {
+          tag: 'span',
+          title: { text: { $: 'title' } }
+        }
       }
     },
     text: {
       $: 'collection',
-      $transform: val => val.keys().length
+      $transform: val => {
+        return val.keys().length
+      }
     }
   }
 
@@ -40,33 +43,61 @@ test('any - merge', function (t) {
         </holder>
         2
       </div>
-    `),
-    'initial commit'
+    `)
   )
-
-  if (document.body) {
-    document.body.appendChild(elem)
-  }
-
   t.end()
 })
 
-test('any - merge - multiple collections', function (t) {
+test('any - merge - multiple collections', t => {
   const simple = {
     types: {
       collection: {
         tag: 'fragment',
         $: 'collection.$any',
-        child: { tag: 'b', title: { tag: 'fragment', text: { $: 'title' } } }
+        props: {
+          default: {
+            tag: 'b', title: { tag: 'fragment', text: { $: 'title' } }
+          }
+        }
       }
     },
     holder1: { type: 'collection' },
     holder2: { type: 'collection' }
   }
   const app = render(simple, { collection: [ { title: 1 }, { title: 2 } ] })
+
   t.equal(
     parse(app),
     '<div><b>1</b><b>2</b><b>1</b><b>2</b></div>',
+    'intial subscription'
+  )
+  t.end()
+})
+
+test('any - merge - multiple collections - scoped sub', t => {
+  const simple = {
+    types: {
+      collection: {
+        tag: 'fragment',
+        $: '$any',
+        props: {
+          default: {
+            tag: 'b', title: { tag: 'fragment', text: { $: 'title' } }
+          }
+        }
+      }
+    },
+    nest: {
+      $: 'collection',
+      holder1: { type: 'collection' },
+      holder2: { type: 'collection' }
+    }
+  }
+
+  const app = render(simple, { collection: [ { title: 1 }, { title: 2 } ] })
+  t.equal(
+    parse(app),
+    '<div><div><b>1</b><b>2</b><b>1</b><b>2</b></div></div>',
     'intial subscription'
   )
   t.end()

@@ -1,19 +1,17 @@
-'use strict'
 const test = require('tape')
-const Element = require('../lib/element')
-const render = require('../render')
+const { render, element } = require('../')
 
-test('context', function (t) {
+test('context', t => {
   const types = {
     collection: {
       $: 'collection.$any'
     },
     switcher: {
       $: 'navigation.$switch',
-      $switch: (state) => state.key
+      $switch: state => state.origin().key
     }
   }
-  const app = new Element({
+  const app = element.create({
     types,
     collection: {
       type: 'collection',
@@ -31,7 +29,7 @@ test('context', function (t) {
   t.end()
 })
 
-test('context - storeContextKey', function (t) {
+test('context - storeContextKey', t => {
   var subs
 
   const types = {
@@ -50,18 +48,19 @@ test('context - storeContextKey', function (t) {
     item2: { type: 'item' }
   }
 
-  render(app, { title: 'its an app' }, (s) => { subs = s })
+  render(app, { title: 'its an app' }, s => { subs = s })
 
   const keys = Object.keys(subs._.t)
-  t.equal(findKey('item1'), true, 'stores item1 in tree-key')
-  t.equal(findKey('item2'), true, 'stores item1 in tree-key')
-  t.end()
 
-  function findKey (key) {
+  const findKey = key => {
     for (let i in keys) {
       if (keys[i].indexOf(key) !== -1) {
         return true
       }
     }
   }
+
+  t.equal(findKey('item1'), true, 'stores item1 in tree-key')
+  t.equal(findKey('item2'), true, 'stores item1 in tree-key')
+  t.end()
 })

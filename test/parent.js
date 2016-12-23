@@ -1,10 +1,10 @@
-'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 const p = require('parse-element')
-const s = require('vigour-state/s')
+const { create: s } = require('brisky-struct')
+const bs = require('brisky-stamp')
 
-test('parent', (t) => {
+test('parent', t => {
   const state = s({ first: true })
   const app = render({
     first: {
@@ -13,12 +13,12 @@ test('parent', (t) => {
     }
   }, state)
   t.equal(p(app), '<div><h1></h1></div>', 'correct initial html')
-  state.first.remove()
+  state.first.set(null)
   t.equal(p(app), '<div></div>', 'removed node')
   t.end()
 })
 
-test('parent - error', (t) => {
+test('parent - error', t => {
   var tree
   const state = s({})
   render({
@@ -35,6 +35,7 @@ test('parent - error', (t) => {
   try {
     state.set({ first: 'hello' })
   } catch (e) {
+    bs.inProgress = false // clear this in bs
     t.ok(true, 'throws error when no parent')
     t.end()
   }

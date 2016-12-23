@@ -1,5 +1,4 @@
-'use strict'
-require('./mixed')
-require('./basic')
-require('./merge')
-// require('./recursive')
+// require('./mixed')
+// require('./basic')
+// require('./merge')
+require('./sort')

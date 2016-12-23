@@ -1,17 +1,18 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
-const s = require('vigour-state/s')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
 
-test('any - basic', function (t) {
+test('any - basic', t => {
   const app = {
     holder: {
       $: 'collection.$any',
-      child: {
-        tag: 'span',
-        title: { text: { $: 'title' } }
+      props: {
+        default: {
+          tag: 'span',
+          title: { text: { $: 'title' } }
+        }
       }
     }
   }
@@ -31,7 +32,7 @@ test('any - basic', function (t) {
     'create multiple rows'
   )
 
-  state.collection[0].remove()
+  state.collection[0].set(null)
   t.equal(
     parse(elem),
     '<div><div><span><div>b</div></span></div></div>',
@@ -46,29 +47,36 @@ test('any - basic', function (t) {
     )
   }
 
+  const ss = s({
+    collection: [
+      { title: 'b' }
+    ]
+  })
+
+  const x = render({
+    types: {
+      span: {
+        tag: 'span',
+        title: { text: { $: 'title' } }
+      },
+      collection: {
+        $: 'collection.$any',
+        props: { default: { type: 'span' } }
+      }
+    },
+    holder: { type: 'collection' }
+  }, ss)
+
   t.equal(
-    parse(
-      render({
-        types: {
-          span: {
-            tag: 'span',
-            title: { text: { $: 'title' } }
-          },
-          collection: {
-            $: 'collection.$any',
-            child: { type: 'span' }
-          }
-        },
-        holder: { type: 'collection' }
-      }, state)
-    ),
+    parse(x),
     '<div><div><span><div>b</div></span></div></div>',
     'context render'
   )
+
   t.end()
 })
 
-test('any - reference', function (t) {
+test('any - reference', t => {
   const state = {
     products: {
       items: {
@@ -88,7 +96,7 @@ test('any - reference', function (t) {
       purchases: {
         items: {
           paid_full: {
-            product: '$root.products.items.paid_full'
+            product: [ '@', 'root', 'products', 'items', 'paid_full' ]
           }
         }
       }
@@ -97,11 +105,11 @@ test('any - reference', function (t) {
 
   const app = {
     collection: {
-      $: '$root.user.purchases.items.$any',
-      child: {
-        $: 'product',
-        text: {
-          $: 'title'
+      $: 'root.user.purchases.items.$any',
+      props: {
+        default: {
+          $: 'product',
+          text: { $: 'title' }
         }
       }
     }
@@ -115,7 +123,7 @@ test('any - reference', function (t) {
   t.end()
 })
 
-test('any - reference change', function (t) {
+test('any - reference change', t => {
   const state = s({
     holder: {
       fields: {
@@ -124,7 +132,7 @@ test('any - reference change', function (t) {
       fields2: {
         items: [ 3, 4 ]
       },
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -132,8 +140,8 @@ test('any - reference change', function (t) {
     $: 'holder.current',
     page: {
       $: 'items.$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: { text: { $: true } }
       }
     }
   }, state)
@@ -160,6 +168,34 @@ test('any - reference change', function (t) {
           <div>3</div>
           <div>4</div>
         </div>
+      </div>
+    `)
+  )
+
+  t.end()
+})
+
+test('any - non path deep', t => {
+  const state = s({
+    a: 'a',
+    b: 'b'
+  })
+
+  var app = render({
+    $: '$any',
+    props: {
+      default: {
+        text: 'lullz'
+      }
+    }
+  }, state)
+
+  t.same(
+    parse(app),
+    strip(`
+      <div>
+        <div>lullz</div>
+        <div>lullz</div>
       </div>
     `)
   )

@@ -1,11 +1,10 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
+const { create: s } = require('brisky-struct')
+const strip = require('strip-formatting')
 
-test('any - mixed', function (t) {
+test('any - mixed', t => {
   const state = s({
     field: {
       collection: {
@@ -21,9 +20,11 @@ test('any - mixed', function (t) {
       holder1: {
         tag: 'holder',
         $: 'field.collection.$any',
-        child: {
-          type: 'text',
-          $: 'title'
+        props: {
+          default: {
+            type: 'text',
+            $: 'title'
+          }
         }
       },
       holder2: {
@@ -39,9 +40,11 @@ test('any - mixed', function (t) {
         collection: {
           tag: 'collection',
           $: 'collection.$any',
-          child: {
-            type: 'text',
-            $: 'title'
+          props: {
+            default: {
+              type: 'text',
+              $: 'title'
+            }
           }
         }
       }

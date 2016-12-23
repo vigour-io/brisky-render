@@ -1,20 +1,19 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
+const { create: s } = require('brisky-struct')
+const strip = require('strip-formatting')
 
-test('fragment - basic', function (t) {
+test('fragment - basic', t => {
   const state = global.state = s()
 
   const types = {
     fragment: {
       tag: 'fragment',
       $: 'lulz',
-      b: { tag: 'b', $: '$root.b', text: { $: true } },
+      b: { tag: 'b', $: 'root.b', text: { $: true } },
       static: { text: 'sooo static' },
-      c: { text: { $: true, $prepend: 'frag: ' } }
+      c: { text: { $: true, $transform: val => 'frag: ' + val } }
     }
   }
 
@@ -79,7 +78,7 @@ test('fragment - basic', function (t) {
 
   state.set({ b: 'its b!' })
 
-  state.lol.lulz.remove()
+  state.lol.lulz.set(null)
 
   t.equal(parse(app), strip(`
     <div>

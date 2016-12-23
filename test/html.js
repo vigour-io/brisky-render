@@ -1,10 +1,9 @@
-'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
+const { create: s } = require('brisky-struct')
 
-test('html', function (t) {
+test('html', t => {
   const state = s({ text: 'some text' })
   t.equal(
     parse(render({ html: '<p>html</p>' })),
@@ -40,32 +39,36 @@ test('html', function (t) {
     'state and static html as a component'
   )
 
-  state.text.remove()
+  state.text.set(null)
 
-  t.equal(
-    parse(app),
-    '<div><p><div></div><div><p>static</p></div></p></div>',
-    'removed text'
-  )
+  if (typeof window !== 'undefined') {
+    t.equal(
+      parse(app),
+      '<div><p><div></div><div><p>static</p></div></p></div>',
+      'removed text'
+    )
+  } else {
+    console.log('removing nodes does not work in html element')
+  }
 
   t.end()
 })
 
-test('html - switch', (t) => {
+test('html - switch', t => {
   const state = s({
     a: {
-      y: '$root.hello'
+      y: [ '@', 'root', 'hello' ]
     },
     hello: {
       y: 'hello'
     },
     b: {},
-    field: '$root.a'
+    field: [ '@', 'root', 'a' ]
   })
   const elem = render({
     field: {
       $: 'field.$switch',
-      properties: {
+      props: {
         a: {
           $: 'y',
           description: {
@@ -75,8 +78,8 @@ test('html - switch', (t) => {
       }
     }
   }, state)
-  t.equals(elem.childNodes[0].childNodes[0].innerHTML, '<div>hello</div>', 'intial')
-  state.set({ field: '$root.b', a: { y: null } })
+  t.equals(elem.childNodes[0].innerHTML, '<div>hello</div>', 'intial')
+  state.set({ field: [ '@', 'root', 'b' ], a: { y: null } })
   t.ok(true, 'should not crash on remove')
   t.end()
 })

@@ -1,11 +1,10 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
+const { create: s } = require('brisky-struct')
+const strip = require('strip-formatting')
 
-test('order - basic', function (t) {
+test('order - basic', t => {
   const state = s()
   const app = render(
     {
@@ -29,7 +28,7 @@ test('order - basic', function (t) {
   t.end()
 })
 
-test('order - basic - mixed', function (t) {
+test('order - basic - mixed', t => {
   const state = s()
   const app = render(
     {
@@ -49,16 +48,10 @@ test('order - basic - mixed', function (t) {
   )
   state.set({ 1: 1 })
 
-  // // wrong output
-  // for (var i in app.childNodes) {
-  //   // html-element wrong again -- insertbefore is unreliable
-  //   console.log(app.childNodes[i].childNodes[0].value)
-  // }
-  // console.log(parse(app))
-  // t.equal(
-  //   parse(app),
-  //   '<div><div>a</div><div>1</div><div>b</div><div>2</div><div>c</div></div>',
-  //   'update second'
-  // )
+  t.equal(
+    parse(app),
+    '<div><div>a</div><div>1</div><div>b</div><div>2</div><div>c</div></div>',
+    'update second'
+  )
   t.end()
 })

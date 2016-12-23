@@ -1,5 +1,6 @@
-'use strict'
+require('./glob')
 require('./branch')
-require('./nested')
 require('./property')
 require('./context')
+require('./nested')
+require('./basic')

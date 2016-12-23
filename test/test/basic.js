@@ -1,20 +1,21 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 
-test('$test - basic', function (t) {
+test('$switch (test) - basic', t => {
   var elem = render({
     holder: {
       $: 'collection.$any',
-      child: {
-        $: '$test',
-        $test: {
-          val (state) {
-            return state.title.compute() === 'a'
-          },
-          $: {
-            title: {}
+      props: {
+        default: {
+          $: '$switch',
+          $switch: {
+            val (state) {
+              return state.title.compute() === 'a'
+            },
+            $: {
+              title: {}
+            }
           }
         }
       }
@@ -36,14 +37,11 @@ test('$test - basic', function (t) {
   elem = render({
     $: 'thing',
     item: {
-      $: '$test',
-      $test: {
-        val (state) {
-          return state.title.compute() === 'a'
-        },
-        $: {
-          title: {}
-        }
+      tag: 'blurf',
+      $: '$switch',
+      $switch: {
+        val: state => state.title.compute() === 'a',
+        title: true
       }
     }
   }, {
@@ -58,8 +56,8 @@ test('$test - basic', function (t) {
 
   elem = render({
     item: {
-      $: 'nested.thing.$test',
-      $test: {
+      $: 'nested.thing.$switch',
+      $switch: {
         val (state) {
           return state.title.compute() === 'a'
         },
@@ -86,14 +84,14 @@ test('$test - basic', function (t) {
       $: 'thing',
       item: {
         text: 'item',
-        $: '$test',
-        $test: {
+        $: '$switch',
+        $switch: {
           val: (state) => {
             return state.title.compute() === 'b' &&
-              state.getRoot().nested.rootthing.title.compute() === 'a'
+              state.root().nested.rootthing.title.compute() === 'a'
           },
           $: {
-            $root: {
+            root: {
               nested: {
                 rootthing: {}
               }
@@ -126,14 +124,14 @@ test('$test - basic', function (t) {
       $: 'thing',
       item: {
         text: 'item',
-        $: '$test',
-        $test: {
-          val: (state) => {
+        $: '$switch',
+        $switch: {
+          val: state => {
             return state.title.compute() === 'b' &&
-              state.getRoot().nested.rootthing.title.compute() === 'a'
+              state.root().nested.rootthing.title.compute() === 'a'
           },
           $: {
-            $root: {
+            root: {
               nested: {
                 rootthing: true
               }
@@ -163,12 +161,12 @@ test('$test - basic', function (t) {
   t.end()
 })
 
-test('$test - override test from type', function (t) {
+test('$switch (test) - override test from type', t => {
   // use type and
   render({
     types: {
       thing: {
-        text: { $: 'bla.$test' }
+        text: { $: 'bla.$switch' }
       }
     },
     jur: {
@@ -176,7 +174,7 @@ test('$test - override test from type', function (t) {
       text: { $: 'a' }
     }
   }, {}, (subs) => {
-    t.equal(subs.a._.tList[3].$test, null, 'should be null')
+    t.equal(subs.a._.tList[3].$switch, null, 'should be null')
   })
   t.end()
 })

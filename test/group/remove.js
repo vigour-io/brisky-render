@@ -1,14 +1,10 @@
-'use strict'
-const render = require('../../render')
+const { render, parent } = require('../../')
 const test = require('tape')
-const s = require('vigour-state/s')
-const getParent = require('../../lib/render/dom/parent')
+const { create: s } = require('brisky-struct')
 const p = require('parse-element')
 
-test('group - remove', function (t) {
-  const state = s({
-    letters: { a: 'a', b: 'b' }
-  })
+test('group - remove', t => {
+  const state = s({ letters: { a: 'a', b: 'b' } })
 
   const app = render({
     letters: {
@@ -17,16 +13,16 @@ test('group - remove', function (t) {
         type: 'group',
         subscriptionType: true,
         render: {
-          state (target, s, type, stamp, subs, tree, id, pid, store) {
-            const node = getParent(type, stamp, subs, tree, pid)
+          state (target, s, type, subs, tree, id, pid, store) {
+            const node = parent(tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
-        a: { $: 'a.$test', $test: val => val.compute() === 'a' },
+        a: { $: 'a.$switch', $switch: val => val.compute() === 'a' },
         b: { $: 'b' }
       }
     }
-  }, state, (s) => { global.s = s })
+  }, state)
 
   t.equal(p(app), '<div><div ab="a b"></div></div>', 'initial subscription')
   state.letters.set({ a: 'no' })

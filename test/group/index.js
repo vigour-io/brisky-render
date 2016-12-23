@@ -1,5 +1,5 @@
-'use strict'
-require('./combined')
 require('./switch')
 require('./mixed')
+require('./basic')
 require('./remove')
+require('./combined')

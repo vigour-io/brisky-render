@@ -1,11 +1,9 @@
-'use strict'
-const render = require('../render')
+const { render, parent } = require('../')
 const test = require('tape')
-const s = require('vigour-state/s')
+const { create: s } = require('brisky-struct')
 const browser = require('./browser')
-const getParent = require('../lib/render/dom/parent')
 
-test('clone - reuse ', function (t) {
+test('clone - reuse ', t => {
   const state = global.state = s({
     one: {
       a: 'one',
@@ -13,8 +11,11 @@ test('clone - reuse ', function (t) {
     },
     two: {
       a: 'two'
-    }
+    },
+    three: { a: 'three' }
   })
+
+  const staticKitten = 'https://files.graphiq.com/stories/t2/tiny_cat_12573_8950.jpg'
 
   const app = browser(render({
     types: {
@@ -25,18 +26,19 @@ test('clone - reuse ', function (t) {
           class: {
             type: 'property',
             render: {
-              static (target, node) {
-                node.className = target.parent.parent.key
-              }
+              static (target, node) { node.className = target.parent().key }
             }
           },
           src: {
             type: 'property',
             $: 'b',
             render: {
-              state (target, s, type, stamp, subs, tree, id, pid, store) {
-                const node = getParent(type, stamp, subs, tree, pid)
-                node.src = s.compute()
+              static: (t, node) => {
+                node.setAttribute('src', t.compute())
+              },
+              state (t, s, type, subs, tree, id, pid, store) {
+                const node = parent(tree, pid)
+                node.setAttribute('src', t.compute(s))
               }
             }
           }
@@ -45,16 +47,27 @@ test('clone - reuse ', function (t) {
     },
     one: {
       type: 'img',
-      $: 'two'
+      $: 'two',
+      img: {
+        src: { $: null, val: staticKitten }
+      }
     },
     two: {
+      type: 'img',
+      $: 'three'
+    },
+    three: {
       type: 'img',
       $: 'one'
     }
   }, state))
-  var src = app.childNodes[0].childNodes[1].getAttribute('src')
+
+  var src = app.childNodes[1].childNodes[1].getAttribute('src')
   if (src && src.value) { src = src.value }
   if (!src) { src = void 0 }
-  t.equal(src, void 0, 'child .one does not inherit src')
+  t.equal(src, void 0, 'child .three does not inherit src')
+  src = app.childNodes[0].childNodes[1].getAttribute('src')
+  if (src && src.value) { src = src.value }
+  t.equal(src, staticKitten, 'child .one has a staticKitten')
   t.end()
 })

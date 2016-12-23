@@ -1,10 +1,9 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
+const strip = require('strip-formatting')
 
-test('switch - property', function (t) {
+test('switch - property', t => {
   const app = render(
     {
       switcher: {
@@ -16,7 +15,7 @@ test('switch - property', function (t) {
             }
           }
         },
-        $: '$root.random',
+        $: 'root.random',
         $switch: () => true
       }
     },

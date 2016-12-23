@@ -1,11 +1,10 @@
-'use strict'
-const render = require('../../render')
+const { render } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
+const { create: s } = require('brisky-struct')
+const strip = require('strip-formatting')
 
-test('switch - nested', function (t) {
+test('switch - nested', t => {
   const state = s({ field: { navigation: {} } })
   var cnt = 0
   const app = render(
@@ -13,32 +12,51 @@ test('switch - nested', function (t) {
       holder: {
         tag: 'holder',
         switcher: {
-          tag: 'switcher',
           $: 'field.navigation.$switch',
-          $switch: (state) => state.key,
-          properties: {
+          $switch: state => state.origin().key,
+          props: {
             first: {
               tag: 'first',
+              on: {
+                remove (data) {
+                  const node = data.target
+                  node.parentNode.removeChild(node)
+                }
+              },
               nest: {
                 tag: 'switchsecond',
-                text: { $: 'title' },
+                text: { $: 'title', $transform: val => val + '?' },
                 switcher: {
-                  tag: 'switcher',
                   $: 'navigation.$switch',
-                  $switch: (state) => state.key,
-                  properties: {
+                  $switch: state => {
+                    return state.origin().key
+                  },
+                  props: {
                     first: {
-                      text: { $: 'title' },
+                      gucci: {
+                        text: '🐔'
+                      },
+                      text: { $: 'title', $transform: val => val + '!' },
                       on: {
                         remove (data) {
                           const node = data.target
                           cnt++
-                          node.parentNode.removeChild(node)
+                          var fader = 3
+                          const fade = () => {
+                            fader--
+                            // node.childNodes[0].innerHTML += '🐔'
+                            if (fader > 0) {
+                              fade()
+                            } else {
+                              node.parentNode.removeChild(node)
+                            }
+                          }
+                          fade()
                         }
                       }
                     },
                     second: {
-                      text: { $: 'rating' }
+                      text: { $: 'rating', $transform: val => (new Array(val)).join('🌟') }
                     }
                   }
                 }
@@ -56,6 +74,7 @@ test('switch - nested', function (t) {
   )
 
   state.set({
+    first: { title: '💸' },
     otheritems: {
       first: { title: 'first' },
       second: { rating: 100 }
@@ -65,11 +84,15 @@ test('switch - nested', function (t) {
         title: 'first',
         navigation: {}
       },
-      second: { rating: 100 }
+      second: {
+        rating: 5
+      }
     },
     field: {
       val: 'blurf',
-      navigation: '$root.items[0]'
+      navigation: {
+        val: [ '@', 'root', 'items', 'first' ]
+      }
     }
   })
 
@@ -77,43 +100,47 @@ test('switch - nested', function (t) {
     document.body.appendChild(app)
   }
 
-  state.items.first.navigation.set('$root.otheritems[0]')
-  state.items.first.navigation.set('$root.otheritems[1]')
+  state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
+  state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
+
   t.equal(cnt, 1, 'remove listener fired')
-  // state.field.navigation.set('$root.items[-1]')
+
+  state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
+  state.items.first.navigation.set([ '@', 'root', 'first' ])
+
   t.equal(
     parse(app),
      strip(`
       <div>
         <holder>
-          <switcher>
-            <first>
-              <switchsecond>
-                first
-                <switcher>
-                  <div>100</div>
-                </switcher>
-              </switchsecond>
+          <first>
+            <switchsecond>first?</switchsecond>
             </first>
-          </switcher>
+              <div>
+                <div>🐔</div>
+                💸!
+              </div>
+            </holder>
+          </div>
+    `),
+    'switch nested switcher to "$root.otheritems[1]"'
+  )
+
+  state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
+
+  t.equal(
+    parse(app),
+     strip(`
+      <div>
+        <holder>
+          <first>
+            <switchsecond>first?</switchsecond>
+          </first>
+          <div>🌟🌟🌟🌟</div>
         </holder>
       </div>
     `),
     'switch nested switcher to "$root.otheritems[1]"'
-  )
-  state.field.navigation.set('$root.items[1]')
-  t.equal(
-    parse(app),
-     strip(`
-      <div>
-        <holder>
-          <switcher>
-            <second>100</second>
-          </switcher>
-        </holder>
-      </div>
-    `),
-    'switch switcher to "$root.items[1]"'
   )
 
   t.end()

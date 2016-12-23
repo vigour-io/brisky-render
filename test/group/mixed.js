@@ -1,11 +1,9 @@
-'use strict'
-const render = require('../../render')
+const { render, parent } = require('../../')
 const test = require('tape')
-const s = require('vigour-state/s')
-const getParent = require('../../lib/render/dom/parent')
+const { create: s } = require('brisky-struct')
 const p = require('parse-element')
 
-test('group - mixed', function (t) {
+test('group - mixed', t => {
   const state = s({
     something: { letters: { a: 'A' } }
   })
@@ -15,14 +13,14 @@ test('group - mixed', function (t) {
         $: 'something',
         type: 'group',
         render: {
-          state (target, s, type, stamp, subs, tree, id, pid, store) {
-            const node = getParent(type, stamp, subs, tree, pid)
+          state (target, s, type, subs, tree, id, pid, store) {
+            const node = parent(tree, pid)
             node.setAttribute('ab', `${store.a || '-'} ${store.b || '-'}`)
           }
         },
         a: {
-          $: 'letters.a.$test',
-          $test: state => true
+          $: 'letters.a.$switch',
+          $switch: state => true
         },
         b: 'B'
       }
@@ -31,7 +29,7 @@ test('group - mixed', function (t) {
   t.equal(p(app), '<div><div ab="A B"></div></div>', 'initial')
   state.something.letters.a.set('x')
   t.equal(p(app), '<div><div ab="x B"></div></div>', 'update')
-  state.something.letters.a.remove()
+  state.something.letters.a.set(null)
   t.equal(p(app), '<div><div ab="- B"></div></div>', 'remove')
   t.end()
 })

@@ -1,20 +1,18 @@
-'use strict'
-const render = require('../../render')
+const { render, element } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
-const s = require('vigour-state/s')
-const strip = require('vigour-util/strip/formatting')
-const Element = require('../../lib/element')
+const { create: struct } = require('brisky-struct')
+const strip = require('strip-formatting')
 
-test('order - context', function (t) {
-  const state = s({
+test('order - context', t => {
+  const state = struct({
     row: {
       icon: 'lulz',
       info: 'haha'
     }
   })
 
-  const elem = new Element({
+  const elem = element.create({
     types: {
       icon: {
         tag: 'i',
@@ -36,13 +34,12 @@ test('order - context', function (t) {
         icon: { $: 'icon' }
       }
     },
-    child: { type: 'specialRow' },
+    props: { default: { type: 'specialRow' } },
     row2: { $: 'row2' },
     row: {}
   })
 
   t.same(elem.row.keys(), [ 'info', 'icon' ], 'correct key order')
-
   const app = render(elem, state)
 
   t.equal(
@@ -58,7 +55,7 @@ test('order - context', function (t) {
     'correct inherited order'
   )
 
-  state.row.icon.remove()
+  state.row.icon.set(null)
 
   t.equal(
     parse(app),
@@ -110,20 +107,18 @@ test('order - context', function (t) {
   t.end()
 })
 
-test('order - context - texts', function (t) {
-  const state = s({
-    fields: '-ha-'
-  })
+test('order - context - texts', t => {
+  const state = struct({ fields: '-ha-' })
   const app = render(
     {
-      properties: {
+      props: {
         field: {
           $: 'fields',
           blurf: {
             text: 'blurf'
           },
           texts: {
-            child: { type: 'text', $: true }
+            props: { default: { type: 'text', $: true } }
           },
           other: {
             $: 'other',

@@ -1,11 +1,10 @@
-'use strict'
-const render = require('../render')
+const { render } = require('../')
 const test = require('tape')
 const parse = require('parse-element')
-const strip = require('vigour-util/strip/formatting')
-const s = require('vigour-state/s')
+const strip = require('strip-formatting')
+const { create: s } = require('brisky-struct')
 
-test('reference - basic', function (t) {
+test('reference - basic', t => {
   const state = s({
     holder: {
       fields: {
@@ -14,7 +13,7 @@ test('reference - basic', function (t) {
       fields2: {
         thing: 2
       },
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -49,12 +48,12 @@ test('reference - basic', function (t) {
   t.end()
 })
 
-test('reference - $any', function (t) {
+test('reference - $any', t => {
   const state = s({
     holder: {
       fields: [ 1, 2 ],
       fields2: [ 3, 4 ],
-      current: '$root.holder.fields'
+      current: [ '@', 'root', 'holder', 'fields' ]
     }
   })
 
@@ -62,8 +61,10 @@ test('reference - $any', function (t) {
     $: 'holder.current',
     page: {
       $: '$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: {
+          text: { $: true }
+        }
       }
     }
   }, state)
@@ -100,19 +101,21 @@ test('reference - $any', function (t) {
   t.end()
 })
 
-test('reference - root - $any', function (t) {
+test('reference - root - $any', t => {
   const state = s({
     fields: [ 1, 2 ],
     fields2: [ 3, 4 ],
-    current: '$root.fields'
+    current: [ '@', 'parent', 'fields' ]
   })
 
   const app = render({
     $: 'current',
     page: {
       $: '$any',
-      child: {
-        text: { $: true }
+      props: {
+        default: {
+          text: { $: true }
+        }
       }
     }
   }, state)
