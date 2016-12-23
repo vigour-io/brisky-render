@@ -57,14 +57,20 @@ test('switch - basic', t => {
         bla: {
           html: {
             $: 'navigation',
-            $transform: val =>
-            `<div style="background-color:#eeeeff;">---- UNDER <b>${val}</b> SWITCH ------</div>`
+            $transform: val => {
+              console.warn('LEBLURF?')
+              return `<div style="background-color:#eeeeff;">---- UNDER <b>${val}</b> SWITCH ------</div>`
+            }
           }
         }
       }
     },
-    state
+    state, subs => {
+      global.subs = subs
+    }
   )
+
+  console.warn('SUBS', subs)
 
   state.set({
     items: [ 1, 2, 3, 4 ],

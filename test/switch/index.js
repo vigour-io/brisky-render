@@ -1,6 +1,6 @@
-// require('./basic')
 // require('./glob')
 // require('./branch')
 // require('./property')
 // require('./context')
-require('./nested')
+// require('./nested')
+require('./basic')
