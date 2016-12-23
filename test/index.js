@@ -1,43 +1,47 @@
-// // // // // // // import './sync' // not for now
+if (typeof window === 'undefined') {
+  require('source-map-support').install()
+}
 
-import './fragment'
+// require('./sync') // not for now
 
-import './order'
+require('./fragment')
 
-import './text'
+require('./order')
 
-import './parent'
+require('./text')
 
-import './html'
+require('./parent')
 
-import './clone'
+require('./html')
 
-import './reference'
+require('./clone')
 
-import './property'
+require('./reference')
 
-import './attr'
+require('./property')
 
-import './style'
+require('./attr')
 
-import './group'
+require('./style')
 
-import './subscribe' // object subs and resubscribe -- object travel
+require('./group')
 
-import './test'
+require('./subscribe') // object subs and resubscribe -- object travel
 
-import './class'
+require('./test')
 
-import './context'
+require('./class')
 
-import './render'
+require('./context')
 
-import './remove'
+require('./render')
 
-import './widget'
+require('./remove')
 
-import './switch'
+require('./widget')
 
-import './events'
+require('./switch')
 
-import './any'
+require('./events')
+
+require('./any')
