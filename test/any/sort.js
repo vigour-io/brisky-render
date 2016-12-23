@@ -29,7 +29,11 @@ test('any - sort', t => {
         props: {
           default: {
             style: {
-              type: 'special',
+              fontSize: '40px',
+              textAlign: 'center',
+              padding: '5px',
+              background: 'rgb(51, 51, 51)',
+              opacity: 1,
               display: 'inline-block',
               borderRadius: '50%',
               margin: '15px',

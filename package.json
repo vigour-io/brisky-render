@@ -15,7 +15,7 @@
   "scripts": {
     "build": "node rollup/build",
     "dev": "node rollup/watch & nodemon --harmony-async-await test/index.js",
-    "dev-browser": "budo test/index.js --live --- -g bubleify",
+    "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
     "pretest": "npm run build && standard",
     "prepublish": "npm run build",
     "test": "node test/index.js",
