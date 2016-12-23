@@ -1,2 +1,2 @@
-import './basic'
-import './context'
+require('./basic')
+require('./context')

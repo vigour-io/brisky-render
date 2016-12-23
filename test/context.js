@@ -1,5 +1,5 @@
-import test from 'tape'
-import { render, element } from '../'
+const test = require('tape')
+const { render, element } = require('../')
 
 test('context', t => {
   const types = {

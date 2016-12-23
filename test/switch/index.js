@@ -1,6 +1,6 @@
-// import './basic'
-// import './glob'
-// import './branch'
-// import './property'
-// import './context'
-import './nested'
+// require('./basic')
+// require('./glob')
+// require('./branch')
+// require('./property')
+// require('./context')
+require('./nested')

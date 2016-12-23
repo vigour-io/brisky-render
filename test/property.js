@@ -1,5 +1,5 @@
-import { render } from '../'
-import test from 'tape'
+const { render } = require('../')
+const test = require('tape')
 
 test('property - cachedNode + context', t => {
   var elem

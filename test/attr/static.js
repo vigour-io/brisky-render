@@ -1,6 +1,6 @@
-import test from 'tape'
-import { render } from '../../'
-import p from 'parse-element'
+const test = require('tape')
+const { render } = require('../../')
+const p = require('parse-element')
 // note: html-element handles attributes a bit weird (https://github.com/1N50MN14/html-element/issues/23)
 
 test('static', t => {

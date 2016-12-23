@@ -1,3 +1,3 @@
-import './basic'
-import './context'
-import './subscription'
+require('./basic')
+require('./context')
+require('./subscription')

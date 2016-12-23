@@ -18,30 +18,30 @@ require('./clone')
 
 require('./reference')
 
-require('./property')
+// require('./property')
 
-require('./attr')
+// require('./attr')
 
-require('./style')
+// require('./style')
 
-require('./group')
+// require('./group')
 
-require('./subscribe') // object subs and resubscribe -- object travel
+// require('./subscribe') // object subs and resubscribe -- object travel
 
-require('./test')
+// require('./test')
 
-require('./class')
+// require('./class')
 
-require('./context')
+// require('./context')
 
-require('./render')
+// require('./render')
 
-require('./remove')
+// require('./remove')
 
-require('./widget')
+// require('./widget')
 
-require('./switch')
+// require('./switch')
 
-require('./events')
+// require('./events')
 
-require('./any')
+// require('./any')

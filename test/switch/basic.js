@@ -1,9 +1,9 @@
-import { render } from '../../'
-import test from 'tape'
-import parse from 'parse-element'
-import { create as s } from 'brisky-struct'
-import strip from 'strip-formatting'
-import bs from 'brisky-stamp'
+const { render } = require('../../')
+const test = require('tape')
+const parse = require('parse-element')
+const { create: s } = require('brisky-struct')
+const strip = require('strip-formatting')
+const bs = require('brisky-stamp')
 
 test('switch - basic', t => {
   const state = s({ field: { navigation: {} } })
@@ -153,7 +153,7 @@ test('switch - basic', t => {
 
   state.set(defer({ navigation: 0 }))
 
-  state.get('navigation').once((t) => t.val === 0).then(() => {
+  state.get('navigation').once(t => t.val === 0).then(() => {
     t.same(parse(app), strip(`
       <div>
         <div>SPESH

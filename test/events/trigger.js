@@ -1,8 +1,8 @@
-import test from 'tape'
-import trigger from '../trigger'
-import isNode from 'vigour-util/is/node'
+const test = require('tape')
+const trigger = require('../trigger')
+const isNode = require('vigour-util/is/node')
 
-test('trigger', (t) => {
+test('trigger', t => {
   if (isNode) {
     t.pass('skipping event bubbling test')
     t.end()

@@ -1,1 +1,1 @@
-import './basic'
+require('./basic')

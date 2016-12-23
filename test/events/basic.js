@@ -1,9 +1,9 @@
-import { render, element } from '../../'
-import test from 'tape'
-import trigger from '../../trigger'
+const { render, element } = require('../../')
+const test = require('tape')
+const trigger = require('../../trigger')
 const isNode = typeof window === 'undefined'
 
-test('events - basic - add events', (t) => {
+test('events - basic - add events', t => {
   const elem = element.create({
     isWidget: true,
     on: { mousedown () {} }
@@ -15,7 +15,7 @@ test('events - basic - add events', (t) => {
   t.end()
 })
 
-test('events - basic - prevent', (t) => {
+test('events - basic - prevent', t => {
   const elem = {
     style: {
       fontFamily: 'BlinkMacSystemFont',
@@ -44,7 +44,7 @@ test('events - basic - prevent', (t) => {
   t.end()
 })
 
-test('basic - up, move, down', (t) => {
+test('basic - up, move, down', t => {
   const cases = {
     move: [ 'mousemove', 'touchmove' ],
     down: [ 'mousedown', 'touchstart' ],
