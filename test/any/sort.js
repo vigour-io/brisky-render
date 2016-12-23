@@ -1,10 +1,11 @@
-const { render } = require('../../')
+const { render, clearStyletron } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 const { create: s } = require('brisky-struct')
 
 test('any - sort', t => {
+  clearStyletron()
   const app = {
     types: {
       special: {
@@ -127,7 +128,31 @@ test('any - sort', t => {
     document.body.appendChild(elem)
   }
 
-  const result = strip(`<div><div style="border-top: 1px solid rgb(51, 51, 51); padding: 50px; text-align: center;"><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(80, 100, 100); transform: scale(1.2);">71</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(60, 100, 100); transform: scale(0.8);">31</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(40, 100, 100); transform: scale(0.7);">21</div></div><div style="border-top: 1px solid rgb(51, 51, 51); padding: 50px; text-align: center;"><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(80, 100, 100); transform: scale(1.2);">71</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(60, 100, 100); transform: scale(0.8);">31</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(40, 100, 100); transform: scale(0.7);">21</div></div><div style="border-top: 1px solid rgb(51, 51, 51); padding: 50px; text-align: center;"><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(80, 100, 100); transform: scale(1.2);">71</div></div><div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); color: rgb(238, 238, 238); opacity: 1;">1</div></div><div style="border-top: 1px solid rgb(51, 51, 51); padding: 50px; text-align: center;"><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(20, 100, 100); transform: scale(0.6);">11</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(80, 100, 100); transform: scale(1.2);">71</div><div style="font-size: 40px; text-align: center; padding: 5px; background: rgb(51, 51, 51); opacity: 1; display: inline-block; border-radius: 50%; margin: 15px; width: 50px; height: 50px; transition: transform 0.5s; color: rgb(100, 100, 100); transform: scale(0.6);">11</div></div></div>`)
+  const result = strip(`
+    <div>
+     <div class=" a b c">
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
+     </div>
+     <div class=" a b c">
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
+     </div>
+     <div class=" a b c">
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+     </div>
+     <div>
+        <div class=" d c e f q g">1</div>
+     </div>
+     <div class=" a b c">
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(20, 100, 100); transform: scale(0.6);">11</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(100, 100, 100); transform: scale(0.6);">11</div>
+     </div>
+  </div>
+`)
 
   state.james.once(1, () => {
     setTimeout(() => {
