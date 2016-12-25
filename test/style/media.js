@@ -8,25 +8,29 @@ test('style - media styletron with classnames', t => {
     class: 'extra'
   })
 
-  var i = 1000
-  var arr = []
-  while (i--) {
-    arr.push({
-      text: i,
-      style: {
-        border: '1px solid red',
-        backgroundColor: 'pink',
-        padding: `${i}px`
-      }
-    })
-  }
+  // var i = 1000 // need test for this
+  // var arr = []
+  // while (i--) {
+  //   arr.push({
+  //     text: i,
+  //     style: {
+  //       border: '1px solid red',
+  //       backgroundColor: 'pink',
+  //       padding: `${i}px`
+  //     }
+  //   })
+  // }
 
   const elem = render({
-    vibes: arr,
+    // vibes: arr,
     x: {
       style: {
         padding: '10px',
-        opacity: 0.5
+        opacity: 0.5,
+        backgroundColor: 'blue',
+        '@media (min-width: 480px)': {
+          color: 'red'
+        }
       },
       class: {
         val: 'hello',
