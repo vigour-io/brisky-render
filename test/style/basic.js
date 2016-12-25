@@ -1,10 +1,10 @@
 const test = require('tape')
 const { create: s } = require('brisky-struct')
 const p = require('parse-element')
-const { render, clearStyletron } = require('../../')
+const { render, clearStyleCache } = require('../../')
 
 test('basic - static styles', t => {
-  clearStyletron()
+  clearStyleCache()
   var elem = render({
     style: {
       padding: '10px',
@@ -14,18 +14,19 @@ test('basic - static styles', t => {
   t.equal(elem.className, ' a b')
   // t.equal(elem.style.padding, '100px', 'add style property')
   // t.equal(Number(elem.style.opacity), 0.5, 'add style property opacity')
+  clearStyleCache()
   elem = render({
     style: {
       padding: '10px',
       margin: '50px'
     }
   })
-  t.equal(elem.className, ' a c')
+  t.equal(elem.className, ' a b')
   t.end()
 })
 
 test('basic - static styles', t => {
-  clearStyletron()
+  clearStyleCache()
   var elem = render({
     style: {
       padding: '100px',
@@ -33,16 +34,15 @@ test('basic - static styles', t => {
     }
   })
   t.equal(elem.className, ' a b')
-  // t.equal(elem.style.padding, '100px', 'add style property')
-  // t.equal(Number(elem.style.opacity), 0.5, 'add style property opacity')
+
+  clearStyleCache()
   elem = render({
     style: {
       padding: '100px',
       margin: '50px'
     }
   })
-  t.equal(elem.className, ' a c')
-  elem.className = 'a c'
+  t.equal(elem.className, ' a b')
   t.end()
 })
 

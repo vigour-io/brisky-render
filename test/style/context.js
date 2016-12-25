@@ -1,4 +1,4 @@
-const { render, clearStyletron } = require('../../')
+const { render, clearStyleCache } = require('../../')
 const test = require('tape')
 const { create: s } = require('brisky-struct')
 const p = require('parse-element')
@@ -6,7 +6,7 @@ const isNode = typeof window === 'undefined'
 const strip = require('strip-formatting')
 
 test('context - static and state', t => {
-  clearStyletron()
+  clearStyleCache()
   const state = s({
     clients: {
       1: {},
@@ -65,7 +65,9 @@ test('context - static and state', t => {
           <div class=" a" style="height: 10px; width: 10px;"></div>
         </div>
       </div>
-    </div>`),
+      <style> .a {border:3px solid red;} </style>
+    </div>
+    `),
     'correct output'
   )
 
