@@ -5,6 +5,46 @@ const strip = require('strip-formatting')
 const { create: s } = require('brisky-struct')
 
 test('any - sort', t => {
+  const app = {
+    types: {
+      a: {
+        $: 'collection',
+        foo: {
+          $: '$any',
+          $any: keys => keys,
+          props: {
+            default: {
+              text: 'a'
+            }
+          }
+        }
+      }
+    },
+    thing: {
+      type: 'a'
+    }
+  }
+
+  const state = s({
+    collection: [ 1, 2 ]
+  })
+
+  const elem = render(app, state)
+  const result = strip(`
+    <div>
+      <div>
+        <div>
+          <div>a</div>
+          <div>a</div>
+        </div>
+      </div>
+    </div>
+  `)
+  t.equals(parse(elem), result, 'correct result')
+  t.end()
+})
+
+test('any - sort', t => {
   clearStyleCache()
   const app = {
     types: {
