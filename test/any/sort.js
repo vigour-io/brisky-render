@@ -1,11 +1,51 @@
-const { render, clearStyletron } = require('../../')
+const { render, clearStyleCache } = require('../../')
 const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 const { create: s } = require('brisky-struct')
 
 test('any - sort', t => {
-  clearStyletron()
+  const app = {
+    types: {
+      a: {
+        $: 'collection',
+        foo: {
+          $: '$any',
+          $any: keys => keys,
+          props: {
+            default: {
+              text: 'a'
+            }
+          }
+        }
+      }
+    },
+    thing: {
+      type: 'a'
+    }
+  }
+
+  const state = s({
+    collection: [ 1, 2 ]
+  })
+
+  const elem = render(app, state)
+  const result = strip(`
+    <div>
+      <div>
+        <div>
+          <div>a</div>
+          <div>a</div>
+        </div>
+      </div>
+    </div>
+  `)
+  t.equals(parse(elem), result, 'correct result')
+  t.end()
+})
+
+test('any - sort', t => {
+  clearStyleCache()
   const app = {
     types: {
       special: {
@@ -129,28 +169,29 @@ test('any - sort', t => {
   }
 
   const result = strip(`
-    <div>
+  <div>
      <div class=" a b c">
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
      </div>
      <div class=" a b c">
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
      </div>
      <div class=" a b c">
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
      </div>
      <div>
-        <div class=" d c e f q g">1</div>
+        <div class=" d c e f n g">1</div>
      </div>
      <div class=" a b c">
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(20, 100, 100); transform: scale(0.6);">11</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m n m o p" style="color: rgb(100, 100, 100); transform: scale(0.6);">11</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(20, 100, 100); transform: scale(0.6);">11</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
+        <div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(0.6);">11</div>
      </div>
+     <style> .a {border-top:1px solid rgb(51, 51, 51);} .b {padding:50px;} .c {text-align:center;} .d {font-size:40px;} .e {padding:5px;} .f {background:rgb(51, 51, 51);} .g {opacity:1;} .h {display:inline-block;} .i {border-radius:50%;} .j {margin:15px;} .k {width:50px;} .l {height:50px;} .m {transition:transform 0.5s;} .n {color:rgb(238, 238, 238);} </style>
   </div>
 `)
 

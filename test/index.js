@@ -40,8 +40,8 @@ require('./widget')
 
 require('./events')
 
-require('./any')
+require('./switch')
 
 require('./style')
 
-require('./switch')
+require('./any')

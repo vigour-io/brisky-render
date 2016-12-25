@@ -1,4 +1,5 @@
-require('./basic')
+require('./media')
 require('./transform')
+require('./basic')
 require('./context')
 require('./mixed')

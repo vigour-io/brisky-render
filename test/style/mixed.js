@@ -1,9 +1,9 @@
 const test = require('tape')
 const { create: s } = require('brisky-struct')
-const { render, clearStyletron } = require('../../')
+const { render, clearStyleCache } = require('../../')
 
 test('style - mix styletron with classnames', t => {
-  clearStyletron()
+  clearStyleCache()
   const state = s({
     color: 'blue',
     class: 'extra'
