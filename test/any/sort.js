@@ -3,7 +3,6 @@ const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 const { create: s } = require('brisky-struct')
-const bs = require('brisky-stamp')
 
 test('any - sort', t => {
   const app = {
