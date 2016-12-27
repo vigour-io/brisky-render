@@ -42,6 +42,6 @@ require('./events')
 
 require('./switch')
 
-require('./style')
-
 require('./any')
+
+require('./style')
