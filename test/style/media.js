@@ -41,8 +41,42 @@ test('style - media styletron with classnames', t => {
 
   if (document.body) document.body.appendChild(elem)
 
+  console.log(elem.className)
+
   t.equal(elem.className, 'hello extra a b c _d')
   state.class.set('gurt')
   t.equal(elem.className, 'hello gurt a b c _d')
   t.end()
 })
+
+// test('style - multiple media queries', t => {
+//   clearStyleCache()
+//   const elem = render({
+//     a: {
+//       text: 'a',
+//       style: {
+//         background: 'yellow',
+//         '@media (min-width: 700px)': {
+//           background: 'red'
+//         }
+//       }
+//     },
+//     b: {
+//       text: 'b',
+//       style: {
+//         background: 'grey',
+//         minWidth: '50%',
+//         '@media (min-width: 480px)': {
+//           background: 'blue'
+//         },
+//         '@media (min-width: 700px)': {
+//           background: 'yellow'
+//         }
+//       }
+//     }
+//   })
+
+//   if (document.body) document.body.appendChild(elem)
+
+//   t.end()
+// })

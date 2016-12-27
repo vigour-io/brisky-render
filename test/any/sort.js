@@ -3,6 +3,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const strip = require('strip-formatting')
 const { create: s } = require('brisky-struct')
+const bs = require('brisky-stamp')
 
 test('any - sort', t => {
   const app = {
@@ -148,6 +149,10 @@ test('any - sort', t => {
     james: '!'
   })
 
+  state.on('error', (err) => {
+    throw err
+  })
+
   state.collection.set(state.collection.map(val => ({ val: val.compute(), color: 'rgb(' + val.compute() * 20 + ', 100, 100)' })))
 
   const elem = render(app, state)
@@ -166,9 +171,14 @@ test('any - sort', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  const result = strip(`<div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(1);">5!</div><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(0.9);">4!</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">3!</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(1);">5!</div><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(0.9);">4!</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">3!</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(20, 100, 100); transform: scale(1);">6!</div><div></div></div><div><div class=" d c e f n g">!</div></div><div class=" a b c"></div><style> .a {border-top:1px solid rgb(51, 51, 51);} .b {padding:50px;} .c {text-align:center;} .d {font-size:40px;} .e {padding:5px;} .f {background:rgb(51, 51, 51);} .g {opacity:1;} .h {display:inline-block;} .i {border-radius:50%;} .j {margin:15px;} .k {width:50px;} .l {height:50px;} .m {transition:transform 0.5s;} .n {color:rgb(238, 238, 238);} </style></div>`)
+  const result = strip(`<div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div><div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div><div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div></div><div><div class=" d c e f n g">1</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" data-styletron=" d c e f g h i j k l m" style="color: rgb(20, 100, 100); transform: scale(1.2);">11</div><div class=" d c e f g h i j k l m" data-styletron=" d c e f g h i j k l m" style="color: rgb(80, 100, 100);">71</div><div class=" d c e f g h i j k l m" data-styletron=" d c e f g h i j k l m" style="color: rgb(100, 100, 100);">11</div></div><style> .a {border-top:1px solid rgb(51, 51, 51);} .b {padding:50px;} .c {text-align:center;} .d {font-size:40px;} .e {padding:5px;} .f {background:rgb(51, 51, 51);} .g {opacity:1;} .h {display:inline-block;} .i {border-radius:50%;} .j {margin:15px;} .k {width:50px;} .l {height:50px;} .m {transition:transform 0.5s;} .n {color:rgb(238, 238, 238);} </style></div>`)
 
-  state.james.once(1).then(() => {
+  // an error is happening, must be
+  state.james.once((val) => {
+    if (val.compute() === 1) {
+      return true
+    }
+  }, () => {
     t.equal(
       parse(elem),
       result
