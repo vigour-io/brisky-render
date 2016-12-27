@@ -164,44 +164,15 @@ test('any - sort', t => {
   state.query.set(defer(7))
   state.james.set(defer(1))
 
-  if (document.body) {
-    document.body.appendChild(elem)
-  }
+  if (document.body) document.body.appendChild(elem)
 
-  const result = strip(`
-  <div>
-     <div class=" a b c">
-        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
-     </div>
-     <div class=" a b c">
-        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">31</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(40, 100, 100); transform: scale(0.7);">21</div>
-     </div>
-     <div class=" a b c">
-        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-     </div>
-     <div>
-        <div class=" d c e f n g">1</div>
-     </div>
-     <div class=" a b c">
-        <div class=" d c e f g h i j k l m" style="color: rgb(20, 100, 100); transform: scale(0.6);">11</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(1.2);">71</div>
-        <div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(0.6);">11</div>
-     </div>
-     <style> .a {border-top:1px solid rgb(51, 51, 51);} .b {padding:50px;} .c {text-align:center;} .d {font-size:40px;} .e {padding:5px;} .f {background:rgb(51, 51, 51);} .g {opacity:1;} .h {display:inline-block;} .i {border-radius:50%;} .j {margin:15px;} .k {width:50px;} .l {height:50px;} .m {transition:transform 0.5s;} .n {color:rgb(238, 238, 238);} </style>
-  </div>
-`)
+  const result = strip(`<div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(1);">5!</div><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(0.9);">4!</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">3!</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(100, 100, 100); transform: scale(1);">5!</div><div class=" d c e f g h i j k l m" style="color: rgb(80, 100, 100); transform: scale(0.9);">4!</div><div class=" d c e f g h i j k l m" style="color: rgb(60, 100, 100); transform: scale(0.8);">3!</div></div><div class=" a b c"><div class=" d c e f g h i j k l m" style="color: rgb(20, 100, 100); transform: scale(1);">6!</div><div></div></div><div><div class=" d c e f n g">!</div></div><div class=" a b c"></div><style> .a {border-top:1px solid rgb(51, 51, 51);} .b {padding:50px;} .c {text-align:center;} .d {font-size:40px;} .e {padding:5px;} .f {background:rgb(51, 51, 51);} .g {opacity:1;} .h {display:inline-block;} .i {border-radius:50%;} .j {margin:15px;} .k {width:50px;} .l {height:50px;} .m {transition:transform 0.5s;} .n {color:rgb(238, 238, 238);} </style></div>`)
 
-  state.james.once(1, () => {
-    setTimeout(() => {
-      t.equal(
-        parse(elem),
-        result
-      )
-      t.end()
-    })
+  state.james.once(1).then(() => {
+    t.equal(
+      parse(elem),
+      result
+    )
+    t.end()
   })
 })
