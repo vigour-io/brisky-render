@@ -130,3 +130,62 @@ test('basic - context styles', t => {
   t.equals(elem.childNodes[0].childNodes[0].style.display, 'none', 'add display property using state')
   t.end()
 })
+
+test('basic - state + static styles create', t => {
+  clearStyleCache()
+  const state = s()
+  const elem = render({
+    fields: {
+      $: 'list.$any',
+      props: {
+        default: {
+          style: {
+            padding: '100px',
+            opacity: 0.5,
+            border: '1px solid rgb(0,0,0)'
+          }
+        }
+      }
+    }
+  }, state)
+
+  state.set({
+    list: {
+      bla: true
+    }
+  })
+
+  t.equal(p(elem), `<div><div><div class=" a b c"></div></div><style> .a {padding:100px;} .b {opacity:0.5;} .c {border:1px solid rgb(0,0,0);} </style></div>`)
+
+  t.end()
+})
+
+test('basic - state + static styles update', t => {
+  clearStyleCache()
+  const state = s()
+  const elem = render({
+    style: { backgroundColor: 'rgb(22,22,22)' },
+    fields: {
+      $: 'list.$any',
+      props: {
+        default: {
+          style: {
+            padding: '100px',
+            opacity: 0.5,
+            border: '1px solid rgb(0,0,0)'
+          }
+        }
+      }
+    }
+  }, state)
+
+  state.set({
+    list: {
+      bla: true
+    }
+  })
+
+  t.equal(p(elem), `<div class=" a"><style> .a {background-color:rgb(22,22,22);} .b {padding:100px;} .c {opacity:0.5;} .d {border:1px solid rgb(0,0,0);} </style><div><div class=" b c d"></div></div></div>`)
+
+  t.end()
+})
