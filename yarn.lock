@@ -374,9 +374,9 @@ brisky-stamp@^3.0.11:
   dependencies:
     global "^4.3.1"
 
-brisky-struct@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-1.0.6.tgz#01a85a93d200955e8b3cb841e4fcc0cf0a7a0721"
+brisky-struct@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-1.0.7.tgz#632c932cf947469baa73ebe284b35abc2acec234"
   dependencies:
     brisky-stamp "^3.0.11"
 
