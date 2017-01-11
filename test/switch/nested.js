@@ -145,3 +145,51 @@ test('switch - nested', t => {
 
   t.end()
 })
+
+test('switch - nested - b', t => {
+  const app = render({
+    page: {
+      $: 'page.$switch',
+      $switch: () => 'b',
+      props: {
+        b: {
+          navbar: {
+            tag: 'nav'
+          },
+          body: {
+            tag: 'page',
+            switcher: {
+              $: 'current.$switch',
+              $switch: () => 'c',
+              props: {
+                c: {
+                  tag: 'nest'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }, {
+    page: {
+      current: {}
+    }
+  })
+
+  t.equals(
+    parse(app),
+    strip(
+      `<div>
+         <div>
+           <nav></nav>
+           <page>
+             <nest></nest>
+           </page>
+         </div>
+      </div>`
+    )
+  )
+
+  t.end()
+})
