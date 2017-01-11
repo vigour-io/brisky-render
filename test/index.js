@@ -24,8 +24,6 @@ require('./attr')
 
 require('./group')
 
-require('./subscribe') // object subs and resubscribe -- object travel
-
 require('./test')
 
 require('./class')
@@ -45,3 +43,5 @@ require('./switch')
 require('./any')
 
 require('./style')
+
+require('./subscribe') // object subs and resubscribe -- object travel
