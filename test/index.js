@@ -20,8 +20,6 @@ require('./reference')
 
 require('./property')
 
-require('./attr')
-
 require('./group')
 
 require('./test')
@@ -45,3 +43,5 @@ require('./any')
 require('./style')
 
 require('./subscribe') // object subs and resubscribe -- object travel
+
+require('./attr')
