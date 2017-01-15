@@ -1,2 +1,2 @@
-require('./state')
+// require('./state')
 require('./static')
