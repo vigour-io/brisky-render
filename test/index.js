@@ -43,3 +43,5 @@ require('./subscribe') // object subs and resubscribe -- object travel
 require('./attr')
 
 require('./switch')
+
+require('./style')

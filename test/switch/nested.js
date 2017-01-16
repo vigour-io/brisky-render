@@ -99,9 +99,7 @@ test('switch - nested', t => {
     }
   })
 
-  if (document.body) {
-    document.body.appendChild(app)
-  }
+  if (document.body) document.body.appendChild(app)
 
   state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
   state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
@@ -154,7 +152,6 @@ test('switch - nested - b', t => {
       props: {
         b: {
           tag: 'b',
-          // navbar: { tag: 'nav' },
           c: {
             tag: 'c',
             switcher: {
