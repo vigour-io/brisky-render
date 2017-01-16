@@ -38,8 +38,6 @@ if (typeof window === 'undefined') {
 
 // require('./any')
 
-// require('./style')
-
 // require('./subscribe') // object subs and resubscribe -- object travel
 
 // require('./attr')
