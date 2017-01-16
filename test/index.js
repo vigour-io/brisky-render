@@ -36,12 +36,12 @@ require('./widget')
 
 require('./events')
 
-require('./switch')
-
 require('./any')
-
-require('./style')
 
 require('./subscribe') // object subs and resubscribe -- object travel
 
 require('./attr')
+
+require('./switch')
+
+require('./style')

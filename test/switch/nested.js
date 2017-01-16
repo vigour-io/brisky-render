@@ -9,22 +9,22 @@ test('switch - nested', t => {
   var cnt = 0
   const app = render(
     {
-      holder: {
-        tag: 'holder',
+      a: {
+        tag: 'a',
         switcher: {
           $: 'field.navigation.$switch',
           $switch: state => state.origin().key,
           props: {
             first: {
-              tag: 'first',
+              tag: 'b',
               on: {
                 remove (data) {
                   const node = data.target
                   node.parentNode.removeChild(node)
                 }
               },
-              nest: {
-                tag: 'switchsecond',
+              c: {
+                tag: 'c',
                 text: { $: 'title', $transform: val => val + '?' },
                 switcher: {
                   $: 'navigation.$switch',
@@ -33,7 +33,9 @@ test('switch - nested', t => {
                   },
                   props: {
                     first: {
+                      tag: 'd',
                       gucci: {
+                        tag: 'e',
                         text: '🐔'
                       },
                       text: { $: 'title', $transform: val => val + '!' },
@@ -56,6 +58,7 @@ test('switch - nested', t => {
                       }
                     },
                     second: {
+                      tag: 'd',
                       text: { $: 'rating', $transform: val => (new Array(val)).join('🌟') }
                     }
                   }
@@ -96,9 +99,7 @@ test('switch - nested', t => {
     }
   })
 
-  if (document.body) {
-    document.body.appendChild(app)
-  }
+  if (document.body) document.body.appendChild(app)
 
   state.items.first.navigation.set([ '@', 'root', 'items', 'first' ])
   state.items.first.navigation.set([ '@', 'root', 'items', 'second' ])
@@ -112,16 +113,12 @@ test('switch - nested', t => {
     parse(app),
      strip(`
       <div>
-        <holder>
-          <first>
-            <switchsecond>first?</switchsecond>
-            </first>
-              <div>
-                <div>🐔</div>
-                💸!
-              </div>
-            </holder>
-          </div>
+        <a>
+          <b>
+            <c>first?<d><e>🐔</e>💸!</d></c>
+          </b>
+        </a>
+      </div>
     `),
     'switch nested switcher to "$root.otheritems[1]"'
   )
@@ -132,15 +129,53 @@ test('switch - nested', t => {
     parse(app),
      strip(`
       <div>
-        <holder>
-          <first>
-            <switchsecond>first?</switchsecond>
-          </first>
-          <div>🌟🌟🌟🌟</div>
-        </holder>
+        <a>
+          <b>
+            <c>first?<d>🌟🌟🌟🌟</d></c>
+          </b>
+        </a>
       </div>
     `),
     'switch nested switcher to "$root.otheritems[1]"'
+  )
+
+  t.end()
+})
+
+test('switch - nested - b', t => {
+  const app = render({
+    key: 'app',
+    tag: 'app',
+    a: {
+      $: 'page.$switch',
+      $switch: () => 'b',
+      props: {
+        b: {
+          tag: 'b',
+          c: {
+            tag: 'c',
+            switcher: {
+              $: 'current.$switch',
+              $switch: () => 'd',
+              props: { d: { tag: 'd' } }
+            }
+          }
+        }
+      }
+    }
+  }, { page: { current: {} } })
+
+  t.equals(
+    parse(app),
+    strip(
+      `<app>
+         <b>
+           <c>
+             <d></d>
+           </c>
+         </b>
+      </app>`
+    )
   )
 
   t.end()
