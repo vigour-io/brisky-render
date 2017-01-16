@@ -183,7 +183,5 @@ test('switch - basic', t => {
     t.end()
   })
 
-  if (document.body) {
-    document.body.appendChild(app)
-  }
+  if (document.body) document.body.appendChild(app)
 })
