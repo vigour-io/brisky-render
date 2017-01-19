@@ -11,6 +11,7 @@
     "./lib/property/style/sheet": "./lib/property/style/sheet/browser",
     "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
     "./lib/events/listener": "./lib/events/listener/browser",
+    "./lib/render/merge": "./lib/render/merge/browser",
     "html-element/global-shim": false
   },
   "scripts": {

@@ -86,14 +86,27 @@ test('render - to element', t => {
   t.equal(app, strange, 'enahnces original')
 
   // overwrites existing (this is debatable)
-  t.equal(p(app), strip(`
-    <strange>
-       <head>
-          <link rel="shortcut icon" href="1.jpg">
-          <title>1</title>
-       </head>
-       <body>x</body>
-    </strange>
-  `))
+  t.equal(p(app),
+    typeof window === 'undefined'
+      ? strip(`
+      <strange>
+         <head>
+            <link rel="shortcut icon" href="1.jpg"></link>
+            <title>1</title>
+         </head>
+         <body>x</body>
+      </strange>
+    `)
+    : strip(`
+      <strange>
+         <head>
+            <link rel="shortcut icon" href="1.jpg">
+            <title>1</title>
+         </head>
+         <body>x</body>
+      </strange>
+    `)
+    )
+
   t.end()
 })
