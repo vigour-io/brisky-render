@@ -77,12 +77,11 @@ test('render - to element', t => {
   const context = canvas.getContext('2d')
   context.fillStyle = 'green'
 
-
   const app = render(
     document.documentElement,
     {
       head: {
-
+        tag: 'head',
         favicon: {
           tag: 'link',
           attr: {
@@ -91,14 +90,20 @@ test('render - to element', t => {
               $: 'loader',
               $transform: val => {
                 context.clearRect(0, 0, 32, 32)
-                let i = 52
-                while (i--) {
-                  context.fillStyle = `rgb(${7.5 * i / 3},${7.5 * i},${7.5 * i})`
-                  context.fillRect(
-                    Math.sin(val / 100 + i / 7) * 15 + 15,
-                    Math.cos(val / 100 + i / 7) * 15 + 15, 2, 2
-                  )
-                }
+                context.beginPath()
+                context.arc(16, 16, 13, val / 50, 0, false)
+                context.fillStyle = 'green'
+                context.lineWidth = 3
+                context.strokeStyle = '#003300'
+                context.stroke()
+                // let i = 52
+                // while (i--) {
+                //   context.fillStyle = `rgb(${7.5 * i / 3},${7.5 * i},${7.5 * i})`
+                //   context.fillRect(
+                //     Math.sin(val / 100 + i / 7) * 15 + 15,
+                //     Math.cos(val / 100 + i / 7) * 15 + 15, 1, 1
+                //   )
+                // }
                 // let i = 32
                 // while (i--) {
                 //   let j = 32
