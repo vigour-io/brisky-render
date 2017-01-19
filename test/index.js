@@ -28,8 +28,6 @@ require('./class')
 
 require('./context')
 
-require('./render')
-
 require('./remove')
 
 require('./widget')
@@ -45,3 +43,5 @@ require('./attr')
 require('./switch')
 
 require('./style')
+
+require('./render')
