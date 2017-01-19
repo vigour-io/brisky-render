@@ -95,11 +95,5 @@ test('render - to element', t => {
        <body>x</body>
     </strange>
   `))
-
-  // t.equal(p(app), '<div></div>', 'initial')
-  // state.set({ a: state.text })
-  // t.equal(p(app), '<div>:/</div>', 'swtich')
-  // state.a.set(state.html)
-  // t.equal(p(app), '<div><div>:)</div></div>', 'change reference')
   t.end()
 })
