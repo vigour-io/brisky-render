@@ -42,6 +42,6 @@ require('./switch')
 
 require('./style')
 
-require('./render')
-
 require('./subscribe') // object subs and resubscribe -- object travel
+
+require('./render')

@@ -8,10 +8,10 @@
   "browser": {
     "./dist/index.js": "./dist/browser.js",
     "./dist/index.es.js": "./dist/browser.es.js",
-    "./lib/property/style/sheet": "./lib/property/style/sheet/browser",
-    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
-    "./lib/events/listener": "./lib/events/listener/browser",
-    "./lib/render/merge": "./lib/render/merge/browser",
+    "./src/property/style/sheet": "./src/property/style/sheet/browser",
+    "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
+    "./src/events/listener": "./src/events/listener/browser",
+    "./src/render/merge": "./src/render/merge/browser",
     "html-element/global-shim": false
   },
   "scripts": {
