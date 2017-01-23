@@ -114,7 +114,14 @@ test('subscribe - object subscription + context', t => {
     fields: {
       a: {
         a: 'its fields a',
-        b: 'bla'
+        b: {
+          val: 'BBBBBBB',
+          c: {
+            val: ' YO ',
+            d: { val: 'd!', color: 'red', 'w': '10px' }
+          }
+        },
+        c: 'c on a'
       }
     },
     page: {
@@ -125,26 +132,48 @@ test('subscribe - object subscription + context', t => {
   // and property ofc
   const app = render({
     bla: {
-      $: 'page.current',
-      $switch: () => { console.log('???'); return 'bla' },
+      $: 'page.current.$switch',
+      $switch: (state) => 'bla',
       props: {
         bla: {
           tag: 'bla',
-          $: { a: true, b: true }, // something like this! {  $: 'a' }
+          $: {
+            // val: 1,
+            b: { c: { d: true, val: true }, val: true }, // branches need to be taken into account :/
+            x: { val: 'switch' },
+            a: true,
+            c: true
+          },
           text: '?',
+          bla: {
+            text: 'BLA',
+            style: {
+              border: {
+                $: {
+                  w: true,
+                  color: true
+                },
+                $transform: (val, state) => `${
+                  state.parent().w.compute()
+                } solid ${
+                  state.parent().color.compute()
+                }`
+              }
+            }
+          },
           more: {
             tag: 'more',
-            text: { $: 'a' }
+            // text is hard need to know if it does not exist...
+            text: { $: true }
           }
         }
       }
     }
-  }, state, subs => {
-    console.log(subs)
-  })
+  }, state)
 
-  console.log(p(app))
-  t.equal(p(app), '<div><bla>?<more>its fields a</more></bla></div>')
+  state.fields.a.b.c.d.color.set('purple')
+
+  t.equal(p(app), '<div><bla>?<div style="border: 10px solid purple;">BLA</div><more>d!</more></bla></div>')
 
   if (global.document && global.document.body) {
     global.document.body.appendChild(app)
