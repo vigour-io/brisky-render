@@ -10,7 +10,7 @@ export default injectable
 injectable.types = {
   text: {
     class: null,
-    subscriptionType: true,
+    subscriptionType: 'shallow',
     render: {
       static (t, pnode) {
         appendStatic(t, pnode, document.createTextNode(t.compute()))

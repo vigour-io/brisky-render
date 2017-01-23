@@ -20,6 +20,6 @@ export default create({
       }
     }
   },
-  subscriptionType: true
+  subscriptionType: 'shallow'
   // noReference: true,
 }, false)

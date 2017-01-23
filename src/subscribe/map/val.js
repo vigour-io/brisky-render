@@ -14,7 +14,12 @@ export default (target, map, val) => {
   // console.log('set val', val)
 
   if (val && map.val !== true) {
-    if (map.val !== 'switch' || val === true) {
+    if (
+      val === true ||
+      (val === 1 && !map.val) ||
+      (val === 'switch' && map.val !== true && map.val !== 'shallow') ||
+      (val === 'shallow' && map.val !== true)
+    ) {
       map.val = val
     }
   }
