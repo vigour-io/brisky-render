@@ -108,3 +108,46 @@ test('subscribe - object subscription', t => {
   }
   t.end()
 })
+
+test('subscribe - object subscription + context', t => {
+  const state = s({
+    fields: {
+      a: {
+        a: 'its fields a',
+        b: 'bla'
+      }
+    },
+    page: {
+      current: [ '@', 'root', 'fields', 'a' ]
+    }
+  })
+
+  // and property ofc
+  const app = render({
+    bla: {
+      $: 'page.current',
+      $switch: () => { console.log('???'); return 'bla' },
+      props: {
+        bla: {
+          tag: 'bla',
+          $: { a: true, b: true }, // something like this! {  $: 'a' }
+          text: '?',
+          more: {
+            tag: 'more',
+            text: { $: 'a' }
+          }
+        }
+      }
+    }
+  }, state, subs => {
+    console.log(subs)
+  })
+
+  console.log(p(app))
+  t.equal(p(app), '<div><bla>?<more>its fields a</more></bla></div>')
+
+  if (global.document && global.document.body) {
+    global.document.body.appendChild(app)
+  }
+  t.end()
+})
