@@ -371,7 +371,7 @@ brisky-stamp@^4.0.0:
   version "1.1.7"
   resolved "git://github.com/vigour-io/brisky-struct.git#809eba6fb84bbcf2ebe32544b28b1717d6171066"
   dependencies:
-    brisky-stamp "^3.0.12"
+    brisky-stamp "^4.0.0"
 
 brorand@^1.0.1:
   version "1.0.6"
