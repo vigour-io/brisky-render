@@ -21,10 +21,10 @@ export default (target, obs, type) => {
     }
     store[id] = obs
     if (type === 's') {
-      if (!_.sList) { _.sList = [] }
+      if (!_.sList) _.sList = []
       _.sList.unshift(id, pid, index, obs)
     }
-    if (!_.tList) { _.tList = [] }
+    if (!_.tList) _.tList = []
     _.tList.unshift(id, pid, index, obs)
   }
   return target

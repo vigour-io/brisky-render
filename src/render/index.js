@@ -20,8 +20,6 @@ export default (elem, state, cb, cb2) => {
   const subs = elem.$map()
   const tree = t = {}
   const uid = elem.uid() - 1e4
-
-  const stamp = bstamp.create('render')
   if (state === void 0) {
     render(state, 'new', subs, tree)
     if (cb) { cb(subs, tree, elem) }
@@ -38,7 +36,7 @@ export default (elem, state, cb, cb2) => {
       state.subscribe(subs, render, true, tree)
     }
   }
-  bstamp.close(stamp)
+  bstamp.close()
 
   const $ = get$(elem)
 

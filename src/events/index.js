@@ -22,6 +22,7 @@ injectable.on = {
       emitterProperty(t, val, key)
     },
     move: (t, val) => {
+      // add some checks perhaps?
       t.set({
         mousemove: val,
         touchmove: val

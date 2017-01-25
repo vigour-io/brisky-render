@@ -13,9 +13,7 @@ export default (key, e) => {
     if (elem) {
       let listener = emitter(elem, key)
       if (listener) {
-        if (!stamp) {
-          stamp = bstamp.create(key)
-        }
+        if (!stamp) stamp = bstamp.create()
         let data = { target: t }
         restore(data)
         elem.emit(key, attach(e, data), stamp)
@@ -24,8 +22,6 @@ export default (key, e) => {
         }
       }
     }
-    if (stamp) {
-      bstamp.close(stamp)
-    }
+    if (stamp) bstamp.close()
   } while ((t = t.parentNode))
 }

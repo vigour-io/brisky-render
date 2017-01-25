@@ -54,9 +54,9 @@ const merge = (t, a, b) => {
             a[i] = b[i]
           } else if (i === 'val') {
             // alse remove this specific true thing
-            if (a.val !== b.val && b.val === true) {
+            if (a.val !== b.val) {
               // pretty wrong since i need the info of the t in the def
-              setVal(t, a, true)
+              setVal(t, a, b.val)
             }
           } else {
             let prev = a[i]
