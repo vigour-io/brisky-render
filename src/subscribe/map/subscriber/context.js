@@ -11,6 +11,7 @@ export default t => {
   }
 }
 
+// this will become a method in struct
 const genCid = t => {
   if (t._c) {
     if (t._cLevel === 1) {
