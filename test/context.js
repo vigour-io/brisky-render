@@ -28,39 +28,3 @@ test('context', t => {
   t.equal(app.switcher.$switch, null, 'remove $switch by change of subscription on instance')
   t.end()
 })
-
-test('context - storeContextKey', t => {
-  var subs
-
-  const types = {
-    title: {
-      storeContextKey: true,
-      tag: 'h1',
-      text: { $: 'title' }
-    },
-    item: {
-      title: { type: 'title' }
-    }
-  }
-  const app = {
-    types,
-    item1: { type: 'item' },
-    item2: { type: 'item' }
-  }
-
-  render(app, { title: 'its an app' }, s => { subs = s })
-
-  const keys = Object.keys(subs._.t)
-
-  const findKey = key => {
-    for (let i in keys) {
-      if (keys[i].indexOf(key) !== -1) {
-        return true
-      }
-    }
-  }
-
-  t.equal(findKey('item1'), true, 'stores item1 in tree-key')
-  t.equal(findKey('item2'), true, 'stores item1 in tree-key')
-  t.end()
-})

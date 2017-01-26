@@ -24,8 +24,6 @@ require('./group')
 
 require('./test')
 
-require('./class')
-
 require('./context')
 
 require('./remove')
@@ -45,3 +43,5 @@ require('./style')
 require('./subscribe') // object subs and resubscribe -- object travel
 
 require('./render')
+
+require('./class')

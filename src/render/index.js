@@ -1,4 +1,4 @@
-import { create, subscribe } from 'brisky-struct'
+import { create, subscribe, puid } from 'brisky-struct'
 import render from './render'
 import merge from './merge'
 import element from '../element'
@@ -19,7 +19,7 @@ export default (elem, state, cb, cb2) => {
   renderStyle(elem)
   const subs = elem.$map()
   const tree = t = {}
-  const uid = elem.uid() - 1e4
+  const uid = puid(elem)
   if (state === void 0) {
     render(state, 'new', subs, tree)
     if (cb) { cb(subs, tree, elem) }

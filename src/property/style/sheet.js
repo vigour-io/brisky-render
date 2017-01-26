@@ -107,7 +107,7 @@ const setClass = (node, newStyle, style) => {
   } else {
     node.className = (node.className || '') + newStyle
   }
-  node.setAttribute('data-styletron', newStyle)
+  node.setAttribute('data-style', newStyle)
 }
 
 const sheet = {
@@ -124,7 +124,7 @@ const sheet = {
           node.className = setStyle(t, store, elem)
         }
       } else {
-        const style = node.getAttribute('data-styletron')
+        const style = node.getAttribute('data-style')
         if (isNotEmpty(store)) {
           const newStyle = t._cachedNode = setStyle(t, store, elem)
           if (newStyle) {
@@ -132,7 +132,7 @@ const sheet = {
             return
           }
         }
-        if (style) node.removeAttribute('data-styletron')
+        if (style) node.removeAttribute('data-style')
       }
     }
   }

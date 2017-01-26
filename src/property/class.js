@@ -1,6 +1,6 @@
 import parent from '../render/dom/parent'
 import { get$ } from '../get'
-import { get, getKeys } from 'brisky-struct'
+import { getKeys } from 'brisky-struct'
 
 const injectable = {}
 
@@ -18,17 +18,11 @@ injectable.props = {
   class: {
     type: 'group',
     storeContextKey: true,
-    subscriptionType: true,
-    props: { useKey: true },
+    subscriptionType: 'shallow',
     render: {
       static (t, node, store) {
         var val = t.compute()
-        if (val === true || get(t, 'useKey')) {
-          const key = get(t.parent(), 'key')
-          val = typeof val === 'string' ? (val + ' ' + key) : key
-        } else if (typeof val === 'object') {
-          val = ''
-        }
+        if (typeof val === 'object') val = ''
         if (getKeys(t)) val = parseStore(val, store)
         setClassName(val, node)
       },
@@ -36,12 +30,7 @@ injectable.props = {
         const node = parent(tree, pid)
         if (node) {
           let val = s && get$(t) ? t.compute(s, s) : t.compute()
-          if (val === true || get(t, 'useKey')) {
-            const key = parseKey(t, id)
-            val = typeof val === 'string' ? (val + ' ' + key) : key
-          } else if (typeof val === 'object') {
-            val = ''
-          }
+          if (typeof val === 'object') val = ''
           if (getKeys(t)) val = parseStore(val, store)
           setClassName(val, node)
         }
@@ -53,9 +42,6 @@ injectable.props = {
 const parseStore = (val, store) => {
   for (let key in store) {
     let fieldval = store[key]
-    if (fieldval === true) {
-      fieldval = key
-    }
     if (fieldval !== false) {
       if (val) {
         val += ' ' + fieldval
@@ -68,7 +54,7 @@ const parseStore = (val, store) => {
 }
 
 const setClassName = (val, node) => {
-  const tron = node.getAttribute('data-styletron')
+  const tron = node.getAttribute('data-style')
   if (val) {
     if (tron) val = val + tron
     node.className = val
@@ -78,25 +64,5 @@ const setClassName = (val, node) => {
     } else {
       node.removeAttribute('class')
     }
-  }
-}
-
-// const setClassName = (val, node) => {
-//   if (val) {
-//     node.className = val
-//   } else if ('className' in node) {
-//     node.removeAttribute('class')
-//   }
-// }
-
-const parseKey = (t, pid) => {
-  if (typeof pid === 'string') {
-    for (let i = pid.length - 1; i >= 0; i--) {
-      if (pid[i] === '-') {
-        return pid.slice(0, i)
-      }
-    }
-  } else {
-    return get(t.parent(), 'key')
   }
 }

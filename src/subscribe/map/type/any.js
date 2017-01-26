@@ -3,8 +3,8 @@ import subscriber from '../subscriber'
 import iterator from '../iterator'
 import setVal from '../val'
 import { get$, get$switch, get$any } from '../../../get'
-import hash from 'string-hash'
-import { parse } from 'brisky-struct'
+// import hash from 'string-hash'
+import { parse, puid } from 'brisky-struct'
 
 export default (t, map) => {
   const props = t.get('props')
@@ -23,11 +23,11 @@ export default (t, map) => {
   var extra
 
   if (typeof $any === 'function') {
-    key = '$any' + hash(t.path().join('') + t.uid())
+    key = '$any' + puid(t)
   } else if (typeof $any === 'object') {
     extra = parse($any)
     $any = $any.val
-    key = '$any' + hash(t.path().join('') + t.uid())
+    key = '$any' + puid(t)
   } else {
     $any = false
   }

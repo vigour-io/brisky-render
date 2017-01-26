@@ -1,11 +1,10 @@
 import merge from '../../merge'
-import hash from 'string-hash' // avoid this one
 import { get$, get$switch } from '../../../../get'
-import { parse, get } from 'brisky-struct'
+import { parse, get, puid } from 'brisky-struct'
 
 export default (t, map, prevMap) => {
   const $ = get$(t)
-  let key = '$switch' + hash(t.path().join('') + t.uid())
+  let key = '$switch' + puid(t)
   $[$.length - 1] = key
   if ($.length !== 1) {
     let val = {}

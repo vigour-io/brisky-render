@@ -1,19 +1,15 @@
-import context from './context'
+import { puid } from 'brisky-struct'
 
 export default (target, obs, type) => {
   const _ = target._
   var store = _[type] || (_[type] = {})
   var pid, id, parent, index
 
-  if (obs._c) {
-    parent = getParent(obs.parent())
-    id = context(obs)
-    pid = parent._c ? context(parent) : parent.uid() - 1e4
-  } else {
-    id = obs.uid() - 1e4
-    parent = getParent(obs.parent())
-    pid = parent && parent.uid() - 1e4
-  }
+  id = puid(obs)
+  parent = getParent(obs.parent())
+  pid = parent && puid(parent)
+
+// }
   index = obs.findIndex(parent)
   if (!store[id]) {
     if (target.$blockRemove !== false) {
