@@ -72,5 +72,9 @@
   "contributors": [
     "Jim de Beer <jim@vigour.io>",
     "Youri Daamen <youri@vigour.io>"
+  ],
+  "files": [
+    "dist",
+    "README.md"
   ]
 }
