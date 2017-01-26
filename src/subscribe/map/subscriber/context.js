@@ -7,8 +7,11 @@ const contextKey = t => t.storeContextKey !== void 0
 export default t => {
   if (contextKey(t)) {
     const key = t.parent().key
-    return key ? 'c' + key + '-' + cuid(t) : 'c' + cuid(t)
+    console.log(key ? key + '-' + cuid(t) : cuid(t))
+
+    return key ? key + '-' + cuid(t) : cuid(t)
   } else {
-    return 'c' + cuid(t)
+    // console.log(cuid(t))
+    return cuid(t)
   }
 }

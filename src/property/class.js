@@ -90,10 +90,10 @@ const setClassName = (val, node) => {
 // }
 
 const parseKey = (t, pid) => {
-  if (pid[0] === 'c') {
+  if (typeof pid === 'string') {
     for (let i = pid.length - 1; i >= 0; i--) {
       if (pid[i] === '-') {
-        return pid.slice(1, i)
+        return pid.slice(0, i)
       }
     }
   } else {
