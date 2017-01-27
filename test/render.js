@@ -87,7 +87,7 @@ test('render - to element', t => {
     state
   )
 
-  t.equal(app, strange, 'enahnces original')
+  t.equal(app, strange, 'enhances original')
 
   /*
     '<strange><head><link rel="shortcut icon" href="1.jpg"></link><title>1</title></head><body>x<div class=" a"></div></body><style> .a {border:1px solid red;} </style></strange>'
