@@ -66,7 +66,9 @@ export default (elem, state, cb, cb2) => {
     }
   }
 
-  node = elem.node = dom ? (t._[uid] = merge(t._[uid], dom)) : t._[uid]
+  node = elem.node = dom
+    ? (t._[uid] = merge(t._[uid], dom))
+    : t._[uid]
   done(elem, node)
   return node
 }

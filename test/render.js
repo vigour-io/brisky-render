@@ -1,4 +1,4 @@
-const { render } = require('../')
+const { render, clearStyleCache } = require('../')
 const test = require('tape')
 const { create: s } = require('brisky-struct')
 const p = require('parse-element')
@@ -50,9 +50,10 @@ test('render - $switch on top', t => {
 })
 
 test('render - to element', t => {
+  clearStyleCache()
   const state = s({ loader: 1 })
 
-  const strange = document.createElement('strange')
+  const strange = document.createElement('html')
 
   const head = document.createElement('head')
   head.innerHTML = 'blurf'
@@ -77,7 +78,10 @@ test('render - to element', t => {
       },
       body: {
         tag: 'body',
-        text: 'x'
+        bla: {
+          text: 'x',
+          style: { border: '1px solid red' }
+        }
       }
     },
     state
@@ -85,26 +89,32 @@ test('render - to element', t => {
 
   t.equal(app, strange, 'enahnces original')
 
+  /*
+    '<strange><head><link rel="shortcut icon" href="1.jpg"></link><title>1</title></head><body>x<div class=" a"></div></body><style> .a {border:1px solid red;} </style></strange>'
+  */
+
   // overwrites existing (this is debatable)
   t.equal(p(app),
     typeof window === 'undefined'
       ? strip(`
-      <strange>
+      <html>
          <head>
             <link rel="shortcut icon" href="1.jpg"></link>
             <title>1</title>
+            <style> .a {border:1px solid red;} </style>
          </head>
-         <body>x</body>
-      </strange>
+         <body><div class=" a">x</div></body>
+      </html>
     `)
     : strip(`
-      <strange>
+      <html>
          <head>
             <link rel="shortcut icon" href="1.jpg">
             <title>1</title>
+            <style> .a {border:1px solid red;} </style>
          </head>
-         <body>x</body>
-      </strange>
+         <body><div class=" a">x</div></body>
+      </html>
     `)
     )
 
