@@ -34,19 +34,21 @@ const element = create({
       element.set({ define: { resolve: true } })
     },
     removeUnresolved () {
-      var d = Date.now()
-      const elems = this.node.querySelectorAll('[id]')
-      var i = elems.length
-      // measure this function
-      while (i--) {
-        if (elems[i].id > 1e6) {
-          elems[i].parentNode.removeChild(elems[i])
+      if (typeof window !== 'undefined') {
+        var d = Date.now()
+        const elems = this.node.querySelectorAll('[id]')
+        var i = elems.length
+        // measure this function
+        while (i--) {
+          if (elems[i].id > 1e6) {
+            elems[i].parentNode.removeChild(elems[i])
+          }
         }
+        element._c = null
+        element._cLevel = null
+        element.set({ define: { resolve: false } })
+        console.log('RESOLVED', Date.now() - d, 'ms')
       }
-      element._c = null
-      element._cLevel = null
-      element.set({ define: { resolve: false } })
-      console.log('RESOLVED', Date.now() - d, 'ms')
     }
   }, // unnesecary code
   props: {
