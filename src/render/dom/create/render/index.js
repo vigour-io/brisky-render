@@ -15,7 +15,9 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
   } else {
     const node = document.createElement(nodeType)
     // disable this with a flag
-    node.setAttribute('id', puid(t))
+    if (!t._noResolve_) {
+      node.setAttribute('id', puid(t))
+    }
     property(t, node)
     element(t, node)
     tree._[id] = node
@@ -26,7 +28,7 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
 injectable.static = t => {
   const nodeType = tag(t)
   const node = document.createElement(nodeType)
-  if (!isStatic(t.parent())) {
+  if (!isStatic(t.parent()) && !t._noResolve_) {
     // disable this with a flag
     node.setAttribute('id', puid(t))
   }

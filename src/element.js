@@ -22,6 +22,11 @@ const element = create({
   define: {
     isElement: true,
     resolve: false,
+    noResolve (val = true) {
+      element._c = null
+      element._cLevel = null
+      element.set({ define: { _noResolve_: val } })
+    },
     resolveNodes () {
       // find real inherits
       element._c = null

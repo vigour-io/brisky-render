@@ -3,6 +3,7 @@ if (typeof window === 'undefined') {
 }
 
 const { element } = require('../')
+element.noResolve()
 // require('./sync') // not for now
 
 require('./fragment')
