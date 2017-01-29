@@ -38,6 +38,7 @@ class StyleSheet {
     const style = document.createElement('style')
     style.innerHTML = this.parse()
     insertInHead(node).appendChild(style)
+    // remove previous one as well
     this.parsed = style
   }
   update () {
@@ -148,7 +149,7 @@ const insertInHead = node => {
     let head
     const children = node.childNodes
     for (let i = 0, len = children.length; i < len; i++) {
-      if (children[i].tagName.toLowerCase() === 'head') {
+      if (children[i].tagName && children[i].tagName.toLowerCase() === 'head') {
         head = children[i]
         break
       }

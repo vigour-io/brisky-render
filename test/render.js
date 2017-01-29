@@ -50,75 +50,94 @@ test('render - $switch on top', t => {
   t.end()
 })
 
-test('render - to element', t => {
-  clearStyleCache()
-  const state = s({ loader: 1 })
+// test('render - to element', t => {
+//   element.noResolve(false)
+//   clearStyleCache()
+//   const state = s({ loader: 1 })
 
-  const strange = document.createElement('html')
+//   const code = {
+//     tag: 'html',
+//     head: {
+//       tag: 'head',
+//       favicon: {
+//         tag: 'link',
+//         attr: {
+//           rel: 'shortcut icon',
+//           href: {
+//             $: 'loader',
+//             $transform: val => `${val}.jpg`
+//           }
+//         }
+//       },
+//       title: { tag: 'title', text: { $: 'loader' } } // make some default
+//     },
+//     body: {
+//       tag: 'body',
+//       bla: {
+//         text: 'x',
+//         style: { border: '2px solid red' }
+//       }
+//     }
+//   }
 
-  const head = document.createElement('head')
-  head.innerHTML = 'blurf'
-  strange.appendChild(head)
+//   // document.body.appendChild(strange)
+//   if (typeof window === 'undefined') {
+//     const app = render(
+//       code,
+//       state
+//     )
+//     t.equal(p(app), strip(`
+//       <html id="5381">
+//          <head id="2087219016">
+//             <link id="2846275255" rel="shortcut icon" href="1.jpg">
+//             </link>
+//             <title id="968280941">1</title>
+//             <style> .a {border:2px solid red;} </style>
+//          </head>
+//          <body id="2088244976">
+//             <div class=" a">x</div>
+//          </body>
+//       </html>
+//     `))
+//   } else {
+//     const strange = document.createElement('html')
 
-  // document.body.appendChild(strange)
+//     strange.innerHTML = strip(`<head id="2087219016">
+//       <link id="2846275255" rel="shortcut icon" href="1.jpg">
+//         </link>
+//         <title id="968280941">1</title>
+//         <style> .a {border:2px solid red;} </style>
+//      </head>
+//      <body id="2088244976">
+//         <div class=" a">x</div>
+//      </body>`)
 
-  const app = render(
-    strange,
-    {
-      head: {
-        tag: 'head',
-        favicon: {
-          tag: 'link',
-          attr: {
-            rel: 'shortcut icon',
-            href: {
-              $: 'loader',
-              $transform: val => `${val}.jpg`
-            }
-          }
-        },
-        title: { tag: 'title', text: { $: 'loader' } } // make some default
-      },
-      body: {
-        tag: 'body',
-        bla: {
-          text: 'x',
-          style: { border: '1px solid red' }
-        }
-      }
-    },
-    state
-  )
+//     strange.setAttribute('id', 5381)
 
-  t.equal(app, strange, 'enhances original')
+//     const app = render(
+//       strange,
+//       code,
+//       state
+//     )
+//     document.body.appendChild(app)
+//     t.equal(app, strange, 'enhances original')
+//     t.equal(app.outerHTML, strip(`
+//       <html>
+//        <head>
+//           <link rel="shortcut icon" href="1.jpg">
+//           <title>1</title>
+//           <style> .a {border:2px solid red;} </style>
+//        </head>
+//        <body>
+//           <div class=" a">x</div>
+//        </body>
+//       </html>`)
+//     )
+//   }
+//   element.noResolve(true)
 
-  // overwrites existing (this is debatable)
-  t.equal(p(app),
-    typeof window === 'undefined'
-      ? strip(`
-        <html>
-          <head>
-            <link rel="shortcut icon" href="1.jpg"></link>
-            <title>1</title>
-            <style> .a {border:1px solid red;} </style>
-          </head>
-          <body><div class=" a">x</div></body>
-        </html>
-    `)
-    : strip(`
-      <html>
-         <head>
-            <link rel="shortcut icon" href="1.jpg">
-            <title>1</title>
-            <style> .a {border:1px solid red;} </style>
-         </head>
-         <body><div class=" a">x</div></body>
-      </html>
-    `)
-    )
-
-  t.end()
-})
+//   t.end()
+// })
 
 test('render - overtake / resolve', t => {
   element.noResolve(false)
@@ -176,9 +195,10 @@ test('render - overtake / resolve', t => {
     overtake.innerHTML = htmlResult
     overtake = overtake.childNodes[0]
     document.body.appendChild(overtake)
+    console.log(overtake)
   }
 
   render(overtake, app, state)
-
+  element.noResolve(true)
   t.end()
 })

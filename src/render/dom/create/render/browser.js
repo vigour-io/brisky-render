@@ -48,6 +48,7 @@ injectable.static = t => {
             property(t, node)
             element(t, node)
           } else {
+            console.log('RESOLVED [DYNAMIC]', t.path())
             node.removeAttribute('id')
           }
         } else {
@@ -86,6 +87,7 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
         if (!node) {
           node = document.createElement(nodeType)
         } else {
+          console.log('RESOLVED [STATIC]', t.path())
           node.removeAttribute('id')
         }
       } else {
