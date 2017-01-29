@@ -1,7 +1,7 @@
 import 'html-element/global-shim'
-import { property, element } from '../../../static'
+import { property, element, isStatic } from '../../../static'
 import fragment from './fragment'
-import { tag, isStatic } from '../../../../get'
+import { tag } from '../../../../get'
 import { puid } from 'brisky-struct'
 
 const injectable = {}

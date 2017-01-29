@@ -8,6 +8,25 @@ const injectable = {}
 
 export default injectable
 
+const resolve = (t, pnode) => {
+  if (!pnode && t.node) {
+    return t.node
+  } else {
+    // check if its in the document...
+    // contains() ? -- prob from the top then we can use resolve as a method
+    // thats the best
+    return document.getElementById(puid(t))
+    // const children = pnode.childNodes
+    // const id = puid(t)
+    // var i = children.length
+    // while (i--) {
+    //   if (children[i].id == id) { //eslint-disable-line
+    //     return children[i]
+    //   }
+    // }
+  }
+}
+
 const hasStateProperties = t => {
   const keys = t.keys()
   if (keys) {
@@ -21,7 +40,9 @@ const hasStateProperties = t => {
   }
 }
 
-injectable.static = t => {
+injectable.static = (t, pnode) => {
+  // giveme parent node
+
   const cached = cache(t)
   var node
   if (cached && isStatic(t)) {
@@ -41,15 +62,15 @@ injectable.static = t => {
         console.error('not handeling static fragments yet')
       } else {
         if (t.resolve) {
-          node = document.getElementById(puid(t))
+          node = resolve(t, pnode)
           // set somehting like isStatic
           if (!node) {
             node = document.createElement(nodeType)
             property(t, node)
             element(t, node)
           } else {
-            console.log('RESOLVED [DYNAMIC]', t.path())
-            node.removeAttribute('id')
+            // console.log('RESOLVED [DYNAMIC]', t.path())
+            // node.removeAttribute('id')
           }
         } else {
           node = document.createElement(nodeType)
@@ -83,12 +104,12 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
     } else {
       // will become an argument in render or something
       if (t.resolve) {
-        node = document.getElementById(puid(t))
+        node = resolve(t, pnode)
         if (!node) {
           node = document.createElement(nodeType)
         } else {
-          console.log('RESOLVED [STATIC]', t.path())
-          node.removeAttribute('id')
+          // console.log('RESOLVED [STATIC]', t.path())
+          // node.removeAttribute('id')
         }
       } else {
         node = document.createElement(nodeType)

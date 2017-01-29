@@ -14,7 +14,10 @@ export default (elem, state, cb, cb2) => {
     cb = cb2
   }
   if (!elem.inherits) elem = element.create(elem)
-  if (dom) elem.emit('resolve', true)
+  if (dom) {
+    elem.node = dom
+    elem.emit('resolve', true)
+  }
   renderStyle(elem)
   const subs = elem.$map()
   const tree = t = {}

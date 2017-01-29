@@ -22,5 +22,3 @@ export const get$switch = t => t.$switch !== void 0 ? t.$switch : t.inherits && 
 export const getType = t => t.subscriptionType || t.inherits && getType(t.inherits)
 
 export const getClass = t => t.class !== void 0 ? t.class : t.inherits && getClass(t.inherits)
-
-export const isStatic = t => t.isStatic !== void 0 ? t.isStatic : t.inherits && isStatic(t.inherits)
