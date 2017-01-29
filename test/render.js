@@ -100,29 +100,9 @@ test('render - to element', t => {
       </html>
     `))
   } else {
-    const strange = document.createElement('html')
 
-    strange.innerHTML = strip(`<head id="2087219016">
-      <link id="2846275255" rel="shortcut icon" href="1.jpg">
-        </link>
-        <title id="968280941">1</title>
-        <style> .a {border:2px solid red;} </style>
-     </head>
-     <div class=" a">10</div>
-     <div class=" a">9</div>
-     <div class=" a">8</div>
-     <div class=" a">7</div>
-     <div class=" a">6</div>
-     <div class=" a">5</div>
-     <div class=" a">4</div>
-     <div class=" a">3</div>
-     <div class=" a">2</div>
-     <div class=" a">1</div>
-     <body id="2088244976">
-        <div class=" a">x</div>
-     </body>`)
 
-    document.body.appendChild(strange)
+    // document.body.appendChild(strange)
 
     // let j = 1e5
     // while (j--) {
@@ -132,35 +112,46 @@ test('render - to element', t => {
     //   document.body.appendChild(div)
     // }
 
-    strange.setAttribute('id', 5381)
     console.log('\n\nSTART')
 
+    let strange = document.createElement('html')
+    strange.innerHTML = strip(`<head id="2087219016">
+      <link id="2846275255" rel="shortcut icon" href="1.jpg">
+        </link>
+        <title id="968280941">1</title>
+        <style> .a {border:2px solid red;} </style>
+     </head>
+     <body id="2088244976">
+        <div class=" a">x</div>
+        <div id="999999999">DERP</div>
+     </body>`)
+    strange.setAttribute('id', 5381)
+
     // const div = document.createElement('div')
-    let i = 10000
+    let i = 1e3
     var d = Date.now()
     var app
     while (i--) {
       app = render(
-        strange,
+        strange.cloneNode(true),
         code,
         state
       )
     }
     console.log(Date.now() - d, 'ms')
-    t.equal(app, strange, 'enhances original')
+    // t.equal(app, strange, 'enhances original')
 
     t.equal(app.outerHTML, strip(`
-     <html>
-       <head>
-          <style> .a {border:2px solid red;} </style>
+      <html>
+        <head>
           <link rel="shortcut icon" href="1.jpg">
           <title>1</title>
-       </head>
-       <body>
-          <div class=" a">x</div>
-       </body>
-      </html>`, 'correct resolvement')
-    )
+          <style> .a {border:2px solid red;} </style>
+        </head>
+         <body>
+            <div class=" a">x</div>
+         </body>
+      </html>`))
   }
   element.noResolve(true)
 

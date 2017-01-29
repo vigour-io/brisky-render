@@ -10,17 +10,17 @@ export default injectable
 
 const resolve = (t, pnode) => {
   if (!pnode && t.node) {
+    t.node.removeAttribute('id') // maybe unnsecary
     return t.node
   } else {
-    // check if its in the document...
-    // contains() ? -- prob from the top then we can use resolve as a method
-    // thats the best
-    // return document.getElementById(puid(t))
     const children = pnode.childNodes
     const id = puid(t)
     var i = children.length
+    // can remove the residues by checking elems after and jsut chec if ! id
     while (i--) {
       if (children[i].id == id) { //eslint-disable-line
+        // children[i].id = null
+        children[i].removeAttribute('id') // maybe unnsecary
         return children[i]
       }
     }
