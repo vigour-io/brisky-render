@@ -37,7 +37,6 @@ injectable.props = {
   isStatic: true,
   $switch: true,
   $any: true,
-  // sync: true,
   subscriptionType: true,
   render (t, val) {
     t.set({
@@ -51,3 +50,7 @@ injectable.props = {
 import map from './map'
 injectable.subscriptionType = 1
 injectable.inject = map
+
+/*
+more merge tests
+*/

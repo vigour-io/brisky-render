@@ -7,6 +7,9 @@ const injectable = {}
 
 export default injectable
 
+// little bit harder with overtake since you need to check if there is a text value
+// if resolve true
+
 injectable.types = {
   text: {
     class: null,
@@ -22,7 +25,18 @@ injectable.types = {
         if (!node) {
           if (typeof val !== 'object' && val !== void 0) {
             pnode = parent(tree, pid)
-            node = tree._[id] = document.createTextNode(val)
+            if (t.resolve) {
+              let i = pnode.childNodes.length
+              while (i--) {
+                if (pnode.childNodes[i].nodeType === 3) {
+                  node = tree._[id] = pnode.childNodes[i]
+                  break
+                }
+              }
+            }
+            if (!node) {
+              node = tree._[id] = document.createTextNode(val)
+            }
             appendState(t, pnode, node, subs, tree, id, order)
           }
         } else {

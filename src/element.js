@@ -19,10 +19,40 @@ const element = create({
     element: 'self'
   },
   instances: false,
-  define: { isElement: true }, // unnesecary code
+  define: {
+    isElement: true,
+    resolve: false,
+    resolveNodes () {
+      // find real inherits
+      element.set({ define: { resolve: true } })
+    },
+    removeUnresolved () {
+      var d = Date.now()
+      const elems = this.node.querySelectorAll('[id]')
+      var i = elems.length
+      // measure this function
+      while (i--) {
+        if (elems[i].id > 1e6) {
+          elems[i].parentNode.removeChild(elems[i])
+        }
+      }
+      element.set({ define: { resolve: false } })
+      console.log('RESOLVED', Date.now() - d, 'ms')
+    }
+  }, // unnesecary code
   props: {
     tag: true,
+    resolveHash: true,
     default: 'self'
+  },
+  on: {
+    resolve: (val, stamp, element) => {
+      if (val) {
+        element.resolveNodes()
+      } else {
+        element.removeUnresolved()
+      }
+    }
   },
   tag: 'div',
   inject: [
@@ -38,6 +68,15 @@ const element = create({
     widget,
     events
   ]
+}, false)
+
+element.set({
+  props: {
+    // with a subs ? not rly nessecary
+    resolve: val => {
+      console.log('lets go prerender!')
+    }
+  }
 }, false)
 
 export default element

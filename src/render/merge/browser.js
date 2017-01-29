@@ -1,11 +1,12 @@
-export default (node, dom) => {
+export default (node, dom, element) => {
+  element.emit('resolve', true)
   const children = node.childNodes
   let i = children.length
   while (i--) {
     let child = children[0]
     let tag = child.tagName
     // let replaced
-    if (tag === 'BODY' || tag === 'HEAD') {
+    if (tag === 'BODY' || tag === 'HEAD') { // this can go (just use resolve)
       let j = dom.childNodes.length
       while (j--) {
         if (dom.childNodes[j].tagName === tag) {
@@ -17,7 +18,10 @@ export default (node, dom) => {
       }
     }
     // if (!replaced)
-    dom.appendChild(child)
+    if (!child.getAttribute('data-hash')) {
+      dom.appendChild(child)
+    }
   }
+  setTimeout(() => { element.emit('resolve', false) })
   return dom
 }

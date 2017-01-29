@@ -1,5 +1,5 @@
 // TESTBROWSER!!!!???
-import { get } from 'brisky-struct'
+import { get, puid } from 'brisky-struct'
 import fragment from './fragment'
 import { property, element, isStatic, staticProps } from '../../../static'
 import { cache, tag } from '../../../../get'
@@ -26,12 +26,8 @@ injectable.static = t => {
   var node
   if (cached && isStatic(t)) {
     node = cached.cloneNode(true)
-    if (cached._index) {
-      node._index = cached._index
-    }
-    if (cached._last) {
-      node._last = cached._last
-    }
+    if (cached._index) node._index = cached._index
+    if (cached._last) node._last = cached._last
   } else {
     if (cached) {
       node = cached.cloneNode(false)
@@ -44,12 +40,24 @@ injectable.static = t => {
       if (nodeType === 'fragment') {
         console.error('not handeling static fragments yet')
       } else {
-        node = document.createElement(nodeType)
-        property(t, node)
+        if (t.resolve) {
+          node = document.getElementById(puid(t))
+          // set somehting like isStatic
+          if (!node) {
+            node = document.createElement(nodeType)
+            property(t, node)
+            element(t, node)
+          } else {
+            node.removeAttribute('id')
+          }
+        } else {
+          node = document.createElement(nodeType)
+          property(t, node)
+          element(t, node)
+        }
         t._cachedNode = node
       }
     }
-    element(t, node)
   }
   return node
 }
@@ -72,7 +80,17 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
     if (nodeType === 'fragment') {
       return fragment(t, pnode, id, tree)
     } else {
-      node = document.createElement(nodeType)
+      // will become an argument in render or something
+      if (t.resolve) {
+        node = document.getElementById(puid(t))
+        if (!node) {
+          node = document.createElement(nodeType)
+        } else {
+          node.removeAttribute('id')
+        }
+      } else {
+        node = document.createElement(nodeType)
+      }
       const hasStaticProps = staticProps(t).length
       if (hasStaticProps) {
         t._cachedNode = node
@@ -85,6 +103,5 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
     tree._[id] = node
   }
   element(t, node)
-
   return node
 }
