@@ -149,7 +149,7 @@ test('basic - use key and nested state', t => {
   }, state)
   t.equals(elem.className, 'elem hello', 'initial class')
   state.thing.set(false)
-  t.equals(elem.className, void 0, 'set thing to false')
+  t.ok(elem.className === void 0 || elem.className === '', 'set thing to false')
   t.end()
 })
 

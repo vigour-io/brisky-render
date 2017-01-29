@@ -24,14 +24,12 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
 }
 
 injectable.static = t => {
-  // if it comes from another static should not add id
   const nodeType = tag(t)
   const node = document.createElement(nodeType)
-  // disable this with a flag
   if (!isStatic(t.parent())) {
+    // disable this with a flag
     node.setAttribute('id', puid(t))
   }
-  // may need to add a class
   property(t, node)
   element(t, node)
   return node

@@ -24,6 +24,8 @@ const element = create({
     resolve: false,
     resolveNodes () {
       // find real inherits
+      element._c = null
+      element._cLevel = null
       element.set({ define: { resolve: true } })
     },
     removeUnresolved () {
@@ -36,6 +38,8 @@ const element = create({
           elems[i].parentNode.removeChild(elems[i])
         }
       }
+      element._c = null
+      element._cLevel = null
       element.set({ define: { resolve: false } })
       console.log('RESOLVED', Date.now() - d, 'ms')
     }
