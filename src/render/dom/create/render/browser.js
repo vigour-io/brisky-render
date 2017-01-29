@@ -15,15 +15,15 @@ const resolve = (t, pnode) => {
     // check if its in the document...
     // contains() ? -- prob from the top then we can use resolve as a method
     // thats the best
-    return document.getElementById(puid(t))
-    // const children = pnode.childNodes
-    // const id = puid(t)
-    // var i = children.length
-    // while (i--) {
-    //   if (children[i].id == id) { //eslint-disable-line
-    //     return children[i]
-    //   }
-    // }
+    // return document.getElementById(puid(t))
+    const children = pnode.childNodes
+    const id = puid(t)
+    var i = children.length
+    while (i--) {
+      if (children[i].id == id) { //eslint-disable-line
+        return children[i]
+      }
+    }
   }
 }
 

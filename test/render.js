@@ -108,26 +108,35 @@ test('render - to element', t => {
         <title id="968280941">1</title>
         <style> .a {border:2px solid red;} </style>
      </head>
+     <div class=" a">10</div>
+     <div class=" a">9</div>
+     <div class=" a">8</div>
+     <div class=" a">7</div>
+     <div class=" a">6</div>
+     <div class=" a">5</div>
+     <div class=" a">4</div>
+     <div class=" a">3</div>
+     <div class=" a">2</div>
+     <div class=" a">1</div>
      <body id="2088244976">
         <div class=" a">x</div>
      </body>`)
 
     document.body.appendChild(strange)
 
-    let j = 1e5
-    while (j--) {
-      let div = document.createElement('div')
-      div.id = j
-      // div.innerHTML = 'bla'
-      document.body.appendChild(div)
-    }
+    // let j = 1e5
+    // while (j--) {
+    //   let div = document.createElement('div')
+    //   div.id = j
+    //   // div.innerHTML = 'bla'
+    //   document.body.appendChild(div)
+    // }
 
     strange.setAttribute('id', 5381)
     console.log('\n\nSTART')
 
     // const div = document.createElement('div')
-
-    let i = 1e4
+    let i = 10000
     var d = Date.now()
     var app
     while (i--) {
