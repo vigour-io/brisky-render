@@ -24,7 +24,7 @@ injectable.static = (t, pnode) => {
 
 injectable.state = (t, state, type, subs, tree, id, pid, order) => {
   const pnode = parent(tree, pid)
-  const node = renderState(t, type, subs, tree, id, pnode)
+  const node = renderState(t, type, subs, tree, id, pnode, state)
   if (pnode) { // remove this
     if (tag(t) !== 'fragment' && !node.parentNode) {
       appendState(t, pnode, node, subs, tree, id, order)

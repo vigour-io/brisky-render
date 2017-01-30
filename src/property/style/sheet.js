@@ -37,7 +37,18 @@ class StyleSheet {
   init (node) {
     const style = document.createElement('style')
     style.innerHTML = this.parse()
-    insertInHead(node).appendChild(style)
+    node = insertInHead(node)
+    let i = node.childNodes.length
+    while (i--) {
+      if (node.childNodes[i].tagName.toLowerCase() === 'style') {
+        // resolve it
+        // this.parsed = node.childNodes[i]
+        // return
+        node.childNodes[i].parentNode.removeChild(node.childNodes[i])
+        if (i) i--
+      }
+    }
+    node.appendChild(style)
     // remove previous one as well
     this.parsed = style
   }
@@ -164,6 +175,9 @@ const insertInHead = node => {
 }
 
 const done = (elem, node) => {
+
+  // if resolve then resolve styles names to start
+
   if (elem.stylesheet) elem.stylesheet.init(node)
   inProgress = void 0
 }

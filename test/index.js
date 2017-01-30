@@ -42,8 +42,8 @@ element.noResolve()
 
 // require('./style')
 
-// require('./subscribe') // object subs and resubscribe -- object travel
-
 // require('./class')
 
 require('./render')
+
+require('./subscribe') // object subs and resubscribe -- object travel
