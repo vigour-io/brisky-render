@@ -51,11 +51,11 @@ const style = {
         if (key === 'order' && ua.browser === 'ie' && ua.version === 10) {
           key = 'msFlexOrder'
         }
-        // if ((val && val.$)) {
-        return inlineStyle(t, val, key, stamp)
-        // } else {
-          // t.set({ sheet: { [key]: val } }, stamp)
-        // }
+        if ((val && val.$)) {
+          return inlineStyle(t, val, key, stamp)
+        } else {
+          t.set({ sheet: { [key]: val } }, stamp)
+        }
       }
     }
 

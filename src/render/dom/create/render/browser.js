@@ -13,16 +13,13 @@ const resolve = (t, pnode, id, state) => {
     t.node.removeAttribute('id') // maybe unnsecary
     return t.node
   } else {
-    // console.log('[RESOLVE]', document.getElementById(puid(t)))
-    // return document.getElementById(id * 33 ^ puid(state)) >>> 0)
     const children = pnode.childNodes
     id = (id * 33 ^ puid(state)) >>> 0
     var i = children.length
-    // can remove the residues by checking elems after and jsut chec if ! id
     while (i--) {
       if (children[i].id == id) { //eslint-disable-line
-        // children[i].id = null
         children[i].removeAttribute('id') // maybe unnsecary
+        // use something else then id
         return children[i]
       }
     }
@@ -43,8 +40,6 @@ const hasStateProperties = t => {
 }
 
 injectable.static = (t, pnode) => {
-  // giveme parent node
-
   const cached = cache(t)
   var node
   if (cached && isStatic(t)) {
@@ -68,14 +63,8 @@ injectable.static = (t, pnode) => {
           // set somehting like isStatic
           if (!node) {
             node = document.createElement(nodeType)
-            // node.style.border = '1px solid red'
-            // node.style.padding = '5px'
-            // node.style.background = 'pink'
             property(t, node)
             element(t, node)
-          } else {
-            // console.log('RESOLVED [DYNAMIC]', t.path())
-            // node.removeAttribute('id')
           }
         } else {
           node = document.createElement(nodeType)
@@ -92,18 +81,19 @@ injectable.static = (t, pnode) => {
 // fn for cached
 
 injectable.state = (t, type, subs, tree, id, pnode, state) => {
-  var cached //= cache(t)
+  // need to re-add cache ofc
+  var cached // = cache(t)
   var node
   // @todo: this copies unwanted styles / props -- need to add an extra clonenode for this
   if (cached) {
-    // node = cached.cloneNode(false)
-    // tree._[id] = node
-    // if (cached._last) {
-    //   node._last = cached._last
-    // }
-    // if (cached._index) {
-    //   node._index = cached._index
-    // }
+    node = cached.cloneNode(false)
+    tree._[id] = node
+    if (cached._last) {
+      node._last = cached._last
+    }
+    if (cached._index) {
+      node._index = cached._index
+    }
   } else {
     const nodeType = tag(t)
     if (nodeType === 'fragment') {
@@ -113,7 +103,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
       if (t.resolve) {
         node = resolve(t, pnode, id, state)
         if (!node) {
-          console.log('CREATE ELEM')
+          // console.log('CREATE ELEM')
           node = document.createElement(nodeType)
           node.style.border = '1px solid red'
           node.style.padding = '5px'
@@ -127,11 +117,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
             }
           }
         } else {
-          console.log('RESOLVED [STATE]', t.path())
+          // console.log('RESOLVED [STATE]', t.path())
           // node.removeAttribute('id')
         }
       } else {
-        console.log('2. CREATE ELEM')
+        // console.log('2. CREATE ELEM')
         node = document.createElement(nodeType)
         node.style.border = '1px solid blue'
         node.style.padding = '5px'
