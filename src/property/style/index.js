@@ -40,6 +40,7 @@ const style = {
     sheet,
     transform,
     inlineStyle
+    // default: inlineStyle
   },
   inject: t => {
     const inlineStyle = t.props.inlineStyle

@@ -8,6 +8,24 @@ const injectable = {}
 
 export default injectable
 
+const resolve = (t, pnode, id, state) => {
+  if (!pnode && t.node) {
+    t.node.removeAttribute('id') // maybe unnsecary
+    return t.node
+  } else {
+    const children = pnode.childNodes
+    id = (id * 33 ^ puid(state)) >>> 0
+    var i = children.length
+    while (i--) {
+      if (children[i].id == id) { //eslint-disable-line
+        children[i].removeAttribute('id') // maybe unnsecary
+        // use something else then id
+        return children[i]
+      }
+    }
+  }
+}
+
 const hasStateProperties = t => {
   const keys = t.keys()
   if (keys) {
@@ -21,7 +39,7 @@ const hasStateProperties = t => {
   }
 }
 
-injectable.static = t => {
+injectable.static = (t, pnode) => {
   const cached = cache(t)
   var node
   if (cached && isStatic(t)) {
@@ -41,14 +59,12 @@ injectable.static = t => {
         console.error('not handeling static fragments yet')
       } else {
         if (t.resolve) {
-          node = document.getElementById(puid(t))
+          // node = resolve(t, pnode)
           // set somehting like isStatic
           if (!node) {
             node = document.createElement(nodeType)
             property(t, node)
             element(t, node)
-          } else {
-            node.removeAttribute('id')
           }
         } else {
           node = document.createElement(nodeType)
@@ -62,8 +78,11 @@ injectable.static = t => {
   return node
 }
 
-injectable.state = (t, type, subs, tree, id, pnode) => {
-  const cached = cache(t)
+// fn for cached
+
+injectable.state = (t, type, subs, tree, id, pnode, state) => {
+  // need to re-add cache ofc
+  var cached // = cache(t)
   var node
   // @todo: this copies unwanted styles / props -- need to add an extra clonenode for this
   if (cached) {
@@ -82,21 +101,38 @@ injectable.state = (t, type, subs, tree, id, pnode) => {
     } else {
       // will become an argument in render or something
       if (t.resolve) {
-        node = document.getElementById(puid(t))
+        node = resolve(t, pnode, id, state)
         if (!node) {
+          // console.log('CREATE ELEM')
           node = document.createElement(nodeType)
+          node.style.border = '1px solid red'
+          node.style.padding = '5px'
+          node.style.background = 'pink'
+          const hasStaticProps = staticProps(t).length
+          if (hasStaticProps) {
+            t._cachedNode = node
+            property(t, node)
+            if (hasStateProperties(t)) {
+              node = t._cachedNode.cloneNode(false)
+            }
+          }
         } else {
-          node.removeAttribute('id')
+          // console.log('RESOLVED [STATE]', t.path())
+          // node.removeAttribute('id')
         }
       } else {
+        // console.log('2. CREATE ELEM')
         node = document.createElement(nodeType)
-      }
-      const hasStaticProps = staticProps(t).length
-      if (hasStaticProps) {
-        t._cachedNode = node
-        property(t, node)
-        if (hasStateProperties(t)) {
-          node = t._cachedNode.cloneNode(false)
+        node.style.border = '1px solid blue'
+        node.style.padding = '5px'
+        node.style.background = 'purple'
+        const hasStaticProps = staticProps(t).length
+        if (hasStaticProps) {
+          t._cachedNode = node
+          property(t, node)
+          if (hasStateProperties(t)) {
+            node = t._cachedNode.cloneNode(false)
+          }
         }
       }
     }

@@ -37,8 +37,18 @@ class StyleSheet {
   init (node) {
     const style = document.createElement('style')
     style.innerHTML = this.parse()
-    insertInHead(node).appendChild(style)
+    node = insertInHead(node)
+    let i = node.childNodes.length
+    while (i--) {
+      if (node.childNodes[i].tagName.toLowerCase() === 'style') {
+        this.parsed = node.childNodes[i]
+        // this.parsed.innerHTML = this.parse()
+        return this.parsed
+      }
+    }
+    node.appendChild(style)
     this.parsed = style
+    return this.parsed
   }
   update () {
     this.parsed.innerHTML = this.parse()
@@ -82,8 +92,25 @@ const setStyle = (t, store, elem) => {
     } else {
       // prefix (and multiply for server)
       let s = toDash(key) + ':' + store[key]
+
+      // why does this end up diffferently for browser then node ... :/
       if (!map[s]) {
-        if (!globalSheet.map[s]) globalSheet.map[s] = uid(globalSheet.count++)
+        let id
+        if (elem.resolve) {
+          // clean this up nicely...
+          const style = elem.stylesheet.init(elem.node)
+          let re = new RegExp('\\.([a-z]{1,10}) \\{' + s + ';\\}')
+          let m = style.innerHTML.match(re)
+          if (m && m[1]) {
+            id = m[1]
+          } else {
+            id = uid(globalSheet.count++)
+          }
+        } else {
+          id = uid(globalSheet.count++)
+        }
+
+        if (!globalSheet.map[s]) globalSheet.map[s] = id
         const rule = globalSheet.map[s]
         map[s] = rule
         style.sheet += ` .${rule} {${s};}`
@@ -92,7 +119,10 @@ const setStyle = (t, store, elem) => {
     }
   }
   if (style.parsed) {
-    style.update()
+    if (!elem.resolve) {
+      // should never be nessecary....
+      style.update()
+    }
   } else if (!inProgress) {
     style.init(elem.node)
   }
@@ -148,7 +178,7 @@ const insertInHead = node => {
     let head
     const children = node.childNodes
     for (let i = 0, len = children.length; i < len; i++) {
-      if (children[i].tagName.toLowerCase() === 'head') {
+      if (children[i].tagName && children[i].tagName.toLowerCase() === 'head') {
         head = children[i]
         break
       }
@@ -163,7 +193,10 @@ const insertInHead = node => {
 }
 
 const done = (elem, node) => {
-  if (elem.stylesheet) elem.stylesheet.init(node)
+
+  // if resolve then resolve styles names to start
+
+  if (elem.stylesheet && !elem.stylesheet.parsed) elem.stylesheet.init(node)
   inProgress = void 0
 }
 

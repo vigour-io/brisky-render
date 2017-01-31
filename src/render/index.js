@@ -1,6 +1,5 @@
 import { create, subscribe, puid } from 'brisky-struct'
 import render from './render'
-import merge from './merge'
 import element from '../element'
 import { getPath, get$, get$any } from '../get'
 import bstamp from 'brisky-stamp'
@@ -15,7 +14,10 @@ export default (elem, state, cb, cb2) => {
     cb = cb2
   }
   if (!elem.inherits) elem = element.create(elem)
-
+  if (dom) {
+    elem.node = dom
+    elem.emit('resolve', true)
+  }
   renderStyle(elem)
   const subs = elem.$map()
   const tree = t = {}
@@ -67,9 +69,8 @@ export default (elem, state, cb, cb2) => {
   }
 
   // make setting resolve optional
-  node = elem.node = dom
-    ? (t._[uid] = merge(t._[uid], dom, elem))
-    : t._[uid]
+  node = elem.node = t._[uid]
   done(elem, node)
+  if (dom) elem.emit('resolve', false)
   return node
 }

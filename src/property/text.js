@@ -30,14 +30,17 @@ injectable.types = {
               while (i--) {
                 if (pnode.childNodes[i].nodeType === 3) {
                   node = tree._[id] = pnode.childNodes[i]
+                  if (node.nodeValue !== val) {
+                    node.nodeValue = val
+                  }
                   break
                 }
               }
             }
             if (!node) {
               node = tree._[id] = document.createTextNode(val)
+              appendState(t, pnode, node, subs, tree, id, order)
             }
-            appendState(t, pnode, node, subs, tree, id, order)
           }
         } else {
           // remove is overhead here (extra compute)

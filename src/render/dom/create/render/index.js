@@ -1,22 +1,22 @@
 import 'html-element/global-shim'
-import { property, element } from '../../../static'
+import { property, element, isStatic } from '../../../static'
 import fragment from './fragment'
-import { tag, isStatic } from '../../../../get'
+import { tag } from '../../../../get'
 import { puid } from 'brisky-struct'
 
 const injectable = {}
 
 export default injectable
 
-injectable.state = (t, type, subs, tree, id, pnode) => {
+injectable.state = (t, type, subs, tree, id, pnode, state) => {
   const nodeType = tag(t)
   if (nodeType === 'fragment') {
     return fragment(t, pnode, id, tree)
   } else {
     const node = document.createElement(nodeType)
-    // disable this with a flag
     if (!t._noResolve_) {
-      node.setAttribute('id', puid(t))
+      // console.log('cr')
+      node.setAttribute('id', (id * 33 ^ puid(state)) >>> 0) // id * 33 ^ puid(state)
     }
     property(t, node)
     element(t, node)
@@ -29,8 +29,7 @@ injectable.static = t => {
   const nodeType = tag(t)
   const node = document.createElement(nodeType)
   if (!isStatic(t.parent()) && !t._noResolve_) {
-    // disable this with a flag
-    node.setAttribute('id', puid(t))
+    // node.setAttribute('id', puid(t))
   }
   property(t, node)
   element(t, node)
