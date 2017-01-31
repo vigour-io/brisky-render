@@ -39,26 +39,27 @@ const style = {
   props: {
     sheet,
     transform,
-    // inlineStyle
-    default: inlineStyle
+    inlineStyle
+    // default: inlineStyle
   },
   inject: t => {
     const inlineStyle = t.props.inlineStyle
-    // const props = {
-    //   default: (t, val, key, stamp) => {
-    //     // inefficient check
-    //     if (key === 'order' && ua.browser === 'ie' && ua.version === 10) {
-    //       key = 'msFlexOrder'
-    //     }
-    //     if ((val && val.$)) {
-    //       return inlineStyle(t, val, key, stamp)
-    //     } else {
-    //       t.set({ sheet: { [key]: val } }, stamp)
-    //     }
-    //   }
-    // }
 
-    // t.set({ props }, false)
+    const props = {
+      default: (t, val, key, stamp) => {
+        // inefficient check
+        if (key === 'order' && ua.browser === 'ie' && ua.version === 10) {
+          key = 'msFlexOrder'
+        }
+        if ((val && val.$)) {
+          return inlineStyle(t, val, key, stamp)
+        } else {
+          t.set({ sheet: { [key]: val } }, stamp)
+        }
+      }
+    }
+
+    t.set({ props }, false)
   }
 }
 
