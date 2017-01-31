@@ -21,7 +21,7 @@
     "pretest": "npm run build && standard",
     "test": "node test/index.js",
     "prepublish": "echo \"/*\n!dist\n!docs\n!yarn.lock\" > .npmignore && npm run build",
-    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && yarn && npm run build )",
+    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && npm install --only=dev && npm run build );",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
