@@ -19,9 +19,9 @@
     "dev": "node rollup/watch & nodemon --harmony-async-await test/index.js",
     "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
     "pretest": "npm run build && standard",
-    "prepublish": "npm run build",
     "test": "node test/index.js",
-    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && yarn && npm run build )",
+    "prepublish": "echo \"/*\n!dist\n!docs\n!yarn.lock\" > .npmignore && npm run build",
+    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && npm install --only=dev && npm run build );",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
