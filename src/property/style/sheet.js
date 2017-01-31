@@ -193,9 +193,7 @@ const insertInHead = node => {
 }
 
 const done = (elem, node) => {
-
   // if resolve then resolve styles names to start
-
   if (elem.stylesheet && !elem.stylesheet.parsed) elem.stylesheet.init(node)
   inProgress = void 0
 }
