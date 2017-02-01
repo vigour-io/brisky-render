@@ -66,14 +66,7 @@ injectable.static = (t, pnode, noResolve) => {
     node = staticFromCache(cached)
   } else {
     if (cached) {
-      // hwo can it not be static????
-      // this is not an element
       throw new Error('static but its not static..... very strange....' + t.path())
-      // console.log('static but its not static..... very strange....', t.path(), t)
-      node = cached.cloneNode(false)
-      if (cached._propsStaticParsed) {
-        node._propsStaticParsed = true
-      }
     } else {
       const nodeType = tag(t)
       if (nodeType === 'fragment') {
@@ -81,7 +74,7 @@ injectable.static = (t, pnode, noResolve) => {
       } else {
         if (t.resolve) {
           // !noResolve is what we want
-          // node = resolveStatic(t, pnode)
+          node = resolveStatic(t, pnode)
           if (!node) {
             if (cached && isStatic(t)) {
               node = staticFromCache(cached)

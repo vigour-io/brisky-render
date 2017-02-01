@@ -13,15 +13,21 @@ export default (elem, state, cb, cb2) => {
     state = cb
     cb = cb2
   }
+
   if (!elem.inherits) elem = element.create(elem)
+
   if (dom) {
     elem.node = dom
+    done(dom, true)
     elem.emit('resolve', true)
   }
+
   renderStyle(elem)
+
   const subs = elem.$map()
   const tree = t = {}
   const uid = puid(elem)
+
   if (state === void 0) {
     render(state, 'new', subs, tree)
     if (cb) { cb(subs, tree, elem) }
@@ -38,6 +44,7 @@ export default (elem, state, cb, cb2) => {
       state.subscribe(subs, render, true, tree)
     }
   }
+
   bstamp.close()
 
   const $ = get$(elem)

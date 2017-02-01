@@ -1,15 +1,37 @@
 import getNode from './node'
 
+const parseStyle = (style, target) => {
+  console.log(target)
+  for (let rule in style.sheet.cssRules) {
+    if (style.sheet.cssRules[rule].selectorText) {
+      let body = style.sheet.cssRules[rule].cssText.match(/.+\{ (.+) \}/)
+      let key = style.sheet.cssRules[rule].selectorText.slice(1)
+      if (body && body[1]) {
+        body = body[1].replace(': ', ':').slice(0, -1)
+        target.globalSheet.map[body] = key
+        target.map[body] = key
+      }
+      target.globalSheet.count++
+    }
+  }
+}
+  // stylesheet.cssRules[0].style.backgroundColor="blue";
+// stylesheet.insertRule(rule,index) (for update)
+
 export default class StyleSheet {
-  constructor (t) {
-    this.sheet = ''
+  constructor (t, globalSheet) {
     this.map = {}
+    this.globalSheet = globalSheet
     this.mediaMap = { count: 0 }
     this.parsed = false
+    this.elem = t
     t.stylesheet = this
   }
   parse () {
-    var str = this.sheet
+    var str = ''
+    for (let i in this.map) {
+      str += ` .${this.map[i]} {${i};}`
+    }
     const mediaMap = this.mediaMap
     var media = ''
     for (let key in mediaMap) {
@@ -23,28 +45,37 @@ export default class StyleSheet {
         media += ' }'
       }
     }
-    // replace media
-    // will become a class list in the browser
     if (media) str += ' ' + media
     return str + ' '
   }
-  init (node) {
-    const style = document.createElement('style')
-    style.innerHTML = this.parse()
-    node = getNode(node)
-    let i = node.childNodes.length
-    while (i--) {
-      if (node.childNodes[i].tagName && node.childNodes[i].tagName.toLowerCase() === 'style') {
-        this.parsed = node.childNodes[i]
-        // this.parsed.innerHTML = this.parse()
-        return this.parsed
+  exec (node, resolve) {
+    if (!this.parsed) {
+      var style
+      node = getNode(node)
+      if (resolve) {
+        const children = node.children
+        let i = children.length
+        while (i--) {
+          if (children[i].getAttribute && children[i].getAttribute('data-style')) {
+            style = children[i]
+            parseStyle(style, this)
+            break
+          }
+        }
       }
+      if (!style) {
+        style = document.createElement('style')
+        style.setAttribute('data-style', true)
+        style.innerHTML = this.parse()
+        node.appendChild(style)
+      }
+      this.parsed = style
+      return style
     }
-    node.appendChild(style)
-    this.parsed = style
-    return this.parsed
   }
   update () {
-    this.parsed.innerHTML = this.parse()
+    if (this.parsed) {
+      this.parsed.innerHTML = this.parse()
+    }
   }
 }

@@ -9,12 +9,11 @@ const globalSheet = {
 }
 
 const isNotEmpty = store => {
-  for (let i in store) { return true }
+  for (let i in store) return true
 }
 
 const toDash = key => key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 
-// this is pretty complex
 const uid = num => {
   const div = num / 26 | 0
   var str = String.fromCharCode(97 + num % 26)
@@ -30,7 +29,7 @@ const uid = num => {
 
 const setStyle = (t, store, elem) => {
   var className = ''
-  const style = elem.stylesheet || new StyleSheet(elem)
+  const style = elem.stylesheet || new StyleSheet(elem, globalSheet)
   const map = style.map
   const mediaMap = style.mediaMap
   for (let key in store) {
@@ -41,28 +40,29 @@ const setStyle = (t, store, elem) => {
       for (let style in parsed) {
         let s = toDash(style) + ':' + parsed[style]
         if (!mmap[s]) mmap[s] = uid(mmap.count++) + mmap.id
+        // this also has to be resolved of course....
         className += ` ${mmap[s]}`
       }
     } else {
       let s = toDash(key) + ':' + store[key]
+      // console.log(key)
+      if (store[key] === '0px') {
+        store[key] = 0
+      }
       if (!map[s]) {
         let id
         id = uid(globalSheet.count++)
         if (!globalSheet.map[s]) globalSheet.map[s] = id
         const rule = globalSheet.map[s]
         map[s] = rule
-        style.sheet += ` .${rule} {${s};}`
       }
       className += ' ' + map[s]
     }
   }
   if (style.parsed) {
-    if (!elem.resolve) {
-      // should never be nessecary....
-      style.update()
-    }
+    style.update()
   } else if (!inProgress) {
-    style.init(elem.node)
+    style.exec(elem.node)
   }
   return className
 }
@@ -108,26 +108,11 @@ const clear = () => {
   globalSheet.map = {}
 }
 
-const resolve = elem => {
-  // this is mostly browser of course
-  console.log('RESOLVE STYLESHEET')
-  // if (elem.resolve) {
-  // // clean this up nicely... very dirty not nessecary either since were going to use update and there will be a map avaible before hand
-  // const style = elem.stylesheet.init(elem.node)
-  // let re = new RegExp('\\.([a-z]{1,10}) \\{' + s + ';\\}')
-  // let m = style.innerHTML.match(re)
-  // if (m && m[1]) {
-  //   id = m[1]
-  // } else {
-  //   id = uid(globalSheet.count++)
-  // }
-}
-
-const done = elem => {
-  if (elem.stylesheet) elem.stylesheet.init(elem.node)
+const done = (elem, resolve) => {
+  if (elem.stylesheet) elem.stylesheet.exec(elem.node, resolve)
   inProgress = void 0
 }
 
 const render = t => { inProgress = t }
 
-export { sheet, clear, render, resolve, done }
+export { sheet, clear, render, done }

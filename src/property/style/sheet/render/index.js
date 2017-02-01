@@ -2,14 +2,17 @@ import getNode from './node'
 
 export default class StyleSheet {
   constructor (t) {
-    this.sheet = ''
     this.map = {}
     this.mediaMap = { count: 0 }
     this.parsed = false
+    this.elem = t
     t.stylesheet = this
   }
   parse () {
-    var str = this.sheet
+    var str = ''
+    for (let i in this.map) {
+      str += ` .${this.map[i]} {${i};}`
+    }
     const mediaMap = this.mediaMap
     var media = ''
     for (let key in mediaMap) {
@@ -23,30 +26,22 @@ export default class StyleSheet {
         media += ' }'
       }
     }
-    // replace media
     if (media) str += ' ' + media
     return str + ' '
   }
-  init (node) {
-    const style = document.createElement('style')
-    // on server add id here
-
-    style.innerHTML = this.parse()
-    node = getNode(node)
-    let i = node.childNodes.length
-    while (i--) {
-      // this is completely wrong of course
-      if (node.childNodes[i].tagName && node.childNodes[i].tagName.toLowerCase() === 'style') {
-        this.parsed = node.childNodes[i]
-        // this.parsed.innerHTML = this.parse()
-        return this.parsed
-      }
+  exec (node, resolve) {
+    if (!this.parsed) {
+      const style = document.createElement('style')
+      style.setAttribute('data-style', true)
+      style.innerHTML = this.parse()
+      getNode(node).appendChild(style)
+      this.parsed = style
+      return style
     }
-    node.appendChild(style)
-    this.parsed = style
-    return this.parsed
   }
   update () {
-    this.parsed.innerHTML = this.parse()
+    if (this.parsed) {
+      this.parsed.innerHTML = this.parse()
+    }
   }
 }
