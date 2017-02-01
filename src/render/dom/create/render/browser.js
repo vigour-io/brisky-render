@@ -8,20 +8,31 @@ const injectable = {}
 
 export default injectable
 
-const resolve = (t, pnode, id, state) => {
+const resolveState = (t, pnode, id, state) => {
   if (!pnode && t.node) {
-    t.node.removeAttribute('id') // maybe unnsecary
+    t.node.removeAttribute('id')
     return t.node
   } else {
     const children = pnode.childNodes
     id = (id * 33 ^ puid(state)) >>> 0
     var i = children.length
     while (i--) {
-      if (children[i].id == id) { //eslint-disable-line
-        children[i].removeAttribute('id') // maybe unnsecary
-        // use something else then id
+      if (children[i].id == id) { // eslint-disable-line
+        children[i].removeAttribute('id')
         return children[i]
       }
+    }
+  }
+}
+
+const resolveStatic = (t, pnode) => {
+  const children = pnode.childNodes
+  const id = puid(t)
+  var i = children.length
+  while (i--) {
+    if (children[i].id == id) { // eslint-disable-line
+      children[i].removeAttribute('id')
+      return children[i]
     }
   }
 }
@@ -39,17 +50,27 @@ const hasStateProperties = t => {
   }
 }
 
-injectable.static = (t, pnode) => {
+const staticFromCache = (cached) => {
+  const node = cached.cloneNode(true)
+  if (cached._index) node._index = cached._index
+  if (cached._last) node._last = cached._last
+  return node
+}
+
+// indexes need to be copied when adding from pre-render
+injectable.static = (t, pnode, noResolve) => {
+  // the cache node is nto good of course!
   const cached = cache(t)
   var node
-  if (cached && isStatic(t)) {
-    node = cached.cloneNode(true)
-    if (cached._index) node._index = cached._index
-    if (cached._last) node._last = cached._last
+  if (!t.resolve && cached && isStatic(t)) {
+    node = staticFromCache(cached)
   } else {
     if (cached) {
+      // hwo can it not be static????
+      // this is not an element
+      throw new Error('static but its not static..... very strange....' + t.path())
+      // console.log('static but its not static..... very strange....', t.path(), t)
       node = cached.cloneNode(false)
-      // need to get
       if (cached._propsStaticParsed) {
         node._propsStaticParsed = true
       }
@@ -59,17 +80,21 @@ injectable.static = (t, pnode) => {
         console.error('not handeling static fragments yet')
       } else {
         if (t.resolve) {
-          // node = resolve(t, pnode)
-          // set somehting like isStatic
+          // !noResolve is what we want
+          // node = resolveStatic(t, pnode)
           if (!node) {
-            node = document.createElement(nodeType)
-            property(t, node)
-            element(t, node)
+            if (cached && isStatic(t)) {
+              node = staticFromCache(cached)
+            } else {
+              node = document.createElement(nodeType)
+              property(t, node)
+              element(t, node, true)
+            }
           }
         } else {
           node = document.createElement(nodeType)
           property(t, node)
-          element(t, node)
+          element(t, node, true)
         }
         t._cachedNode = node
       }
@@ -82,7 +107,7 @@ injectable.static = (t, pnode) => {
 
 injectable.state = (t, type, subs, tree, id, pnode, state) => {
   // need to re-add cache ofc
-  var cached // = cache(t)
+  var cached = !t.resolve && cache(t)
   var node
   // @todo: this copies unwanted styles / props -- need to add an extra clonenode for this
   if (cached) {
@@ -101,11 +126,9 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     } else {
       // will become an argument in render or something
       if (t.resolve) {
-        node = resolve(t, pnode, id, state)
+        node = resolveState(t, pnode, id, state)
         if (!node) {
-          // console.log('CREATE ELEM')
           node = document.createElement(nodeType)
-          // node.style.boxShadow = '0px 0px 5px #ccc inset'
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
             t._cachedNode = node
@@ -114,16 +137,9 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
               node = t._cachedNode.cloneNode(false)
             }
           }
-        } else {
-          // console.log('RESOLVED [STATE]', t.path())
-          // node.removeAttribute('id')
         }
       } else {
-        // console.log('2. CREATE ELEM')
         node = document.createElement(nodeType)
-        node.style.border = '1px solid blue'
-        node.style.padding = '5px'
-        node.style.background = 'purple'
         const hasStaticProps = staticProps(t).length
         if (hasStaticProps) {
           t._cachedNode = node

@@ -1,4 +1,5 @@
-import { getClass } from '../../get'
+import { getClass } from '../../../get'
+import StyleSheet from './render'
 
 var inProgress
 
@@ -7,60 +8,13 @@ const globalSheet = {
   count: 0
 }
 
-class StyleSheet {
-  constructor (t) {
-    this.sheet = ''
-    this.map = {}
-    this.mediaMap = { count: 0 }
-    this.parsed = false
-    t.stylesheet = this
-  }
-  parse () {
-    var str = this.sheet
-    const mediaMap = this.mediaMap
-    var media = ''
-    for (let key in mediaMap) {
-      if (key !== 'count') {
-        media += ` ${key} {`
-        for (let style in mediaMap[key]) {
-          if (style !== 'count' && style !== 'id') {
-            media += ` .${mediaMap[key][style]} {${style};}`
-          }
-        }
-        media += ' }'
-      }
-    }
-    // replace media
-    if (media) str += ' ' + media
-    return str + ' '
-  }
-  init (node) {
-    const style = document.createElement('style')
-    style.innerHTML = this.parse()
-    node = insertInHead(node)
-    let i = node.childNodes.length
-    while (i--) {
-      if (node.childNodes[i].tagName.toLowerCase() === 'style') {
-        this.parsed = node.childNodes[i]
-        // this.parsed.innerHTML = this.parse()
-        return this.parsed
-      }
-    }
-    node.appendChild(style)
-    this.parsed = style
-    return this.parsed
-  }
-  update () {
-    this.parsed.innerHTML = this.parse()
-  }
-}
-
 const isNotEmpty = store => {
   for (let i in store) { return true }
 }
 
 const toDash = key => key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
 
+// this is pretty complex
 const uid = num => {
   const div = num / 26 | 0
   var str = String.fromCharCode(97 + num % 26)
@@ -90,26 +44,10 @@ const setStyle = (t, store, elem) => {
         className += ` ${mmap[s]}`
       }
     } else {
-      // prefix (and multiply for server)
       let s = toDash(key) + ':' + store[key]
-
-      // why does this end up diffferently for browser then node ... :/
       if (!map[s]) {
         let id
-        if (elem.resolve) {
-          // clean this up nicely...
-          const style = elem.stylesheet.init(elem.node)
-          let re = new RegExp('\\.([a-z]{1,10}) \\{' + s + ';\\}')
-          let m = style.innerHTML.match(re)
-          if (m && m[1]) {
-            id = m[1]
-          } else {
-            id = uid(globalSheet.count++)
-          }
-        } else {
-          id = uid(globalSheet.count++)
-        }
-
+        id = uid(globalSheet.count++)
         if (!globalSheet.map[s]) globalSheet.map[s] = id
         const rule = globalSheet.map[s]
         map[s] = rule
@@ -143,10 +81,7 @@ const setClass = (node, newStyle, style) => {
 const sheet = {
   type: 'group',
   render: {
-    state: () => {
-      // need to add style later
-      // console.error('???')
-    },
+    state: () => {},
     static (t, node, store) {
       const elem = inProgress || t.root()
       if (!getClass(t._p._p)) {
@@ -173,31 +108,26 @@ const clear = () => {
   globalSheet.map = {}
 }
 
-const insertInHead = node => {
-  if (node.tagName.toLowerCase() === 'html') { // tmp fix for node.js
-    let head
-    const children = node.childNodes
-    for (let i = 0, len = children.length; i < len; i++) {
-      if (children[i].tagName && children[i].tagName.toLowerCase() === 'head') {
-        head = children[i]
-        break
-      }
-    }
-    if (!head) {
-      head = document.createElement('head')
-      node.appendChild(head)
-    }
-    return head
-  }
-  return node
+const resolve = elem => {
+  // this is mostly browser of course
+  console.log('RESOLVE STYLESHEET')
+  // if (elem.resolve) {
+  // // clean this up nicely... very dirty not nessecary either since were going to use update and there will be a map avaible before hand
+  // const style = elem.stylesheet.init(elem.node)
+  // let re = new RegExp('\\.([a-z]{1,10}) \\{' + s + ';\\}')
+  // let m = style.innerHTML.match(re)
+  // if (m && m[1]) {
+  //   id = m[1]
+  // } else {
+  //   id = uid(globalSheet.count++)
+  // }
 }
 
-const done = (elem, node) => {
-  // if resolve then resolve styles names to start
-  if (elem.stylesheet && !elem.stylesheet.parsed) elem.stylesheet.init(node)
+const done = elem => {
+  if (elem.stylesheet) elem.stylesheet.init(elem.node)
   inProgress = void 0
 }
 
 const render = t => { inProgress = t }
 
-export { sheet, clear, render, done }
+export { sheet, clear, render, resolve, done }

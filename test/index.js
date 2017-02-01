@@ -40,10 +40,10 @@ element.noResolve()
 
 // require('./switch')
 
-// require('./style')
-
 // require('./class')
 
-require('./render')
+// require('./render') recreate broken test case
 
-require('./subscribe') // object subs and resubscribe -- object travel
+// require('./subscribe') // object subs and resubscribe -- object travel
+
+require('./style')

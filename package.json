@@ -8,7 +8,7 @@
   "browser": {
     "./dist/index.js": "./dist/browser.js",
     "./dist/index.es.js": "./dist/browser.es.js",
-    "./src/property/style/sheet": "./src/property/style/sheet/browser",
+    "./src/property/style/sheet/render": "./src/property/style/sheet/render/browser",
     "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
     "./src/events/listener": "./src/events/listener/browser",
     "./src/render/merge": "./src/render/merge/browser",
