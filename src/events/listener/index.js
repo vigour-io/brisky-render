@@ -9,6 +9,7 @@ Event.prototype.preventDefault = function () {
 }
 
 Object.defineProperty(global.Element.prototype, 'dispatchEvent', {
+  configurable: true,
   value: function (event) {
     exec(this, event)
   }
