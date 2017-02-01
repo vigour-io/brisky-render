@@ -105,9 +105,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
         if (!node) {
           // console.log('CREATE ELEM')
           node = document.createElement(nodeType)
-          node.style.border = '1px solid red'
-          node.style.padding = '5px'
-          node.style.background = 'pink'
+          // node.style.boxShadow = '0px 0px 5px #ccc inset'
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
             t._cachedNode = node
