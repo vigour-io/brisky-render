@@ -5,6 +5,13 @@ const injectable = {}
 
 export default injectable
 
+if (typeof window === 'undefined') {
+  Object.defineProperty(global.Element.prototype, 'value', {
+    get () { return this.getAttribute('value') },
+    set (val) { this.setAttribute('value', val) }
+  })
+}
+
 injectable.props = {
   attr: {
     type: 'property',
