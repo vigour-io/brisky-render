@@ -7,6 +7,7 @@ export default injectable
 
 if (typeof window === 'undefined') {
   Object.defineProperty(global.Element.prototype, 'value', {
+    configurable: true,
     get () { return this.getAttribute('value') },
     set (val) { this.setAttribute('value', val) }
   })
