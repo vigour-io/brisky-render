@@ -6,7 +6,6 @@ const injectable = {}
 export default injectable
 
 if (typeof window === 'undefined') {
-  console.log('wtf???')
   try {
     Object.defineProperty(global.Element.prototype, 'value', {
       configurable: true,
