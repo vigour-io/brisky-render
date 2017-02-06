@@ -20,7 +20,9 @@
     "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
     "pretest": "npm run build && standard",
     "test": "node test/index.js",
-    "prepublish": "echo \"/*\n!dist\n!docs\n!yarn.lock\" > .npmignore && npm run build",
+    "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
+    "publish-unstable": "npm run version-commit && npm publish --tag unstable",
+    "prepublish": "npm run build",
     "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && npm install --only=dev && npm run build );",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
