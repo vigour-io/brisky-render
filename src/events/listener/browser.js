@@ -16,9 +16,7 @@ if (ua.platform === 'ios' && touch) {
   document.body.style.cursor = 'pointer'
 }
 
-export default listen
-
-function listen () {
+export default function listen () {
   const l = arguments.length
   const a = []
   for (let i = 0; i < l; i++) {
