@@ -27,7 +27,7 @@ test('basic - static styles', t => {
 
   console.log(p(elem))
 
-  document.body.appendChild(elem)
+  if (document.body) document.body.appendChild(elem)
   t.end()
 })
 
