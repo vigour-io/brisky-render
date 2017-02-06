@@ -21,7 +21,7 @@
     "pretest": "npm run build && standard",
     "test": "node test/index.js",
     "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
-    "publish-unstable": "npm run version-commit && npm publish --tag unstable",
+    "publish-branch": "npm run version-commit && npm publish --tag $(git rev-parse --abbrev-ref HEAD | sed 's/\\//-/g')",
     "prepublish": "npm run build",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
