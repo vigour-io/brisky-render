@@ -1,6 +1,6 @@
 {
   "name": "brisky-render",
-  "version": "2.0.19-f91a008231eb2d552d9128729c4d2eccba17c28c",
+  "version": "2.0.19-108a16c420ac242263ba9fdf8d5919218b3563dc",
   "description": "A js library for creating blazing fast ui's",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -38,7 +38,7 @@
   "homepage": "https://github.com/vigour-io/brisky-render#readme",
   "dependencies": {
     "brisky-stamp": "^4.0.0",
-    "brisky-struct": "unstable",
+    "brisky-struct": "feature-enhancements",
     "html-element": "^2.1.0",
     "string-hash": "^1.1.0",
     "vigour-ua": "^3.0.0"
