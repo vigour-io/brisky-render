@@ -42,7 +42,7 @@ require('./switch')
 
 require('./class')
 
-require('./render') //recreate broken test case
+require('./render') // recreate broken test case
 
 require('./subscribe') // object subs and resubscribe -- object travel
 
