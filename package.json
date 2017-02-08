@@ -1,6 +1,6 @@
 {
   "name": "brisky-render",
-  "version": "2.0.19-985d6d0ed1141b6b7663e238541035e77708fcc5",
+  "version": "2.0.19-1998c5109c44d3a0a358cd012147230342fe9524",
   "description": "A js library for creating blazing fast ui's",
   "main": "dist/index.js",
   "browser": {
