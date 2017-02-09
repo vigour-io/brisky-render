@@ -1,7 +1,3 @@
-if (typeof window === 'undefined') {
-  require('source-map-support').install()
-}
-
 const { element } = require('../')
 element.noResolve()
 // require('./sync') // not for now
