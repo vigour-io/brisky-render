@@ -41,7 +41,7 @@
     "brisky-struct": "unstable",
     "html-element": "^2.1.0",
     "string-hash": "^1.1.0",
-    "vigour-ua": "^3.0.0"
+    "vigour-ua": "^3.0.1"
   },
   "devDependencies": {
     "budo": "^9.3.0",
