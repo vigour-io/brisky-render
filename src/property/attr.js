@@ -6,15 +6,11 @@ const injectable = {}
 export default injectable
 
 if (typeof window === 'undefined') {
-  try {
-    Object.defineProperty(global.Element.prototype, 'value', {
-      configurable: true,
-      get () { return this.getAttribute('value') },
-      set (val) { this.setAttribute('value', val) }
-    })
-  } catch (e) {
-    console.log(e)
-  }
+  Object.defineProperty(global.Element.prototype, 'value', {
+    configurable: true,
+    get () { return this.getAttribute('value') },
+    set (val) { this.setAttribute('value', val) }
+  })
 }
 
 injectable.props = {

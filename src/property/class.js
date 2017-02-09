@@ -6,14 +6,6 @@ const injectable = {}
 
 export default injectable
 
-// const getStyletron = t => t.styletron !== void 0
-//   ? t.styletron
-//   : t.inherits && getStyletron(t.inherits)
-
-// const hasStyletron = t => t.style !== void 0
-//   ? getStyletron(t.style)
-//   : t.inherits && hasStyletron(t.inherits)
-
 injectable.props = {
   class: {
     type: 'group',
