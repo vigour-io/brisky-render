@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "browser": {
     "./dist/index.js": "./dist/index.browser.js",
-    "./dist/index.es.js": "./dist/browser.es.js",
     "./src/property/style/sheet/render": "./src/property/style/sheet/render/browser",
     "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
     "./src/events/listener": "./src/events/listener/browser",
