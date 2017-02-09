@@ -34,9 +34,9 @@ require('./widget')
 
 require('./events')
 
-// require('./any')
+require('./any')
 
-// require('./attr')
+require('./attr')
 
 require('./switch')
 

@@ -1,5 +1,4 @@
 export default node => {
-  console.log(node)
   if (node && node.tagName && node.tagName.toLowerCase() === 'html') { // tmp fix for node.js
     let head
     const children = node.childNodes

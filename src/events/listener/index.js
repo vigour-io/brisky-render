@@ -1,5 +1,4 @@
 import mock from './mock'
-import browser from './browser'
 
 function Event (type) {
   this.type = type
@@ -47,5 +46,5 @@ global.document.removeEventListener = function (key, fn) {
     }
   }
 }
-
-export default browser
+import listener from './listener'
+export default listener

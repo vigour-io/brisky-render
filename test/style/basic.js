@@ -25,9 +25,9 @@ test('basic - static styles', t => {
   })
   t.equal(elem.className, ' a b c')
 
-  console.log(p(elem))
+  // console.log(p(elem))
 
-  if (document.body) document.body.appendChild(elem)
+  // document.body.appendChild(elem)
   t.end()
 })
 
