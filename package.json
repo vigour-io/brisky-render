@@ -1,6 +1,6 @@
 {
   "name": "brisky-render",
-  "version": "2.0.19",
+  "version": "2.0.19-f91a008231eb2d552d9128729c4d2eccba17c28c",
   "description": "A js library for creating blazing fast ui's",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -20,8 +20,9 @@
     "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
     "pretest": "npm run build && standard",
     "test": "node test/index.js",
-    "prepublish": "echo \"/*\n!dist\n!docs\n!yarn.lock\" > .npmignore && npm run build",
-    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && npm install --only=dev && npm run build );",
+    "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
+    "publish-unstable": "npm run version-commit && npm publish --tag unstable",
+    "prepublish": "npm run build",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
@@ -37,7 +38,7 @@
   "homepage": "https://github.com/vigour-io/brisky-render#readme",
   "dependencies": {
     "brisky-stamp": "^4.0.0",
-    "brisky-struct": "git://github.com/vigour-io/brisky-struct.git#feature/enhancements",
+    "brisky-struct": "unstable",
     "html-element": "^2.1.0",
     "string-hash": "^1.1.0",
     "vigour-ua": "^3.0.0"
