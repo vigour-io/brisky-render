@@ -129,13 +129,13 @@ test('render - to element', t => {
     var d = Date.now()
     var app
     // while (i--) {
-      let div = strange.childNodes[0].cloneNode(true)
-      app = render(
+    let div = strange.childNodes[0].cloneNode(true)
+    app = render(
         div,
         code,
         state
       )
-      document.body.appendChild(div)
+    document.body.appendChild(div)
     // }
     console.log(Date.now() - d, 'ms')
     // t.equal(app, strange, 'enhances original')

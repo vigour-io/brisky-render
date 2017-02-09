@@ -41,7 +41,8 @@ function setTransform (val, store, node) {
     val = val ? (val + ' ' + rotate) : rotate
   }
 
-  node.style[transform] = val
+  const t = transform
+  node.style[t] = val
 }
 
 function unit (val, unit) {
