@@ -1,9 +1,11 @@
 import { create, subscribe, puid } from 'brisky-struct'
-import render from './render'
+import renderFn from './render'
 import element from '../element'
 import { getPath, get$, get$any } from '../get'
 import bstamp from 'brisky-stamp'
-import { render as renderStyle, done } from '../property/style/sheet'
+import { render, done } from '../property/style/sheet'
+
+const renderStyle = render
 
 export default (elem, state, cb, cb2) => {
   var dom, node, t
@@ -29,19 +31,19 @@ export default (elem, state, cb, cb2) => {
   const uid = puid(elem)
 
   if (state === void 0) {
-    render(state, 'new', subs, tree)
+    renderFn(state, 'new', subs, tree)
     if (cb) { cb(subs, tree, elem) }
   } else {
     if (!state || !state.inherits) { state = create(state) }
-    render(state, 'new', subs, tree)
+    renderFn(state, 'new', subs, tree)
     if (cb) {
       subscribe(state, subs, (s, type, su, t) => {
-        render(s, type, su, t)
+        renderFn(s, type, su, t)
         cb(subs, tree, elem, s, type, su, t)
       }, tree)
       cb(subs, tree, elem)
     } else {
-      state.subscribe(subs, render, true, tree)
+      state.subscribe(subs, renderFn, true, tree)
     }
   }
 

@@ -1,8 +1,10 @@
-export const findParent = node => {
+const findParent = node => {
   while (isFragment(node)) {
     node = node[0]
   }
   return node
 }
 
-export const isFragment = node => node instanceof Array
+const isFragment = node => node instanceof Array
+
+export { findParent, isFragment }
