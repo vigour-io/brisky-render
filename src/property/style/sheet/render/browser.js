@@ -1,7 +1,6 @@
 import getNode from './node'
 
 const parseStyle = (style, target) => {
-  console.log(target)
   for (let rule in style.sheet.cssRules) {
     if (style.sheet.cssRules[rule].selectorText) {
       let body = style.sheet.cssRules[rule].cssText.match(/.+\{ (.+) \}/)
@@ -15,6 +14,7 @@ const parseStyle = (style, target) => {
     }
   }
 }
+
   // stylesheet.cssRules[0].style.backgroundColor="blue";
 // stylesheet.insertRule(rule,index) (for update)
 

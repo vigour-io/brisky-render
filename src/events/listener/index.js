@@ -46,5 +46,5 @@ global.document.removeEventListener = function (key, fn) {
     }
   }
 }
-import browser from './browser'
-export default browser
+import listener from './listener'
+export default listener
