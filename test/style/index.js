@@ -1,6 +1,6 @@
 require('./transform')
 require('./basic')
-// require('./context')
+require('./context')
 require('./mixed')
-// require('./media')
-// require('./prerender')
+require('./media')
+

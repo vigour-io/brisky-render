@@ -78,7 +78,7 @@ test('style - multiple media queries', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), strip(`<div><div class=" a a1">a</div><div class=" b c a2 b1">b</div><style> .a {background:yellow;} .b {background:grey;} .c {min-width:50%;}  @media (min-width: 700px) { .a1 {background:red;} .b1 {background:yellow;} } @media (min-width: 480px) { .a2 {background:blue;} } </style></div>`))
+  t.equal(parse(elem), strip(`<div><div class=" a a1">a</div><div class=" b c a2 b1">b</div><style data-style="true"> .a {background:yellow;} .b {background:grey;} .c {min-width:50%;}  @media (min-width: 700px) { .a1 {background:red;} .b1 {background:yellow;} } @media (min-width: 480px) { .a2 {background:blue;} } </style></div>`))
 
   t.end()
 })
@@ -106,7 +106,7 @@ test('style - a should not be blue', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), `<div><div class=" a1">a</div><div class=" a2">b</div><style>  @media (min-width: 10000px) { .a1 {background:blue;} } @media (min-width: 100px) { .a2 {background:blue;} } </style></div>`)
+  t.equal(parse(elem), `<div><div class=" a1">a</div><div class=" a2">b</div><style data-style="true">  @media (min-width: 10000px) { .a1 {background:blue;} } @media (min-width: 100px) { .a2 {background:blue;} } </style></div>`)
 
   t.end()
 })
