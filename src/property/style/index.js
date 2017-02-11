@@ -3,6 +3,7 @@ import ua from 'vigour-ua/navigator'
 import { property } from '../../render/static'
 import { sheet } from './sheet'
 import transform from './transform'
+import transformProp from './transform/property'
 
 const inlineStyle = {
   type: 'property',
@@ -39,30 +40,79 @@ const style = {
   props: {
     sheet,
     transform,
-    inlineStyle
+    inlineStyle: {
+      type: 'inlineStyle'
+    }
   },
   inject: t => {
     const inlineStyle = t.props.inlineStyle
-
     const props = {
-      default: (t, val, key, stamp) => {
-        // inefficient check
-        if (key === 'order' && ua.browser === 'ie' && ua.version === 10) {
-          key = 'msFlexOrder'
-        }
-        if (val && val.$ || t.get([key, '$'])) { // not good enough // just add defaults -- also need to check inheritance
+      default (t, val, key, stamp) {
+        if (val && val.$ || t.get([key, '$'])) {
           return inlineStyle(t, val, key, stamp)
         } else {
           t.set({ sheet: { [key]: val } }, stamp)
         }
+      },
+      appearance (t, val, key, stamp) {
+        if (ua.prefix === 'moz') {
+          key = 'mozAppearance'
+        } else if (
+          ua.prefix === 'webkit' ||
+          ua.browser === 'ie' ||
+          ua.browser === 'edge'
+        ) {
+          key = 'mozAppearance'
+        }
+        props.default(t, val, key, stamp)
+      },
+      filter (t, val, key, stamp) {
+        if (ua.browser === 'chrome' || ua.browser === 'safari') {
+          key = 'webkitFilter'
+        }
+        props.default(t, val, key, stamp)
+      },
+      flex (t, val, key, stamp) {
+        if (ua.platform === 'ios' || ua.browser === 'safari') {
+          key = 'webkitFlex'
+        } else if (ua.browser === 'ie') {
+          key = 'msFlex'
+        }
+        props.default(t, val, key, stamp)
+      },
+      order (t, val, key, stamp) {
+        if (ua.browser === 'ie' && ua.version === 10) {
+          key = 'msFlexOrder'
+        }
+        props.default(t, val, key, stamp)
       }
     }
-
     t.set({ props }, false)
   }
 }
 
+if (ua.browser === 'safari' || ua.platform === 'ios') {
+  style.props.display = {
+    type: 'inlineStyle',
+    $transform: val => val === 'flex' ? '-webkit-flex' : val
+  }
+}
+
+if (transformProp === 'webkitTransform') {
+  style.props.transition = {
+    type: 'inlineStyle',
+    $transform: val => val.replace(/\btransform\b/, 'webkit-transform')
+  }
+}
+
 export default {
-  types: { style, inlineStyle },
-  props: { style: { type: 'style' } }
+  types: {
+    inlineStyle,
+    style
+  },
+  props: {
+    style: {
+      type: 'style'
+    }
+  }
 }
