@@ -18,7 +18,7 @@ element.noResolve()
 
 // require('./property')
 
-// require('./group')
+require('./group')
 
 // require('./test')
 

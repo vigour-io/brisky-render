@@ -35,6 +35,7 @@ export default class StyleSheet {
     }
     const mediaMap = this.mediaMap
     var media = ''
+
     for (let key in mediaMap) {
       if (key !== 'count') {
         media += ` ${key} {`

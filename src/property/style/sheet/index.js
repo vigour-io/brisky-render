@@ -1,4 +1,5 @@
-import { getClass } from '../../../get'
+import parent from '../../../render/dom/parent'
+import { getClass, get$ } from '../../../get'
 import StyleSheet from './render'
 
 var inProgress
@@ -32,6 +33,7 @@ const setStyle = (t, store, elem) => {
   const style = elem.stylesheet || new StyleSheet(elem, globalSheet)
   const map = style.map
   const mediaMap = style.mediaMap
+  // console.log('yes!', mediaMap)
   for (let key in store) {
     if (key.indexOf('@media') === 0) {
       if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0 }
@@ -78,7 +80,10 @@ const setClass = (node, newStyle, style) => {
 const sheet = {
   type: 'group',
   render: {
-    state: () => {},
+    state (t, s, type, subs, tree, id, pid, store) {
+      // const node = parent(tree, pid)
+      // if (node) t.groupRender.static(t, node, store)
+    },
     static (t, node, store) {
       const elem = inProgress || t.root()
       if (!getClass(t._p._p)) {
