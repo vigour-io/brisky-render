@@ -36,9 +36,11 @@ const setStyle = (t, store, elem) => {
   // console.log('yes!', mediaMap)
   for (let key in store) {
     if (key.indexOf('@media') === 0) {
-      if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0 }
+      if (!mediaMap[key]) {
+        mediaMap[key] = { id: ++mediaMap.count, count: 0 }
+      }
       const mmap = mediaMap[key]
-      const parsed = t.get(key).serialize()
+      let parsed = store[key]
       for (let style in parsed) {
         let s = toDash(style) + ':' + parsed[style]
         if (!mmap[s]) mmap[s] = uid(mmap.count++) + mmap.id
@@ -81,8 +83,8 @@ const sheet = {
   type: 'group',
   render: {
     state (t, s, type, subs, tree, id, pid, store) {
-      // const node = parent(tree, pid)
-      // if (node) t.groupRender.static(t, node, store)
+      const node = parent(tree, pid)
+      if (node) t.groupRender.static(t, node, store)
     },
     static (t, node, store) {
       const elem = inProgress || t.root()

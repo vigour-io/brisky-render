@@ -56,14 +56,12 @@ injectable.types = {
               let length = $.length
               // why any lets make a test for this!
               if (this.$any) {
-                // console.log('ANY')
                 length--
               }
               while (length) {
                 length--
                 tree = tree._p
               }
-              // console.log('tree', id, tree)
             }
             const _ = tree._ || (tree._ = {})
             const store = _[id] || (_[id] = {})
@@ -72,12 +70,14 @@ injectable.types = {
         },
         render: {
           static (t, node, store) {
-            store[t.key] = t.compute()
-
-            // do children
-            const parsed = '_' + t._p.key + 'StaticParsed'
-            if (!node[parsed]) property(t, node, store[t.key])
+            const val = t.compute()
+            if (val === void 0) {
+              property(t, node, store[t.key] = {})
+            } else {
+              store[t.key] = val
+            }
           },
+          // @todo all this stuff should go one child deeper (optimize for most common case === not deep nested)
           state (t, s, type, subs, tree, id, pid, order) {
             var p = t._p
             var path = [ t.key ]
@@ -96,7 +96,13 @@ injectable.types = {
                 delete store[path[i]]
               }
             } else {
-              store[path[i]] = t.compute(s, s)
+              let val = t.compute(s, s)
+              if (typeof val === 'object' && 'inherits' in val) {
+                const pnode = parent(tree, pid)
+                if (pnode) property(t, pnode, store[path[i]] = {})
+              } else {
+                store[path[i]] = val
+              }
             }
             p.render.state(p, s, type, subs, tree, id, pid, order, pstore)
           }
