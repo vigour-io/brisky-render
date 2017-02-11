@@ -44,7 +44,7 @@ const style = {
       type: 'inlineStyle'
     }
   },
-  inject: t => {
+  inject: [ t => {
     const inlineStyle = t.props.inlineStyle
     const props = {
       default (t, val, key, stamp) {
@@ -88,21 +88,51 @@ const style = {
       }
     }
     t.set({ props }, false)
-  }
+  } ]
 }
 
 if (ua.browser === 'safari' || ua.platform === 'ios') {
-  style.props.display = {
+  style.props.inlineDisplay = {
     type: 'inlineStyle',
     $transform: val => val === 'flex' ? '-webkit-flex' : val
   }
+  style.inject.push(t => {
+    const inlineDisplay = t.props.inlineDisplay
+    t.set({
+      props: {
+        display (t, val, key, stamp) {
+          if (val && val.$ || t.get([key, '$'])) {
+            return inlineDisplay(t, val, key, stamp)
+          } else {
+            t.set({ sheet: { [key]: val === 'flex' ? '-webkit-flex' : val } }, stamp)
+          }
+        }
+      }
+    }, false)
+  })
 }
 
 if (transformProp === 'webkitTransform') {
-  style.props.transition = {
+  style.props.inlineTransition = {
     type: 'inlineStyle',
     $transform: val => val.replace(/\btransform\b/, 'webkit-transform')
   }
+  style.inject.push(t => {
+    const inlineTransition = t.props.inlineTransition
+    t.set({
+      props: {
+        transition (t, val, key, stamp) {
+          if (val && val.$ || t.get([key, '$'])) {
+            return inlineTransition(t, val, key, stamp)
+          } else {
+            t.set({ sheet: {
+              [key]: val.replace(/\btransform\b/, 'webkit-transform')
+            } }, stamp)
+          }
+        }
+      }
+    }, false)
+  })
 }
 
 export default {
