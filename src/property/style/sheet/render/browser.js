@@ -16,9 +16,6 @@ const parseStyle = (style, target) => {
   }
 }
 
-// stylesheet.cssRules[0].style.backgroundColor="blue";
-// stylesheet.insertRule(rule,index) (for update)
-
 export default class StyleSheet {
   constructor (t, globalSheet) {
     this.map = {}
@@ -29,19 +26,25 @@ export default class StyleSheet {
     t.stylesheet = this
   }
   parse () {
+    var media = ''
     var str = ''
-    for (let i in this.map) {
+    for (const i in this.map) {
       str += ` .${this.map[i]} {${i};}`
     }
     const mediaMap = this.mediaMap
-    var media = ''
-
-    for (let key in mediaMap) {
+    for (const key in mediaMap) {
       if (key !== 'count') {
+        const mmap = mediaMap[key]
         media += ` ${key} {`
-        for (let style in mediaMap[key]) {
+        for (const style in mmap) {
           if (style !== 'count' && style !== 'id') {
-            media += ` .${mediaMap[key][style]} {${style};}`
+            if (style === 'state') {
+              for (const id in mmap.state) {
+                media += ` .${id} {${mmap.state[id]};}`
+              }
+            } else {
+              media += ` .${mmap[style]} {${style};}`
+            }
           }
         }
         media += ' }'

@@ -43,12 +43,13 @@ const setStyle = (t, store, elem, pid) => {
       const mmap = mediaMap[key]
       const parsed = store[key]
       for (let style in parsed) {
-        if (typeof parsed[style] === 'object') {
-          const id = style + ((pid * 33 ^ puid(parsed[style])) >>> 0)
-          mmap.state[id] = toDash(style) + ':' + parsed[style].compute()
+        const value = parsed[style]
+        if (typeof value === 'object') {
+          const id = style + ((pid * 33 ^ puid(value)) >>> 0)
+          mmap.state[id] = toDash(style) + ':' + t.get([key, style]).compute(value, value)
           className += ` ${id}`
         } else {
-          const s = toDash(style) + ':' + parsed[style]
+          const s = toDash(style) + ':' + value
           if (!mmap[s]) mmap[s] = uid(mmap.count++) + mmap.id
           className += ` ${mmap[s]}`
         }
@@ -115,9 +116,10 @@ const sheet = {
   props: {
     default: {
       render: {
-            static (t, node, store) {
-              store[t.key] = t.compute()
-            },
+        static (t, node, store) {
+          (store[t.key] = t.compute()) === void 0 &&
+            property(t, node, store[t.key] = {})
+        },
         state (t, s, type, subs, tree, id, pid, order) {
           const p = t._p
           const store = t.getStore(tree, pid + p.key)

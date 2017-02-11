@@ -9,20 +9,20 @@ export default class StyleSheet {
     t.stylesheet = this
   }
   parse () {
-    var str = ''
-    for (let i in this.map) {
-      str += ` .${this.map[i]} {${i};}`
-    }
     const mediaMap = this.mediaMap
     var media = ''
-    for (let key in mediaMap) {
+    var str = ''
+    for (const i in this.map) {
+      str += ` .${this.map[i]} {${i};}`
+    }
+    for (const key in mediaMap) {
       if (key !== 'count') {
-        media += ` ${key} {`
         const mmap = mediaMap[key]
-        for (let style in mmap) {
+        media += ` ${key} {`
+        for (const style in mmap) {
           if (style !== 'count' && style !== 'id') {
             if (style === 'state') {
-              for (let id in mmap.state) {
+              for (const id in mmap.state) {
                 media += ` .${id} {${mmap.state[id]};}`
               }
             } else {
