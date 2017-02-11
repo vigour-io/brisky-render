@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "builder-boy src/index.js dist/index.js",
+    "watch": "builder-boy src/index.js dist/index.js -w",
     "lint": "standard --fix",
     "pretest": "npm run build",
     "test": "node test/index.js",

@@ -44,11 +44,8 @@ const setStyle = (t, store, elem) => {
         className += ` ${mmap[s]}`
       }
     } else {
+      if (store[key] === '0px') store[key] = 0
       let s = toDash(key) + ':' + store[key]
-      // console.log(key)
-      if (store[key] === '0px') {
-        store[key] = 0
-      }
       if (!map[s]) {
         let id
         id = uid(globalSheet.count++)

@@ -7,6 +7,7 @@ const parseStyle = (style, target) => {
       let key = style.sheet.cssRules[rule].selectorText.slice(1)
       if (body && body[1]) {
         body = body[1].replace(': ', ':').slice(0, -1)
+        if (/:0px/.test(body)) body = body.replace(/:0px/g, ':0')
         target.globalSheet.map[body] = key
         target.map[body] = key
       }
@@ -15,7 +16,7 @@ const parseStyle = (style, target) => {
   }
 }
 
-  // stylesheet.cssRules[0].style.backgroundColor="blue";
+// stylesheet.cssRules[0].style.backgroundColor="blue";
 // stylesheet.insertRule(rule,index) (for update)
 
 export default class StyleSheet {
