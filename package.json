@@ -13,11 +13,10 @@
   },
   "scripts": {
     "build": "builder-boy src/index.js dist/index.js",
-    "watch": "builder-boy src/index.js dist/index.js -w",
+    "dev": "builder-boy src/index.js dist/index.js -w & nodemon test/index.js -w test -w dist",
     "lint": "standard --fix",
     "pretest": "npm run build",
     "test": "node test/index.js",
-    "dev": "nodemon --exec 'npm test' --ignore dist",
     "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
     "publish-branch": "npm run version-commit && npm publish --tag $(git rev-parse --abbrev-ref HEAD | sed 's/\\//-/g')",
     "prepublish": "npm run build",

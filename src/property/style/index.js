@@ -50,7 +50,7 @@ const style = {
         if (key === 'order' && ua.browser === 'ie' && ua.version === 10) {
           key = 'msFlexOrder'
         }
-        if ((val && val.$)) { // not good enough // just add defaults -- also need to check inheritance
+        if (val && val.$ || t.get([key, '$'])) { // not good enough // just add defaults -- also need to check inheritance
           return inlineStyle(t, val, key, stamp)
         } else {
           t.set({ sheet: { [key]: val } }, stamp)

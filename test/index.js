@@ -2,44 +2,44 @@ const { element } = require('../')
 element.noResolve()
 // require('./sync') // not for now
 
-require('./fragment')
+// require('./fragment')
 
-require('./order')
+// require('./order')
 
-require('./text')
+// require('./text')
 
-require('./parent')
+// require('./parent')
 
-require('./html')
+// require('./html')
 
-require('./clone')
+// require('./clone')
 
-require('./reference')
+// require('./reference')
 
-require('./property')
+// require('./property')
 
-require('./group')
+// require('./group')
 
-require('./test')
+// require('./test')
 
-require('./context')
+// require('./context')
 
-require('./remove')
+// require('./remove')
 
-require('./widget')
+// require('./widget')
 
-require('./events')
+// require('./events')
 
-require('./any')
+// require('./any')
 
-require('./attr')
+// require('./attr')
 
-require('./switch')
+// require('./switch')
 
-require('./class')
+// require('./class')
 
-require('./render') // recreate broken test case
+// require('./render') // recreate broken test case
 
-require('./subscribe') // object subs and resubscribe -- object travel
+// require('./subscribe') // object subs and resubscribe -- object travel
 
 require('./style')
