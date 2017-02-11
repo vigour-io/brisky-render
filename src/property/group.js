@@ -70,45 +70,21 @@ injectable.types = {
         },
         render: {
           static (t, node, store) {
-            const val = t.compute()
-            if (val === void 0) {
-              property(t, node, store[t.key] = {})
-            } else {
-              store[t.key] = val
-            }
+            store[t.key] = t.compute()
           },
-          // @todo all this stuff should go one child deeper (optimize for most common case === not deep nested)
           state (t, s, type, subs, tree, id, pid, order) {
-            var p = t._p
-            var path = [ t.key ]
-            while ('getStore' in p) {
-              path.push(p.key)
-              p = p._p
-            }
-            const pstore = t.getStore(tree, pid + p.key)
-            var store = pstore
-            var i = path.length - 1
-            for (; i >= 1; i--) {
-              store = store[path[i]]
-            }
+            const p = t._p
+            const key = p.key
+            const store = t.getStore(tree, pid + key)
             if (!s || s.val === null || type === 'remove') {
-              if (path[i] in store) {
-                delete store[path[i]]
+              if (t.key in store) {
+                delete store[t.key]
               }
             } else {
-              let val = t.compute(s, s)
-              if (typeof val === 'object' && 'inherits' in val) {
-                const pnode = parent(tree, pid)
-                if (pnode) property(t, pnode, store[path[i]] = {})
-              } else {
-                store[path[i]] = val
-              }
+              store[t.key] = t.compute(s, s)
             }
-            p.render.state(p, s, type, subs, tree, id, pid, order, pstore)
+            p.render.state(p, s, type, subs, tree, id, pid, order, store)
           }
-        },
-        props: {
-          default: 'self'
         }
       }
     }

@@ -51,10 +51,8 @@ const style = {
           key = 'msFlexOrder'
         }
         if (val && val.$ || t.get([key, '$'])) { // not good enough // just add defaults -- also need to check inheritance
-          console.log('add inline!')
           return inlineStyle(t, val, key, stamp)
         } else {
-          console.log('add sheet!')
           t.set({ sheet: { [key]: val } }, stamp)
         }
       }

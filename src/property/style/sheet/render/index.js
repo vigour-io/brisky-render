@@ -18,9 +18,16 @@ export default class StyleSheet {
     for (let key in mediaMap) {
       if (key !== 'count') {
         media += ` ${key} {`
-        for (let style in mediaMap[key]) {
+        const mmap = mediaMap[key]
+        for (let style in mmap) {
           if (style !== 'count' && style !== 'id') {
-            media += ` .${mediaMap[key][style]} {${style};}`
+            if (style === 'state') {
+              for (let id in mmap.state) {
+                media += ` .${id} {${mmap.state[id]};}`
+              }
+            } else {
+              media += ` .${mmap[style]} {${style};}`
+            }
           }
         }
         media += ' }'
