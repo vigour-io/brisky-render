@@ -14,7 +14,8 @@
   "scripts": {
     "build": "builder-boy src/index.js dist/index.js",
     "dev": "builder-boy src/index.js dist/index.js -w & nodemon test/index.js -w test -w dist",
-    "lint": "standard --fix",
+    "precommit": "npm test && standard --fix",
+    "preversion": "npm run precommit",
     "pretest": "npm run build",
     "test": "node test/index.js",
     "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
@@ -23,7 +24,7 @@
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
-  "precommit": "lint, test",
+  "precommit": "precommit",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vigour-io/brisky-render.git"
