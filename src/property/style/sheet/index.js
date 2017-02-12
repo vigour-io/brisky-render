@@ -37,6 +37,7 @@ const setStyle = (t, store, elem, pid) => {
   const style = elem.stylesheet || new StyleSheet(elem, globalSheet)
   const map = style.map
   const mediaMap = style.mediaMap
+  var mc = 0
   for (let key in store) {
     if (key.indexOf('@media') === 0) {
       if (!mediaMap[key]) {
@@ -47,7 +48,7 @@ const setStyle = (t, store, elem, pid) => {
       for (let style in parsed) {
         const value = parsed[style]
         if (typeof value === 'object') {
-          const id = style + ((pid * 33 ^ puid(value)) >>> 0)
+          const id = uid(++mc) + ((pid * 33 ^ puid(value)) >>> 0)
           mmap.state[id] = toDash(style) + ':' + t.get([key, style]).compute(value, value)
           className += ` ${id}`
         } else {

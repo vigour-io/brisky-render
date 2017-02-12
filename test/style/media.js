@@ -68,12 +68,12 @@ test('style - dynamic media styletron', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), strip(`<div class=" a1 color194596312"><style data-style="true">  @media (min-width: 480px) { .color194596312 {color:blue;} .a1 {background-color:red;} } </style></div>`))
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:blue;} .a1 {background-color:red;} } </style></div>`))
 
   // update it
   state.set({ color: 'red' })
 
-  t.equal(parse(elem), strip(`<div class=" a1 color194596312"><style data-style="true">  @media (min-width: 480px) { .color194596312 {color:red;} .a1 {background-color:red;} } </style></div>`))
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:red;} .a1 {background-color:red;} } </style></div>`))
 
   t.end()
 })
@@ -98,7 +98,7 @@ test('style - dynamic media styletron + transforms', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), strip(`<div class=" a1 color194596312"><style data-style="true">  @media (min-width: 480px) { .color194596312 {color:yellow;} .a1 {background-color:red;} } </style></div>`))
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:yellow;} .a1 {background-color:red;} } </style></div>`))
 
   t.end()
 })
