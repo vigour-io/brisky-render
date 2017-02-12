@@ -50,24 +50,3 @@ test('switch - basic', t => {
 
   t.end()
 })
-
-//   s(
-//     'set field to z/b',
-//     [
-//       { path: 'b/b', type: 'remove', tree: 'field/$switch/$current' },
-//       { path: 'z/b', type: 'new' }
-//     ],
-//     { field: '$root.z.b' }
-//   )
-
-//   s(
-//     'set field to z/z',
-//     [
-//       { path: 'z/b', type: 'remove', tree: 'field/$switch/$current' }
-//     ],
-//     { field: '$root.z.z' }
-//   )
-
-//   t.end()
-// })
-// */

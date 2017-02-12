@@ -1,12 +1,11 @@
-const { render } = require('brisky-core/render')
-const Element = require('brisky-core')
+const { render, element } = require('../../')
 const test = require('tape')
-const trigger = require('../trigger')
+const trigger = require('./trigger')
 const Event = global.Event
 const attach = require('../lib/attach')
 const isNode = require('vigour-util/is/node')
 
-Element.prototype.inject(
+element.inject(
   require('../lib'),
   require('../lib/basic')
 )

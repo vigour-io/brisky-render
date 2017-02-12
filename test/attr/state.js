@@ -109,7 +109,7 @@ test('state - value', t => {
       }
     }
   }, state)
-  t.equal(p(app), '<div><input type="slider"></div>', 'type slider (type override)')
+  t.equal(p(app), '<div><input type="slider" value="10"></div>', 'type slider (type override)')
   t.same(app.childNodes[0].value, '10', 'has correct initial value')
   state.rating.set(null)
   t.equal(app.childNodes[0].value, '', 'remove rating') // need to verify in the browser

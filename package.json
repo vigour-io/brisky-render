@@ -1,30 +1,29 @@
 {
   "name": "brisky-render",
-  "version": "2.0.19",
+  "version": "2.0.19-7fd0c2f9d9e3ef8c87d8b873430bc038670dad48",
   "description": "A js library for creating blazing fast ui's",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "jsnext:main": "dist/index.es.js",
   "browser": {
-    "./dist/index.js": "./dist/browser.js",
-    "./dist/index.es.js": "./dist/browser.es.js",
-    "./lib/property/style/sheet": "./lib/property/style/sheet/browser",
-    "./lib/render/dom/create/render": "./lib/render/dom/create/render/browser",
-    "./lib/events/listener": "./lib/events/listener/browser",
-    "./lib/render/merge": "./lib/render/merge/browser",
+    "./dist/index.js": "./dist/index.browser.js",
+    "./src/property/style/sheet/render": "./src/property/style/sheet/render/browser",
+    "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
+    "./src/events/listener": "./src/events/listener/browser",
+    "./src/render/merge": "./src/render/merge/browser",
     "html-element/global-shim": false
   },
   "scripts": {
-    "build": "node rollup/build",
-    "dev": "node rollup/watch & nodemon --harmony-async-await test/index.js",
-    "dev-browser": "node rollup/watch & budo test/index.js --live --- -g bubleify",
-    "pretest": "npm run build && standard",
-    "prepublish": "npm run build",
+    "build": "builder-boy src/index.js dist/index.js",
+    "dev": "builder-boy src/index.js dist/index.js -w & nodemon test/index.js -w test -w dist",
+    "lint": "standard --fix",
+    "pretest": "npm run build",
     "test": "node test/index.js",
-    "postinstall": "[ -d dist ] || npm run build || ( mkdir dist && yarn && npm run build );",
+    "version-commit": "npm --no-git-tag-version version $(node -pe \"require('./package.json').version.split('-')[0]\")-$(git log -n 1 --pretty=format:'%H')",
+    "publish-branch": "npm run version-commit && npm publish --tag $(git rev-parse --abbrev-ref HEAD | sed 's/\\//-/g')",
+    "prepublish": "npm run build",
     "cover": "nyc npm test",
     "travis": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
+  "precommit": "lint, test",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vigour-io/brisky-render.git"
@@ -36,28 +35,20 @@
   },
   "homepage": "https://github.com/vigour-io/brisky-render#readme",
   "dependencies": {
-    "brisky-stamp": "^3.0.12",
-    "brisky-struct": "1.1.7",
+    "brisky-stamp": "^4.0.0",
+    "brisky-struct": "feature-enhancements",
     "html-element": "^2.1.0",
     "string-hash": "^1.1.0",
-    "vigour-ua": "^3.0.0"
+    "vigour-ua": "^3.0.1"
   },
   "devDependencies": {
-    "budo": "^9.3.0",
     "bubleify": "0.5.1",
+    "builder-boy": "latest",
     "coveralls": "^2.11.12",
     "nodemon": "^1.10.2",
     "nyc": "^10.0.0",
     "parse-element": "^2.0.5",
     "pre-commit": "^1.1.3",
-    "rollup": "^0.37.0",
-    "rollup-plugin-buble": "^0.15.0",
-    "rollup-plugin-commonjs": "^6.0.0",
-    "rollup-plugin-node-builtins": "^2.0.0",
-    "rollup-plugin-node-globals": "^1.1.0",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-watch": "^2.5.0",
-    "source-map-support": "^0.4.7",
     "standard": "^8.0.0",
     "strip-formatting": "^1.0.2",
     "tap-spec": "^4.1.1",
@@ -72,9 +63,5 @@
   "contributors": [
     "Jim de Beer <jim@vigour.io>",
     "Youri Daamen <youri@vigour.io>"
-  ],
-  "files": [
-    "dist",
-    "README.md"
   ]
 }

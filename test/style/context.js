@@ -65,7 +65,7 @@ test('context - static and state', t => {
           <div class=" a" style="height: 10px; width: 10px;"></div>
         </div>
       </div>
-      <style> .a {border:3px solid red;} </style>
+      <style data-style="true"> .a {border:3px solid red;} </style>
     </div>
     `),
     'correct output'

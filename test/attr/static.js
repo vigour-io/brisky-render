@@ -38,7 +38,7 @@ test('static - value', t => {
       }
     }
   })
-  t.equal(p(app), '<div><input type="slider"></div>', 'type slider (type override)')
+  t.equal(p(app), '<div><input type="slider" value="10"></div>', 'type slider (type override)')
   t.same(app.childNodes[0].value, '10', 'has correct value')
   t.end()
 })

@@ -15,7 +15,7 @@ test('basic - static class name', t => {
 
   elem = render({
     class: {
-      'simple-class': true
+      'simple-class': 'simple-class'
     }
   })
 
@@ -40,7 +40,7 @@ test('basic - static class name', t => {
   elem = render({
     class: {
       val: 'simple-value',
-      'simple-class': true,
+      'simple-class': 'simple-class',
       'not-this': false,
       simpleString: 'simple-string'
     }
@@ -104,7 +104,6 @@ test('basic - state driven class name', t => {
   elem = render({
     $: 'simpleClass',
     class: { $: true }
-
   }, {
     simpleClass: 'simple-class'
   })
@@ -124,14 +123,14 @@ test('basic - keys as class name', t => {
   t.equals(elem.className, 'simple-class', 'class does not include key by default')
   elem = render({
     key: 'elem',
-    class: true
+    class: 'elem'
   })
   t.equals(elem.className, 'elem', 'class does include key when class: true')
   t.end()
 })
 
 test('basic - toggle class name', t => {
-  const state = s({ thing: true })
+  const state = s({ thing: 'hello' })
   const elem = render({
     key: 'elem',
     class: { hello: { $: 'thing' } }
@@ -144,14 +143,13 @@ test('basic - toggle class name', t => {
 })
 
 test('basic - use key and nested state', t => {
-  const state = s({ thing: true })
+  const state = s({ thing: 'elem hello' })
   const elem = render({
-    key: 'elem',
-    class: { useKey: true, hello: { $: 'thing' } }
+    class: { hello: { $: 'thing' } }
   }, state)
   t.equals(elem.className, 'elem hello', 'initial class')
   state.thing.set(false)
-  t.equals(elem.className, 'elem', 'set thing to false')
+  t.ok(elem.className === void 0 || elem.className === '', 'set thing to false')
   t.end()
 })
 

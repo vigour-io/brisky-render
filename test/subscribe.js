@@ -20,45 +20,44 @@ test('subscribe - merge', t => {
   t.end()
 })
 
-// test('subscribe - resubscribe', t => {
+// test('subscribe - more merge', t => {
 //   const state = s({
-//     field: 'its text'
+//     page: {
+//       current: [ '@', 'root', 'bla' ]
+//     }
 //   })
-//   const app = render(
+
+//   global.document.documentElement.innerHTML = ''
+//   // lastig te recreaten....
+//   global.document.documentElement.childNodes.forEach(node => node.parentNode.removeChild(node))
+//   const app = render( // eslint-disable-line
+//     global.document.documentElement,
 //     {
-//       text: { $: 'field' },
-//       a: { tag: 'a', $: 'field' }
+//       tag: 'html',
+//       head: {
+//         tag: 'head',
+//         title: {
+//           tag: 'title',
+//           text: {
+//             $: 'page.current',
+//             $transform: (val, state) => state.origin().path().join('-')
+//           }
+//         }
+//       },
+//       body: {
+//         tag: 'body',
+//         bla: {
+//           $: 'page.current',
+//           text: { $: 'title' }
+//         }
+//       }
 //     },
 //     state
 //   )
-//   state.field.set('update')
-//   t.equal(p(app), '<div>update<a></a></div>', 'fires update')
-//   state.field.val = 'silent update'
-//   state.resubscribe()
-//   t.equal(p(app), '<div>silent update<a></a></div>', 'fires silent update')
-//   t.end()
-// })
 
-// test('subscribe - resubscribe - switch', t => {
-//   const state = s({
-//     a: 'its text',
-//     b: 'its field2',
-//     somefield: '$root.a'
+//   state.set({
+//     bla: { title: 'w0000t' }
 //   })
-//   const app = render({
-//     text: 'app',
-//     xxx: {
-//       tag: 'ul',
-//       $: 'somefield.$switch',
-//       $switch: (state) => state.key,
-//       properties: {
-//         a: { tag: 'li', text: { $: true, $add: ' haha a' } },
-//         b: { tag: 'li', text: { $: true, $add: ' haha b' } }
-//       }
-//     }
-//   }, state)
-//   // state.resubscribe()
-//   // t.equal(p(app), '<div>app<ul><li>its text haha a</li></ul></div>')
 //   t.end()
 // })
 
@@ -103,6 +102,78 @@ test('subscribe - object subscription', t => {
   t.equal(p(app), '<div><div>x</div><div>haha a</div></div>', 'update fields a title')
   // do we need to scope it to state? first commmon ancestor where the object enters?
   // will add an if in the render thats a bit nasty
+  if (global.document && global.document.body) {
+    global.document.body.appendChild(app)
+  }
+  t.end()
+})
+
+test('subscribe - object subscription + context', t => {
+  const state = s({
+    fields: {
+      a: {
+        a: 'its fields a',
+        b: {
+          val: 'BBBBBBB',
+          c: {
+            val: ' YO ',
+            d: { val: 'd!', color: 'red', 'w': '10px' }
+          }
+        },
+        c: 'c on a'
+      }
+    },
+    page: {
+      current: [ '@', 'root', 'fields', 'a' ]
+    }
+  })
+
+  // and property ofc
+  const app = render({
+    bla: {
+      $: 'page.current.$switch',
+      $switch: (state) => 'bla',
+      props: {
+        bla: {
+          tag: 'bla',
+          $: {
+            // val: 1,
+            b: { c: { d: true, val: true }, val: true }, // branches need to be taken into account :/
+            x: { val: 'switch' },
+            a: true,
+            c: true
+          },
+          text: '?',
+          bla: {
+            text: 'BLA',
+            style: {
+              border: {
+                $: {
+                  w: true,
+                  color: true
+                },
+                $transform: (val, state) => `${
+                  state.parent().w.compute()
+                } solid ${
+                  state.parent().color.compute()
+                }`
+              }
+            }
+          },
+          more: {
+            tag: 'more',
+            // text is hard need to know if it does not exist...
+            text: { $: true }
+          }
+        }
+      }
+    }
+  }, state)
+
+  state.fields.a.b.c.d.color.set('purple')
+
+  t.equal(p(app), '<div><bla>?<div style="border: 10px solid purple;">BLA</div><more>d!</more></bla></div>')
+
   if (global.document && global.document.body) {
     global.document.body.appendChild(app)
   }

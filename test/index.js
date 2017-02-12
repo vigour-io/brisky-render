@@ -1,7 +1,5 @@
-if (typeof window === 'undefined') {
-  require('source-map-support').install()
-}
-
+const { element } = require('../')
+element.noResolve()
 // require('./sync') // not for now
 
 require('./fragment')
@@ -24,8 +22,6 @@ require('./group')
 
 require('./test')
 
-require('./class')
-
 require('./context')
 
 require('./remove')
@@ -36,12 +32,14 @@ require('./events')
 
 require('./any')
 
-require('./subscribe') // object subs and resubscribe -- object travel
-
 require('./attr')
 
 require('./switch')
 
-require('./style')
+require('./class')
 
-require('./render')
+require('./render') // recreate broken test case
+
+require('./subscribe') // object subs and resubscribe -- object travel
+
+require('./style')

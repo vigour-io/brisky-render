@@ -49,6 +49,60 @@ test('style - media styletron with classnames', t => {
   t.end()
 })
 
+test('style - dynamic media styletron', t => {
+  clearStyleCache()
+  const state = create({
+    color: 'blue'
+  })
+
+  const elem = render({
+    style: {
+      '@media (min-width: 480px)': {
+        backgroundColor: 'red',
+        color: {
+          $: 'color'
+        }
+      }
+    }
+  }, state)
+
+  if (document.body) document.body.appendChild(elem)
+
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:blue;} .a1 {background-color:red;} } </style></div>`))
+
+  // update it
+  state.set({ color: 'red' })
+
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:red;} .a1 {background-color:red;} } </style></div>`))
+
+  t.end()
+})
+
+test('style - dynamic media styletron + transforms', t => {
+  clearStyleCache()
+  const state = create({
+    color: 'blue'
+  })
+
+  const elem = render({
+    style: {
+      '@media (min-width: 480px)': {
+        backgroundColor: 'red',
+        color: {
+          $: 'color',
+          $transform: val => 'yellow'
+        }
+      }
+    }
+  }, state)
+
+  if (document.body) document.body.appendChild(elem)
+
+  t.equal(parse(elem), strip(`<div class=" a1 b194596312"><style data-style="true">  @media (min-width: 480px) { .b194596312 {color:yellow;} .a1 {background-color:red;} } </style></div>`))
+
+  t.end()
+})
+
 test('style - multiple media queries', t => {
   clearStyleCache()
   const elem = render({
@@ -78,7 +132,7 @@ test('style - multiple media queries', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), strip(`<div><div class=" a a1">a</div><div class=" b c a2 b1">b</div><style> .a {background:yellow;} .b {background:grey;} .c {min-width:50%;}  @media (min-width: 700px) { .a1 {background:red;} .b1 {background:yellow;} } @media (min-width: 480px) { .a2 {background:blue;} } </style></div>`))
+  t.equal(parse(elem), strip(`<div><div class=" a a1">a</div><div class=" b c a2 b1">b</div><style data-style="true"> .a {background:yellow;} .b {background:grey;} .c {min-width:50%;}  @media (min-width: 700px) { .a1 {background:red;} .b1 {background:yellow;} } @media (min-width: 480px) { .a2 {background:blue;} } </style></div>`))
 
   t.end()
 })
@@ -106,7 +160,7 @@ test('style - a should not be blue', t => {
 
   if (document.body) document.body.appendChild(elem)
 
-  t.equal(parse(elem), `<div><div class=" a1">a</div><div class=" a2">b</div><style>  @media (min-width: 10000px) { .a1 {background:blue;} } @media (min-width: 100px) { .a2 {background:blue;} } </style></div>`)
+  t.equal(parse(elem), `<div><div class=" a1">a</div><div class=" a2">b</div><style data-style="true">  @media (min-width: 10000px) { .a1 {background:blue;} } @media (min-width: 100px) { .a2 {background:blue;} } </style></div>`)
 
   t.end()
 })
