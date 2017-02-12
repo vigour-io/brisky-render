@@ -3,6 +3,8 @@ import { property } from '../../../render/static'
 import { getClass } from '../../../get'
 import StyleSheet from './render'
 import { puid } from 'brisky-struct'
+import prefixVal from '../prefix/value'
+import prefix from '../prefix'
 
 var inProgress
 
@@ -117,8 +119,13 @@ const sheet = {
     default: {
       render: {
         static (t, node, store) {
-          (store[t.key] = t.compute()) === void 0 &&
-            property(t, node, store[t.key] = {})
+          const val = t.compute()
+          const key = t.key
+          if (val === void 0) {
+            property(t, node, store[key] = {})
+          } else {
+            store[key] = prefixVal[key] ? prefixVal[key](val) : val
+          }
         },
         state (t, s, type, subs, tree, id, pid, order) {
           const p = t._p
@@ -136,7 +143,10 @@ const sheet = {
         default: {
           render: {
             static (t, node, store) {
-              store[t.key] = t.compute()
+              const key = t.key
+              store[prefix[key] || key] = prefixVal[key]
+                ? prefixVal[key](t.compute())
+                : t.compute()
             },
             state (t, s, type, subs, tree, id, pid, order) {
               const p = t._p
@@ -145,13 +155,19 @@ const sheet = {
               const pstore = p.getStore.call(t, tree, pid + pp.key)
               var store = pstore
               var i = path.length - 1
-              for (; i >= 1; i--) store = store[path[i]]
+              for (; i >= 1; i--) {
+                store = store[path[i]]
+              }
+              var key = path[i]
+              if (key in prefix) {
+                key = prefix[key]
+              }
               if (!s || s.val === null || type === 'remove') {
-                if (path[i] in store) {
-                  delete store[path[i]]
+                if (key in store) {
+                  delete store[key]
                 }
               } else {
-                store[path[i]] = s
+                store[key] = s
               }
               pp.render.state(pp, s, type, subs, tree, id, pid, order, pstore)
             }
