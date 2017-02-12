@@ -47,7 +47,7 @@ const setStyle = (t, store, elem, pid) => {
       const parsed = store[key]
       for (let style in parsed) {
         const value = parsed[style]
-        if (typeof value === 'object') {
+        if (typeof value === 'object' && 'inherits' in value) {
           const id = uid(++mc) + ((pid * 33 ^ puid(value)) >>> 0)
           mmap.state[id] = toDash(style) + ':' + t.get([key, style]).compute(value, value)
           className += ` ${id}`
