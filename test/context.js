@@ -1,5 +1,5 @@
 const test = require('tape')
-const { render, element } = require('../')
+const { element } = require('../')
 
 test('context', t => {
   const types = {
