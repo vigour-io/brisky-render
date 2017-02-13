@@ -10,6 +10,7 @@ import css from './property/class'
 import style from './property/style'
 import widget from './widget'
 import events from './events'
+import keyevents from './events/key'
 import property from './property'
 
 const element = create({
@@ -81,7 +82,8 @@ const element = create({
     css,
     style,
     widget,
-    events
+    events,
+    keyevents
   ]
 }, false)
 

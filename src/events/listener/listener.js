@@ -24,7 +24,14 @@ function listen () {
   for (let i = 0; i < l; i++) {
     let key = arguments[i]
     let listener = arguments[++i]
-    addEventListener(key, listener, key === 'focus' || key === 'scroll' || key === 'blur')
+    addEventListener(
+      key,
+      listener,
+      key === 'focus' ||
+      key === 'scroll' ||
+      key === 'blur' ||
+      key === 'mouseenter'
+    )
     a.push(key, listener)
   }
   return () => {
