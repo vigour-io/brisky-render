@@ -18,7 +18,7 @@ if (ua.browser === 'chrome' || ua.browser === 'safari') {
 }
 
 if (ua.platform === 'ios' || ua.browser === 'safari') {
-  prefix.flex = 'webkitFlex'
+  prefix.flex = 'WebkitFlex'
 } else if (ua.browser === 'ie') {
   prefix.flex = 'msFlex'
   if (ua.version === 10) {
