@@ -6,11 +6,13 @@ const transform = prefix.transform || 'transform'
 
 const setTransform = (val, store, node) => {
   if ('x' in store || 'y' in store) {
+    console.log(store)
     const translate3d = `translate3d(${(store.x
       ? unit(store.x, 'px')
       : '0px')}, ${(store.y
         ? unit(store.y, 'px')
         : '0px')}, 0px)`
+    console.log('???', val ? (val + ' ' + translate3d) : translate3d)
     val = val ? (val + ' ' + translate3d) : translate3d
   }
 
