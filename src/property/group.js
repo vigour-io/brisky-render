@@ -81,7 +81,6 @@ injectable.types = {
                 delete store[t.key]
               }
             } else {
-              console.log('??', t.compute(s, s), t.path(), s.path())
               store[t.key] = t.compute(s, s)
             }
             p.render.state(p, s, type, subs, tree, id, pid, order, store)

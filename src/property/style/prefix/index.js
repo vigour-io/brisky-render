@@ -4,17 +4,17 @@ import ua from 'vigour-ua/navigator'
 const prefix = {}
 
 if (ua.prefix === 'moz') {
-  prefix.appearance = 'mozAppearance'
+  prefix.appearance = 'MozAppearance'
 } else if (
   ua.prefix === 'webkit' ||
   ua.browser === 'ie' ||
   ua.browser === 'edge'
 ) {
-  prefix.appearance = 'webkitAppearance'
+  prefix.appearance = 'WebkitAppearance'
 }
 
 if (ua.browser === 'chrome' || ua.browser === 'safari') {
-  prefix.filter = 'webkitFilter'
+  prefix.filter = 'WebkitFilter'
 }
 
 if (ua.platform === 'ios' || ua.browser === 'safari') {
