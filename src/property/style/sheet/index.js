@@ -17,7 +17,9 @@ const isNotEmpty = store => {
   for (let i in store) return true
 }
 
-const toDash = key => key.replace(/([A-Z])([a-z])/g, '-$1$2').toLowerCase()
+const toDash = key => {
+  return key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase()
+}
 
 const uid = num => {
   const div = num / 26 | 0
