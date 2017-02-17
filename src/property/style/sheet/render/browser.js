@@ -5,6 +5,7 @@ const parseStyle = (style, target) => {
     if (style.sheet.cssRules[rule].selectorText) {
       let body = style.sheet.cssRules[rule].cssText.match(/.+\{ (.+) \}/)
       let key = style.sheet.cssRules[rule].selectorText.slice(1)
+      // console.log()
       if (body && body[1]) {
         body = body[1].replace(': ', ':').slice(0, -1)
         if (/:0px/.test(body)) body = body.replace(/:0px/g, ':0')
