@@ -119,7 +119,10 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     } else {
       // will become an argument in render or something
       if (t.resolve) {
-        node = resolveState(t, pnode, id, state)
+        // dont resolve this
+        if (!tree._p || !tree._p._key !== 'client') {
+          node = resolveState(t, pnode, id, state)
+        }
         if (!node) {
           node = document.createElement(nodeType)
           const hasStaticProps = staticProps(t).length
