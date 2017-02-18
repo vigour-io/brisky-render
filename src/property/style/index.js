@@ -23,6 +23,24 @@ const inlineStyle = {
   }
 }
 
+const prefixInlineStyle = {
+  type: 'inlineStyle',
+  render: {
+    static (target, node) {
+      const field = target.name || target.key
+      node.style[field] = prefixVal[field](target.compute())
+    },
+    state (t, s, type, subs, tree, id, pid) {
+      if (type !== 'remove') {
+        const node = parent(tree, pid)
+        const field = t.name || (t.key !== 'default' ? t.key : s.key)
+        node.style[field] = prefixVal[field](s ? t.compute(s, s) : t.compute()
+        )
+      }
+    }
+  }
+}
+
 const style = {
   type: 'property',
   render: {
@@ -40,42 +58,29 @@ const style = {
   props: {
     sheet,
     transform,
-    inlineStyle
+    inlineStyle,
+    prefixInlineStyle
   },
   inject: t => {
     const inlineStyle = t.props.inlineStyle
+    const prefixInlineStyle = t.props.prefixInlineStyle
     const props = {
       default (t, val, key, stamp) {
         if (key in prefix) {
           key = prefix[key]
         }
         if (val && val.$ || t.get([key, '$'])) {
-          return inlineStyle(t, val, key, stamp)
+          if (prefixVal[key]) {
+            return prefixInlineStyle(t, val, key, stamp)
+          } else {
+            return inlineStyle(t, val, key, stamp)
+          }
         } else {
           t.set({ sheet: { [key]: val } }, stamp)
         }
       }
     }
     t.set({ props }, false)
-  }
-}
-
-for (let field in prefixVal) {
-  style.props[field] = {
-    type: 'inlineStyle',
-    render: {
-      static (target, node) {
-        node.style[target.name || target.key] = prefixVal[field](target.compute())
-      },
-      state (t, s, type, subs, tree, id, pid) {
-        if (type !== 'remove') {
-          const node = parent(tree, pid)
-          node.style[t.name || (t.key !== 'default' ? t.key : s.key)] = prefixVal[field](
-            s ? t.compute(s, s) : t.compute()
-          )
-        }
-      }
-    }
   }
 }
 
