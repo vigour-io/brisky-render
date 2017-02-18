@@ -18,7 +18,6 @@ const isNotEmpty = store => {
 }
 
 const toDash = key => {
-  console.log('???', key, key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase())
   return key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase()
 }
 
@@ -43,6 +42,7 @@ const setStyle = (t, store, elem, pid) => {
   var mc = 0
   for (let key in store) {
     if (key.indexOf('@media') === 0) {
+      console.log('med:', t.path())
       if (!mediaMap[key]) {
         mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }
       }
@@ -71,6 +71,7 @@ const setStyle = (t, store, elem, pid) => {
         const rule = globalSheet.map[s]
         map[s] = rule
       }
+
       className += ' ' + map[s]
     }
   }
@@ -102,6 +103,7 @@ const sheet = {
     },
     static (t, node, store, pid) { // state gets passed by render.state
       const elem = inProgress || t.root()
+      console.log('-->', t.path())
       if (!getClass(t._p._p)) {
         if (isNotEmpty(store)) {
           node.className = setStyle(t, store, elem, pid)
@@ -148,11 +150,13 @@ const sheet = {
           render: {
             static (t, node, store) {
               const key = t.key
+              console.log('!!!', t.path())
               store[prefix[key] || key] = prefixVal[key]
                 ? prefixVal[key](t.compute())
                 : t.compute()
             },
             state (t, s, type, subs, tree, id, pid, order) {
+              console.log('!!!', t.path())
               const p = t._p
               const path = [ t.key, p.key ]
               const pp = p._p

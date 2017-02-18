@@ -9,6 +9,7 @@ const injectable = {}
 export default injectable
 
 injectable.state = (t, type, subs, tree, id, pnode, state) => {
+
   const nodeType = tag(t)
   if (nodeType === 'fragment') {
     return fragment(t, pnode, id, tree)
