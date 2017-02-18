@@ -1,5 +1,5 @@
 // src: http://shouldiprefix.com
-import ua from 'vigour-ua/navigator'
+// import ua from 'vigour-ua/navigator'
 import prefixes from './'
 
 const prefix = {}
