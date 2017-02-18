@@ -12,7 +12,8 @@
     "html-element/global-shim": false
   },
   "scripts": {
-    "build": "builder-boy src/index.js dist/index.js",
+    "watch": "builder-boy src/index.js dist/index.js -t node -t browser -r -w",
+    "build": "builder-boy src/index.js dist/index.js -t node -t browser -r",
     "dev": "builder-boy src/index.js dist/index.js -w & nodemon test/index.js -w test -w dist",
     "precommit": "npm test && standard --fix",
     "preversion": "npm run precommit",
