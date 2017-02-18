@@ -47,7 +47,6 @@ export default class StyleSheet {
       str += ` .${this.map[i]} {${i};}`
     }
     const mediaMap = this.mediaMap
-    console.log('++>', mediaMap)
     for (const key in mediaMap) {
       if (key !== 'count') {
         const mmap = mediaMap[key]
