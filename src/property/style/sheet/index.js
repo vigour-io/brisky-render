@@ -139,7 +139,13 @@ const sheet = {
               delete store[t.key]
             }
           } else {
-            property(t, false, store[t.key] || (store[t.key] = {}))
+            const val = t.compute(s, s)
+            if (val !== void 0 && typeof val !== 'object') {
+              store[t.key] = val
+              p.render.state(p, s, type, subs, tree, id, pid, order, store)
+            } else {
+              property(t, false, store[t.key] || (store[t.key] = {}))
+            }
           }
         }
       },
