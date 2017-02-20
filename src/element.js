@@ -50,7 +50,6 @@ const element = create({
         while (i--) {
           if (elems[i].id > 1e6) {
             l++
-            console.log('--->', elems[i])
             elems[i].parentNode.removeChild(elems[i])
           }
         }

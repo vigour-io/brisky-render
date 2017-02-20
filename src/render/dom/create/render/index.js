@@ -1,5 +1,5 @@
 import 'html-element/global-shim'
-import { property, element, isStatic } from '../../../static'
+import { property, element } from '../../../static'
 import fragment from './fragment'
 import { tag } from '../../../../get'
 import { puid } from 'brisky-struct'
@@ -27,9 +27,6 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
 injectable.static = t => {
   const nodeType = tag(t)
   const node = document.createElement(nodeType)
-  if (!isStatic(t.parent()) && !t._noResolve_) {
-    // node.setAttribute('id', puid(t))
-  }
   property(t, node)
   element(t, node)
   return node

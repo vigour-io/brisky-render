@@ -16,11 +16,13 @@ export default (elem, state, cb, cb2) => {
     cb = cb2
   }
 
-  if (!elem.inherits) elem = element.create(elem)
+  if (!elem.inherits) {
+    elem = element.create(elem)
+  }
 
   if (dom) {
     elem.node = dom
-    done(dom, true)
+    done(elem, true, true)
     elem.emit('resolve', true)
   }
 

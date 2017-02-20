@@ -25,18 +25,6 @@ const resolveState = (t, pnode, id, state) => {
   }
 }
 
-const resolveStatic = (t, pnode) => {
-  const children = pnode.childNodes
-  const id = puid(t)
-  var i = children.length
-  while (i--) {
-    if (children[i].id == id) { // eslint-disable-line
-      children[i].removeAttribute('id')
-      return children[i]
-    }
-  }
-}
-
 const hasStateProperties = t => {
   const keys = t.keys()
   if (keys) {
@@ -72,23 +60,9 @@ injectable.static = (t, pnode, noResolve) => {
       if (nodeType === 'fragment') {
         console.error('not handeling static fragments yet')
       } else {
-        if (t.resolve) {
-          // !noResolve is what we want
-          node = resolveStatic(t, pnode)
-          if (!node) {
-            if (cached && isStatic(t)) {
-              node = staticFromCache(cached)
-            } else {
-              node = document.createElement(nodeType)
-              property(t, node)
-              element(t, node, true)
-            }
-          }
-        } else {
-          node = document.createElement(nodeType)
-          property(t, node)
-          element(t, node, true)
-        }
+        node = document.createElement(nodeType)
+        property(t, node)
+        element(t, node, true)
         t._cachedNode = node
       }
     }
@@ -112,6 +86,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     if (cached._index) {
       node._index = cached._index
     }
+    element(t, node)
   } else {
     const nodeType = tag(t)
     if (nodeType === 'fragment') {
@@ -133,6 +108,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
               node = t._cachedNode.cloneNode(false)
             }
           }
+          element(t, node)
         }
       } else {
         node = document.createElement(nodeType)
@@ -144,10 +120,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
             node = t._cachedNode.cloneNode(false)
           }
         }
+        element(t, node)
       }
     }
     tree._[id] = node
   }
-  element(t, node)
+  // element(t, node)
   return node
 }

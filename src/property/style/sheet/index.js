@@ -17,9 +17,7 @@ const isNotEmpty = store => {
   for (let i in store) return true
 }
 
-const toDash = key => {
-  return key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase()
-}
+const toDash = key => key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase()
 
 const uid = num => {
   const div = num / 26 | 0
@@ -70,7 +68,6 @@ const setStyle = (t, store, elem, pid) => {
         const rule = globalSheet.map[s]
         map[s] = rule
       }
-
       className += ' ' + map[s]
     }
   }
@@ -193,7 +190,8 @@ const clear = () => {
   globalSheet.map = {}
 }
 
-const done = (elem, resolve) => {
+const done = (elem, resolve, create) => {
+  if (create) elem.stylesheet = new StyleSheet(elem, globalSheet)
   if (elem.stylesheet) elem.stylesheet.exec(elem.node, resolve)
   inProgress = void 0
 }
