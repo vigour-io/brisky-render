@@ -38,11 +38,10 @@ const setStyle = (t, store, elem, pid) => {
   const map = style.map
   const mediaMap = style.mediaMap
   var mc = 0
+  // console.log('DOOO', store)
   for (let key in store) {
     if (key.indexOf('@media') === 0) {
-      if (!mediaMap[key]) {
-        mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }
-      }
+      if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }
       const mmap = mediaMap[key]
       const parsed = store[key]
       for (let style in parsed) {

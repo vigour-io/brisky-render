@@ -15,7 +15,11 @@ const parseStyle = (style, target) => {
       target.globalSheet.count++
     } else if (cssRule.media) {
       let media = '@media ' + cssRule.conditionText
-      if (!target.mediaMap[media]) target.mediaMap[media] = {}
+      if (!target.mediaMap[media]) {
+        target.mediaMap[media] = {
+          id: ++target.mediaMap.count, count: 0, state: {}
+        }
+      }
       for (let rule in cssRule.cssRules) {
         if (cssRule.cssRules[rule].selectorText) {
           let body = cssRule.cssRules[rule].cssText.match(/.+\{ (.+) \}/)

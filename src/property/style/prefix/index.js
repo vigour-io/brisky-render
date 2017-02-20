@@ -32,9 +32,9 @@ if (
   (ua.platform === 'ios' && ua.version < 9.2) ||
   (ua.platform === 'android' && ua.version <= 4.5)// 4.4.4
 ) {
+  console.log('wuuut')
+  prefix.transformOrigin = 'WebkitTransformOrigin'
   prefix.transform = 'WebkitTransform'
-} else {
-  prefix.transform = 'transform'
 }
 
 export default prefix
