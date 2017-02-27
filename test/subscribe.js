@@ -22,16 +22,14 @@ test('subscribe - merge', t => {
 
 test('subscribe - object subscription', t => {
   const state = s({
-    // x: {
-      a: 'its a ',
-      b: 'its b ',
-      val: 'bla',
-      fields: {
-        a: {
-          title: 'its fields.a '
-        }
+    a: 'its a ',
+    b: 'its b ',
+    val: 'bla',
+    fields: {
+      a: {
+        title: 'its fields.a '
       }
-    // }
+    }
   })
   const app = render({
     text: {
