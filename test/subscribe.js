@@ -3,58 +3,56 @@ const test = require('tape')
 const { create: s } = require('brisky-struct')
 const p = require('parse-element')
 
-test('subscribe - merge', t => {
-  const state = s({
-    field: 'its text'
-  })
-  const app = render(
-    {
-      text: { $: 'field' },
-      a: { tag: 'a', $: 'field' }
-    },
-    state
-  )
-  t.equal(p(app), '<div>its text<a></a></div>', 'initial')
-  state.field.set('update')
-  t.equal(p(app), '<div>update<a></a></div>', 'fires update')
-  t.end()
-})
+// test('subscribe - merge', t => {
+//   const state = s({
+//     field: 'its text'
+//   })
+//   const app = render(
+//     {
+//       text: { $: 'field' },
+//       a: { tag: 'a', $: 'field' }
+//     },
+//     state
+//   )
+//   t.equal(p(app), '<div>its text<a></a></div>', 'initial')
+//   state.field.set('update')
+//   t.equal(p(app), '<div>update<a></a></div>', 'fires update')
+//   t.end()
+// })
 
 test('subscribe - object subscription', t => {
   const state = s({
-    a: 'its a ',
-    b: 'its b ',
-    fields: {
-      a: {
-        title: 'its fields.a '
+    // x: {
+      a: 'its a ',
+      b: 'its b ',
+      val: 'bla',
+      fields: {
+        a: {
+          title: 'its fields.a '
+        }
       }
-    }
+    // }
   })
   const app = render({
-    // for text its even worse -- makes seperate elemts since its an element
-    html: {
+    // x: {
+      // $: 'x',
+    text: {
       $: {
-        val: 1, // from the top -- this has to become the real subs
-        // need a new system where a deeper subs can reference a subs -- so this has to fire
-        // the subs thats on top if it exists
-        // allways needs the top one
-        // fields: {
-        //   $any: {
-        //     title: {
-        //       val: true
-        //     }
-        //   }
-        // },
         a: { val: true },
         b: { val: true }
+      },
+      $transform: (val, state) => {
+        console.log('---->', state)
+        return state.get('a').compute() + ':' + state.get('b').compute()
       }
-    }
+      }
+    // }
   }, state, (subs) => {
     // console.log(subs)
   })
-  t.equal(p(app), '<div></div>', 'initial subs')
-  // state.a.set('haha a ')
-  // t.equal(p(app), '<div></div>', 'update a')
+  t.equal(p(app), '<div>bla</div>', 'initial subs')
+  state.a.set('haha a ')
+  t.equal(p(app), '<div>bla</div>', 'update a')
   t.end()
 })
 

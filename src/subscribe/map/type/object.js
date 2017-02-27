@@ -26,6 +26,7 @@ export default (t, map) => {
   const subs = get$(t)
   const arr = parse(subs, [], [])
   let cnt = false
+  t.isObject = true
   const def = getType(t)
   for (let i = 0, len = arr.length; i < len; i++) {
     let path = arr[i]
