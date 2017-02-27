@@ -32,9 +32,7 @@ injectable.define = {
             }
           }
         }
-        if (tag(parent) === 'fragment') {
-          return parent.findIndex(parent.parent())
-        }
+        if (tag(parent) === 'fragment') return parent.findIndex(parent.parent())
       }
     }
   }
