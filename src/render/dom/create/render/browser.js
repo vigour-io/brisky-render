@@ -5,6 +5,7 @@ import { property, element, isStatic, staticProps } from '../../../static'
 import { cache, tag } from '../../../../get'
 
 const injectable = {}
+const xmlns = 'http://www.w3.org/2000/svg'
 
 export default injectable
 
@@ -60,7 +61,9 @@ injectable.static = (t, pnode, noResolve) => {
       if (nodeType === 'fragment') {
         console.error('not handeling static fragments yet')
       } else {
-        node = document.createElement(nodeType)
+        node = nodeType === 'svg' || nodeType === 'path'
+            ? document.createElementNS(xmlns, nodeType)
+            : document.createElement(nodeType)
         property(t, node)
         element(t, node, true)
         t._cachedNode = node
@@ -71,7 +74,6 @@ injectable.static = (t, pnode, noResolve) => {
 }
 
 // fn for cached
-
 injectable.state = (t, type, subs, tree, id, pnode, state) => {
   // need to re-add cache ofc
   var cached = !t.resolve && cache(t)
@@ -99,7 +101,9 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           node = resolveState(t, pnode, id, state)
         }
         if (!node) {
-          node = document.createElement(nodeType)
+          node = nodeType === 'svg' || nodeType === 'path'
+            ? document.createElementNS(xmlns, nodeType)
+            : document.createElement(nodeType)
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
             t._cachedNode = node
@@ -111,7 +115,10 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           element(t, node)
         }
       } else {
-        node = document.createElement(nodeType)
+        node = nodeType === 'svg' || nodeType === 'path'
+            ? document.createElementNS(xmlns, nodeType)
+            : document.createElement(nodeType)
+        // node = document.createElement(nodeType)
         const hasStaticProps = staticProps(t).length
         if (hasStaticProps) {
           t._cachedNode = node
