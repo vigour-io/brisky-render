@@ -34,8 +34,6 @@ test('subscribe - object subscription', t => {
     // }
   })
   const app = render({
-    // x: {
-      // $: 'x',
     text: {
       $: {
         a: { val: true },
@@ -46,7 +44,6 @@ test('subscribe - object subscription', t => {
         return state.get('a').compute() + ':' + state.get('b').compute()
       }
       }
-    // }
   }, state, (subs) => {
     // console.log(subs)
   })

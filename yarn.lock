@@ -425,9 +425,9 @@ brisky-stamp@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/brisky-stamp/-/brisky-stamp-4.0.1.tgz#0f64287d2deb46471204b0710f4b7859ccc14469"
 
-brisky-struct@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-1.3.1.tgz#0469e89979b1ee5801951359324ddc74f616c9e8"
+brisky-struct@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/brisky-struct/-/brisky-struct-1.4.1.tgz#8b42a872215a6874f3694fc5a0c24275d524c705"
   dependencies:
     brisky-stamp "^4.0.0"
     string-hash "^1.1.0"
@@ -2775,6 +2775,10 @@ sshpk@^1.7.0:
     jodid25519 "^1.0.0"
     jsbn "~0.1.0"
     tweetnacl "~0.14.0"
+
+stamp@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/stamp/-/stamp-4.0.1.tgz#7b9cc9d1d375ae4c5140b9a93fe04656b6ebf31d"
 
 standard-engine@~5.2.0:
   version "5.2.0"
