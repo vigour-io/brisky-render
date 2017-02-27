@@ -2,7 +2,7 @@ import { create, subscribe, puid } from 'brisky-struct'
 import renderFn from './render'
 import element from '../element'
 import { getPath, get$, get$any } from '../get'
-import bstamp from 'brisky-stamp'
+import bstamp from 'stamp'
 import { render, done } from '../property/style/sheet'
 
 const renderStyle = render

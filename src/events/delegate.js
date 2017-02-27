@@ -1,5 +1,5 @@
 import attach from './attach'
-import bstamp from 'brisky-stamp'
+import { create, close } from 'stamp'
 import restore from './restore'
 
 const emitter = (t, key) => t.emitters && t.emitters[key] ||
@@ -13,7 +13,7 @@ export default (key, e) => {
     if (elem) {
       let listener = emitter(elem, key)
       if (listener) {
-        if (!stamp) stamp = bstamp.create()
+        if (!stamp) stamp = create()
         let data = { target: t }
         restore(data)
         elem.emit(key, attach(e, data), stamp)
@@ -22,6 +22,6 @@ export default (key, e) => {
         }
       }
     }
-    if (stamp) bstamp.close()
+    if (stamp) close()
   } while ((t = t.parentNode))
 }
