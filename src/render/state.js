@@ -5,15 +5,13 @@ const parent = (tree, pid) => (tree._ && tree._[pid]) ? tree
   : tree._p && parent(tree._p, pid)
 
 export default (t, state, type, subs, tree, id, pid, order) => {
-  if (t.isObject) {
-    // if (subs.val) {
+  if (t.isObject && (!t.isElement || t.isText)) {
     const p = parent(tree, pid)
     tree = p
     state = p.$t
     if (!state) {
-      console.log('wtf', p)
+      throw new Error('OBJECT SUBS - NO STATE')
     }
-    // }
   }
 
   if (type === 'remove') {

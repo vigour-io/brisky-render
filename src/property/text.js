@@ -12,7 +12,7 @@ export default injectable
 
 injectable.types = {
   text: {
-    class: null,
+    define: { isText: true },
     subscriptionType: 'shallow',
     render: {
       static (t, pnode) {
