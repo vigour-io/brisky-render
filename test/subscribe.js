@@ -42,10 +42,42 @@ test('subscribe - object subscription', t => {
       }
     }
   }, state)
-
   t.equal(p(app), '<div>its a :its b </div>', 'initial subs')
   state.a.set('haha a ')
   t.equal(p(app), '<div>haha a :its b </div>', 'update a')
+  t.end()
+})
+
+test('subscribe - object subscription element', t => {
+  const state = s({
+    blirf: {
+      a: 'its a ',
+      b: 'its b ',
+      val: 'bla',
+      fields: {
+        a: {
+          title: 'its fields.a '
+        }
+      }
+    }
+  })
+  const app = render({
+    dirt: {
+      tag: 'fragment',
+      $: 'blirf',
+      elem: {
+        $: {
+          val: 'property',
+          a: { val: true },
+          b: { val: true }
+        },
+        text: { $: 'a' }
+      }
+    }
+  }, state)
+  t.equal(p(app), '<div><div>its a </div></div>', 'initial subs')
+  state.blirf.a.set('haha a ')
+  t.equal(p(app), '<div><div>haha a </div></div>', 'update a')
   t.end()
 })
 
