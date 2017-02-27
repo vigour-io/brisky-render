@@ -1,6 +1,6 @@
 import { property } from '../render/static'
 import parent from '../render/dom/parent'
-import bstamp from 'brisky-stamp'
+import bstamp from 'stamp'
 import { get$ } from '../get'
 
 const injectable = {}

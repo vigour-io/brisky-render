@@ -26,6 +26,7 @@ injectable.state = (t, pnode, node, subs, tree, uid, order) => {
   if (order !== void 0) {
     const next = findNode(order, pnode)
     node._order = order
+    // console.log(next, order)
     if (next) {
       if (fragment) { fragment.push(node) }
       pnode.insertBefore(node, next)
@@ -43,11 +44,11 @@ injectable.state = (t, pnode, node, subs, tree, uid, order) => {
 function findNode (order, pnode) {
   const last = pnode._last
   if (order < last) {
-    for (let c = pnode.childNodes, len = c.length, i = 0; i < len; i++) {
-      if (c[i] && c[i]._order > order) {
-        if (i < 2 || (c[i - 1] && (c[i - 1]._order < order || !c[i - 1]._order))) {
-          return c[i]
-        }
+    const c = pnode.childNodes
+    let i = c.length
+    while (i--) {
+      if (c[i] && c[i]._order > order && (!c[i - 1] || c[i - 1]._order <= order)) {
+        return c[i]
       }
     }
   }

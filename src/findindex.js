@@ -21,7 +21,8 @@ injectable.define = {
                 for (let i = 0; i < len; i++) {
                   if (keys[i] === key) {
                     if (tag(parent) === 'fragment') {
-                      return (parent.findIndex(parent.parent()) || 1) + ((i + 1) / (len + 1)).toFixed(len + ''.length)
+                      const fraction = ((i + 1) / (len + 1)).toFixed((len + '').length)
+                      return (parent.findIndex(parent.parent()) || 1) + fraction
                     } else {
                       return i + 1
                     }
@@ -31,9 +32,7 @@ injectable.define = {
             }
           }
         }
-        if (tag(parent) === 'fragment') {
-          return parent.findIndex(parent.parent())
-        }
+        if (tag(parent) === 'fragment') return parent.findIndex(parent.parent())
       }
     }
   }

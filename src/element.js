@@ -63,6 +63,22 @@ const element = create({
     }
   }, // unnesecary code
   props: {
+    resolveAttr: (t, val, key, stamp) => {
+      var props = t.props
+      while (!props) {
+        props = t.inherits.props
+      }
+      const set = {}
+      for (let key in val) {
+        if (key in props) {
+          set[key] = val[key]
+        } else {
+          if (!set.attr) set.attr = {}
+          set.attr[key] = val[key]
+        }
+      }
+      t.set(set, stamp)
+    },
     tag: true,
     resolveHash: true,
     default: 'self'

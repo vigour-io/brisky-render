@@ -1,8 +1,5 @@
 const { element } = require('../')
 element.noResolve()
-// require('./sync') // not for now
-
-require('./fragment')
 
 require('./order')
 
@@ -40,6 +37,8 @@ require('./class')
 
 require('./render') // recreate broken test case
 
-require('./subscribe') // object subs and resubscribe -- object travel
-
 require('./style')
+
+require('./fragment')
+
+require('./subscribe') // object subs and resubscribe -- object travel
