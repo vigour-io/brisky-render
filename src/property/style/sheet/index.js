@@ -81,10 +81,12 @@ const setStyle = (t, store, elem, pid) => {
 const setClass = (node, newStyle, style) => {
   if (style) {
     if (newStyle !== style) {
-      node.className = node.className.replace(style, newStyle)
+      node.setAttribute('class', node.getAttribute('class').replace(style, newStyle))
+      // node.className = node.className.replace(style, newStyle)
     }
   } else {
-    node.className = (node.className || '') + newStyle
+    node.setAttribute('class', (node.getAttribute('class') || '') + newStyle)
+    // node.className = (node.className || '') + newStyle
   }
   node.setAttribute('data-style', newStyle)
 }
@@ -98,9 +100,15 @@ const sheet = {
     },
     static (t, node, store, pid) { // state gets passed by render.state
       const elem = inProgress || t.root()
+
       if (!getClass(t._p._p)) {
         if (isNotEmpty(store)) {
-          node.className = setStyle(t, store, elem, pid)
+          // optimize this
+          // if (node.tagName === 'svg') {
+            node.setAttribute('class', setStyle(t, store, elem, pid))
+          // } else {
+          //   node.className = setStyle(t, store, elem, pid)
+          // }
         }
       } else {
         const style = node.getAttribute('data-style')

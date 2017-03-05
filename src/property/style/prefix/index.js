@@ -21,6 +21,7 @@ if (ua.platform === 'ios' || ua.browser === 'safari') {
   prefix.flex = 'WebkitFlex'
 } else if (ua.browser === 'ie') {
   prefix.flex = 'msFlex'
+  prefix.class = 'className' // attribute
   if (ua.version === 10) {
     prefix.order = 'msFlexOrder'
   }

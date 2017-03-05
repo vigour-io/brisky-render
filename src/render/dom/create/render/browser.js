@@ -64,6 +64,7 @@ injectable.static = (t, pnode, noResolve) => {
         node = nodeType === 'svg' || nodeType === 'path'
             ? document.createElementNS(xmlns, nodeType)
             : document.createElement(nodeType)
+
         property(t, node)
         element(t, node, true)
         t._cachedNode = node

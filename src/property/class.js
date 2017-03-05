@@ -45,6 +45,7 @@ const parseStore = (val, store) => {
   return val
 }
 
+// use setAttribute if we want to support svg
 const setClassName = (val, node) => {
   const tron = node.getAttribute('data-style')
   if (val) {
