@@ -72,7 +72,7 @@ const setStyle = (t, store, elem, pid) => {
   }
   if (style.parsed) {
     style.update()
-  } else if (!inProgress) {
+  } else if (!inProgress && 'node' in elem) {
     style.exec(elem.node)
   }
   return className
