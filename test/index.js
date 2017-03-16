@@ -33,8 +33,6 @@ require('./switch')
 
 require('./class')
 
-require('./render') // recreate broken test case
-
 require('./style')
 
 require('./fragment')
@@ -42,3 +40,5 @@ require('./fragment')
 require('./subscribe') // object subs and resubscribe -- object travel
 
 require('./text')
+
+require('./render') // recreate broken test case
