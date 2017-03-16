@@ -16,10 +16,6 @@ injectable.types = {
     subscriptionType: 'shallow',
     render: {
       static (t, pnode) {
-
-        if (t.resolve) {
-
-        }
         appendStatic(t, pnode, document.createTextNode(t.compute()))
       },
       state  (t, s, type, subs, tree, id, pid, order) {
