@@ -26,16 +26,26 @@ injectable.types = {
           if (typeof val !== 'object' && val !== void 0) {
             pnode = parent(tree, pid)
             if (t.resolve) {
+              let lnode
               let i = pnode.childNodes.length
               while (i--) {
-                if (pnode.childNodes[i].nodeType === 3 && node.nodeValue == val) { //eslint-disable-line
+                console.log(pnode.childNodes[i].nodeValue, val)
+                if (pnode.childNodes[i].nodeType === 3 && pnode.childNodes[i].nodeValue == val) { //eslint-disable-line
                   node = tree._[id] = pnode.childNodes[i]
                   // if (node.nodeValue !== val) {
                   //   node.nodeValue = val
                   // }
+                  lnode = false
                   break
+                } else if (pnode.childNodes[i].nodeType === 3) {
+                  lnode = pnode.childNodes[i]
                 }
               }
+
+              if (lnode) {
+                pnode.removeChild(lnode)
+              }
+              // remove text nodes
             }
             if (!node) {
               node = tree._[id] = document.createTextNode(val)
