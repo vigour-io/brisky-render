@@ -16,6 +16,10 @@ injectable.types = {
     subscriptionType: 'shallow',
     render: {
       static (t, pnode) {
+
+        if (t.resolve) {
+
+        }
         appendStatic(t, pnode, document.createTextNode(t.compute()))
       },
       state  (t, s, type, subs, tree, id, pid, order) {
@@ -26,26 +30,19 @@ injectable.types = {
           if (typeof val !== 'object' && val !== void 0) {
             pnode = parent(tree, pid)
             if (t.resolve) {
-              let lnode
               let i = pnode.childNodes.length
               while (i--) {
-                console.log(pnode.childNodes[i].nodeValue, val)
-                if (pnode.childNodes[i].nodeType === 3 && pnode.childNodes[i].nodeValue == val) { //eslint-disable-line
+                if (pnode.childNodes[i].nodeType === 3) { //eslint-disable-line
                   node = tree._[id] = pnode.childNodes[i]
-                  // if (node.nodeValue !== val) {
-                  //   node.nodeValue = val
-                  // }
-                  lnode = false
+                  const rVal = pnode.childNodes[i].nodeValue
+                  if (rVal != val) {
+                    if (!~rVal.indexOf(val)) {
+                      pnode.childNodes[i].nodeValue = val
+                    }
+                  }
                   break
-                } else if (pnode.childNodes[i].nodeType === 3) {
-                  lnode = pnode.childNodes[i]
                 }
               }
-
-              if (lnode) {
-                pnode.removeChild(lnode)
-              }
-              // remove text nodes
             }
             if (!node) {
               node = tree._[id] = document.createTextNode(val)
