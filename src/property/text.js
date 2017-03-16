@@ -28,11 +28,11 @@ injectable.types = {
             if (t.resolve) {
               let i = pnode.childNodes.length
               while (i--) {
-                if (pnode.childNodes[i].nodeType === 3) {
+                if (pnode.childNodes[i].nodeType === 3 && node.nodeValue === val) {
                   node = tree._[id] = pnode.childNodes[i]
-                  if (node.nodeValue !== val) {
-                    node.nodeValue = val
-                  }
+                  // if (node.nodeValue !== val) {
+                  //   node.nodeValue = val
+                  // }
                   break
                 }
               }
