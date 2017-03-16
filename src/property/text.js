@@ -28,7 +28,7 @@ injectable.types = {
             if (t.resolve) {
               let i = pnode.childNodes.length
               while (i--) {
-                if (pnode.childNodes[i].nodeType === 3 && node.nodeValue === val) {
+                if (pnode.childNodes[i].nodeType === 3 && node.nodeValue == val) { //eslint-disable-line
                   node = tree._[id] = pnode.childNodes[i]
                   // if (node.nodeValue !== val) {
                   //   node.nodeValue = val
