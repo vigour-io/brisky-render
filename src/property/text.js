@@ -31,7 +31,7 @@ injectable.types = {
                 if (pnode.childNodes[i].nodeType === 3) { //eslint-disable-line
                   node = tree._[id] = pnode.childNodes[i]
                   const rVal = pnode.childNodes[i].nodeValue
-                  if (rVal != val) {
+                  if (rVal != val) { //eslint-disable-line
                     if (!~rVal.indexOf(val)) {
                       pnode.childNodes[i].nodeValue = val
                     }
