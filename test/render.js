@@ -182,10 +182,8 @@ test('render - overtake / resolve', t => {
     // document.body.appendChild(overtake)
   }
 
-  const x = render(overtake, app, state)
+  // const x = render(overtake, app, state)
 
-  // t.equal(x, overtake) should stay the same....
-  // console.log(p(x))
   element.noResolve(true)
 
   t.end()
