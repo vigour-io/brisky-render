@@ -90,3 +90,22 @@ test('text - true subscription', t => {
   t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })
+
+test('text - multiple', t => {
+  const state = s({
+    first: { second: 'a' }
+  })
+  // add broken operator case and everything
+  const app = render({
+    $: 'first.second',
+    text: { $: true }
+  }, state)
+  t.equal(p(app), '<div>a</div>', 'correct html')
+
+  state.first.second.set(void 0)
+  t.equal(p(app), '<div></div>', 'set text to void 0')
+
+  state.first.set(null)
+  t.equal(p(app), '<div></div>', 'removed text')
+  t.end()
+})
