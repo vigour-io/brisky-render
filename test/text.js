@@ -92,20 +92,12 @@ test('text - true subscription', t => {
 })
 
 test('text - multiple', t => {
-  const state = s({
-    first: { second: 'a' }
-  })
-  // add broken operator case and everything
-  const app = render({
-    $: 'first.second',
-    text: { $: true }
-  }, state)
-  t.equal(p(app), '<div>a</div>', 'correct html')
-
-  state.first.second.set(void 0)
-  t.equal(p(app), '<div></div>', 'set text to void 0')
-
-  state.first.set(null)
-  t.equal(p(app), '<div></div>', 'removed text')
+  const state = s({ title: 'hello' })
+  const app = render([
+    { type: 'text', val: '!' },
+    { type: 'text', $: 'title' },
+    { type: 'text', val: '!' }
+  ], state)
+  t.equal(p(app), '<div>!hello!</div>', 'reuse text type')
   t.end()
 })
