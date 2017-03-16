@@ -158,39 +158,35 @@ test('render - $switch on top', t => {
 // })
 
 test('render - overtake / resolve', t => {
-  // element.noResolve(false)
+  element.noResolve(false)
   const state = s({ text: 1 })
   const app = {
-    text: 'hello'
+    text: 'hello',
+    bla: {
+      text: 'x'
+    }
   }
 
-  /*
-    <div>HELLO</div>
-    <div id="drollie">💩</div>
-    <div id="123456123">🦄</div>
-  */
-
   const htmlResult = strip(`
-    <div>hello</div>
+    <div id="172192">hello<div>x</div></div>
   `)
 
   var overtake
   if (typeof window === 'undefined') {
     overtake = render(app, state)
-    // console.log('\n------------------------------')
-    // console.log(p(overtake))
-    // console.log('------------------------------')
     t.equal(p(overtake), htmlResult)
   } else {
-    overtake = document.createElement('div')
-    overtake.innerHTML = htmlResult
-    overtake = overtake.childNodes[0]
-    document.body.appendChild(overtake)
+    // overtake = document.createElement('div')
+    // overtake.innerHTML = htmlResult
+    // overtake = overtake.childNodes[0]
+    // document.body.appendChild(overtake)
   }
 
-  console.log(p(overtake))
+  const x = render(overtake, app, state)
 
-  // render(overtake, app, state)
-  // element.noResolve(true)
+  // t.equal(x, overtake) should stay the same....
+  // console.log(p(x))
+  element.noResolve(true)
+
   t.end()
 })
