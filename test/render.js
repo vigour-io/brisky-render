@@ -1,11 +1,11 @@
 const { render
   // , clearStyleCache
-  // , element
+  , element
 } = require('../')
 const test = require('tape')
 const { create: s } = require('brisky-struct')
 const p = require('parse-element')
-// const strip = require('strip-formatting')
+const strip = require('strip-formatting')
 // stirp formatting will remove data-hash
 
 test('render - $any on top', t => {
@@ -157,65 +157,34 @@ test('render - $switch on top', t => {
 //   t.end()
 // })
 
-// test('render - overtake / resolve', t => {
-//   element.noResolve(false)
-//   const state = s({ text: 1 })
-//   const app = {
-//     body: {
-//       hello: {
-//         text: { $: 'text' }
-//       },
-//       bla: {
-//         text: 'x',
-//         y: {
-//           hello: {
-//             x: { text: 'hello' }
-//           }
-//         },
-//         style: { border: '1px solid red' }
-//       }
-//     }
-//   }
+test('render - overtake / resolve', t => {
+  element.noResolve(false)
+  const state = s({ text: 1 })
+  const app = {
+    text: 'hello',
+    bla: {
+      text: 'x'
+    }
+  }
 
-//   /*
-//     <div>HELLO</div>
-//     <div id="drollie">💩</div>
-//     <div id="123456123">🦄</div>
-//   */
+  const htmlResult = strip(`
+    <div id="172192">hello<div>x</div></div>
+  `)
 
-//   const htmlResult = strip(`
-//     <div id="5381">
-//        <div id="2088244976">
-//           <div id="404059415">1</div>
-//           <div class=" a" id="5031834">
-//              x
-//              <div>
-//                 <div>
-//                    <div>hello</div>
-//                 </div>
-//              </div>
-//           </div>
-//        </div>
-//        <style> .a {border:1px solid red;} </style>
-//     </div>
-//   `)
+  var overtake
+  if (typeof window === 'undefined') {
+    overtake = render(app, state)
+    t.equal(p(overtake), htmlResult)
+  } else {
+    // overtake = document.createElement('div')
+    // overtake.innerHTML = htmlResult
+    // overtake = overtake.childNodes[0]
+    // document.body.appendChild(overtake)
+  }
 
-//   clearStyleCache()
-//   var overtake
-//   if (typeof window === 'undefined') {
-//     overtake = render(app, state)
-//     // console.log('\n------------------------------')
-//     // console.log(p(overtake))
-//     // console.log('------------------------------')
-//     t.equal(p(overtake), htmlResult)
-//   } else {
-//     overtake = document.createElement('div')
-//     overtake.innerHTML = htmlResult
-//     overtake = overtake.childNodes[0]
-//     document.body.appendChild(overtake)
-//   }
+  // const x = render(overtake, app, state)
 
-//   render(overtake, app, state)
-//   element.noResolve(true)
-//   t.end()
-// })
+  element.noResolve(true)
+
+  t.end()
+})

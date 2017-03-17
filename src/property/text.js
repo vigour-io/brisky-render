@@ -28,10 +28,13 @@ injectable.types = {
             if (t.resolve) {
               let i = pnode.childNodes.length
               while (i--) {
-                if (pnode.childNodes[i].nodeType === 3) {
+                if (pnode.childNodes[i].nodeType === 3) { //eslint-disable-line
                   node = tree._[id] = pnode.childNodes[i]
-                  if (node.nodeValue !== val) {
-                    node.nodeValue = val
+                  const rVal = pnode.childNodes[i].nodeValue
+                  if (rVal != val) { //eslint-disable-line
+                    if (!~rVal.indexOf(val)) {
+                      pnode.childNodes[i].nodeValue = val
+                    }
                   }
                   break
                 }
