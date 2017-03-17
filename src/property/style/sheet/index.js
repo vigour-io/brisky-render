@@ -6,6 +6,10 @@ import { puid } from 'brisky-struct'
 import prefixVal from '../prefix/value'
 import prefix from '../prefix'
 
+const reversePrefix = {}
+for (const i in prefix) {
+  reversePrefix[prefix[i]] = i
+}
 var inProgress
 
 const globalSheet = {
@@ -48,7 +52,7 @@ const setStyle = (t, store, elem, pid) => {
         const value = parsed[style]
         if (typeof value === 'object' && 'inherits' in value) {
           const id = uid(++mc) + ((pid * 33 ^ puid(value)) >>> 0)
-          mmap.state[id] = toDash(style) + ':' + t.get([key, style]).compute(value, value)
+          mmap.state[id] = toDash(style) + ':' + t.get([key, reversePrefix[style] || style]).compute(value, value)
           className += ` ${id}`
         } else {
           const s = toDash(style) + ':' + value
