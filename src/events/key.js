@@ -11,7 +11,7 @@ const props = {
   arrowup: [ 38, 'ArrowUp', 'Up' ],
   arrowright: [ 39, 'ArrowRight', 'Right' ],
   arrowdown: [ 40, 'ArrowDown', 'Down' ],
-  // for TV only?
+  back: [ 8, 461, 'XF86Back', 'Backspace' ],
   select: [ 'Select' ]
 }
 
