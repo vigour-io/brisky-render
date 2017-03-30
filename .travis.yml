@@ -4,6 +4,8 @@ git:
   depth: 1
 node_js:
   - '7.0.0'
+before_install:
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
 script:
   - npm run travis
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run publish-branch || true; fi'
