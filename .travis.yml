@@ -4,7 +4,9 @@ git:
   depth: 1
 node_js:
   - '7.0.0'
-script: npm run travis
+script:
+  - npm run travis
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run publish-branch || true; fi'
 notifications:
   email: false
 deploy:
