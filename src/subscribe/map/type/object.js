@@ -38,7 +38,7 @@ export default (t, map) => {
       iterator(t, prevmap || map)
     }
     if (def !== 1 || !cnt) {
-      subscriber(prevmap || map, t, type === true ? 's' : 't')
+      subscriber(prevmap || map, t, type === true || type === 'shallow' ? 's' : 't')
     }
     if (!cnt) cnt = true
   }
