@@ -64,9 +64,11 @@ const element = create({
   }, // unnesecary code
   props: {
     resolveAttr: (t, val, key, stamp) => {
-      var props = t.props
-      while (!props) {
-        props = t.inherits.props
+      var f = t
+      var props
+      while (!props && f) {
+        props = f.props
+        f = f.inherits
       }
       const set = {}
       for (let key in val) {
@@ -111,9 +113,8 @@ const element = create({
 
 element.set({
   props: {
-    // with a subs ? not rly nessecary
     resolve: val => {
-      console.log('lets go prerender!')
+      // console.log('lets go prerender!')
     }
   }
 }, false)

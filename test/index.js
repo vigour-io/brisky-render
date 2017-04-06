@@ -3,8 +3,6 @@ element.noResolve()
 
 require('./order')
 
-require('./text')
-
 require('./parent')
 
 require('./html')
@@ -35,10 +33,12 @@ require('./switch')
 
 require('./class')
 
-require('./render') // recreate broken test case
-
 require('./style')
 
 require('./fragment')
 
 require('./subscribe') // object subs and resubscribe -- object travel
+
+require('./text')
+
+require('./render') // recreate broken test case

@@ -3,7 +3,7 @@ const test = require('tape')
 const parse = require('parse-element')
 const { create: s } = require('brisky-struct')
 const strip = require('strip-formatting')
-const bs = require('brisky-stamp')
+const bs = require('stamp')
 
 test('switch - basic', t => {
   const state = s({ field: { navigation: {} } })

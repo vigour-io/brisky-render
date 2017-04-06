@@ -9,7 +9,7 @@ const prefix = {}
 // }
 
 if (prefixes.transform === 'webkitTransform') {
-  prefix.transition = val => val.replace(/\btransform\b/, 'webkit-transform')
+  // prefix.transition = val => val.replace(/\btransform\b/, 'webkit-transform')
 }
 
 export default prefix

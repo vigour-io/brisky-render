@@ -90,3 +90,14 @@ test('text - true subscription', t => {
   t.equal(p(app), '<div></div>', 'removed text')
   t.end()
 })
+
+test('text - multiple', t => {
+  const state = s({ title: 'hello' })
+  const app = render([
+    { type: 'text', val: '!' },
+    { type: 'text', $: 'title' },
+    { type: 'text', val: '!' }
+  ], state)
+  t.equal(p(app), '<div>!hello!</div>', 'reuse text type')
+  t.end()
+})

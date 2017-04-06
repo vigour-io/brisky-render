@@ -7,9 +7,11 @@ const getPath = (t, path) => {
 
 const isWidget = t => t.isWidget !== void 0 ? t.isWidget : t.inherits && isWidget(t.inherits)
 
+// const cache = t => t._cachedNode
+
 const cache = t => t._cachedNode !== void 0
   ? t._cachedNode
-  : t.inherits && cache(t.inherits)
+  : !('style' in t) && !('attr' in t) && t.inherits && cache(t.inherits)
 
 const tag = t => t.tag || t.inherits && tag(t.inherits)
 

@@ -152,3 +152,32 @@ test('subscribe - object subscription + context', t => {
   }
   t.end()
 })
+
+test('subscribe - object sub - shallow', t => {
+  const state = s({
+    item: {
+      one: 'bla'
+    }
+  })
+  const app = render(
+    {
+      $: 'item',
+      text: {
+        $: { one: 'shallow' },
+        $transform: val => val.get('one').compute()
+      }
+    },
+    state
+  )
+
+  t.equal(p(app), '<div>bla</div>', 'initial')
+
+  state.set({
+    item: {
+      one: 'foo'
+    }
+  })
+
+  t.equal(p(app), '<div>foo</div>', 'updates')
+  t.end()
+})
