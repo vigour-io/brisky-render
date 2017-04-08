@@ -82,17 +82,6 @@ const setStyle = (t, store, elem, pid) => {
   return className
 }
 
-const setClass = (node, newStyle, style) => {
-  if (style) {
-    if (newStyle !== style) {
-      node.className = node.className.replace(style, newStyle)
-    }
-  } else {
-    node.className = (node.className || '') + newStyle
-  }
-  node.setAttribute('data-style', newStyle)
-}
-
 const sheet = {
   type: 'group',
   render: {
@@ -104,14 +93,33 @@ const sheet = {
       const elem = inProgress || t.root()
       if (!getClass(t._p._p)) {
         if (isNotEmpty(store)) {
-          node.className = setStyle(t, store, elem, pid)
+          if (t._p._p.get('tag') === 'svg') {
+            node.setAttribute('class', setStyle(t, store, elem, pid))
+          } else {
+            node.className = setStyle(t, store, elem, pid)
+          }
         }
       } else {
         const style = node.getAttribute('data-style')
         if (isNotEmpty(store)) {
           const newStyle = t._cachedNode = setStyle(t, store, elem, pid)
           if (newStyle) {
-            setClass(node, newStyle, style)
+            if (style) {
+              if (newStyle !== style) {
+                if (t._p._p.get('tag') === 'svg') {
+                  node.setAttribute('class', node.getAttribute('class').replace(style, newStyle))
+                } else {
+                  node.className = node.className.replace(style, newStyle)
+                }
+              }
+            } else {
+              if (t._p._p.get('tag') === 'svg') {
+                node.setAttribute('class', node.getAttribute('class') + newStyle)
+              } else {
+                node.className = (node.className || '') + newStyle
+              }
+            }
+            node.setAttribute('data-style', newStyle)
             return
           }
         }
