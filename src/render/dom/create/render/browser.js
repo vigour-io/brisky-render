@@ -57,7 +57,8 @@ const createElement = nodeType => {
       nodeType === 'g' ||
       nodeType === 'rect' ||
       nodeType === 'circle' ||
-      nodeType === 'ellipse'
+      nodeType === 'ellipse' ||
+      nodeType === 'polyline'
       ? document.createElementNS(xmlns, nodeType)
       : document.createElement(nodeType)
   }
