@@ -46,6 +46,21 @@ const staticFromCache = (cached) => {
   return node
 }
 
+const createElement = nodeType => {
+  if (nodeType === 'div') {
+    return document.createElement(nodeType)
+  } else {
+    return nodeType === 'svg' ||
+      nodeType === 'path' ||
+      nodeType === 'g' ||
+      nodeType === 'rect' ||
+      nodeType === 'circle' ||
+      nodeType === 'ellipse'
+      ? document.createElementNS(xmlns, nodeType)
+      : document.createElement(nodeType)
+  }
+}
+
 // indexes need to be copied when adding from pre-render
 injectable.static = (t, pnode, noResolve) => {
   // the cache node is nto good of course!
@@ -61,9 +76,7 @@ injectable.static = (t, pnode, noResolve) => {
       if (nodeType === 'fragment') {
         console.error('not handeling static fragments yet')
       } else {
-        node = nodeType === 'svg' || nodeType === 'path'
-            ? document.createElementNS(xmlns, nodeType)
-            : document.createElement(nodeType)
+        node = createElement(nodeType)
         property(t, node)
         element(t, node, true)
         t._cachedNode = node
@@ -101,9 +114,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           node = resolveState(t, pnode, id, state)
         }
         if (!node) {
-          node = nodeType === 'svg' || nodeType === 'path'
-            ? document.createElementNS(xmlns, nodeType)
-            : document.createElement(nodeType)
+          node = createElement(nodeType)
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
             t._cachedNode = node
@@ -115,10 +126,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           element(t, node)
         }
       } else {
-        node = nodeType === 'svg' || nodeType === 'path'
-            ? document.createElementNS(xmlns, nodeType)
-            : document.createElement(nodeType)
-        // node = document.createElement(nodeType)
+        node = createElement(nodeType)
         const hasStaticProps = staticProps(t).length
         if (hasStaticProps) {
           t._cachedNode = node
