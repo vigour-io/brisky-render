@@ -71,13 +71,11 @@ injectable.render = {
       }
     } else if (!node) {
       node = createState(t, s, type, subs, tree, id, pid, order)
-      // const onrender = hasRender(t)
-      // if (onrender) {
-      //   console.log('got render')
-      // }
+      const onrender = hasRender(t)
+      if (onrender && global.requestAnimationFrame) {
+        global.requestAnimationFrame(() => t.emit('render', { target: node, state: s }))
+      }
     }
     return node
   }
 }
-
-console.log('xxx')
