@@ -10,9 +10,7 @@ const setTransform = (val, store, node) => {
       ? unit(store.x, 'px')
       : '0px')}, ${(store.y
         ? unit(store.y, 'px')
-        : '0px')}, ${(store.z
-          ? unit(store.z, 'px')
-          : '0px')})`
+        : '0px')}, ${(store.z)})`
     val = val ? (val + ' ' + translate3d) : translate3d
   }
 

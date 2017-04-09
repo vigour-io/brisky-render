@@ -12,6 +12,11 @@ const getRemove = t => t.remove || t.inherits && getRemove(t.inherits)
 const hasRemove = t => t.emitters && getRemove(t.emitters) ||
   t.inherits && hasRemove(t.inherits)
 
+const getRender = t => t.render || t.inherits && getRender(t.inherits)
+
+const hasRender = t => t.emitters && getRender(t.emitters) ||
+  t.inherits && hasRender(t.inherits)
+
 const removeFragmentChild = (node, pnode) => {
   for (let i = 1, len = node.length; i < len; i++) {
     if (isFragment(node[i])) {
@@ -66,7 +71,13 @@ injectable.render = {
       }
     } else if (!node) {
       node = createState(t, s, type, subs, tree, id, pid, order)
+      // const onrender = hasRender(t)
+      // if (onrender) {
+      //   console.log('got render')
+      // }
     }
     return node
   }
 }
+
+console.log('xxx')
