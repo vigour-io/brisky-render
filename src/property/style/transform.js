@@ -5,12 +5,14 @@ import prefix from './prefix'
 const transform = prefix.transform || 'transform'
 
 const setTransform = (val, store, node) => {
-  if ('x' in store || 'y' in store) {
+  if ('x' in store || 'y' in store || 'z' in store) {
     const translate3d = `translate3d(${(store.x
       ? unit(store.x, 'px')
       : '0px')}, ${(store.y
         ? unit(store.y, 'px')
-        : '0px')}, 0px)`
+        : '0px')}, ${(store.z
+          ? unit(store.z, 'px')
+          : '0px')})`
     val = val ? (val + ' ' + translate3d) : translate3d
   }
 
