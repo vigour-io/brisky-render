@@ -15,12 +15,14 @@ const resolveState = (t, pnode, id, state) => {
     return t.node
   } else {
     const children = pnode.childNodes
-    id = (id * 33 ^ puid(state)) >>> 0
-    var i = children.length
-    while (i--) {
-      if (children[i].id == id) { // eslint-disable-line
-        children[i].removeAttribute('id')
-        return children[i]
+    if (children) {
+      id = (id * 33 ^ puid(state)) >>> 0
+      var i = children.length
+      while (i--) {
+        if (children[i].id == id) { // eslint-disable-line
+          children[i].removeAttribute('id')
+          return children[i]
+        }
       }
     }
   }
