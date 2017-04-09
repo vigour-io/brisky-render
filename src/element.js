@@ -72,7 +72,7 @@ const element = create({
       }
       const set = {}
       for (let key in val) {
-        if (key in props) {
+        if (key in props && key !== 'type') {
           set[key] = val[key]
         } else {
           if (!set.attr) set.attr = {}
