@@ -58,7 +58,14 @@ const createElement = nodeType => {
       nodeType === 'rect' ||
       nodeType === 'circle' ||
       nodeType === 'ellipse' ||
-      nodeType === 'polyline'
+      nodeType === 'polyline' ||
+      nodeType === 'polygon' ||
+      nodeType === 'linearGradient' ||
+      nodeType === 'defs' ||
+      nodeType === 'image' ||
+      nodeType === 'use' ||
+      nodeType === 'mask' ||
+      nodeType === 'stop'
       ? document.createElementNS(xmlns, nodeType)
       : document.createElement(nodeType)
   }
