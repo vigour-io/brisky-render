@@ -44,6 +44,7 @@
     "vigour-ua": "^3.1.1"
   },
   "devDependencies": {
+    "pretty": "^1.0.0",
     "bubleify": "0.5.1",
     "builder-boy": "latest",
     "coveralls": "^2.11.12",
