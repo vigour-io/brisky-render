@@ -27,7 +27,6 @@ export default (t, map) => {
   } else if (typeof $any === 'object') {
     extra = parse($any)
 
-    console.log('EXTRA', extra)
     $any = $any.val
     key = '$any' + puid(t)
   } else {
@@ -80,10 +79,6 @@ export default (t, map) => {
 
   if (extra) {
     mergeExtra(extra, map[key])
-  }
-
-  if (typeof window !== 'undefined') {
-    console.log(map)
   }
 
   return map
