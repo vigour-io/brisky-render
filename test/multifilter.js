@@ -92,6 +92,8 @@ test('clone - reuse ', t => {
   })
 
   console.log(pretty(parse(app)))
+
+  t.end()
   // const path = []
   // sInstance.subscribe({
   //   page: {
