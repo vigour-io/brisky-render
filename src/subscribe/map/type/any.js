@@ -26,6 +26,8 @@ export default (t, map) => {
     key = '$any' + puid(t)
   } else if (typeof $any === 'object') {
     extra = parse($any)
+
+    console.log('EXTRA', extra)
     $any = $any.val
     key = '$any' + puid(t)
   } else {
@@ -80,6 +82,10 @@ export default (t, map) => {
     mergeExtra(extra, map[key])
   }
 
+  if (typeof window !== 'undefined') {
+    console.log(map)
+  }
+
   return map
 }
 
@@ -104,7 +110,7 @@ const $keys = (map, i, t) => {
 const mergeExtra = (target, map, deep) => {
   for (let i in target) {
     let t = target[i]
-    if (!deep && (i === 'root' || i === 'parent')) {
+    if (!deep) { //  && (i === 'root' || i === 'parent')
       $keys(map, i, t)
     } else {
       let type = typeof t
