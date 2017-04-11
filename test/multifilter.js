@@ -48,9 +48,9 @@ test('clone - reuse ', t => {
   const app = render({
     search: {
       $: 'page.current',
-      text: '?',
       fields: {
         $: '$any',
+        // $: 'shows',
         props: {
           default: {
             tag: 'ul',
@@ -62,14 +62,12 @@ test('clone - reuse ', t => {
                 }
               },
               title: true,
-              val: (keys, s) => {
+              val: (keys, s) => keys.filter(key => {
                 const q = s.root().get([ 'search', 'query', 'compute' ])
-                return q && keys.filter(key => {
-                  if (s.get([ key, 'title', 'compute' ]).indexOf(q) !== 1) {
-                    return true
-                  }
-                })
-              }
+                if (q && (s.get([ key, 'title', 'compute' ]) || '').indexOf(q) !== -1) {
+                  return true
+                }
+              })
             },
             props: {
               default: {
@@ -90,7 +88,7 @@ test('clone - reuse ', t => {
   })
 
   s.set({
-    search: { query: 'show' }
+    search: { query: '1' }
   })
 
   console.log(pretty(parse(app)))
