@@ -64,7 +64,8 @@ injectable.render = {
             if (isFragment(pnode)) {
               pnode = findParent(pnode)
             }
-            pnode.removeChild(node)
+
+            node.parentNode.removeChild(node)
           }
         }
         delete tree._[id]
