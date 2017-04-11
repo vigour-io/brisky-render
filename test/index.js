@@ -1,46 +1,46 @@
 const { element } = require('../')
 element.noResolve()
 
-// require('./order')
+require('./order')
 
-// require('./parent')
+require('./parent')
 
-// require('./html')
+require('./html')
 
-// require('./clone')
+require('./clone')
 
-// require('./reference')
+require('./reference')
 
-// require('./property')
+require('./property')
 
-// require('./group')
+require('./group')
 
-// require('./test')
+require('./test')
 
-// require('./context')
+require('./context')
 
-// require('./remove')
+require('./remove')
 
-// require('./widget')
+require('./widget')
 
-// require('./events')
+require('./events')
 
-// require('./any')
+require('./any')
 
-// require('./attr')
+require('./attr')
 
-// require('./switch')
+require('./switch')
 
-// require('./class')
+require('./class')
 
-// require('./style')
+require('./style')
 
-// require('./fragment')
+require('./fragment')
 
-// require('./subscribe')
+require('./subscribe')
 
-// require('./text')
+require('./text')
 
-// require('./render')
+require('./render')
 
 require('./multifilter')
