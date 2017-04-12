@@ -13,6 +13,29 @@ if (typeof window === 'undefined') {
   })
 }
 
+/*
+element.setAttributeNS(
+namespace,
+name,
+value)
+
+element.removeAttributeNS(
+namespace,
+attrName);
+*/
+
+if (typeof window === 'undefined') {
+  global.Element.prototype.setAttributeNS = function (ns, key, value) {
+    this.setAttribute(key, value)
+  }
+  global.Element.prototype.getAttributeNS = function (ns, key) {
+    this.getAttribute(key)
+  }
+  global.Element.prototype.removeAttributeNS = function (ns, key) {
+    this.removeAttribute(key)
+  }
+}
+
 injectable.props = {
   attr: {
     type: 'property',
@@ -33,30 +56,62 @@ injectable.props = {
         render: {
           static (t, pnode) {
             const val = t.compute()
-            if (val === t || val === void 0) {
-              pnode.removeAttribute(t.name || t.key)
+            const key = t.name || t.key
+            if (~key.indexOf(':')) {
+              const namespace = 'http://www.w3.org/1999/xlink'
+              if (val === t || val === void 0) {
+                pnode.removeAttributeNS(namespace, key)
+              } else {
+                pnode.setAttributeNS(namespace, key, val)
+              }
             } else {
-              pnode.setAttribute(t.name || t.key, val)
+              if (val === t || val === void 0) {
+                pnode.removeAttribute(key)
+              } else {
+                pnode.setAttribute(key, val)
+              }
             }
           },
           state (t, state, type, subs, tree, id, pid) {
             const pnode = parent(tree, pid)
             const key = t.name || t.key
-            if (type === 'remove') {
-              if (pnode) {
-                pnode.removeAttribute(key)
-              }
-            } else {
-              let val = t.compute(state, state)
-              const type = typeof val
-              if (type === 'boolean') { val = val + '' }
-              if ((type === 'object' && val.inherits) || val === void 0) {
-                if (pnode.getAttribute(key)) {
-                  pnode.removeAttribute(key) // missing
+            if (~key.indexOf(':')) {
+              const namespace = 'http://www.w3.org/1999/xlink'
+              if (type === 'remove') {
+                if (pnode) {
+                  pnode.removeAttributeNS(namespace, key)
                 }
               } else {
-                if (pnode.getAttribute(key) != val) { // eslint-disable-line
-                  pnode.setAttribute(key, val)
+                let val = t.compute(state, state)
+                const type = typeof val
+                if (type === 'boolean') { val = val + '' }
+                if ((type === 'object' && val.inherits) || val === void 0) {
+                  if (pnode.getAttributeNS(namespace, key)) {
+                    pnode.removeAttribute(namespace, key) // missing
+                  }
+                } else {
+                  if (pnode.getAttributeNS(namespace, key) != val) { // eslint-disable-line
+                    pnode.setAttributeNS(namespace, key, val)
+                  }
+                }
+              }
+            } else {
+              if (type === 'remove') {
+                if (pnode) {
+                  pnode.removeAttribute(key)
+                }
+              } else {
+                let val = t.compute(state, state)
+                const type = typeof val
+                if (type === 'boolean') { val = val + '' }
+                if ((type === 'object' && val.inherits) || val === void 0) {
+                  if (pnode.getAttribute(key)) {
+                    pnode.removeAttribute(key) // missing
+                  }
+                } else {
+                  if (pnode.getAttribute(key) != val) { // eslint-disable-line
+                    pnode.setAttribute(key, val)
+                  }
                 }
               }
             }
