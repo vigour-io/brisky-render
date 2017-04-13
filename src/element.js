@@ -7,6 +7,7 @@ import html from './property/html'
 import group from './property/group'
 import attr from './property/attr'
 import css from './property/class'
+import scroll from './property/scroll'
 import style from './property/style'
 import widget from './widget'
 import events from './events'
@@ -104,6 +105,7 @@ const element = create({
     group,
     attr,
     css,
+    scroll,
     style,
     widget,
     events,
