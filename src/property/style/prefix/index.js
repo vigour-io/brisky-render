@@ -11,6 +11,7 @@ if (ua.prefix === 'moz') {
   ua.browser === 'edge'
 ) {
   prefix.appearance = 'WebkitAppearance'
+  prefix.clipPath = 'WebkitClipPath'
 }
 
 if (ua.browser === 'chrome' || ua.browser === 'safari') {
