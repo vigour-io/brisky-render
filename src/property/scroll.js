@@ -1,8 +1,8 @@
-// import attach from '../events/attach'
-
+import attach from '../events/attach'
 const easingCache = 3
 const easingFraction = 0.95
-const easingDistance = 5
+// const easingDistance = 5
+import { device } from 'vigour-ua/navigator'
 
 const bounds = (target, val) => {
   if (val < -target._height) {
@@ -21,23 +21,28 @@ const setVal = (target, val, original, event, stamp) => {
   target.style.transform = `translate3d(0, ${val}rem, 0)`
   if (!original) {
     original = target
-  } else {
-    event.target = original
   }
   if (original._ && original._._scrollListener) {
-    event.y = val
-    original._._scrollListener(event, stamp)
+    original._._scrollListener({ y: val, target: original }, stamp)
   }
   return val
 }
 
-const touchstart = ({ target, y }) => {
+const touchstart = ({ target, y, event }) => {
+  const ch = target.parentNode.clientHeight
+  const sh = target.scrollHeight
+  if (ch >= sh) {
+    target._block = true
+    target.__init = false
+    return true
+  }
+  target.__init = true
   target._start = y
   target._y = target._ly || 0
   target._easing = false
   target._prev = [ 1, 0, 0, 0 ]
-  target._height = target.scrollHeight - target.parentNode.clientHeight
-  target._block = target.parentNode.clientHeight >= target.scrollHeight
+  target._height = sh - ch
+  target._block = ch >= sh
 }
 
 const easeOut = (target, distance, original, event, stamp) => {
@@ -53,6 +58,7 @@ const easeOut = (target, distance, original, event, stamp) => {
 
 const touchend = (event, stamp) => {
   const target = event.target
+  target.__init = false
   const original = event.original
   var delta = 0
   var i = easingCache
@@ -84,6 +90,37 @@ const touchmove = (event, stamp) => {
   target._ly = setVal(target, val, original, event, stamp)
 }
 
+const lookupMode = [1.0, 28.0, 500.0]
+
+const wheel = (event, stamp) => {
+  const evt = event.event
+  evt.preventDefault()
+  if ('deltaY' in evt) {
+    const mode = lookupMode[evt.deltaMode] || lookupMode[0]
+    event.y = event.event.deltaY * mode * -1
+  } else if ('wheelDeltaX' in evt) {
+    event.y = evt.wheelDelta / -3
+  } else {
+    event.y = evt.wheelDelta / -3
+  }
+  const target = event.target
+  if (!target.__init) {
+    if (!target._ly) {
+      target._ly = 0
+    }
+    if (touchstart(event, stamp)) {
+      return
+    }
+  }
+  clearTimeout(target._timeout)
+  target._timeout = setTimeout(() => {
+    if (target.offsetParent !== null) {
+      target.__init = false
+    }
+  }, 20)
+  target._ly = setVal(target, target._ly + event.y, event.original, event, stamp)
+}
+
 export default {
   props: {
     scroll: (t, val) => {
@@ -107,6 +144,9 @@ export default {
       }
       if (target) {
         t.set({
+          style: {
+            // overflowY: 'scroll'
+          },
           on: {
             touchstart: {
               scroll: (val, stamp) => {
@@ -127,6 +167,13 @@ export default {
                 val.target = target(val.target)
                 touchend(val, stamp)
               }
+            },
+            wheel: {
+              scroll: (val, stamp) => {
+                val.original = val.target
+                val.target = target(val.target)
+                wheel(val, stamp)
+              }
             }
           }
         })
@@ -135,29 +182,11 @@ export default {
           on: {
             touchmove: { scroll: touchmove },
             touchstart: { scroll: touchstart },
-            touchend: { scroll: touchend }
+            touchend: { scroll: touchend },
+            wheel: { scroll: wheel }
           }
         })
       }
     }
   }
 }
-
-/*
-          // mousedown: {
-          //   scroll: val => {
-          //     const target = val.target
-          //     touchstart(val)
-          //     target._mm = e => {
-          //       touchmove(attach(e, val))
-          //     }
-          //     target.addEventListener('mousemove', target._mm, false)
-          //   }
-          // },
-          // mouseup: {
-          //   scroll: val => {
-          //     touchend(val)
-          //     val.target.removeEventListener('mousemove', val.target._mm)
-          //   }
-          // }
-*/
