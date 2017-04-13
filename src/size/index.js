@@ -4,9 +4,12 @@ var width, height
 
 if (device === 'phone') {
   // iphone 6 size
-  width = 1334 / 2
-  height = 750 / 2
+  height = 1334 / 2
+  width = 750 / 2
 } else if (device === 'desktop') {
+  width = 1920
+  height = 1080
+} else {
   width = 1920
   height = 1080
 }
