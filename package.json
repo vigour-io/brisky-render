@@ -1,6 +1,6 @@
 {
   "name": "brisky-render",
-  "version": "2.2.31",
+  "version": "2.2.32",
   "description": "A js library for creating blazing fast ui's",
   "main": "dist/index.js",
   "browser": {
@@ -8,7 +8,6 @@
     "./src/property/style/sheet/render": "./src/property/style/sheet/render/browser",
     "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
     "./src/events/listener": "./src/events/listener/browser",
-    "./src/render/merge": "./src/render/merge/browser",
     "./src/render/merge": "./src/render/merge/browser",
     "html-element/global-shim": false,
     "./src/size/index.js": false
