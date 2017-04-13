@@ -16,9 +16,3 @@ export default (e, data) => {
   data.event = e
   return data
 }
-
-export function attachStartPos (data) {
-  data.startX = data.x
-  data.startY = data.y
-  return data
-}
