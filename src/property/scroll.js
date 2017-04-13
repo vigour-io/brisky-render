@@ -1,8 +1,6 @@
-import attach from '../events/attach'
 const easingCache = 3
 const easingFraction = 0.95
 // const easingDistance = 5
-import { device } from 'vigour-ua/navigator'
 
 const bounds = (target, val) => {
   if (val < -target._height) {
