@@ -9,7 +9,9 @@
     "./src/render/dom/create/render": "./src/render/dom/create/render/browser",
     "./src/events/listener": "./src/events/listener/browser",
     "./src/render/merge": "./src/render/merge/browser",
-    "html-element/global-shim": false
+    "./src/render/merge": "./src/render/merge/browser",
+    "html-element/global-shim": false,
+    "./src/size/index.js": false
   },
   "scripts": {
     "watch": "builder-boy src/index.js dist/index.js -t node -t browser -r -w",
