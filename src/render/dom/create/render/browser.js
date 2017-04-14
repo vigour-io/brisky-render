@@ -77,7 +77,7 @@ injectable.static = (t, pnode, noResolve) => {
   const cached = cache(t)
   var node
   if (!t.resolve && cached && isStatic(t)) {
-    node = staticFromCache(cached)
+    // node = staticFromCache(cached)
   } else {
     if (cached) {
       throw new Error('static but its not static..... very strange....' + t.path())
@@ -89,7 +89,7 @@ injectable.static = (t, pnode, noResolve) => {
         node = createElement(nodeType)
         property(t, node)
         element(t, node, true)
-        t._cachedNode = node
+        // t._cachedNode = node
       }
     }
   }
@@ -127,11 +127,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           node = createElement(nodeType)
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
-            t._cachedNode = node
+            // t._cachedNode = node
             property(t, node)
-            if (hasStateProperties(t)) {
-              node = t._cachedNode.cloneNode(false)
-            }
+            // if (hasStateProperties(t)) {
+            //   node = t._cachedNode.cloneNode(false)
+            // }
           }
           element(t, node)
         }
@@ -139,11 +139,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
         node = createElement(nodeType)
         const hasStaticProps = staticProps(t).length
         if (hasStaticProps) {
-          t._cachedNode = node
+          // t._cachedNode = node
           property(t, node)
-          if (hasStateProperties(t)) {
-            node = t._cachedNode.cloneNode(false)
-          }
+          // if (hasStateProperties(t)) {
+          //   node = t._cachedNode.cloneNode(false)
+          // }
         }
         element(t, node)
       }
