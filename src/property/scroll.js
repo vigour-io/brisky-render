@@ -162,7 +162,6 @@ export default {
               global.cancelAnimationFrame(rt._isEasing)
               rt._easing = true
               if (!rt._ly) rt._ly = 0
-              console.log('?', bounds(rt, -y))
               easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9)
             }
           },
