@@ -1,5 +1,7 @@
 // TESTBROWSER!!!!???
-import { get, puid } from 'brisky-struct'
+import {
+  // get,
+  puid } from 'brisky-struct'
 import fragment from './fragment'
 import { property, element, isStatic, staticProps } from '../../../static'
 import { cache, tag } from '../../../../get'
@@ -28,25 +30,25 @@ const resolveState = (t, pnode, id, state) => {
   }
 }
 
-const hasStateProperties = t => {
-  const keys = t.keys()
-  if (keys) {
-    let i = keys.length
-    while (i--) {
-      let check = get(t, keys[i])
-      if (!check.isElement && !isStatic(check)) {
-        return true
-      }
-    }
-  }
-}
+// const hasStateProperties = t => {
+//   const keys = t.keys()
+//   if (keys) {
+//     let i = keys.length
+//     while (i--) {
+//       let check = get(t, keys[i])
+//       if (!check.isElement && !isStatic(check)) {
+//         return true
+//       }
+//     }
+//   }
+// }
 
-const staticFromCache = (cached) => {
-  const node = cached.cloneNode(true)
-  if (cached._index) node._index = cached._index
-  if (cached._last) node._last = cached._last
-  return node
-}
+// const staticFromCache = (cached) => {
+//   const node = cached.cloneNode(true)
+//   if (cached._index) node._index = cached._index
+//   if (cached._last) node._last = cached._last
+//   return node
+// }
 
 const createElement = nodeType => {
   if (nodeType === 'div') {
