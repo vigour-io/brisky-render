@@ -19,6 +19,11 @@ const setTransform = (val, store, node) => {
     val = val ? (val + ' ' + scale) : scale
   }
 
+  if ('skew' in store) {
+    const skew = `skew(${store.skew})`
+    val = val ? (val + ' ' + skew) : skew
+  }
+
   if ('rotate' in store) {
     const rotate = `rotate(${store.rotate}deg)`
     val = val ? (val + ' ' + rotate) : rotate
