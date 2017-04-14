@@ -1,6 +1,7 @@
 const easingCache = 3
 const easingFraction = 0.95
-// const easingDistance = 5
+const easingAccelerator = 1.5
+const quadraticEasing = 0.25
 
 const bounds = (target, val) => {
   if (val < -target._height) {
@@ -63,9 +64,9 @@ const touchend = (event, stamp) => {
   while (i--) {
     delta += target._prev[i] || 0
   }
-  delta = delta / easingCache
+  delta = (delta / easingCache) * easingAccelerator
   const sing = delta < 0 ? -1 : 1
-  var distance = 0.25 * ((delta * delta) * sing)
+  var distance = quadraticEasing * ((delta * delta) * sing)
   if (distance > 750) {
     distance = 750
   }

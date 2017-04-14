@@ -5,6 +5,10 @@ import attr from './property/attr'
 import prefix from './property/style/prefix'
 import './size'
 
+if (!global.devicePixelRatio) {
+  global.devicePixelRatio = 1
+}
+
 import { clear as clearStyleCache } from './property/style/sheet'
 
 if (typeof __filename !== 'undefined') console.log('brisky-render:', __filename)
