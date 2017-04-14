@@ -4,10 +4,10 @@ const easingFraction = 0.95
 
 const bounds = (target, val) => {
   if (val < -target._height) {
-    target._easing = false
+    // target._easing = false
     return -target._height
   } else if (val > 0) {
-    target._easing = false
+    // target._easing = false
     return 0
   } else {
     return val
@@ -20,6 +20,7 @@ const setVal = (target, val, original, event, stamp) => {
   if (!original) {
     original = target
   }
+
   if (original._ && original._._scrollListener) {
     original._._scrollListener({ y: val, target: original }, stamp)
   }
@@ -29,6 +30,7 @@ const setVal = (target, val, original, event, stamp) => {
 const touchstart = ({ target, y, event }) => {
   const ch = target.parentNode.clientHeight
   const sh = target.scrollHeight
+  global.cancelAnimationFrame(target._isEasing)
   if (ch >= sh) {
     target._block = true
     target.__init = false
@@ -43,11 +45,11 @@ const touchstart = ({ target, y, event }) => {
   target._block = ch >= sh
 }
 
-const easeOut = (target, distance, original, event, stamp) => {
+const easeOut = (target, distance, original, event, stamp, easingFraction) => {
   if (target._easing) {
-    target._ly = setVal(target, target._ly + distance * 0.1, original, event, stamp)
-    if (distance > 10 || distance < -10) {
-      global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, stamp))
+    target._ly = setVal(target, target._ly + distance * (1 - easingFraction), original, event, stamp)
+    if (distance > 0.5 || distance < -0.5) {
+      target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, stamp, easingFraction))
     } else {
       target._easing = false
     }
@@ -70,7 +72,7 @@ const touchend = (event, stamp) => {
     distance = 750
   }
   target._easing = true
-  easeOut(target, distance, original, event, stamp)
+  easeOut(target, distance, original, event, stamp, easingFraction)
 }
 
 const touchmove = (event, stamp) => {
@@ -133,17 +135,35 @@ export default {
           target = val.target
         }
       }
+
+      t.set({
+        define: {
+          hasScrollY: true
+        }
+      }, false)
+
       if (fn) {
         t.set({
           define: {
             _scrollListener: fn
           }
-        })
+        }, false)
       }
       if (target) {
         t.set({
-          style: {
-            // overflowY: 'scroll'
+          define: {
+            easeScrollY (y, t, stamp) {
+              const rt = target(t)
+              const event = {
+                original: t,
+                target: rt
+              }
+              global.cancelAnimationFrame(rt._isEasing)
+              rt._easing = true
+              if (!rt._ly) rt._ly = 0
+              console.log('?', bounds(rt, -y))
+              easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9)
+            }
           },
           on: {
             touchstart: {
@@ -174,16 +194,22 @@ export default {
               }
             }
           }
-        })
+        }, false)
       } else {
         t.set({
+          define: {
+            easeScrollY (y, node, stamp) {
+              // target._easi
+              easeOut(node, y - (target._ly || 0), node, { target: node }, stamp, 0.9)
+            }
+          },
           on: {
             touchmove: { scroll: touchmove },
             touchstart: { scroll: touchstart },
             touchend: { scroll: touchend },
             wheel: { scroll: wheel }
           }
-        })
+        }, false)
       }
     }
   }
