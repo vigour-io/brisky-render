@@ -37,7 +37,7 @@ const uid = (num, map) => {
   if (map) {
     for (let key in map) {
       if (map[key] === str) {
-        console.log('COLLISION ERROR!!!!', key)
+        console.log('COLLISION ERROR!!!!', key, str)
       }
     }
   }
