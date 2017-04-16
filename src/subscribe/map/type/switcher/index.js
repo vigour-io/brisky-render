@@ -4,12 +4,6 @@ import { parse, get, puid } from 'brisky-struct'
 
 export default (t, map, prevMap) => {
   const $ = get$(t)
-
-  // if ($ === true) {
-    // console.log('w000?')
-    // return map
-  // }
-
   let key = '$switch' + puid(t)
   $[$.length - 1] = key
   if ($.length !== 1) {
