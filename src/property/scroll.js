@@ -198,9 +198,11 @@ export default {
       } else {
         t.set({
           define: {
-            easeScrollY (y, node, stamp) {
-              // target._easi
-              easeOut(node, y - (target._ly || 0), node, { target: node }, stamp, 0.9)
+            easeScrollY (y, rt, stamp) {
+              global.cancelAnimationFrame(rt._isEasing)
+              rt._easing = true
+              if (!rt._ly) rt._ly = 0
+              easeOut(rt, bounds(rt, -y) - rt._ly, t, { target: rt }, stamp, 0.9)
             }
           },
           on: {
