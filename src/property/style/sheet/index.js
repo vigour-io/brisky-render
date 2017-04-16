@@ -23,7 +23,7 @@ const isNotEmpty = store => {
 
 const toDash = key => key.replace(/([A-Z])([a-z]|$)/g, '-$1$2').toLowerCase()
 
-const uid = num => {
+const uid = (num, map) => {
   const div = num / 26 | 0
   var str = String.fromCharCode(97 + num % 26)
   if (div) {
@@ -33,6 +33,15 @@ const uid = num => {
       str = str + String.fromCharCode(97 + div % 26)
     }
   }
+
+  if (map) {
+    for (let key in map) {
+      if (map[key] === str) {
+        console.log('COLLISION ERROR!!!!', key)
+      }
+    }
+  }
+
   return str
 }
 
@@ -56,7 +65,9 @@ const setStyle = (t, store, elem, pid) => {
           className += ` ${id}`
         } else {
           const s = toDash(style) + ':' + value
-          if (!mmap[s]) mmap[s] = uid(mmap.count++) + mmap.id
+          if (!mmap[s]) {
+            mmap[s] = uid(mmap.count++) + mmap.id
+          }
           className += ` ${mmap[s]}`
         }
         // this also has to be resolved of course....
@@ -66,7 +77,7 @@ const setStyle = (t, store, elem, pid) => {
       let s = toDash(key) + ':' + store[key]
       if (!map[s]) {
         let id
-        id = uid(globalSheet.count++)
+        id = uid(globalSheet.count++, globalSheet.map)
         if (!globalSheet.map[s]) globalSheet.map[s] = id
         const rule = globalSheet.map[s]
         map[s] = rule

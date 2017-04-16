@@ -60,6 +60,7 @@ const easeOut = (target, distance, original, event, stamp, easingFraction) => {
 const touchend = (event, stamp) => {
   const target = event.target
   target.__init = false
+  if (!target._prev) return
   const original = event.original
   var delta = 0
   var i = easingCache
