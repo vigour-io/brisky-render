@@ -33,15 +33,6 @@ const uid = (num, map) => {
       str = str + String.fromCharCode(97 + div % 26)
     }
   }
-
-  if (map) {
-    for (let key in map) {
-      if (map[key] === str) {
-        console.log('COLLISION ERROR!!!!', key)
-      }
-    }
-  }
-
   return str
 }
 
