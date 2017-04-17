@@ -95,6 +95,7 @@ const touchmove = (event, stamp) => {
 const lookupMode = [1.0, 28.0, 500.0]
 
 const wheel = (event, stamp) => {
+  event.prevent = true
   const evt = event.event
   evt.preventDefault()
   if ('deltaY' in evt) {
@@ -176,6 +177,7 @@ export default {
             },
             touchmove: {
               scroll: (val, stamp) => {
+                val.prevent = true
                 val.original = val.target
                 val.target = target(val.target)
                 touchmove(val, stamp)
@@ -208,7 +210,10 @@ export default {
             }
           },
           on: {
-            touchmove: { scroll: touchmove },
+            touchmove: { scroll: (val, stamp) => {
+              val.prevent = true
+              touchmove(val, stamp)
+            }},
             touchstart: { scroll: touchstart },
             touchend: { scroll: touchend },
             wheel: { scroll: wheel }
