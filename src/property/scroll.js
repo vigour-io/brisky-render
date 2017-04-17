@@ -127,6 +127,7 @@ export default {
   props: {
     scroll: (t, val) => {
       var fn, target
+      if (!val) return
       if (typeof val === 'function') {
         fn = val
       } else if (typeof val === 'object') {

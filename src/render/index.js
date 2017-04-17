@@ -7,7 +7,10 @@ import { render, done } from '../property/style/sheet'
 
 const renderStyle = render
 
+global.d = Date.now()
+
 export default (elem, state, cb, cb2) => {
+  console.log('now lets render', Date.now() - global.d, 'ms')
   var dom, node, t
   if (elem instanceof global.Element) {
     dom = elem
@@ -28,9 +31,11 @@ export default (elem, state, cb, cb2) => {
 
   renderStyle(elem)
 
+  var x = Date.now()
   const subs = elem.$map()
   const tree = t = {}
   const uid = puid(elem)
+  console.log('map subs', Date.now() - x, 'ms')
 
   // const walker = (subs) => {
   //   for (var i in subs) {
