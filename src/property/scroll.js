@@ -23,7 +23,7 @@ const setVal = (target, val, original, event, stamp) => {
   }
 
   if (original._ && original._._scrollListener) {
-    original._._scrollListener({ y: val, target: original }, stamp)
+    original._._scrollListener({ y: val, target: original, scroller: target }, stamp)
   }
   return val
 }
@@ -31,12 +31,15 @@ const setVal = (target, val, original, event, stamp) => {
 const touchstart = ({ target, y, event }) => {
   const ch = target.parentNode.clientHeight
   const sh = target.scrollHeight
+
   global.cancelAnimationFrame(target._isEasing)
+
   if (ch >= sh) {
     target._block = true
     target.__init = false
     return true
   }
+
   target.__init = true
   target._start = y
   target._y = target._ly || 0
@@ -44,10 +47,12 @@ const touchstart = ({ target, y, event }) => {
   target._prev = [ 1, 0, 0, 0 ]
   target._height = sh - ch
   target._block = ch >= sh
+  target._sh = sh
 }
 
 const easeOut = (target, distance, original, event, stamp, easingFraction) => {
   if (target._easing) {
+    // maybe stop when 2 ticks are same value
     target._ly = setVal(target, target._ly + distance * (1 - easingFraction), original, event, stamp)
     if (distance > 0.5 || distance < -0.5) {
       target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, stamp, easingFraction))
