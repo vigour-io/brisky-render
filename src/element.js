@@ -64,6 +64,10 @@ const element = create({
     }
   }, // unnesecary code
   props: {
+    subscribe: {
+      type: 'property',
+      render: { state () {}, static () {} }
+    },
     resolveAttr: (t, val, key, stamp) => {
       var f = t
       var props
