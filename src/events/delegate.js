@@ -22,6 +22,6 @@ export default (key, e) => {
         }
       }
     }
-    if (stamp) close()
   } while ((t = t.parentNode))
+  if (stamp) close()
 }
