@@ -38,16 +38,9 @@ const element = create({
     removeUnresolved () {
       if (typeof window !== 'undefined') {
         var d = Date.now()
-        // has to work better of course
-        // will fix this up beter later...
         const elems = this.node.querySelectorAll('[id]')
-
-        // console.log('???', elems)
-
-        // not supported in html element will become different
         var i = elems.length
         var l = 0
-        // measure this function
         while (i--) {
           if (elems[i].id > 1e6) {
             l++
@@ -57,8 +50,6 @@ const element = create({
         element._c = null
         element._cLevel = null
         element.set({ define: { resolve: false } })
-
-        // global.ms += Date.now() - d
         console.log(`REMOVE ${l} UN-RESOLVED`, Date.now() - d, 'ms')
       }
     }
