@@ -43,12 +43,12 @@ const resolveState = (t, pnode, id, state) => {
 //   }
 // }
 
-// const staticFromCache = (cached) => {
-//   const node = cached.cloneNode(true)
-//   if (cached._index) node._index = cached._index
-//   if (cached._last) node._last = cached._last
-//   return node
-// }
+const staticFromCache = (cached) => {
+  const node = cached.cloneNode(true)
+  if (cached._index) node._index = cached._index
+  if (cached._last) node._last = cached._last
+  return node
+}
 
 const createElement = nodeType => {
   if (nodeType === 'div') {
@@ -79,7 +79,7 @@ injectable.static = (t, pnode, noResolve) => {
   const cached = cache(t)
   var node
   if (!t.resolve && cached && isStatic(t)) {
-    // node = staticFromCache(cached)
+    node = staticFromCache(cached)
   } else {
     if (cached) {
       throw new Error('static but its not static..... very strange....' + t.path())
