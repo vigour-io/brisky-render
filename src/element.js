@@ -55,7 +55,7 @@ const element = create({
     }
   }, // unnesecary code
   props: {
-    subscribe: {
+    subscription: {
       type: 'property',
       render: { state () {}, static () {} }
     },
