@@ -80,9 +80,6 @@ injectable.static = (t, pnode, noResolve) => {
   if (!t.resolve && cached && isStatic(t)) {
     node = staticFromCache(cached)
   } else {
-    // if (cached) {
-    //   console.log('🤔 static but its not static..... very strange....' + t.path())
-    // } else {
     const nodeType = tag(t)
     if (nodeType === 'fragment') {
       console.error('not handeling static fragments yet')
