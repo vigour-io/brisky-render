@@ -77,7 +77,7 @@ injectable.static = (t, pnode, noResolve) => {
   // the cache node is nto good of course!
   const cached = cache(t)
   var node
-  if (!t.resolve && cached && isStatic(t)) {
+  if (cached && isStatic(t)) {
     node = staticFromCache(cached)
   } else {
     const nodeType = tag(t)
