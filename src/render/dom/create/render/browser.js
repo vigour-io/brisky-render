@@ -1,5 +1,6 @@
+// TESTBROWSER!!!!???
 import {
-  get,
+  // get,
   puid } from 'brisky-struct'
 import fragment from './fragment'
 import { property, element, isStatic, staticProps } from '../../../static'
@@ -29,25 +30,25 @@ const resolveState = (t, pnode, id, state) => {
   }
 }
 
-const hasStateProperties = t => {
-  const keys = t.keys()
-  if (keys) {
-    let i = keys.length
-    while (i--) {
-      let check = get(t, keys[i])
-      if (!check.isElement && !isStatic(check)) {
-        return true
-      }
-    }
-  }
-}
+// const hasStateProperties = t => {
+//   const keys = t.keys()
+//   if (keys) {
+//     let i = keys.length
+//     while (i--) {
+//       let check = get(t, keys[i])
+//       if (!check.isElement && !isStatic(check)) {
+//         return true
+//       }
+//     }
+//   }
+// }
 
-const staticFromCache = (cached) => {
-  const node = cached.cloneNode(true)
-  if (cached._index) node._index = cached._index
-  if (cached._last) node._last = cached._last
-  return node
-}
+// const staticFromCache = (cached) => {
+//   const node = cached.cloneNode(true)
+//   if (cached._index) node._index = cached._index
+//   if (cached._last) node._last = cached._last
+//   return node
+// }
 
 const createElement = nodeType => {
   if (nodeType === 'div') {
@@ -77,19 +78,22 @@ injectable.static = (t, pnode, noResolve) => {
   // the cache node is nto good of course!
   const cached = cache(t)
   var node
-  if (cached && isStatic(t)) {
-    node = staticFromCache(cached)
+  if (!t.resolve && cached && isStatic(t)) {
+    // node = staticFromCache(cached)
   } else {
-    const nodeType = tag(t)
-    if (nodeType === 'fragment') {
-      console.error('not handeling static fragments yet')
+    if (cached) {
+      throw new Error('static but its not static..... very strange....' + t.path())
     } else {
-      node = createElement(nodeType)
-      property(t, node)
-      element(t, node, true)
-      t._cachedNode = node
+      const nodeType = tag(t)
+      if (nodeType === 'fragment') {
+        console.error('not handeling static fragments yet')
+      } else {
+        node = createElement(nodeType)
+        property(t, node)
+        element(t, node, true)
+        // t._cachedNode = node
+      }
     }
-    // }
   }
   return node
 }
@@ -125,11 +129,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           node = createElement(nodeType)
           const hasStaticProps = staticProps(t).length
           if (hasStaticProps) {
-            t._cachedNode = node
+            // t._cachedNode = node
             property(t, node)
-            if (hasStateProperties(t)) {
-              node = t._cachedNode.cloneNode(false)
-            }
+            // if (hasStateProperties(t)) {
+            //   node = t._cachedNode.cloneNode(false)
+            // }
           }
           element(t, node)
         }
@@ -137,11 +141,11 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
         node = createElement(nodeType)
         const hasStaticProps = staticProps(t).length
         if (hasStaticProps) {
-          t._cachedNode = node
+          // t._cachedNode = node
           property(t, node)
-          if (hasStateProperties(t)) {
-            node = t._cachedNode.cloneNode(false)
-          }
+          // if (hasStateProperties(t)) {
+          //   node = t._cachedNode.cloneNode(false)
+          // }
         }
         element(t, node)
       }
