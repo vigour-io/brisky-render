@@ -46,9 +46,9 @@ test('events - basic - prevent', t => {
 
 test('basic - up, move, down', t => {
   const cases = {
-    move: [ 'mousemove', 'touchmove' ],
-    down: [ 'mousedown', 'touchstart' ],
-    up: [ 'mouseup', 'touchend' ]
+    move: [ 'mousemove' ], // 'touchmove'
+    down: [ 'mousedown' ], // 'touchstart'
+    up: [ 'mouseup' ] // 'touchend'
   }
   for (let type in cases) {
     let cnt = 0

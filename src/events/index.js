@@ -6,6 +6,12 @@ import listen from './listener'
 const emitterProperty = struct.props.on.struct.props.default
 const cache = {}
 const injectable = {}
+const isTouch = typeof window !== 'undefined' && (
+  ('ontouchstart' in global ||
+    global.DocumentTouch &&
+    document instanceof global.DocumentTouch) ||
+  navigator.msMaxTouchPoints ||
+  false)
 
 export default injectable
 
@@ -20,27 +26,18 @@ injectable.on = {
       }
       t._p.set({ hasEvents: true }, false)
       emitterProperty(t, val, key)
-    },
-    move: (t, val) => {
-      // add some checks perhaps?
-      t.set({
-        mousemove: val,
-        touchmove: val
-      })
-    },
-    down: (t, val) => {
-      t.set({
-        mousedown: val,
-        touchstart: val
-      })
-    },
-    up: (t, val) => {
-      t.set({
-        touchend: val,
-        mouseup: val
-      })
     }
   }
+}
+
+if (isTouch) {
+  injectable.on.props.move = (t, val) => t.set({ touchmove: val })
+  injectable.on.props.down = (t, val) => t.set({ touchstart: val })
+  injectable.on.props.up = (t, val) => t.set({ touchend: val })
+} else {
+  injectable.on.props.move = (t, val) => t.set({ mousemove: val })
+  injectable.on.props.down = (t, val) => t.set({ mousedown: val })
+  injectable.on.props.up = (t, val) => t.set({ mouseup: val })
 }
 
 injectable.props = {
