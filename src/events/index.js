@@ -13,6 +13,13 @@ const isTouch = typeof window !== 'undefined' && (
   navigator.msMaxTouchPoints ||
   false)
 
+const clear = () => { block = null }
+const blockMouse = () => {
+  if (block) clearTimeout(block)
+  block = setTimeout(clear, 300)
+}
+var block
+
 export default injectable
 
 injectable.on = {
@@ -22,10 +29,47 @@ injectable.on = {
     default: (t, val, key) => {
       if (!cache[key]) {
         cache[key] = true
-        listen(key, (e) => delegate(key, e))
+        listen(key, e => delegate(key, e))
       }
       t._p.set({ hasEvents: true }, false)
       emitterProperty(t, val, key)
+<<<<<<< HEAD
+=======
+    },
+    move: (t, val) => {
+      t.set({
+        mousemove: val,
+        touchmove: val
+      })
+    },
+    down: (t, val, key) => {
+      if (!cache[key]) {
+        cache[key] = true
+        listen('mousedown', e => {
+          !block && delegate(key, e)
+        })
+        listen('touchstart', e => {
+          blockMouse()
+          delegate(key, e)
+        })
+      }
+      t._p.set({ hasEvents: true }, false)
+      emitterProperty(t, val, key)
+    },
+    up: (t, val, key) => {
+      if (!cache[key]) {
+        cache[key] = true
+        listen('mouseup', e => {
+          !block && delegate(key, e)
+        })
+        listen('touchend', e => {
+          blockMouse()
+          delegate(key, e)
+        })
+      }
+      t._p.set({ hasEvents: true }, false)
+      emitterProperty(t, val, key)
+>>>>>>> d618946e5db8211cdd5b20482c25ce5e6e088bbd
     }
   }
 }
