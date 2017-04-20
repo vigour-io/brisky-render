@@ -38,9 +38,9 @@
   },
   "homepage": "https://github.com/vigour-io/brisky-render#readme",
   "dependencies": {
-    "stamp": "^4.0.1",
     "brisky-struct": "^1.4.2",
     "html-element": "^2.1.0",
+    "stamp": "^4.0.1",
     "string-hash": "^1.1.0",
     "vigour-ua": "^3.1.1"
   },
