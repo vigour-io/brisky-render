@@ -15,7 +15,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
   } else {
     const node = document.createElement(nodeType)
     if (!t._noResolve_) {
-      node.setAttribute('id', (id * 33 ^ puid(state)) >>> 0)
+      node.setAttribute('id', ((id * 33 ^ puid(state))) >>> 0)
     }
     property(t, node)
     element(t, node)

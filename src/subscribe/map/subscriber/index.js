@@ -6,6 +6,11 @@ export default (target, obs, type) => {
   var pid, id, parent, index
 
   id = puid(obs)
+
+  if (obs.isElement) {
+    // console.log(obs.path().join('/'), id)
+  }
+
   parent = getParent(obs.parent())
   pid = parent && puid(parent)
 

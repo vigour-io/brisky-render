@@ -76,8 +76,8 @@ const style = {
             return inlineStyle(t, val, key, stamp)
           }
         } else {
-          return inlineStyle(t, val, key, stamp)
-          // t.set({ sheet: { [key]: val } }, stamp)
+          // return inlineStyle(t, val, key, stamp)
+          t.set({ sheet: { [key]: val } }, stamp)
         }
       }
     }

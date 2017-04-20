@@ -1,6 +1,6 @@
 // TESTBROWSER!!!!???
 import {
-  // get,
+  get,
   puid } from 'brisky-struct'
 import fragment from './fragment'
 import { property, element, isStatic, staticProps } from '../../../static'
@@ -18,6 +18,7 @@ const resolveState = (t, pnode, id, state) => {
   } else {
     const children = pnode.childNodes
     if (children) {
+      // console.log(state.path(), puid(state))
       id = (id * 33 ^ puid(state)) >>> 0
       var i = children.length
       while (i--) {
@@ -30,18 +31,18 @@ const resolveState = (t, pnode, id, state) => {
   }
 }
 
-// const hasStateProperties = t => {
-//   const keys = t.keys()
-//   if (keys) {
-//     let i = keys.length
-//     while (i--) {
-//       let check = get(t, keys[i])
-//       if (!check.isElement && !isStatic(check)) {
-//         return true
-//       }
-//     }
-//   }
-// }
+const hasStateProperties = t => {
+  const keys = t.keys()
+  if (keys) {
+    let i = keys.length
+    while (i--) {
+      let check = get(t, keys[i])
+      if (!check.isElement && !isStatic(check)) {
+        return true
+      }
+    }
+  }
+}
 
 const staticFromCache = (cached) => {
   const node = cached.cloneNode(true)
@@ -78,7 +79,7 @@ injectable.static = (t, pnode, noResolve) => {
   // the cache node is nto good of course!
   const cached = cache(t)
   var node
-  if (!t.resolve && cached && isStatic(t)) {
+  if (cached && isStatic(t)) {
     node = staticFromCache(cached)
   } else {
     if (cached) {
@@ -119,9 +120,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     if (nodeType === 'fragment') {
       return fragment(t, pnode, id, tree)
     } else {
-      // will become an argument in render or something
       if (t.resolve) {
-        // dont resolve this
         if (!tree._p || !tree._p._key !== 'client') {
           node = resolveState(t, pnode, id, state)
         }
@@ -132,7 +131,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
             // t._cachedNode = node
             property(t, node)
             // if (hasStateProperties(t)) {
-            //   node = t._cachedNode.cloneNode(false)
+              // node = t._cachedNode.cloneNode(false)
             // }
           }
           element(t, node)
@@ -144,7 +143,7 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
           // t._cachedNode = node
           property(t, node)
           // if (hasStateProperties(t)) {
-          //   node = t._cachedNode.cloneNode(false)
+            // node = t._cachedNode.cloneNode(false)
           // }
         }
         element(t, node)
@@ -152,6 +151,5 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     }
     tree._[id] = node
   }
-  // element(t, node)
   return node
 }
