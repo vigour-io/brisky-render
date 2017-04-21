@@ -33,8 +33,6 @@ injectable.on = {
       }
       t._p.set({ hasEvents: true }, false)
       emitterProperty(t, val, key)
-<<<<<<< HEAD
-=======
     },
     move: (t, val) => {
       t.set({
@@ -69,7 +67,6 @@ injectable.on = {
       }
       t._p.set({ hasEvents: true }, false)
       emitterProperty(t, val, key)
->>>>>>> d618946e5db8211cdd5b20482c25ce5e6e088bbd
     }
   }
 }
