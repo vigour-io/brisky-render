@@ -37,34 +37,33 @@ const element = create({
     },
     removeUnresolved () {
       if (typeof window !== 'undefined') {
-        console.log(`prerender disabbled...`)
-        // setTimeout(() => {
-        //   var d = Date.now()
-        //   const elems = this.node.querySelectorAll('[id]')
-        //   var i = elems.length
-        //   var l = 0
+        setTimeout(() => {
+          var d = Date.now()
+          const elems = this.node.querySelectorAll('[id]')
+          var i = elems.length
+          var l = 0
 
-        //   while (i--) {
-        //     if ((elems[i].id | 0) > 1e6) {
-        //       // let p = elems[i].parentNode
-        //       // if (!p.id || !((p.id | 0) > 1e6)) {
-        //         // console.error(elems[i].id)
-        //       l++
-        //         // elems[i].style.boxShadow = 'inset 0px 0px 20px red'
-        //         // elems[i].style.height = '100px'
-        //         // elems[i].style.width = '100px'
-        //         // elems[i].style.backgroundColor = 'blue'
-        //         // elems[i].style.zIndex = '1000'
-        //         // elems[i].position = 'fixed'
-        //       elems[i].parentNode.removeChild(elems[i])
-        //       // }
-        //     }
-        //   }
-        //   element._c = null
-        //   element._cLevel = null
-        //   element.set({ define: { resolve: false } })
-        //   console.log(`REMOVE ${l} UN-RESOLVED`, Date.now() - d, 'ms')
-        // })
+          while (i--) {
+            if ((elems[i].id | 0) > 1e6) {
+              // let p = elems[i].parentNode
+              // if (!p.id || !((p.id | 0) > 1e6)) {
+                // console.error(elems[i].id)
+              l++
+                // elems[i].style.boxShadow = 'inset 0px 0px 20px red'
+                // elems[i].style.height = '100px'
+                // elems[i].style.width = '100px'
+                // elems[i].style.backgroundColor = 'blue'
+                // elems[i].style.zIndex = '1000'
+                // elems[i].position = 'fixed'
+              elems[i].parentNode.removeChild(elems[i])
+              // }
+            }
+          }
+          element._c = null
+          element._cLevel = null
+          element.set({ define: { resolve: false } })
+          console.log(`REMOVE ${l} UN-RESOLVED`, Date.now() - d, 'ms')
+        })
       }
     }
   }, // unnesecary code
