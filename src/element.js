@@ -1,4 +1,4 @@
-import { create } from 'brisky-struct'
+import { create, set } from 'brisky-struct'
 import subscribe from './subscribe'
 import findindex from './findindex'
 import domElement from './render/dom/element'
@@ -128,5 +128,16 @@ element.set({
     }
   }
 }, false)
+
+set(element, {
+  define: {
+    set (val) {
+      if (typeof window !== 'undefined') {
+        // console.log('SET', this.path())
+      }
+      return set(this, val, false)
+    }
+  }
+})
 
 export default element

@@ -20,7 +20,8 @@ export default (elem, state, cb, cb2) => {
   }
 
   if (!elem.inherits) {
-    elem = element.create(elem)
+    console.log('here')
+    elem = element.create(elem, false)
   }
 
   if (dom) {
