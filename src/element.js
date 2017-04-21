@@ -45,18 +45,18 @@ const element = create({
 
           while (i--) {
             if ((elems[i].id | 0) > 1e6) {
-              let p = elems[i].parentNode
-              if (!p.id || !((p.id | 0) > 1e6)) {
-                console.error(elems[i].id)
-                l++
+              // let p = elems[i].parentNode
+              // if (!p.id || !((p.id | 0) > 1e6)) {
+                // console.error(elems[i].id)
+              l++
                 // elems[i].style.boxShadow = 'inset 0px 0px 20px red'
                 // elems[i].style.height = '100px'
                 // elems[i].style.width = '100px'
                 // elems[i].style.backgroundColor = 'blue'
                 // elems[i].style.zIndex = '1000'
                 // elems[i].position = 'fixed'
-                elems[i].parentNode.removeChild(elems[i])
-              }
+              elems[i].parentNode.removeChild(elems[i])
+              // }
             }
           }
           element._c = null
