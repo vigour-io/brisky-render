@@ -37,18 +37,6 @@ export default (elem, state, cb, cb2) => {
   const uid = puid(elem)
   console.log('map subs', Date.now() - x, 'ms')
 
-  // const walker = (subs) => {
-  //   for (var i in subs) {
-  //     if (typeof subs[i] === 'object' && i !== '_') {
-  //       if (subs[i].val == 1) {
-  //         subs[i].val = 'shallow'
-  //       }
-  //       walker(subs[i])
-  //     }
-  //   }
-  // }
-  // walker(subs)
-
   if (state === void 0) {
     renderFn(state, 'new', subs, tree)
     if (cb) { cb(subs, tree, elem) }
