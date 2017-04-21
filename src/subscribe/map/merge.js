@@ -10,7 +10,10 @@ export default (t, subs, val, map) => {
       for (let i = 0, len = subs.length - 1, m = map, key; i < len; i++) {
         key = subs[i]
         m = m[key]
-        if (m.$blockRemove) { m.$blockRemove = false }
+        if (m.$blockRemove) {
+          m.$blockRemove = false
+        }
+        if (!m.val) m.val = 'switch'
       }
     }
     merge(t, field, val)
