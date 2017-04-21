@@ -35,7 +35,7 @@ export default (t, map) => {
 
   if ($.length !== 1) {
     const path = $.slice(0, -1)
-    const val = { val: 1 } // wrong for switch .. what to do
+    const val = { val: 'switch' } // wrong for switch .. what to do
     let walk = map
     let exists
     val[key] = child.$map(void 0, exists ? walk : val)
@@ -46,7 +46,7 @@ export default (t, map) => {
 
     if (!val[key].val) {
       if (!get$switch(child)) {
-        setVal(child, val[key], 1)
+        setVal(child, val[key], 'switch')
       }
     }
     // if (!child.$test && child.sync !== false && val.$any._.sync === true) {
@@ -62,7 +62,7 @@ export default (t, map) => {
 
     if (!map[key].val) {
       if (!get$switch(child)) {
-        setVal(child, map[key], 1)
+        setVal(child, map[key], 'switch')
       }
     }
 
@@ -116,7 +116,7 @@ const mergeExtra = (target, map, deep) => {
         if (!deep) {
           if (!map.val) {
             map.val = t
-          } else if (t === true && map.val === 1) {
+          } else if (t === true && map.val === 'switch') {
             map.val = t
           }
         }

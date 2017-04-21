@@ -7,7 +7,7 @@ import { get$, getType } from '../../../get'
 export default (t, map) => {
   const def = getType(t)
   const path = get$(t)
-  const type = def === 1 ? 't' : 's'
+  const type = def === 'switch' ? 't' : 's'
   if (path !== true) {
     map = merge(t, path, { val: def }, map)
   } else {

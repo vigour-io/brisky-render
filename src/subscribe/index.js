@@ -48,7 +48,7 @@ injectable.props = {
 }
 
 import map from './map'
-injectable.subscriptionType = 1
+injectable.subscriptionType = 'switch'
 injectable.inject = map
 
 /*

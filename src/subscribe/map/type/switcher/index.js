@@ -66,7 +66,7 @@ function mapSwitch (val, pkey, t, pmap, $) {
   for (let i = 0; i < len; i++) { select = select[$[i]] }
   select._.p = pmap._.p
   mappedProps.self = select
-  if (!select.val) select.val = 1
+  if (!select.val) select.val = 'switch'
 
   for (let key in props) {
     const keyO = key[0]
@@ -84,7 +84,7 @@ function mapSwitch (val, pkey, t, pmap, $) {
         let map = struct.$map(void 0, pmap)
         mappedProps[key] = map
         map._.p = pmap._.p
-        if (!map.val) { map.val = 1 }
+        if (!map.val) { map.val = 'switch' }
         delete struct.indexProperty
       }
     }

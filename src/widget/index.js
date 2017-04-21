@@ -7,7 +7,7 @@ export default injectable
 injectable.props = {
   isWidget: {
     type: 'property',
-    subscriptionType: 1,
+    subscriptionType: 'switch',
     $: true,
     render: {
       state (target, s, type, subs, tree, id, pid) {
