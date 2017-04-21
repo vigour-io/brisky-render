@@ -11,7 +11,7 @@ require('./clone')
 
 require('./reference')
 
-require('./property')
+// require('./property')
 
 require('./group')
 
