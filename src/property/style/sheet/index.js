@@ -111,14 +111,14 @@ const s = (t, node) => {
       if (newStyle) {
         if (style) {
           if (newStyle !== style) {
-            if (t._p._p.get('tag') === 'svg') {
+            if (t._p.get('tag') === 'svg') {
               node.setAttribute('class', node.getAttribute('class').replace(style, newStyle))
             } else {
               node.className = node.className.replace(style, newStyle)
             }
           }
         } else {
-          if (t._p._p.get('tag') === 'svg') {
+          if (t._p.get('tag') === 'svg') {
             node.setAttribute('class', node.getAttribute('class') + newStyle)
           } else {
             node.className = (node.className || '') + newStyle
