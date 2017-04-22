@@ -77,6 +77,7 @@ const createElement = nodeType => {
 // indexes need to be copied when adding from pre-render
 injectable.static = (t, pnode, noResolve) => {
   // the cache node is nto good of course!
+  // console.log('static')
   const cached = cache(t)
   var node
   if (cached && isStatic(t)) {
@@ -102,7 +103,7 @@ injectable.static = (t, pnode, noResolve) => {
 // fn for cached
 injectable.state = (t, type, subs, tree, id, pnode, state) => {
   // need to re-add cache ofc
-  var cached = !t.resolve && cache(t)
+  var cached = cache(t) //! t.resolve
   var node
   // @todo: this copies unwanted styles / props -- need to add an extra clonenode for this
   if (cached) {

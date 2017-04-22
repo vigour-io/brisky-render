@@ -97,9 +97,17 @@ export default class StyleSheet {
       return style
     }
   }
-  update () {
+  update (rules, map) {
     if (this.parsed) {
-      this.parsed.innerHTML = this.parse()
+      if (!rules) {
+        this.parsed.innerHTML = this.parse()
+      } else {
+        let i = rules.length
+        const sheet = this.parsed.sheet
+        while (i--) {
+          sheet.addRule('.' + map[rules[i]], rules[i])
+        }
+      }
     }
   }
 }

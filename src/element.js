@@ -20,14 +20,14 @@ const element = create({
     property,
     element: 'self'
   },
-  instances: false,
   define: {
+    instances: false,
     isElement: true,
     resolve: false,
     noResolve (val = true) {
       element._c = null
       element._cLevel = null
-      element.set({ define: { _noResolve_: val } })
+      set(element, { define: { _noResolve_: val } })
     },
     resolveNodes () {
       // find real inherits
@@ -42,19 +42,12 @@ const element = create({
           const elems = this.node.querySelectorAll('[id]')
           var i = elems.length
           var l = 0
-
           while (i--) {
             if ((elems[i].id | 0) > 1e6) {
               // let p = elems[i].parentNode
               // if (!p.id || !((p.id | 0) > 1e6)) {
                 // console.error(elems[i].id)
               l++
-                // elems[i].style.boxShadow = 'inset 0px 0px 20px red'
-                // elems[i].style.height = '100px'
-                // elems[i].style.width = '100px'
-                // elems[i].style.backgroundColor = 'blue'
-                // elems[i].style.zIndex = '1000'
-                // elems[i].position = 'fixed'
               elems[i].parentNode.removeChild(elems[i])
               // }
             }
@@ -79,16 +72,18 @@ const element = create({
         props = f.props
         f = f.inherits
       }
-      const set = {}
+      const setObj = {}
       for (let key in val) {
+        // if (key !== 'style') {
         if (key in props && key !== 'type') {
-          set[key] = val[key]
+          setObj[key] = val[key]
         } else {
-          if (!set.attr) set.attr = {}
-          set.attr[key] = val[key]
+          if (!setObj.attr) setObj.attr = {}
+          setObj.attr[key] = val[key]
         }
+        // }
       }
-      t.set(set, stamp)
+      set(t, setObj, stamp)
     },
     tag: true,
     resolveHash: true,
@@ -121,6 +116,8 @@ const element = create({
   ]
 }, false)
 
+element._elem_ = true
+
 element.set({
   props: {
     resolve: val => {
@@ -133,7 +130,7 @@ set(element, {
   define: {
     set (val) {
       if (typeof window !== 'undefined') {
-        // console.log('SET', this.path())
+        // console.log('SET', this.path(), val)
       }
       return set(this, val, false)
     }

@@ -2,6 +2,7 @@ const isStatic = t => t.isStatic !== void 0
   ? t.isStatic
   : t.inherits && isStatic(t.inherits)
 
+// optmize these things
 const staticProps = t => t.staticProps ||
   (t.staticProps = t.filter(t => !t.isElement && isStatic(t)))
 

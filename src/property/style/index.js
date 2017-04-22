@@ -1,9 +1,10 @@
 import parent from '../../render/dom/parent'
 import { property } from '../../render/static'
-import { sheet } from './sheet'
+import { s } from './sheet'
 import transform from './transform'
 import prefix from './prefix'
 import prefixVal from './prefix/value'
+import { set, addKey, get } from 'brisky-struct'
 
 const inlineStyle = {
   type: 'property',
@@ -56,10 +57,12 @@ const style = {
     }
   },
   props: {
-    sheet,
     transform,
     inlineStyle,
-    prefixInlineStyle
+    prefixInlineStyle,
+    sheet: (t, val) => {
+      t.parent().set({ sheet: val })
+    }
   },
   inject: t => {
     const inlineStyle = t.props.inlineStyle
@@ -77,15 +80,36 @@ const style = {
           }
         } else {
           // return inlineStyle(t, val, key, stamp)
-          t.set({ sheet: { [key]: val } }, stamp)
+          set(t.parent(), { sheet: { [key]: val } })
         }
       }
     }
-    t.set({ props }, false)
+    set(t, { props })
   }
 }
 
 export default {
   types: { inlineStyle, style },
-  props: { style: { type: 'style' } }
+  props: {
+    style: { type: 'style' },
+    sheet: {
+      type: 'property',
+      props: {
+        default: (t, val, key) => {
+          if (!get(t, key)) {
+            addKey(t, key)
+          }
+          t[key] = val
+        }
+      },
+      render: {
+        state: () => {},
+        static: (t, node) => {
+          s(t, node)
+          // s
+          // console.log('ok')
+        }
+      }
+    }
+  }
 }
