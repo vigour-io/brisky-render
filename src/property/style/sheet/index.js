@@ -1,9 +1,11 @@
-import parent from '../../../render/dom/parent'
-import { property } from '../../../render/static'
+// import parent from '../../../render/dom/parent'
+// import { property } from '../../../render/static'
 import { getClass } from '../../../get'
 import StyleSheet from './render'
-import { puid, get, getKeys } from 'brisky-struct'
-import prefixVal from '../prefix/value'
+import { get } from 'brisky-struct'
+
+// import { puid, get, getKeys } from 'brisky-struct'
+// import prefixVal from '../prefix/value'
 import prefix from '../prefix'
 
 const reversePrefix = {}
@@ -42,9 +44,9 @@ const setStyle = (t, store, elem, pid) => {
   var className = ''
   const style = elem.stylesheet || new StyleSheet(elem, globalSheet)
   const map = style.map
-  const mediaMap = style.mediaMap
+  // const mediaMap = style.mediaMap
   const newStyle = []
-  var mc = 0
+  // var mc = 0
   // console.log('DOOO', store)
   let keys = store.keys()
   let i = keys.length
