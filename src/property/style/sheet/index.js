@@ -52,7 +52,7 @@ const setStyle = (t, store, elem, pid) => {
   let i = keys.length
   while (i--) {
     let key = keys[i]
-    let val = get(store, key)
+    let val = get(store, key).compute()
   // for (let key in store) {
     if (key.indexOf('@media') === 0) {
       // if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }

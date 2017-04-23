@@ -36,6 +36,10 @@ export default (t, state, type, subs, tree, id, pid, order) => {
   } else if (!tree._) {
     tree._ = {}
   }
+  if (!t.render) {
+    // console.warn(t)
+    return
+  }
   return t.render.state(t, state, type, subs, tree, id, pid, order)
 }
 

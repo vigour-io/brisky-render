@@ -79,7 +79,6 @@ const style = {
             return inlineStyle(t, val, key, stamp)
           }
         } else {
-          // return inlineStyle(t, val, key, stamp)
           set(t.parent(), { sheet: { [key]: val } })
         }
       }
@@ -95,11 +94,8 @@ export default {
     sheet: {
       type: 'property',
       props: {
-        default: (t, val, key) => {
-          if (!get(t, key)) {
-            addKey(t, key)
-          }
-          t[key] = val
+        default: {
+          type: 'struct'
         }
       },
       render: {
