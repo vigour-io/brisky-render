@@ -4,7 +4,7 @@ import { s } from './sheet'
 import transform from './transform'
 import prefix from './prefix'
 import prefixVal from './prefix/value'
-import { set, addKey, get } from 'brisky-struct'
+import { set, addKey, get, compute } from 'brisky-struct'
 
 const inlineStyle = {
   type: 'property',
@@ -17,8 +17,8 @@ const inlineStyle = {
       if (type !== 'remove') {
         const node = parent(tree, pid)
         node.style[t.name || (t.key !== 'default' ? t.key : s.key)] = s
-        ? t.compute(s, s)
-        : t.compute()
+        ? compute(t, s, s, tree)
+        : compute(t)
       }
     }
   }
@@ -94,8 +94,11 @@ export default {
     sheet: {
       type: 'property',
       props: {
-        default: {
-          type: 'struct'
+        default: (t, val, key) => {
+          if (!get(t, key)) {
+            addKey(t, key)
+          }
+          t[key] = val
         }
       },
       render: {
