@@ -11,7 +11,7 @@ const props = {
   arrowup: [ 38, 'ArrowUp', 'Up' ],
   arrowright: [ 39, 'ArrowRight', 'Right' ],
   arrowdown: [ 40, 'ArrowDown', 'Down' ],
-  back: [ 8, 461, 'XF86Back', 'Backspace' ],
+  back: [ 8, 461, 10009, 'XF86Back', 'Backspace' ],
   select: [ 'Select' ]
 }
 

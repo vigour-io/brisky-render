@@ -214,7 +214,7 @@ export default {
         t.set({
           define: {
             setScrollY (y, t, stamp) {
-              const rt = target(t)
+              const rt = t
               global.cancelAnimationFrame(rt._isEasing)
               if (!rt._ly) rt._ly = 0
               rt._ly = setVal(rt, bounds(rt, -y) - rt._ly, t, void 0, stamp)
