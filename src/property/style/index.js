@@ -4,7 +4,7 @@ import { s } from './sheet'
 import transform from './transform'
 import prefix from './prefix'
 import prefixVal from './prefix/value'
-import { set, addKey, get, compute } from 'brisky-struct'
+import { set, compute } from 'brisky-struct'
 
 const inlineStyle = {
   type: 'property',
