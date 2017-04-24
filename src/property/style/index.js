@@ -94,12 +94,13 @@ export default {
     sheet: {
       type: 'property',
       props: {
-        default: (t, val, key) => {
-          if (!get(t, key)) {
-            addKey(t, key)
-          }
-          t[key] = val
-        }
+        default: {type: 'struct'}
+        // default: (t, val, key) => {
+        //   if (!get(t, key)) {
+        //     addKey(t, key)
+        //   }
+        //   t[key] = val
+        // }
       },
       render: {
         state: () => {},
