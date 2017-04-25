@@ -25,5 +25,7 @@ const getType = t => t.subscriptionType || t.inherits && getType(t.inherits)
 
 const getClass = t => t.class !== void 0 ? t.class : t.inherits && getClass(t.inherits)
 
-export { getPath, isWidget, cache, tag, get$, get$any, get$switch, getType, getClass }
+const getForce = t => t.forceSubscriptionMethod || t.inherits && getForce(t.inherits)
+
+export { getPath, getForce, isWidget, cache, tag, get$, get$any, get$switch, getType, getClass }
 

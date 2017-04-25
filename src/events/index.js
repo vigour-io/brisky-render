@@ -87,6 +87,8 @@ injectable.props = {
     // sync: false,
     // this is the time for sync: false....
     subscriptionType: 'switch',
+    forceSubscriptionMethod: 's',
+    // switch but with an s
     $: true,
     render: {
       state (target, s, type, subs, tree, id, pid) {

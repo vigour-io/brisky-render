@@ -37,6 +37,7 @@ injectable.props = {
   isStatic: true,
   $switch: true,
   $any: true,
+  forceSubscriptionMethod: true,
   subscriptionType: true,
   render (t, val) {
     t.set({
