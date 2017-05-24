@@ -108,23 +108,29 @@ const touchend = (event, stamp, setVal) => {
 
 const lookupMode = [1.0, 28.0, 500.0]
 
-const wheelX = (event, stamp) => {
+const wheelX = (event, stamp, sh) => {
   const evt = event.event
-  event.prevent = true
-  evt.preventDefault()
+
   if ('deltaX' in evt) {
+    if (Math.abs(evt.deltaX) <= Math.abs(evt.deltaY)) {
+      return
+    } else {
+      event.prevent = true
+      evt.preventDefault()
+    }
     const mode = lookupMode[evt.deltaMode] || lookupMode[0]
     event.x = evt.deltaX * mode * -1
   } else {
     // is this ok on x?
     event.x = evt.wheelDelta / -3
   }
+
   const target = event.target
   if (!target.__init) {
     if (!target._ly) {
       target._ly = 0
     }
-    if (touchstart(event, event.target.parentNode.clientWidth, event.target.scrollWidth)) {
+    if (touchstart(event, event.target.parentNode.clientWidth, sh)) {
       return
     }
   }
@@ -134,14 +140,20 @@ const wheelX = (event, stamp) => {
       target.__init = false
     }
   }, 20)
-  target._ly = setValX(target, target._ly + event.y, event.original, event, stamp)
+  target._ly = setValX(target, target._ly + event.x, event.original, event, stamp)
 }
 
-const wheelY = (event, stamp) => {
+const wheelY = (event, stamp, sh) => {
   event.prevent = true
   const evt = event.event
   evt.preventDefault()
   if ('deltaY' in evt) {
+    if (Math.abs(evt.deltaX) >= Math.abs(evt.deltaY)) {
+      return
+    } else {
+      event.prevent = true
+      evt.preventDefault()
+    }
     const mode = lookupMode[evt.deltaMode] || lookupMode[0]
     event.y = evt.deltaY * mode * -1
   } else {
@@ -152,7 +164,7 @@ const wheelY = (event, stamp) => {
     if (!target._ly) {
       target._ly = 0
     }
-    if (touchstart(event, event.target.parentNode.clientHeight, event.target.scrollHeight)) {
+    if (touchstart(event, event.target.parentNode.clientHeight, sh)) {
       return
     }
   }
@@ -168,19 +180,17 @@ const wheelY = (event, stamp) => {
 export default {
   props: {
     scroll: (t, val) => {
-      var fn, target, size
+      var fn, target, size, direction
+
       if (!val) return
       if (typeof val === 'function') {
         fn = val
       } else if (typeof val === 'object') {
-        if (val.onScroll) {
-          fn = val.onScroll
-        }
-        if (val.target) {
-          target = val.target
-        }
+        if (val.target) target = val.target
+        fn = val.onScroll
       }
-      const direction = val.direction || 'y'
+
+      direction = val.direction
 
       t.set({
         define: {
@@ -196,10 +206,14 @@ export default {
         }, false)
       }
 
+      if (!direction) {
+        direction = 'y'
+      }
+
       if (!size) {
         size = direction === 'y'
-          ? (t) => t.scrollHeight
-          : (t) => t.scrollWidth
+          ? (val) => val.target.scrollHeight
+          : (val) => val.target.scrollWidth
       }
 
       if (!target) {
@@ -230,10 +244,10 @@ export default {
           touchstart: {
             scroll: direction === 'y' ? (val, stamp) => {
               val.target = target(val.target)
-              touchstart(val, val.target.parentNode.clientHeight, size(val.target))
+              touchstart(val, val.target.parentNode.clientHeight, size(val))
             } : (val, stamp) => {
               val.target = target(val.target)
-              touchstart(val, val.target.parentNode.clientWidth, size(val.target))
+              touchstart(val, val.target.parentNode.clientWidth, size(val))
             }
           },
           touchmove: {
@@ -264,11 +278,11 @@ export default {
             scroll: direction === 'y' ? (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
-              wheelY(val, stamp)
+              wheelY(val, stamp, size(val))
             } : (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
-              wheelX(val, stamp)
+              wheelX(val, stamp, size(val))
             }
           }
         }
