@@ -1,7 +1,8 @@
 const easingCache = 3
 const easingFraction = 0.95
 const easingAccelerator = 1.5
-const quadraticEasing = 0.25
+const quadraticEasing = 0.5
+const abs = Math.abs
 
 const bounds = (target, val) => {
   if (val < -target._height) {
@@ -34,7 +35,7 @@ const setValX = (target, val, original, event, stamp) => {
     original = target
   }
   if (original._ && original._._scrollListener) {
-    original._._scrollListener({ x: val, target: original, scroller: target }, stamp)
+    original._._scrollListener({ x: val, target: original, scroller: target, state: event.state }, stamp)
   }
   return val
 }
@@ -47,12 +48,12 @@ const setValY = (target, val, original, event, stamp) => {
   }
 
   if (original._ && original._._scrollListener) {
-    original._._scrollListener({ y: val, target: original, scroller: target }, stamp)
+    original._._scrollListener({ y: val, target: original, scroller: target, state: event.state }, stamp)
   }
   return val
 }
 
-const touchstart = ({ target, y, event }, ch, sh) => {
+const touchstart = ({ target, event }, x, y, ch, sh) => {
   global.cancelAnimationFrame(target._isEasing)
 
   if (ch >= sh) {
@@ -69,13 +70,20 @@ const touchstart = ({ target, y, event }, ch, sh) => {
   target._height = sh - ch
   target._block = ch >= sh
   target._sh = sh
+  target._ey = y
+  target._ex = x
 }
 
-const touchmove = (event, stamp, setVal) => {
+const touchmove = (event, x, y, stamp, setVal) => {
   const target = event.target
-  if (target._block) return true
+  if (
+    target._block ||
+    abs(target._ey - y) <= abs(target._ex - x)
+  ) {
+    return true
+  }
+  event.prevent = true
   const original = event.original
-  const y = event.y
   const index = target._prev[0]
   target._prev[0]++
   if (target._prev[0] > easingCache) {
@@ -84,6 +92,8 @@ const touchmove = (event, stamp, setVal) => {
   const val = y - target._start + target._y
   target._prev[index] = val - (target._ly || 0)
   target._ly = setVal(target, val, original, event, stamp)
+  target._ey = y
+  target._ex = x
 }
 
 const touchend = (event, stamp, setVal) => {
@@ -112,7 +122,7 @@ const wheelX = (event, stamp, sh) => {
   const evt = event.event
 
   if ('deltaX' in evt) {
-    if (Math.abs(evt.deltaX) <= Math.abs(evt.deltaY)) {
+    if (abs(evt.deltaX) <= abs(evt.deltaY)) {
       return
     } else {
       event.prevent = true
@@ -130,7 +140,7 @@ const wheelX = (event, stamp, sh) => {
     if (!target._ly) {
       target._ly = 0
     }
-    if (touchstart(event, event.target.parentNode.clientWidth, sh)) {
+    if (touchstart(event, event.y, event.x, event.target.parentNode.clientWidth, sh)) {
       return
     }
   }
@@ -148,7 +158,7 @@ const wheelY = (event, stamp, sh) => {
   const evt = event.event
   evt.preventDefault()
   if ('deltaY' in evt) {
-    if (Math.abs(evt.deltaX) >= Math.abs(evt.deltaY)) {
+    if (abs(evt.deltaX) >= abs(evt.deltaY)) {
       return
     } else {
       event.prevent = true
@@ -164,7 +174,7 @@ const wheelY = (event, stamp, sh) => {
     if (!target._ly) {
       target._ly = 0
     }
-    if (touchstart(event, event.target.parentNode.clientHeight, sh)) {
+    if (touchstart(event, event.x, event.y, event.target.parentNode.clientHeight, sh)) {
       return
     }
   }
@@ -188,9 +198,9 @@ export default {
       } else if (typeof val === 'object') {
         if (val.target) target = val.target
         fn = val.onScroll
+        direction = val.direction
+        size = val.size
       }
-
-      direction = val.direction
 
       t.set({
         define: {
@@ -222,45 +232,46 @@ export default {
 
       t.set({
         define: {
-          setScrollY (y, t, stamp) {
+          setScroll (y, t, stamp) {
             const rt = target(t)
             global.cancelAnimationFrame(rt._isEasing)
             if (!rt._ly) rt._ly = 0
             rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, void 0, stamp)
           },
-          easeScrollY (y, t, stamp) {
+          easeScroll (y, t, stamp) {
             const rt = target(t)
             const event = {
               original: t,
-              target: rt
+              target: rt,
+              state: t._s
             }
             global.cancelAnimationFrame(rt._isEasing)
             rt._easing = true
             if (!rt._ly) rt._ly = 0
-            easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValY)
+
+            // console.log(bounds)
+            easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, direction === 'y' ? setValY : setValX)
           }
         },
         on: {
           touchstart: {
             scroll: direction === 'y' ? (val, stamp) => {
               val.target = target(val.target)
-              touchstart(val, val.target.parentNode.clientHeight, size(val))
+              touchstart(val, val.x, val.y, val.target.parentNode.clientHeight, size(val))
             } : (val, stamp) => {
               val.target = target(val.target)
-              touchstart(val, val.target.parentNode.clientWidth, size(val))
+              touchstart(val, val.y, val.x, val.target.parentNode.clientWidth, size(val))
             }
           },
           touchmove: {
             scroll: direction === 'y' ? (val, stamp) => {
-              val.prevent = true
               val.original = val.target
               val.target = target(val.target)
-              touchmove(val, stamp, setValY)
+              touchmove(val, val.x, val.y, stamp, setValY)
             } : (val, stamp) => {
-              val.prevent = true
               val.original = val.target
               val.target = target(val.target)
-              touchmove(val, stamp, setValX)
+              touchmove(val, val.y, val.x, stamp, setValX)
             }
           },
           touchend: {
