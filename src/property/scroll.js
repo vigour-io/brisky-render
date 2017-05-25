@@ -234,9 +234,20 @@ export default {
         define: {
           setScroll (y, t, stamp) {
             const rt = target(t)
+            const event = {
+              original: t,
+              target: rt,
+              state: t._s
+            }
             global.cancelAnimationFrame(rt._isEasing)
             if (!rt._ly) rt._ly = 0
-            rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, void 0, stamp)
+            if (direction === 'y') {
+              rt._height = size(event) - rt.parentNode.clientHeight
+              rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
+            } else {
+              rt._height = size(event) - rt.parentNode.clientWidth
+              rt._ly = setValX(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
+            }
           },
           easeScroll (y, t, stamp) {
             // if its scrolling from the fingers dont do it
