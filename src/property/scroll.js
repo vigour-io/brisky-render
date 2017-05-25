@@ -239,6 +239,7 @@ export default {
             rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, void 0, stamp)
           },
           easeScroll (y, t, stamp) {
+            // if its scrolling from the fingers dont do it
             const rt = target(t)
             const event = {
               original: t,
@@ -248,9 +249,13 @@ export default {
             global.cancelAnimationFrame(rt._isEasing)
             rt._easing = true
             if (!rt._ly) rt._ly = 0
-
-            // console.log(bounds)
-            easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, direction === 'y' ? setValY : setValX)
+            if (direction === 'y') {
+              rt._height = size(event) - rt.parentNode.clientHeight
+              easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValY)
+            } else {
+              rt._height = size(event) - rt.parentNode.clientWidth
+              easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValX)
+            }
           }
         },
         on: {
