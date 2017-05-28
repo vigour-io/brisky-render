@@ -30,7 +30,7 @@ const easeOut = (target, distance, original, event, stamp, easingFraction, setVa
 
 const setValX = (target, val, original, event, stamp) => {
   val = bounds(target, val)
-  target.style.transform = `translate3d(${val}rem, 0, 0)`
+  target.style.transform = `translate3d(${val}px, 0, 0)`
   if (!original) {
     original = target
   }
@@ -42,7 +42,7 @@ const setValX = (target, val, original, event, stamp) => {
 
 const setValY = (target, val, original, event, stamp) => {
   val = bounds(target, val)
-  target.style.transform = `translate3d(0, ${val}rem, 0)`
+  target.style.transform = `translate3d(0, ${val}px, 0)`
   if (!original) {
     original = target
   }
@@ -68,6 +68,7 @@ const touchstart = ({ target, event }, x, y, ch, sh) => {
   target._easing = false
   target._prev = [ 1, 0, 0, 0 ]
   target._height = sh - ch
+  console.log(sh, ch)
   target._block = ch >= sh
   target._sh = sh
   target._ey = y
@@ -120,13 +121,12 @@ const lookupMode = [1.0, 28.0, 500.0]
 
 const wheelX = (event, stamp, sh) => {
   const evt = event.event
-
+  evt.preventDefault()
   if ('deltaX' in evt) {
     if (abs(evt.deltaX) <= abs(evt.deltaY)) {
       return
     } else {
       event.prevent = true
-      evt.preventDefault()
     }
     const mode = lookupMode[evt.deltaMode] || lookupMode[0]
     event.x = evt.deltaX * mode * -1
@@ -140,6 +140,7 @@ const wheelX = (event, stamp, sh) => {
     if (!target._ly) {
       target._ly = 0
     }
+    console.log('-->', event.target.parentNode.clientWidth, event.target.parentNode)
     if (touchstart(event, event.y, event.x, event.target.parentNode.clientWidth, sh)) {
       return
     }
