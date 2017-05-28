@@ -68,7 +68,6 @@ const touchstart = ({ target, event }, x, y, ch, sh) => {
   target._easing = false
   target._prev = [ 1, 0, 0, 0 ]
   target._height = sh - ch
-  console.log(sh, ch)
   target._block = ch >= sh
   target._sh = sh
   target._ey = y
