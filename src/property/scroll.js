@@ -136,14 +136,12 @@ const wheelX = (event, stamp, sh) => {
 
   const target = event.target
   if (!target.__init) {
-    if (!target._ly) {
-      target._ly = 0
-    }
-    console.log('-->', event.target.parentNode.clientWidth, event.target.parentNode)
+    if (!target._ly) { target._ly = 0 }
     if (touchstart(event, event.y, event.x, event.target.parentNode.clientWidth, sh)) {
       return
     }
   }
+
   clearTimeout(target._timeout)
   target._timeout = setTimeout(() => {
     if (target.offsetParent !== null) {
@@ -273,9 +271,11 @@ export default {
           touchstart: {
             scroll: direction === 'y' ? (val, stamp) => {
               val.target = target(val.target)
+              val.target._fromEvent = true
               touchstart(val, val.x, val.y, val.target.parentNode.clientHeight, size(val))
             } : (val, stamp) => {
               val.target = target(val.target)
+              val.target._fromEvent = true
               touchstart(val, val.y, val.x, val.target.parentNode.clientWidth, size(val))
             }
           },
@@ -295,21 +295,27 @@ export default {
               val.original = val.target
               val.target = target(val.target)
               touchend(val, stamp, setValY)
+              val.target._fromEvent = false
             } : (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
               touchend(val, stamp, setValX)
+              val.target._fromEvent = false
             }
           },
           wheel: {
             scroll: direction === 'y' ? (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
+              val.target._fromEvent = true
               wheelY(val, stamp, size(val))
+              val.target._fromEvent = false
             } : (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
+              val.target._fromEvent = true
               wheelX(val, stamp, size(val))
+              val.target._fromEvent = false
             }
           }
         }
