@@ -1,3 +1,5 @@
+import bs from 'stamp'
+
 const easingCache = 3
 const easingFraction = 0.95
 const easingAccelerator = 1.5
@@ -16,14 +18,17 @@ const bounds = (target, val) => {
   }
 }
 
-const easeOut = (target, distance, original, event, stamp, easingFraction, setVal) => {
+const easeOut = (target, distance, original, event, stamp, easingFraction, setVal, prevVal) => {
   if (target._easing) {
     // maybe stop when 2 ticks are same value
     target._ly = setVal(target, target._ly + distance * (1 - easingFraction), original, event, stamp)
-    if (distance > 0.5 || distance < -0.5) {
-      target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, stamp, easingFraction, setVal))
+    var d
+    if (prevVal === void 0 || (d = prevVal - target._ly) > 0.5 || d < -0.5) {
+      prevVal = target._ly
+      target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, void 0, easingFraction, setVal, prevVal))
     } else {
       target._easing = false
+      target._fromEvent = false
     }
   }
 }
@@ -35,7 +40,12 @@ const setValX = (target, val, original, event, stamp) => {
     original = target
   }
   if (original._ && original._._scrollListener) {
-    original._._scrollListener({ x: val, target: original, scroller: target, state: event.state }, stamp)
+    if (!stamp) {
+      original._._scrollListener({ x: val, target: original, scroller: target, state: event.state }, bs.create())
+      bs.close()
+    } else {
+      original._._scrollListener({ x: val, target: original, scroller: target, state: event.state }, stamp)
+    }
   }
   return val
 }
@@ -46,9 +56,13 @@ const setValY = (target, val, original, event, stamp) => {
   if (!original) {
     original = target
   }
-
   if (original._ && original._._scrollListener) {
-    original._._scrollListener({ y: val, target: original, scroller: target, state: event.state }, stamp)
+    if (!stamp) {
+      original._._scrollListener({ y: val, target: original, scroller: target, state: event.state }, bs.create())
+      bs.close()
+    } else {
+      original._._scrollListener({ y: val, target: original, scroller: target, state: event.state }, stamp)
+    }
   }
   return val
 }
@@ -295,12 +309,10 @@ export default {
               val.original = val.target
               val.target = target(val.target)
               touchend(val, stamp, setValY)
-              val.target._fromEvent = false
             } : (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
               touchend(val, stamp, setValX)
-              val.target._fromEvent = false
             }
           },
           wheel: {
