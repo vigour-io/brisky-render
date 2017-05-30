@@ -14,12 +14,12 @@ const isTouch = typeof window !== 'undefined' && (
   navigator.msMaxTouchPoints ||
   false)
 
-const clear = () => { block = null }
+// const clear = () => { block = null }
 // const blockMouse = () => {
 //   if (block) clearTimeout(block)
 //   block = setTimeout(clear, 300)
 // }
-var block
+// var block
 var blockClick
 
 export default injectable
