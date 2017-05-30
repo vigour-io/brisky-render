@@ -46,7 +46,7 @@ injectable.on = {
         cache[key] = true
         listen(key, e => {
           const d = Date.now() - blockClick
-          return d < 1e3 && delegate(key, e)
+          return d < 500 && delegate(key, e)
         })
       }
       t._p.set({ hasEvents: true }, false)
