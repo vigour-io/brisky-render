@@ -15,10 +15,10 @@ const isTouch = typeof window !== 'undefined' && (
   false)
 
 const clear = () => { block = null }
-const blockMouse = () => {
-  if (block) clearTimeout(block)
-  block = setTimeout(clear, 300)
-}
+// const blockMouse = () => {
+//   if (block) clearTimeout(block)
+//   block = setTimeout(clear, 300)
+// }
 var block
 var blockClick
 
