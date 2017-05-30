@@ -6,12 +6,12 @@ import listen from './listener'
 const emitterProperty = struct.props.on.struct.props.default
 const cache = {}
 const injectable = {}
-const isTouch = typeof window !== 'undefined' && (
-  ('ontouchstart' in global ||
-    global.DocumentTouch &&
-    document instanceof global.DocumentTouch) ||
-  navigator.msMaxTouchPoints ||
-  false)
+// const isTouch = typeof window !== 'undefined' && (
+//   ('ontouchstart' in global ||
+//     global.DocumentTouch &&
+//     document instanceof global.DocumentTouch) ||
+//   navigator.msMaxTouchPoints ||
+//   false)
 
 const clear = () => { block = null }
 const blockMouse = () => {
@@ -19,6 +19,7 @@ const blockMouse = () => {
   block = setTimeout(clear, 300)
 }
 var block
+var blockClick
 
 export default injectable
 
@@ -40,13 +41,26 @@ injectable.on = {
         touchmove: val
       })
     },
+    click: (t, val, key) => {
+      if (!cache[key]) {
+        cache[key] = true
+        listen(key, e => {
+          const d = Date.now() - blockClick
+          return d < 1e3 && delegate(key, e)
+        })
+      }
+      t._p.set({ hasEvents: true }, false)
+      emitterProperty(t, val, key)
+    },
     down: (t, val, key) => {
       if (!cache[key]) {
         cache[key] = true
         listen('mousedown', e => {
-          !block && delegate(key, e)
+          blockClick = Date.now()
+          if (!block) delegate(key, e)
         })
         listen('touchstart', e => {
+          blockClick = Date.now()
           blockMouse()
           delegate(key, e)
         })
@@ -71,24 +85,21 @@ injectable.on = {
   }
 }
 
-if (isTouch) {
-  injectable.on.props.move = (t, val) => t.set({ touchmove: val })
-  injectable.on.props.down = (t, val) => t.set({ touchstart: val })
-  injectable.on.props.up = (t, val) => t.set({ touchend: val })
-} else {
-  injectable.on.props.move = (t, val) => t.set({ mousemove: val })
-  injectable.on.props.down = (t, val) => t.set({ mousedown: val })
-  injectable.on.props.up = (t, val) => t.set({ mouseup: val })
-}
+// if (isTouch) {
+//   injectable.on.props.move = (t, val) => t.set({ touchmove: val })
+//   injectable.on.props.down = (t, val) => t.set({ touchstart: val })
+//   injectable.on.props.up = (t, val) => t.set({ touchend: val })
+// } else {
+//   injectable.on.props.move = (t, val) => t.set({ mousemove: val })
+//   injectable.on.props.down = (t, val) => t.set({ mousedown: val })
+//   injectable.on.props.up = (t, val) => t.set({ mouseup: val })
+// }
 
 injectable.props = {
   hasEvents: {
     type: 'property',
-    // sync: false,
-    // this is the time for sync: false....
     subscriptionType: 'switch',
     forceSubscriptionMethod: 's',
-    // switch but with an s
     $: true,
     render: {
       state (target, s, type, subs, tree, id, pid) {
