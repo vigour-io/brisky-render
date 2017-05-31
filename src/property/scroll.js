@@ -1,4 +1,6 @@
 import bs from 'stamp'
+import eventStatus from '../events/status'
+import { set } from 'brisky-struct'
 
 const easingCache = 3
 const easingFraction = 0.95
@@ -6,12 +8,12 @@ const easingAccelerator = 1.5
 const quadraticEasing = 0.5
 const abs = Math.abs
 
+var scnter = 0
+
 const bounds = (target, val) => {
   if (val < -target._height) {
-    // target._easing = false
     return -target._height
   } else if (val > 0) {
-    // target._easing = false
     return 0
   } else {
     return val
@@ -20,6 +22,11 @@ const bounds = (target, val) => {
 
 const easeOut = (target, distance, original, event, stamp, easingFraction, setVal, prevVal) => {
   if (target._easing) {
+    if (eventStatus.blockScroll) {
+      target._easing = eventStatus.isEasing = false
+      target._fromEvent = false
+      return true
+    }
     // maybe stop when 2 ticks are same value
     target._ly = setVal(target, target._ly + distance * (1 - easingFraction), original, event, stamp)
     var d
@@ -73,9 +80,9 @@ const touchstart = ({ target, event }, x, y, ch, sh) => {
   if (ch >= sh) {
     target._block = true
     target.__init = false
+    set(eventStatus.isScrolling, false, ++scnter)
     return true
   }
-
   target.__init = true
   target._start = y
   target._y = target._ly || 0
@@ -92,10 +99,12 @@ const touchmove = (event, x, y, stamp, setVal) => {
   const target = event.target
   if (
     target._block ||
+    eventStatus.blockScroll ||
     abs(target._ey - y) <= abs(target._ex - x)
   ) {
     return true
   }
+  if (!eventStatus.isScrolling.val) set(eventStatus.isScrolling, true, ++scnter)
   event.prevent = true
   const original = event.original
   const index = target._prev[0]
@@ -113,13 +122,12 @@ const touchmove = (event, x, y, stamp, setVal) => {
 const touchend = (event, stamp, setVal) => {
   const target = event.target
   target.__init = false
+  set(eventStatus.isScrolling, false, ++scnter)
   if (!target._prev) return
   const original = event.original
   var delta = 0
   var i = easingCache
-  while (i--) {
-    delta += target._prev[i] || 0
-  }
+  while (i--) { delta += target._prev[i] || 0 }
   delta = (delta / easingCache) * easingAccelerator
   const sing = delta < 0 ? -1 : 1
   var distance = quadraticEasing * ((delta * delta) * sing)
@@ -133,6 +141,11 @@ const touchend = (event, stamp, setVal) => {
 const lookupMode = [1.0, 28.0, 500.0]
 
 const wheelX = (event, stamp, sh) => {
+  if (eventStatus.blockScroll) {
+    target.__init = false
+    set(eventStatus.isScrolling, false, ++scnter)
+    return
+  }
   const evt = event.event
   evt.preventDefault()
   if ('deltaX' in evt) {
@@ -144,7 +157,6 @@ const wheelX = (event, stamp, sh) => {
     const mode = lookupMode[evt.deltaMode] || lookupMode[0]
     event.x = evt.deltaX * mode * -1
   } else {
-    // is this ok on x?
     event.x = evt.wheelDelta / -3
   }
 
@@ -160,12 +172,18 @@ const wheelX = (event, stamp, sh) => {
   target._timeout = setTimeout(() => {
     if (target.offsetParent !== null) {
       target.__init = false
+      set(eventStatus.isScrolling, false, ++scnter)
     }
   }, 20)
   target._ly = setValX(target, target._ly + event.x, event.original, event, stamp)
 }
 
 const wheelY = (event, stamp, sh) => {
+  if (eventStatus.blockScroll) {
+    target.__init = false
+    set(eventStatus.isScrolling, false, ++scnter)
+    return
+  }
   event.prevent = true
   const evt = event.event
   evt.preventDefault()
@@ -194,6 +212,7 @@ const wheelY = (event, stamp, sh) => {
   target._timeout = setTimeout(() => {
     if (target.offsetParent !== null) {
       target.__init = false
+      set(eventStatus.isScrolling, false, ++scnter)
     }
   }, 20)
   target._ly = setValY(target, target._ly + event.y, event.original, event, stamp)
@@ -214,11 +233,7 @@ export default {
         size = val.size
       }
 
-      t.set({
-        define: {
-          hasScrollY: true
-        }
-      }, false)
+      t.set({ define: { hasScrollY: true } }, false)
 
       if (fn) {
         t.set({
