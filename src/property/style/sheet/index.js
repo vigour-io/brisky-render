@@ -2,10 +2,7 @@
 // import { property } from '../../../render/static'
 import { getClass } from '../../../get'
 import StyleSheet from './render'
-import { get } from 'brisky-struct'
-
-// import { puid, get, getKeys } from 'brisky-struct'
-// import prefixVal from '../prefix/value'
+import { get, puid } from 'brisky-struct'
 import prefix from '../prefix'
 
 const reversePrefix = {}
@@ -44,7 +41,7 @@ const setStyle = (t, store, elem, pid) => {
   var className = ''
   const style = elem.stylesheet || new StyleSheet(elem, globalSheet)
   const map = style.map
-  const mediaMap = style.mediaMap
+  // const mediaMap = style.mediaMap
   const newStyle = []
   // var mc = 0
   // console.log('DOOO', store)
@@ -55,24 +52,24 @@ const setStyle = (t, store, elem, pid) => {
     let val = get(store, key)
   // for (let key in store) {
     if (key.indexOf('@media') === 0) {
-      if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }
-      const mmap = mediaMap[key]
-      const parsed = val
-      for (let style in parsed) {
-        const value = parsed[style]
-        if (typeof value === 'object' && 'inherits' in value) {
-          const id = uid(++mc) + ((pid * 33 ^ puid(value)) >>> 0)
-          mmap.state[id] = toDash(style) + ':' + t.get([key, reversePrefix[style] || style]).compute(value, value)
-          className += ` ${id}`
-        } else {
-          const s = toDash(style) + ':' + value
-          if (!mmap[s]) {
-            mmap[s] = uid(mmap.count++) + mmap.id
-          }
-          className += ` ${mmap[s]}`
-        }
-        // this also has to be resolved of course....
-      }
+      // if (!mediaMap[key]) mediaMap[key] = { id: ++mediaMap.count, count: 0, state: {} }
+      // const mmap = mediaMap[key]
+      // const parsed = val
+      // for (let style in parsed) {
+      //   const value = parsed[style]
+      //   if (typeof value === 'object' && 'inherits' in value) {
+      //     const id = uid(++mc) + ((pid * 33 ^ puid(value)) >>> 0)
+      //     mmap.state[id] = toDash(style) + ':' + t.get([key, reversePrefix[style] || style]).compute(value, value)
+      //     className += ` ${id}`
+      //   } else {
+      //     const s = toDash(style) + ':' + value
+      //     if (!mmap[s]) {
+      //       mmap[s] = uid(mmap.count++) + mmap.id
+      //     }
+      //     className += ` ${mmap[s]}`
+      //   }
+      //   // this also has to be resolved of course....
+      // }
     } else {
       if (val === '0px') val = 0
       let s = toDash(key) + ':' + val
