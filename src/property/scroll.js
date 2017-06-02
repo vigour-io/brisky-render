@@ -76,7 +76,6 @@ const setValY = (target, val, original, event, stamp) => {
 
 const touchstart = ({ target, event }, x, y, ch, sh) => {
   global.cancelAnimationFrame(target._isEasing)
-
   if (ch >= sh) {
     target._block = true
     target.__init = false
@@ -310,10 +309,12 @@ export default {
           },
           touchmove: {
             scroll: direction === 'y' ? (val, stamp) => {
+              val.event.preventDefault()
               val.original = val.target
               val.target = target(val.target)
               touchmove(val, val.x, val.y, stamp, setValY)
             } : (val, stamp) => {
+              val.event.preventDefault()
               val.original = val.target
               val.target = target(val.target)
               touchmove(val, val.y, val.x, stamp, setValX)

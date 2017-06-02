@@ -1,11 +1,6 @@
-// import parent from '../../../render/dom/parent'
-// import { property } from '../../../render/static'
 import { getClass } from '../../../get'
 import StyleSheet from './render'
 import { get } from 'brisky-struct'
-
-// import { puid, get, getKeys } from 'brisky-struct'
-// import prefixVal from '../prefix/value'
 import prefix from '../prefix'
 
 const reversePrefix = {}
