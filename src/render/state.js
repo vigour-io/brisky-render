@@ -8,7 +8,7 @@ export default (t, state, type, subs, tree, id, pid, order) => {
   if (t.isObject && (!t.isElement || t.isText)) {
     const p = parent(tree, pid)
     if (!p) {
-      console.log('cannot find parent for', t.path(), pid)
+      // console.log('cannot find parent for', t.path(), pid)
       return
     }
     tree = p
