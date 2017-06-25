@@ -3,7 +3,6 @@ import subscriber from '../subscriber'
 import iterator from '../iterator'
 import setVal from '../val'
 import { get$, get$switch, get$any } from '../../../get'
-// import hash from 'string-hash'
 import { parse, puid } from 'brisky-struct'
 
 export default (t, map) => {
@@ -36,9 +35,7 @@ export default (t, map) => {
   if ($.length !== 1) {
     const path = $.slice(0, -1)
     const val = { val: 'switch' } // wrong for switch .. what to do
-    let walk = map
-    let exists
-    val[key] = child.$map(void 0, exists ? walk : val)
+    val[key] = child.$map(void 0, val)
 
     if ($any) {
       val[key].$keys = $any
@@ -49,9 +46,7 @@ export default (t, map) => {
         setVal(child, val[key], 'switch')
       }
     }
-    // if (!child.$test && child.sync !== false && val.$any._.sync === true) {
-    //   val.$any._.sync = 1
-    // }
+
     map = merge(t, path, val, map)
   } else {
     if (map[key]) {
@@ -69,9 +64,6 @@ export default (t, map) => {
     if ($any) {
       map[key].$keys = $any
     }
-    // if (!child.$test && child.sync !== false && map.$any._.sync === true) {
-    //   map.$any._.sync = 1
-    // }
   }
 
   iterator(t, map)
@@ -79,6 +71,16 @@ export default (t, map) => {
 
   if (extra) {
     mergeExtra(extra, map[key])
+    const $keys = map[key].$keys
+    for (let field in $keys) {
+      // tmp expiriment
+      if (field !== '$object' && field !== 'props' && field !== 'val' && field !== 'root') {
+        // console.log(field, $keys[field])
+        if (!map[key][field]) {
+          map[key][field] = $keys[field]
+        }
+      }
+    }
   }
 
   return map
