@@ -37,6 +37,7 @@ if (
 ) {
   prefix.transformOrigin = 'WebkitTransformOrigin'
   prefix.transform = 'WebkitTransform'
+  prefix.transition = 'WebkitTransition'
 }
 
 export default prefix
