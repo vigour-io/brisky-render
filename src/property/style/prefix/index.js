@@ -29,7 +29,9 @@ if (ua.platform === 'ios' || ua.browser === 'safari') {
 
 if (
   (ua.browser === 'chrome' && ua.version < 36) ||
+  (ua.browser === 'chrome' && ua.version < 36) ||
   (ua.browser === 'safari' && ua.version > 5.1) ||
+  (ua.browser === 'safari' && ua.device === 'tv') || // webOS
   (ua.platform === 'ios' && ua.version < 9.2) ||
   (ua.platform === 'android' && ua.version <= 4.5)// 4.4.4
 ) {
