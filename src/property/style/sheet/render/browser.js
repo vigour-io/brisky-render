@@ -105,7 +105,7 @@ export default class StyleSheet {
         let i = rules.length
         const sheet = this.parsed.sheet
         while (i--) {
-          sheet.addRule('.' + map[rules[i]], rules[i])
+          sheet.insertRule('.' + map[rules[i]] + ' { ' + rules[i] + ' }', i) // also compatible in FF
         }
       }
     }
