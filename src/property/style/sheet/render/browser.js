@@ -104,8 +104,14 @@ export default class StyleSheet {
       } else {
         let i = rules.length
         const sheet = this.parsed.sheet
-        while (i--) {
-          sheet.addRule('.' + map[rules[i]], rules[i])
+        if (sheet.addRule) {
+          while (i--) {
+            sheet.addRule('.' + map[rules[i]], rules[i])
+          }
+        } else {
+          while (i--) {
+            sheet.insertRule('.' + map[rules[i]] + '{' + rules[i] + '}', i) // fallback for FF
+          }
         }
       }
     }
