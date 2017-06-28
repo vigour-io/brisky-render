@@ -55,7 +55,6 @@ injectable.types = {
               } catch (e) {
                 console.error('--000111--', node, s.path(), s.val, t)
               }
-
             }
           } else {
             if (val && typeof val !== 'object' || val === 0) {
