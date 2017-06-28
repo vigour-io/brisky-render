@@ -49,7 +49,14 @@ injectable.types = {
           // remove is overhead here (extra compute)
           if (type && type === 'remove' || typeof val === 'object' || val === void 0) {
             pnode = parent(tree, pid) || node.parentNode
-            if (pnode) { pnode.removeChild(node) }
+            if (pnode) {
+              try {
+                pnode.removeChild(node)
+              } catch (e) {
+                console.error('--000111--', node, s.path(), s.val, t)
+              }
+
+            }
           } else {
             if (val && typeof val !== 'object' || val === 0) {
               node.nodeValue = val

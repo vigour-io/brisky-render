@@ -248,8 +248,8 @@ export default {
 
       if (!size) {
         size = direction === 'y'
-          ? (val) => val.target.scrollHeight
-          : (val) => val.target.scrollWidth
+          ? val => val.target.scrollHeight
+          : val => val.target.scrollWidth
       }
 
       if (!target) {
@@ -268,10 +268,12 @@ export default {
             global.cancelAnimationFrame(rt._isEasing)
             if (!rt._ly) rt._ly = 0
             if (direction === 'y') {
-              rt._height = size(event) - rt.parentNode.clientHeight
+              rt._sh = size(event)
+              rt._height = rt._sh - rt.parentNode.clientHeight
               rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
             } else {
-              rt._height = size(event) - rt.parentNode.clientWidth
+              rt._sh = size(event)
+              rt._height = rt._sh - rt.parentNode.clientWidth
               rt._ly = setValX(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
             }
           },
@@ -287,10 +289,12 @@ export default {
             rt._easing = eventStatus.isEasing = true
             if (!rt._ly) rt._ly = 0
             if (direction === 'y') {
-              rt._height = size(event) - rt.parentNode.clientHeight
+              rt._sh = size(event)
+              rt._height = rt._sh - rt.parentNode.clientHeight
               easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValY)
             } else {
-              rt._height = size(event) - rt.parentNode.clientWidth
+              rt._sh = size(event)
+              rt._height = rt._sh - rt.parentNode.clientWidth
               easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValX)
             }
           }
