@@ -8,7 +8,9 @@ export default (t, state, type, subs, tree, id, pid, order) => {
   if (t.isObject && (!t.isElement || t.isText)) {
     const p = parent(tree, pid)
     if (!p) {
-      console.log('cannot find parent for', t.path(), pid)
+      // if (type === 'remove')
+      // object subs dont work with on remove or widgets yet -- this is why it fires so often for  the h-lists
+      // console.log('cannot find parent for', t.path(), pid, subs, state.inspect(), tree)
       return
     }
     tree = p
