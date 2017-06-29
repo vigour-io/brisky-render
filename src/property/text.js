@@ -57,7 +57,7 @@ injectable.types = {
               }
             }
           } else {
-            if (val && typeof val !== 'object' || val === 0) {
+            if (typeof val !== 'object' || val === 0) {
               node.nodeValue = val
             }
           }
