@@ -85,12 +85,14 @@ injectable.props = {
                 let val = t.compute(state, state)
                 const type = typeof val
                 if (type === 'boolean') { val = val + '' }
-                if ((type === 'object' && val.inherits) || val === void 0) {
+                if (val && (type === 'object' && val.inherits) || val === void 0) {
                   if (pnode.getAttributeNS(namespace, key)) {
                     pnode.removeAttribute(namespace, key) // missing
                   }
                 } else {
-                  if (pnode.getAttributeNS(namespace, key) != val) { // eslint-disable-line
+                  if (!val && type === 'object') {
+                    if (pnode) pnode.removeAttribute(key)
+                  } else if (pnode.getAttributeNS(namespace, key) != val) { // eslint-disable-line
                     pnode.setAttributeNS(namespace, key, val)
                   }
                 }
