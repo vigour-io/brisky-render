@@ -106,7 +106,7 @@ injectable.props = {
                 let val = t.compute(state, state)
                 const type = typeof val
                 if (type === 'boolean') { val = val + '' }
-                if ((type === 'object' && val.inherits) || val === void 0) {
+                if ((type === 'object' && (!val || val.inherits)) || val === void 0) {
                   if (pnode.getAttribute(key)) {
                     pnode.removeAttribute(key) // missing
                   }
