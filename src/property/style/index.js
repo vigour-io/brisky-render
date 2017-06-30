@@ -6,6 +6,8 @@ import prefix from './prefix'
 import prefixVal from './prefix/value'
 import { set, compute } from 'brisky-struct'
 
+// global.nidium
+
 const inlineStyle = {
   type: 'property',
   props: { name: true },
