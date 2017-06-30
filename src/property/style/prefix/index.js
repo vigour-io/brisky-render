@@ -40,4 +40,10 @@ if (
   prefix.transition = 'WebkitTransition'
 }
 
+if (ua.browser === 'firefox' && ua.version < 48) {
+  prefix.transformOrigin = 'MozTransformOrigin'
+  prefix.transform = 'MozTransform'
+  prefix.transition = 'MozTransition'
+}
+
 export default prefix
