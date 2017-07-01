@@ -67,6 +67,7 @@ const text = (t, ctx, styles) => {
     // font properties (add vertical align middle etc)
     // textAlign center
     ctx.textAlign = styles.textAlign || 'left'
+    // width
     ctx.fillStyle = styles.color || 'black'
     ctx.fontSize = styles.fontSize || 12
     ctx.fontFamily = styles.fontFamily || 'Verdana'
@@ -83,7 +84,10 @@ const text = (t, ctx, styles) => {
     t.paddingBottom ||
     t.paddingRight
   ) {
-    const x = t.paddingLeft || 0
+    let x = t.paddingLeft || 0
+    if (styles && styles.textAlign && styles.textAlign === 'center') {
+      x = width / 2
+    }
     const y = t.paddingTop || 0
     const data = ctx.breakText(t.text, width - (t.paddingLeft || 0) - (t.paddingRight || 0))
     if (!t._height) {
@@ -99,6 +103,10 @@ const text = (t, ctx, styles) => {
     }
   } else {
     const data = ctx.breakText(t.text, width)
+    let x = 0
+    if (styles && styles.textAlign && styles.textAlign === 'center') {
+      x = width / 2
+    }
     if (!t._height) {
       // repaint issue fix later...
       const val = lineHeight * (data.lines.length + 1)
@@ -108,7 +116,7 @@ const text = (t, ctx, styles) => {
       }
     }
     for (let i = 0; i < data.lines.length; i++) {
-      ctx.fillText(data.lines[i], 0, (i + 1) * lineHeight)
+      ctx.fillText(data.lines[i], x, (i + 1) * lineHeight)
     }
   }
 }
