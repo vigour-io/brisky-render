@@ -6,6 +6,8 @@ import parent from './parent'
 const createStatic = create.static
 const createState = create.state
 
+const isNidium = global.__nidium__
+
 // check for null as well -- move this to get
 const getRemove = t => t.remove || t.inherits && getRemove(t.inherits)
 
@@ -22,7 +24,11 @@ const removeFragmentChild = (node, pnode) => {
     if (isFragment(node[i])) {
       removeFragmentChild(node[i], pnode)
     } else {
-      pnode.removeChild(node[i])
+      if (isNidium) {
+        node[i].removeFromParent()
+      } else {
+        pnode.removeChild(node[i])
+      }
     }
   }
 }
@@ -64,8 +70,11 @@ injectable.render = {
             if (isFragment(pnode)) {
               pnode = findParent(pnode)
             }
-
-            node.parentNode.removeChild(node)
+            if (isNidium) {
+              node.removeFromParent()
+            } else {
+              node.parentNode.removeChild(node)
+            }
           }
         }
         delete tree._[id]
@@ -73,7 +82,7 @@ injectable.render = {
     } else if (!node) {
       node = createState(t, s, type, subs, tree, id, pid, order)
       const onrender = hasRender(t)
-      if (onrender && global.requestAnimationFrame) {
+      if (onrender) {
         t.emit('render', { target: node, state: s })
       }
     }

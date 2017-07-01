@@ -7,12 +7,14 @@ import { render, done } from '../property/style/sheet'
 
 const renderStyle = render
 
+const isNidium = global.__nidium__
+
 global.d = Date.now()
 
 export default (elem, state, cb, cb2) => {
   console.log('now lets render', Date.now() - global.d, 'ms')
   var dom, node, t
-  if (elem instanceof global.Element) {
+  if (!isNidium && elem instanceof global.Element) {
     dom = elem
     elem = state
     state = cb
