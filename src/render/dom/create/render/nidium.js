@@ -2,18 +2,18 @@ import { property, element } from '../../../static'
 import fragment from './fragment'
 import { tag } from '../../../../get'
 
-const style = (t, ctx, width, height) => {
+const style = (t, ctx, width, height, styles) => {
   // padding, margin, top, left, position, border
-  if (t.style.background) {
-    ctx.fillStyle = t.style.background
+  if (styles.background) {
+    ctx.fillStyle = styles.background
     ctx.fillRect(0, 0, width, height)
   }
 
-  if (t.style.image) {
-    if (!t._img || t.style.image !== t._imgUrl) {
-      t._imgUrl = t.style.image
+  if (styles.image) {
+    if (!t._img || styles.image !== t._imgUrl) {
+      t._imgUrl = styles.image
       t._img = new global.Image()
-      t._img.src = t.style.image
+      t._img.src = styles.image
       t._loaded = false
       t._img.onload = () => {
         t._loaded = true
@@ -21,7 +21,7 @@ const style = (t, ctx, width, height) => {
       }
     }
     if (t._loaded) {
-      const size = t.style.backgroundSize
+      const size = styles.backgroundSize
       if (!size) {
         ctx.drawImage(t._img, 0, 0, t._img.width, t._img.height)
       } else {
@@ -51,13 +51,65 @@ const style = (t, ctx, width, height) => {
     }
   }
 
-  if (t.style.border) {
+  if (styles.border) {
     // cache all these string operations
-    console.log('go make a border?', width, height)
-    const match = t.style.border.match(/^(\d)+[a-z]+ [a-z]+ (.+)/)
+    const match = styles.border.match(/^(\d)+[a-z]+ [a-z]+ (.+)/)
     ctx.lineWidth = match[1]
     ctx.strokeStyle = match[2]
     ctx.strokeRect(0, 0, width, height)// for white background
+  }
+}
+
+const text = (t, ctx, styles) => {
+  let { width, height } = t.getDimensions()
+  if (styles) {
+    style(t, ctx, width, height, styles)
+    // font properties (add vertical align middle etc)
+    // textAlign center
+    ctx.textAlign = styles.textAlign || 'left'
+    ctx.fillStyle = styles.color || 'black'
+    ctx.fontSize = styles.fontSize || 12
+    ctx.fontFamily = styles.fontFamily || 'Verdana'
+  } else {
+    ctx.fillStyle = 'black' // inheritance :/ add it
+  }
+
+      // add lineheight as well
+  let lineHeight = (styles && styles.fontSize) || 12
+
+  if (
+    t.paddingTop ||
+    t.paddingLeft ||
+    t.paddingBottom ||
+    t.paddingRight
+  ) {
+    const x = t.paddingLeft || 0
+    const y = t.paddingTop || 0
+    const data = ctx.breakText(t.text, width - (t.paddingLeft || 0) - (t.paddingRight || 0))
+    if (!t._height) {
+      // repaint issue fix later...
+      const val = lineHeight * (data.lines.length + 1)
+      if (t.height !== val) {
+        t.height = val
+        return
+      }
+    }
+    for (let i = 0; i < data.lines.length; i++) {
+      ctx.fillText(data.lines[i], x, (i + 1) * lineHeight + y)
+    }
+  } else {
+    const data = ctx.breakText(t.text, width)
+    if (!t._height) {
+      // repaint issue fix later...
+      const val = lineHeight * (data.lines.length + 1)
+      if (t.height !== val) {
+        t.height = val
+        return
+      }
+    }
+    for (let i = 0; i < data.lines.length; i++) {
+      ctx.fillText(data.lines[i], 0, (i + 1) * lineHeight)
+    }
   }
 }
 
@@ -79,55 +131,13 @@ class Base extends global.Canvas {
   }
   onpaint () {
     const ctx = this.cx
-    this.clear()
     const styles = this.style
+    this.clear()
     if (this.text !== void 0) {
-      let { width, height } = this.getDimensions()
-      if (styles) {
-        style(this, ctx, width, height)
-        // font properties (add vertical align middle etc)
-        // textAlign center
-        ctx.fillStyle = styles.color || 'black'
-        ctx.fontSize = styles.fontSize || 12
-        ctx.fontFamily = styles.fontFamily || 'Verdana'
-      } else {
-        ctx.fillStyle = 'black' // inheritance :/
-      }
-
-      // add lineheight as well
-      let lineHeight = (styles && styles.fontSize) || 12
-
-      if (styles && (
-        styles.paddingTop ||
-        styles.paddingLeft ||
-        styles.paddingBottom ||
-        styles.paddingRight
-      )) {
-        const x = styles.paddingLeft || 0
-        const y = styles.paddingTop || 0
-        const data = ctx.breakText(this.text, width - (styles.paddingLeft || 0) - (styles.paddingRight || 0))
-        if (!(styles.height)) {
-          // repaint issue fix later...
-          this.height = height = lineHeight * (data.lines.length + 1)
-        }
-        for (let i = 0; i < data.lines.length; i++) {
-          ctx.fillText(data.lines[i], x, (i + 1) * lineHeight + y)
-        }
-      } else {
-        const data = ctx.breakText(this.text, width)
-        if (!(styles && styles.height)) {
-          // repaint issue fix later...
-          this.height = height = lineHeight * (data.lines.length + 1)
-        }
-        for (let i = 0; i < data.lines.length; i++) {
-          ctx.fillText(data.lines[i], 0, (i + 1) * lineHeight)
-        }
-      }
-    } else {
-      if (styles) {
-        const { width, height } = this.getDimensions()
-        style(this, ctx, width, height)
-      }
+      text(this, ctx, styles)
+    } else if (styles) {
+      const { width, height } = this.getDimensions()
+      style(this, ctx, width, height, styles)
     }
   }
 }
