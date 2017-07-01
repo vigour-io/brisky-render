@@ -2,7 +2,7 @@ import { struct } from 'brisky-struct'
 import parent from '../render/dom/parent'
 import delegate from './delegate'
 import listen from './listener'
-import { property } from '../render/static'
+// import { property } from '../render/static'
 
 const emitterProperty = struct.props.on.struct.props.default
 const cache = {}
