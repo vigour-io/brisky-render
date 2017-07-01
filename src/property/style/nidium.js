@@ -5,7 +5,7 @@ import { compute } from 'brisky-struct'
 const stripPx = val => {
   if (
     typeof val === 'string' &&
-    /px$/.test(val)
+    /(px)$/.test(val)
   ) {
     val = val.slice(0, -2) | 0
   }
@@ -33,8 +33,25 @@ const inlineStyle = {
   }
 }
 
+const canvasStyle = {
+  type: 'property',
+  render: {
+    static (t, node) {
+      node[t.key] = t.compute()
+    },
+    state (t, s, type, subs, tree, id, pid) {
+      if (type !== 'remove') {
+        parent(tree, pid)[t.key] = s.compute()
+      }
+    }
+  }
+}
+
 const style = {
   type: 'property',
+  types: {
+    canvasStyle
+  },
   render: {
     state (t, s, type, subs, tree, id, pid) {
       if (type !== 'remove') {
@@ -110,16 +127,55 @@ const style = {
         }
       }
     },
-    marginTop: {
+    maxWidth: {
       type: 'property',
       render: {
         state (t, s, type, subs, tree, id, pid) {
           if (type !== 'remove') {
-            parent(tree, pid).marginTop = stripPx(s.compute())
+            parent(tree, pid).maxWidth = stripPx(s.compute())
           }
         },
         static (t, node) {
-          node.marginTop = stripPx(t.compute())
+          node.maxWidth = stripPx(t.compute())
+        }
+      }
+    },
+    maxHeight: {
+      type: 'property',
+      render: {
+        state (t, s, type, subs, tree, id, pid) {
+          if (type !== 'remove') {
+            parent(tree, pid).maxHeight = stripPx(s.compute())
+          }
+        },
+        static (t, node) {
+          node.maxHeight = stripPx(t.compute())
+        }
+      }
+    },
+    minWidth: {
+      type: 'property',
+      render: {
+        state (t, s, type, subs, tree, id, pid) {
+          if (type !== 'remove') {
+            parent(tree, pid).minWidth = stripPx(s.compute())
+          }
+        },
+        static (t, node) {
+          node.minWidth = stripPx(t.compute())
+        }
+      }
+    },
+    minHeight: {
+      type: 'property',
+      render: {
+        state (t, s, type, subs, tree, id, pid) {
+          if (type !== 'remove') {
+            parent(tree, pid).minHeight = stripPx(s.compute())
+          }
+        },
+        static (t, node) {
+          node.minHeight = stripPx(t.compute())
         }
       }
     },
@@ -219,6 +275,33 @@ const style = {
         }
       }
     },
+    overflow: {
+      type: 'property',
+      render: {
+        state (t, s, type, subs, tree, id, pid) {
+          if (type !== 'remove') {
+            const pnode = parent(tree, pid)
+            const val = s.compute()
+            // true, false
+            // scrollable
+            // scrollableX
+            // scrollableY
+            if (val === 'hidden') {
+              pnode.overflow = false
+            } else {
+              pnode.overflow = true
+            }
+          }
+        },
+        static (t, node) {
+          const val = s.compute()
+          if (val === 'hidden') {
+            pnode.overflow = false
+          } else {
+            pnode.overflow = true
+          }
+        }
+    },
     paddingRight: {
       type: 'property',
       render: {
@@ -248,6 +331,22 @@ const style = {
         },
         static (t, node) {
           node.height = node._height = stripPx(t.compute())
+        }
+      }
+    },
+    position: {
+      type: 'property',
+      render: {
+        state (t, s, type, subs, tree, id, pid) {
+          if (type !== 'remove') {
+            const pnode = parent(tree, pid)
+            const val = s.compute()
+            pnode.position = val === 'absolute' ? 'relative' : val
+          }
+        },
+        static (t, node) {
+          const val = s.compute()
+          node.position = val === 'absolute' ? 'relative' : val
         }
       }
     },
@@ -293,7 +392,19 @@ const style = {
         t.set({ image: image[1] })
       }
     },
-    sheet: (t, val) => t.parent().set({ sheet: val })
+    sheet: (t, val) => t.parent().set({ sheet: val }),
+    opacity: { type: 'canvasStyle' },
+    flexDirection: { type: 'canvasStyle' },
+    flexGrow: { type: 'canvasStyle' },
+    flexWrap: { type: 'canvasStyle' },
+    flexShrink: { type: 'canvasStyle' },
+    flexBasis: { type: 'canvasStyle' },
+    justifyContent: { type: 'canvasStyle' },
+    alignItems: { type: 'canvasStyle' },
+    alignContent: { type: 'canvasStyle' },
+    alignSelf: { type: 'canvasStyle' },
+    display: { type: 'canvasStyle' },
+    cursor: { type: 'canvasStyle' }
   }
 }
 

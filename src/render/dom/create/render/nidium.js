@@ -125,6 +125,9 @@ class Base extends global.Canvas {
   onresize () {
 
   }
+  getBoundingclientRect () {
+    return this.getDimensions()
+  }
   oncontextlost () {
     this.cx = undefined
   }
