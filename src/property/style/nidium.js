@@ -294,13 +294,14 @@ const style = {
           }
         },
         static (t, node) {
-          const val = s.compute()
+          const val = t.compute()
           if (val === 'hidden') {
-            pnode.overflow = false
+            node.overflow = false
           } else {
-            pnode.overflow = true
+            node.overflow = true
           }
         }
+      }
     },
     paddingRight: {
       type: 'property',
@@ -345,7 +346,7 @@ const style = {
           }
         },
         static (t, node) {
-          const val = s.compute()
+          const val = t.compute()
           node.position = val === 'absolute' ? 'relative' : val
         }
       }
@@ -354,14 +355,10 @@ const style = {
       type: 'struct',
       props: {
         x: (t, val) => {
-          t.parent(2).set({
-            left: val
-          })
+          t.parent().set({ left: val })
         },
         y: (t, val) => {
-          t.parent(2).set({
-            top: val
-          })
+          t.parent().set({ top: val })
         }
       }
     },

@@ -128,6 +128,9 @@ class Base extends global.Canvas {
   getBoundingclientRect () {
     return this.getDimensions()
   }
+  get parentNode () {
+    return this.getParent()
+  }
   oncontextlost () {
     this.cx = undefined
   }
