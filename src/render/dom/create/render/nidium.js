@@ -135,7 +135,9 @@ class Base extends global.Canvas {
     this.cx = undefined
   }
   onload () {
-    this.cx = this.getContext('2d')
+    if (this.style || this.text) {
+      this.cx = this.getContext('2d')
+    }
   }
   setText (val, id) {
     // multiple text nodes id
