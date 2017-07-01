@@ -132,9 +132,11 @@ class Base extends global.Canvas {
     return this.getParent()
   }
   oncontextlost () {
+    this._inview = false
     this.cx = undefined
   }
   onload () {
+    this._inview = true
     if (this.style || this.text) {
       this.cx = this.getContext('2d')
     }
@@ -142,8 +144,12 @@ class Base extends global.Canvas {
   setText (val, id) {
     // multiple text nodes id
     this.text = val
-    // if there is a width calc everything
-    this.requestPaint()
+    if (this._inview) {
+      if (!this.cx) {
+        this.cx = this.getContext('2d')
+      }
+      this.requestPaint()
+    }
   }
   onpaint () {
     const ctx = this.cx
