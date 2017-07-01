@@ -14,6 +14,8 @@ import events from './events'
 import keyevents from './events/key'
 import property from './property'
 
+// const isNidium = global.__nidium__
+
 const element = create({
   type: 'element',
   types: {
@@ -44,12 +46,8 @@ const element = create({
           var l = 0
           while (i--) {
             if ((elems[i].id | 0) > 1e6) {
-              // let p = elems[i].parentNode
-              // if (!p.id || !((p.id | 0) > 1e6)) {
-                // console.error(elems[i].id)
               l++
               elems[i].parentNode.removeChild(elems[i])
-              // }
             }
           }
           element._c = null
@@ -74,14 +72,12 @@ const element = create({
       }
       const setObj = {}
       for (let key in val) {
-        // if (key !== 'style') {
         if (key in props && key !== 'type') {
           setObj[key] = val[key]
         } else {
           if (!setObj.attr) setObj.attr = {}
           setObj.attr[key] = val[key]
         }
-        // }
       }
       set(t, setObj, stamp)
     },

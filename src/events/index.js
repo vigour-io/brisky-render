@@ -2,6 +2,7 @@ import { struct } from 'brisky-struct'
 import parent from '../render/dom/parent'
 import delegate from './delegate'
 import listen from './listener'
+import { property } from '../render/static'
 
 const emitterProperty = struct.props.on.struct.props.default
 const cache = {}
@@ -24,55 +25,60 @@ var blockClick
 
 export default injectable
 
-injectable.on = {
-  props: {
-    error: {},
-    remove: {},
-    default: (t, val, key) => {
-      if (!cache[key]) {
-        cache[key] = true
-        listen(key, e => delegate(key, e))
-      }
-      t._p.set({ hasEvents: true }, false)
-      emitterProperty(t, val, key)
-    },
-    move: (t, val) => {
-      t.set({
-        mousemove: val,
-        touchmove: val
-      })
-    },
-    click: (t, val, key) => {
-      if (!cache[key]) {
-        cache[key] = true
-        listen(key, e => {
-          const d = Date.now() - blockClick
-          return d < 500 && delegate(key, e)
+const isNidium = global.__nidium__
+
+if (isNidium) {
+  // make seperate file
+} else {
+  injectable.on = {
+    props: {
+      error: {},
+      remove: {},
+      default: (t, val, key) => {
+        if (!cache[key]) {
+          cache[key] = true
+          listen(key, e => delegate(key, e))
+        }
+        t._p.set({ hasEvents: true }, false)
+        emitterProperty(t, val, key)
+      },
+      move: (t, val) => {
+        t.set({
+          mousemove: val,
+          touchmove: val
         })
-      }
-      t._p.set({ hasEvents: true }, false)
-      emitterProperty(t, val, key)
-    },
-    down: (t, val, key) => {
-      if (!cache[key]) {
-        cache[key] = true
-        if (!isTouch) {
-          listen('mousedown', e => {
-            blockClick = Date.now()
-            // if (!block) delegate(key, e)
-            delegate(key, e)
-          })
-        } else {
-          listen('touchstart', e => {
-            blockClick = Date.now()
-            // blockMouse()
-            delegate(key, e)
+      },
+      click: (t, val, key) => {
+        if (!cache[key]) {
+          cache[key] = true
+          listen(key, e => {
+            const d = Date.now() - blockClick
+            return d < 500 && delegate(key, e)
           })
         }
+        t._p.set({ hasEvents: true }, false)
+        emitterProperty(t, val, key)
+      },
+      down: (t, val, key) => {
+        if (!cache[key]) {
+          cache[key] = true
+          if (!isTouch) {
+            listen('mousedown', e => {
+              blockClick = Date.now()
+            // if (!block) delegate(key, e)
+              delegate(key, e)
+            })
+          } else {
+            listen('touchstart', e => {
+              blockClick = Date.now()
+            // blockMouse()
+              delegate(key, e)
+            })
+          }
+        }
+        t._p.set({ hasEvents: true }, false)
+        emitterProperty(t, val, key)
       }
-      t._p.set({ hasEvents: true }, false)
-      emitterProperty(t, val, key)
-    }
     // up: (t, val, key) => {
     //   if (!cache[key]) {
     //     cache[key] = true
@@ -88,35 +94,36 @@ injectable.on = {
     //   t._p.set({ hasEvents: true }, false)
     //   emitterProperty(t, val, key)
     // }
+    }
   }
-}
 
-if (isTouch) {
-  injectable.on.props.move = (t, val) => t.set({ touchmove: val })
+  if (isTouch) {
+    injectable.on.props.move = (t, val) => t.set({ touchmove: val })
   // injectable.on.props.down = (t, val) => t.set({ touchstart: val })
-  injectable.on.props.up = (t, val) => t.set({ touchend: val })
-} else {
-  injectable.on.props.move = (t, val) => t.set({ mousemove: val })
+    injectable.on.props.up = (t, val) => t.set({ touchend: val })
+  } else {
+    injectable.on.props.move = (t, val) => t.set({ mousemove: val })
   // injectable.on.props.down = (t, val) => t.set({ mousedown: val })
-  injectable.on.props.up = (t, val) => t.set({ mouseup: val })
-}
+    injectable.on.props.up = (t, val) => t.set({ mouseup: val })
+  }
 
-injectable.props = {
-  hasEvents: {
-    type: 'property',
-    subscriptionType: 'switch',
-    forceSubscriptionMethod: 's',
-    $: true,
-    render: {
-      state (target, s, type, subs, tree, id, pid) {
-        const node = parent(tree, pid)
-        if (node) {
-          if (s) {
-            node._sc = s.storeContext()
-            node._s = s
-          }
-          if (!('_' in node)) {
-            node._ = target.parent()
+  injectable.props = {
+    hasEvents: {
+      type: 'property',
+      subscriptionType: 'switch',
+      forceSubscriptionMethod: 's',
+      $: true,
+      render: {
+        state (target, s, type, subs, tree, id, pid) {
+          const node = parent(tree, pid)
+          if (node) {
+            if (s) {
+              node._sc = s.storeContext()
+              node._s = s
+            }
+            if (!('_' in node)) {
+              node._ = target.parent()
+            }
           }
         }
       }

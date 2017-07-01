@@ -47,18 +47,18 @@ export default class StyleSheet {
   parse () {
     var media = ''
     var str = ''
-    for (const i in this.map) {
+    for (let i in this.map) {
       str += ` .${this.map[i]} {${i};}`
     }
     const mediaMap = this.mediaMap
-    for (const key in mediaMap) {
+    for (let key in mediaMap) {
       if (key !== 'count') {
         const mmap = mediaMap[key]
         media += ` ${key} {`
-        for (const style in mmap) {
+        for (let style in mmap) {
           if (style !== 'count' && style !== 'id') {
             if (style === 'state') {
-              for (const id in mmap.state) {
+              for (let id in mmap.state) {
                 media += ` .${id} {${mmap.state[id]};}`
               }
             } else {

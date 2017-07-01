@@ -4,7 +4,7 @@ import { get } from 'brisky-struct'
 import prefix from '../prefix'
 
 const reversePrefix = {}
-for (const i in prefix) {
+for (let i in prefix) {
   reversePrefix[prefix[i]] = i
 }
 var inProgress
