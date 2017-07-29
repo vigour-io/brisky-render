@@ -16,7 +16,7 @@
     "watch": "builder-boy src/index.js dist/index.js -t node -t browser -r -w",
     "build": "builder-boy src/index.js dist/index.js -t node -t browser -r",
     "dev": "builder-boy src/index.js dist/index.js -w & nodemon test/index.js -w test -w dist",
-    "precommit": "npm test && standard --fix",
+    "precommit": "npm test",
     "preversion": "npm run precommit",
     "pretest": "npm run build",
     "test": "node test/index.js",
