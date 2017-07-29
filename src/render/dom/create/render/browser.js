@@ -23,7 +23,7 @@ if (!isNidium) {
       const children = pnode.childNodes
       if (children) {
       // console.log(state.path(), puid(state))
-        // id = (id * 33 ^ puid(state)) >>> 0
+        id = (id * 33 ^ puid(state)) >>> 0
         var i = children.length
         while (i--) {
           if (children[i].getAttribute('haha')) {
