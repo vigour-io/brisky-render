@@ -90,6 +90,7 @@ const element = create({
       if (val) {
         element.resolveNodes()
       } else {
+        // console.log('im removing unresolved!')
         // element.removeUnresolved()
       }
     }

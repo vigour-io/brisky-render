@@ -14,12 +14,17 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     return fragment(t, pnode, id, tree)
   } else {
     const node = document.createElement(nodeType)
-    if (!t._noResolve_) {
-      node.setAttribute('id', ((id * 33 ^ puid(state))) >>> 0)
-    }
     property(t, node)
     element(t, node)
     tree._[id] = node
+    // if (!t._noResolve_) {
+    if (node.getAttribute('haha')) {
+      console.log('here 💜💜💜💜💜💜', id, state)
+    }
+    node.setAttribute('id', id)
+
+    // node.setAttribute('id', ((id * 33 ^ puid(state))) >>> 0)
+    // }
     return node
   }
 }

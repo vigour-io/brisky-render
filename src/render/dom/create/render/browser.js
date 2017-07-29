@@ -23,9 +23,12 @@ if (!isNidium) {
       const children = pnode.childNodes
       if (children) {
       // console.log(state.path(), puid(state))
-        id = (id * 33 ^ puid(state)) >>> 0
+        // id = (id * 33 ^ puid(state)) >>> 0
         var i = children.length
         while (i--) {
+          if (children[i].getAttribute('haha')) {
+            console.log('ok here it goes', children[i], id, state.inspect())
+          }
         if (children[i].id == id) { // eslint-disable-line
           children[i].removeAttribute('id')
           return children[i]
@@ -126,8 +129,14 @@ if (!isNidium) {
         return fragment(t, pnode, id, tree)
       } else {
         if (t.resolve) {
+          // console.log('resolve...?')
           if (!tree._p || !tree._p._key !== 'client') {
             node = resolveState(t, pnode, id, state)
+            if (node) {
+              // console.log('resolved!', node)
+              // node.style.boxShadow = '0px 0px 10px red'
+              // node.style.opacity = 0.5
+            }
           }
           if (!node) {
             node = createElement(nodeType)
