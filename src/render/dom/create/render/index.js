@@ -21,7 +21,8 @@ injectable.state = (t, type, subs, tree, id, pnode, state) => {
     // if (node.getAttribute('haha')) {
     //   console.log('here 💜💜💜💜💜💜', id, state)
     // }
-      node.setAttribute('id', ((id * 33 ^ puid(state))) >>> 0)
+      node.setAttribute('id', id)
+      // node.setAttribute('id', ((id * 33 ^ puid(state))) >>> 0)
     }
     return node
   }
