@@ -30,12 +30,14 @@ const easeOut = (target, distance, original, event, stamp, easingFraction, setVa
     // maybe stop when 2 ticks are same value
     target._ly = setVal(target, target._ly + distance * (1 - easingFraction), original, event, stamp)
     var d
-    if (prevVal === void 0 || (d = prevVal - target._ly) > 0.3 || d < -0.3) {
+    if (prevVal === void 0 || (d = prevVal - target._ly) > 0.1 || d < -0.1) {
       prevVal = target._ly
       target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, void 0, easingFraction, setVal, prevVal))
     } else {
       target._easing = eventStatus.isEasing = false
       target._fromEvent = false
+      target._ly = target._ly + distance
+      global.requestAnimationFrame(() => setVal(target, target._ly, original, event, stamp))
     }
   }
 }
