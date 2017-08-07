@@ -1,6 +1,9 @@
-import bs from 'stamp'
 import eventStatus from '../events/status'
+import { prefix } from './style/prefix'
 import { set } from 'brisky-struct'
+import bs from 'stamp'
+
+const transform = prefix.transform || 'transform'
 
 const easingCache = 3
 const easingFraction = 0.95
@@ -32,7 +35,9 @@ const easeOut = (target, distance, original, event, stamp, easingFraction, setVa
     var d
     if (prevVal === void 0 || (d = prevVal - target._ly) > 0.3 || d < -0.3) {
       prevVal = target._ly
-      target._isEasing = global.requestAnimationFrame(() => easeOut(target, distance * easingFraction, original, event, void 0, easingFraction, setVal, prevVal))
+      target._isEasing = global.requestAnimationFrame(() => {
+        easeOut(target, distance * easingFraction, original, event, void 0, easingFraction, setVal, prevVal)
+      })
     } else {
       target._easing = eventStatus.isEasing = false
       target._fromEvent = false
@@ -42,7 +47,7 @@ const easeOut = (target, distance, original, event, stamp, easingFraction, setVa
 
 const setValX = (target, val, original, event, stamp) => {
   val = bounds(target, val)
-  target.style.transform = `translate3d(${val}px, 0, 0)`
+  target.style[transform] = `translate3d(${val}px, 0, 0)`
   if (!original) {
     original = target
   }
@@ -59,7 +64,7 @@ const setValX = (target, val, original, event, stamp) => {
 
 const setValY = (target, val, original, event, stamp) => {
   val = bounds(target, val)
-  target.style.transform = `translate3d(0, ${val}px, 0)`
+  target.style[transform] = `translate3d(0, ${val}px, 0)`
   if (!original) {
     original = target
   }

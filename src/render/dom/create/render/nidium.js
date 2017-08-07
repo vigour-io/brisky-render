@@ -121,8 +121,6 @@ const text = (t, ctx, styles) => {
   }
 }
 
-console.log('ok ok ok!!!')
-
 if (!global.Canvas) global.Canvas = function () {}
 
 class Base extends global.Canvas {
