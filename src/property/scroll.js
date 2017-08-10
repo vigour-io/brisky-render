@@ -1,51 +1,55 @@
 const deltasLastIndex = 2
 const transform = 'transform'
-var isScrolling
+const abs = Math.abs
 
 const defaults = {
   direction: 'y',
-  getOffsetSize: ({ currentTarget }) => currentTarget.parentNode.clientHeight,
-  getScrollSize: ({ currentTarget }) => currentTarget.scrollHeight,
+  getOffsetSize: ({ target }) => target.parentNode.clientHeight,
+  getScrollSize: ({ target }) => target.scrollHeight,
   getTarget: ({ currentTarget }) => currentTarget
 }
 
-const scrollInit = currentTarget => {
+const getScrollManager = currentTarget => {
+  var scroll
   if (!('scrollManager' in currentTarget)) {
     const settings = currentTarget._.scrollSettings
-    const scrollManager = {
+    scroll = {
       getOffsetSize: settings.getOffsetSize || defaults.getOffsetSize,
       getScrollSize: settings.getScrollSize || defaults.getScrollSize,
       getTarget: settings.getTarget || defaults.getTarget,
       direction: settings.direction || defaults.direction,
       state: currentTarget._s,
+      timeStamp: 0,
       currentTarget,
     }
-    if ('onScroll' in settings) scrollManager.onScroll = settings.onScroll
+    if ('onScroll' in settings) {
+      scroll.onScroll = settings.onScroll
+    }
     currentTarget.addEventListener('touchmove', onTouchMove, false)
-    currentTarget.scrollManager = scrollManager
+    currentTarget.scrollManager = scroll
+  } else {
+    scroll = currentTarget.scrollManager
+    if (scroll.isScrolling) {
+      global.cancelAnimationFrame(scroll.isScrolling)
+      scroll.isScrolling = false
+    }
   }
-  return currentTarget.scrollManager
+  return scroll
 }
 
-const scrollStart = scroll => {
+const updateScrollManager = scroll => {
   scroll.target = scroll.getTarget(scroll)
-  scroll.deltaSize = scroll.getOffsetSize(scroll) - scroll.getScrollSize(scroll)
-
-  if (scroll.deltaSize) {
-    scroll.deltasIndex = 0
-    scroll.deltas = [0,0,0]
-    scroll.position = scroll.position || 0
-    scroll.style = scroll.target.style
-    return true
-  }
+  scroll.scrollDelta = scroll.getOffsetSize(scroll) - scroll.getScrollSize(scroll)
+  scroll.style = scroll.target.style
+  scroll.isScrolling = false
 }
 
 const scrollMove = (scroll, position) => {
   var withinBounds
   if (position > 0) {
     position = 0
-  } else if (position < scroll.deltaSize) {
-    position = scroll.deltaSize
+  } else if (position < scroll.scrollDelta) {
+    position = scroll.scrollDelta
   } else {
     withinBounds = true
   }
@@ -63,7 +67,6 @@ const scrollEnd = scroll => {
   var i = deltasLastIndex
   while (i) { delta += scroll.deltas[i--] }
   delta /= deltasLastIndex + 1
-  isScrolling = false
   ;(function ease () {
     delta *= 0.95
     if (delta > 0.5 || delta < -0.5) {
@@ -77,42 +80,38 @@ const scrollEnd = scroll => {
 }
 
 const onTouchStart = ({ target, event }) => {
-  const scroll = scrollInit(target, event)
-  if (scroll.isScrolling) {
-    global.cancelAnimationFrame(scroll.isScrolling)
-    scroll.isScrolling = false
+  const scroll = getScrollManager(target)
+  const e = event.changedTouches[0]
+  if (scroll.direction === 'y') {
+    scroll.clientPos = e.clientY
+    scroll.oppositePos = e.clientX
+  } else {
+    scroll.clientPos = e.clientX
+    scroll.oppositePos = e.clientY
   }
-  if (!isScrolling) {
-    const e = event.changedTouches[0]
-    if (scroll.direction === 'y') {
-      scroll.clientPos = e.clientY
-      scroll.oppositePos = e.clientX
-    } else {
-      scroll.clientPos = e.clientX
-      scroll.oppositePos = e.clientY
-    }
-
-    scroll.canScroll = scrollStart(scroll)
-  }
+  updateScrollManager(scroll)
 }
 
-const onTouchMove = e => {
-  const scroll = e.currentTarget.scrollManager
-  if (scroll.canScroll) {
-    const clientPos = scroll.direction === 'y'
-      ? e.changedTouches[0].clientY
-      : e.changedTouches[0].clientX
-    const delta = clientPos - scroll.clientPos
-
+const onMoveEvent = (e, scroll, delta) => {
+  if (scroll.scrollDelta) {
     if (!scroll.isScrolling) {
-      const oppositePos = scroll.direction === 'y'
-      ? e.changedTouches[0].clientX
-      : e.changedTouches[0].clientY
-      if (Math.abs(delta) > Math.abs(oppositePos - scroll.oppositePos)) {
-        scroll.isScrolling = true
-        isScrolling = true
+      let oppositeDelta
+      if ('changedTouches' in e) {
+        oppositeDelta = scroll.direction === 'y'
+        ? e.changedTouches[0].clientX - scroll.oppositePos
+        : e.changedTouches[0].clientY - scroll.oppositePos
       } else {
-        scroll.canScroll = false
+        oppositeDelta = scroll.direction === 'y'
+        ? e.deltaX
+        : e.deltaY
+      }
+      if (abs(delta) > abs(oppositeDelta)) {
+        scroll.position = scroll.position || 0
+        scroll.deltasIndex = 0
+        scroll.deltas = [0,0,0]
+        scroll.isScrolling = true
+      } else {
+        scroll.scrollDelta = false
         return
       }
     }
@@ -120,10 +119,20 @@ const onTouchMove = e => {
     const deltasIndex = scroll.deltasIndex
     scroll.deltasIndex = deltasIndex === deltasLastIndex ? 0 : deltasIndex + 1
     scroll.deltas[deltasIndex] = scrollMove(scroll, scroll.position + delta) ? delta : 0
-    scroll.clientPos = clientPos
     scroll.timeStamp = e.timeStamp
 
     if ('onScroll' in scroll) scroll.onScroll(scroll)
+  }
+}
+
+const onTouchMove = e => {
+  const scroll = e.currentTarget.scrollManager
+  if (scroll.scrollDelta) {
+    const clientPos = scroll.direction === 'y'
+      ? e.changedTouches[0].clientY
+      : e.changedTouches[0].clientX
+    onMoveEvent(e, scroll, clientPos - scroll.clientPos)
+    scroll.clientPos = clientPos
   }
 }
 
@@ -134,16 +143,20 @@ const onTouchEnd = ({ target }) => {
   }
 }
 
-const scrollTo = (node, position, animate) => {
-  const scroll = scrollInit(node)
-  if (animate) {
-
-  } else {
-    if (scrollStart(scroll)) {
-      scrollMove(scroll, position)
-      scrollEnd(scroll)
-    }
+const onWheel = ({ target, event }) => {
+  const scroll = getScrollManager(target)
+  if (scroll.timeStamp < event.timeStamp - 100) {
+    updateScrollManager(scroll)
+    scroll.timeStamp = event.timeStamp
   }
+  onMoveEvent(event, scroll, scroll.direction === 'y' ? -event.deltaY : -event.deltaX)
+  event.preventDefault()
+}
+
+const scrollTo = (node, position, animate) => {
+  const scroll = getScrollManager(node)
+  updateScrollManager(scroll)
+  scrollMove(scroll, position)
 }
 
 export default {
@@ -156,7 +169,8 @@ export default {
         },
         on: {
           touchstart: { scroll: onTouchStart },
-          touchend: { scroll: onTouchEnd }
+          touchend: { scroll: onTouchEnd },
+          wheel: { scroll: onWheel }
         }
       }, false)
     }
