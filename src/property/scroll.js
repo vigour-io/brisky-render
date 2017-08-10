@@ -139,9 +139,9 @@ const touchend = (event, stamp, setVal) => {
 
 const lookupMode = [1.0, 28.0, 500.0]
 
-const wheelX = (event, stamp, sh) => {
+const wheelX = (event, stamp, size, parentSize) => {
   if (eventStatus.blockScroll) {
-    target.__init = false
+    event.target.__init = false
     set(eventStatus.isScrolling, false, ++scnter)
     return
   }
@@ -162,7 +162,7 @@ const wheelX = (event, stamp, sh) => {
   const target = event.target
   if (!target.__init) {
     if (!target._ly) { target._ly = 0 }
-    if (touchstart(event, event.y, event.x, event.target.parentNode.clientWidth, sh)) {
+    if (touchstart(event, event.y, event.x, parentSize(event), size(event))) {
       return
     }
   }
@@ -177,9 +177,9 @@ const wheelX = (event, stamp, sh) => {
   target._ly = setValX(target, target._ly + event.x, event.original, event, stamp)
 }
 
-const wheelY = (event, stamp, sh) => {
+const wheelY = (event, stamp, size, parentSize) => {
   if (eventStatus.blockScroll) {
-    target.__init = false
+    event.target.__init = false
     set(eventStatus.isScrolling, false, ++scnter)
     return
   }
@@ -203,7 +203,7 @@ const wheelY = (event, stamp, sh) => {
     if (!target._ly) {
       target._ly = 0
     }
-    if (touchstart(event, event.x, event.y, event.target.parentNode.clientHeight, sh)) {
+    if (touchstart(event, event.x, event.y, parentSize(event), size(event))) {
       return
     }
   }
@@ -220,7 +220,7 @@ const wheelY = (event, stamp, sh) => {
 export default {
   props: {
     scroll: (t, val) => {
-      var fn, target, size, direction
+      var fn, target, size, direction, parentSize
 
       if (!val) return
       if (typeof val === 'function') {
@@ -230,6 +230,7 @@ export default {
         fn = val.onScroll
         direction = val.direction
         size = val.size
+        parentSize = val.parentSize
       }
 
       t.set({ define: { hasScrollY: true } }, false)
@@ -252,6 +253,12 @@ export default {
           : val => val.target.scrollWidth
       }
 
+      if (!parentSize) {
+        parentSize = direction === 'y'
+          ? val => val.target.parentNode.clientHeight
+          : val => val.target.parentNode.clientWidth
+      }
+
       if (!target) {
         target = t => t
       }
@@ -269,11 +276,11 @@ export default {
             if (!rt._ly) rt._ly = 0
             if (direction === 'y') {
               rt._sh = size(event)
-              rt._height = rt._sh - rt.parentNode.clientHeight
+              rt._height = rt._sh - parentSize(event)
               rt._ly = setValY(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
             } else {
               rt._sh = size(event)
-              rt._height = rt._sh - rt.parentNode.clientWidth
+              rt._height = rt._sh - parentSize(event)
               rt._ly = setValX(rt, bounds(rt, -y) - rt._ly, t, event, stamp)
             }
           },
@@ -290,11 +297,11 @@ export default {
             if (!rt._ly) rt._ly = 0
             if (direction === 'y') {
               rt._sh = size(event)
-              rt._height = rt._sh - rt.parentNode.clientHeight
+              rt._height = rt._sh - parentSize(event)
               easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValY)
             } else {
               rt._sh = size(event)
-              rt._height = rt._sh - rt.parentNode.clientWidth
+              rt._height = rt._sh - parentSize(event)
               easeOut(rt, bounds(rt, -y) - rt._ly, t, event, stamp, 0.9, setValX)
             }
           }
@@ -304,11 +311,11 @@ export default {
             scroll: direction === 'y' ? (val, stamp) => {
               val.target = target(val.target)
               val.target._fromEvent = true
-              touchstart(val, val.x, val.y, val.target.parentNode.clientHeight, size(val))
+              touchstart(val, val.x, val.y, parentSize(val), size(val))
             } : (val, stamp) => {
               val.target = target(val.target)
               val.target._fromEvent = true
-              touchstart(val, val.y, val.x, val.target.parentNode.clientWidth, size(val))
+              touchstart(val, val.y, val.x, parentSize(val), size(val))
             }
           },
           touchmove: {
@@ -340,13 +347,13 @@ export default {
               val.original = val.target
               val.target = target(val.target)
               val.target._fromEvent = true
-              wheelY(val, stamp, size(val))
+              wheelY(val, stamp, size, parentSize)
               val.target._fromEvent = false
             } : (val, stamp) => {
               val.original = val.target
               val.target = target(val.target)
               val.target._fromEvent = true
-              wheelX(val, stamp, size(val))
+              wheelX(val, stamp, size, parentSize)
               val.target._fromEvent = false
             }
           }
