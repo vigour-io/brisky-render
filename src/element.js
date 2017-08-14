@@ -126,9 +126,6 @@ element.set({
 set(element, {
   define: {
     set (val) {
-      if (typeof window !== 'undefined') {
-        // console.log('SET', this.path(), val)
-      }
       return set(this, val, false)
     }
   }
