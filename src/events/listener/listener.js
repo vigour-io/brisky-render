@@ -13,7 +13,6 @@ const touch = typeof window !== 'undefined' && ((('ontouchstart' in global) ||
 
 if (ua.platform === 'ios' && touch) {
   document.documentElement.style.cursor = 'pointer' // ios test...
-  document.body.style.cursor = 'pointer'
 }
 
 export default listen
