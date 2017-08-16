@@ -1,13 +1,27 @@
+import eventStatus from '../../events/status'
 import ScrollManager from './manager'
 import prefix from '../style/prefix'
+import { set } from 'brisky-struct'
 
 const transform = prefix.transform || 'transform'
 const deltasLastIndex = 2
 const abs = Math.abs
 
+var scnter = 0
 var frameBlocked
-const unblockFrame = () => { frameBlocked = null }
-const blockFrame = () => { frameBlocked = global.requestAnimationFrame(unblockFrame) }
+const unblockFrame = () => {
+  frameBlocked = null
+}
+const blockFrame = () => {
+  frameBlocked = global.requestAnimationFrame(unblockFrame)
+}
+const scrollEnd = manager => {
+  if ('onScrollEnd' in manager) {
+    manager.isScrolling = false
+    manager.onScrollEnd(manager)
+  }
+  set(eventStatus.isScrolling, false, ++scnter)
+}
 
 const prepareScroll = (manager, target) => {
   if (manager.isScrolling) {
@@ -23,6 +37,7 @@ const prepareScroll = (manager, target) => {
   manager.scrollDelta = manager.getOffsetSize(manager) - manager.getScrollSize(manager)
   manager.style = manager.target.style
   manager.isScrolling = false
+  set(eventStatus.isScrolling, false, ++scnter)
 
   // this is to reset scroll when this node gets cloned
   // should make a more generic way of doing this
@@ -85,6 +100,10 @@ const attemptScroll = (manager, e, delta) => {
         manager.deltasIndex = 0
         manager.deltas = [0,0,0]
         manager.isScrolling = true
+
+        if (!eventStatus.isScrolling.val) {
+          set(eventStatus.isScrolling, true, ++scnter)
+        }
       } else {
         manager.scrollDelta = false
         return
@@ -161,7 +180,7 @@ const touchEnd = ({ target, event }) => {
               manager.isScrolling = global.requestAnimationFrame(scroll)
               if ('onScroll' in manager) manager.onScroll(manager)
             } else {
-              if ('onScrollEnd' in manager) manager.onScrollEnd(manager)
+              scrollEnd(manager)
             }
           }
           return scroll()
@@ -171,9 +190,8 @@ const touchEnd = ({ target, event }) => {
         if (delta > 0.5 || delta < -0.5) {
           manager.isScrolling = global.requestAnimationFrame(next)
           if ('onScroll' in manager) manager.onScroll(manager)
-        } else if ('onScrollEnd' in manager) {
-          manager.isScrolling = false
-          manager.onScrollEnd(manager)
+        } else {
+          scrollEnd(manager)
         }
       }
       scroll()
@@ -188,15 +206,13 @@ const touchEnd = ({ target, event }) => {
         if (delta > 0.5 || delta < -0.5) {
           manager.isScrolling = global.requestAnimationFrame(next)
           if ('onScroll' in manager) manager.onScroll(manager)
-        } else if ('onScrollEnd' in manager) {
-          manager.isScrolling = false
-          manager.onScrollEnd(manager)
+        } else {
+          scrollEnd(manager)
         }
       }
       scroll()
-    } else if ('onScrollEnd' in manager) {
-      manager.isScrolling = false
-      manager.onScrollEnd(manager)
+    } else {
+      scrollEnd(manager)
     }
   }
 }
@@ -211,10 +227,7 @@ const wheel = ({ target, event }) => {
     if ('onScrollEnd' in manager) {
       // is this caching needed?
       if (!('_cachedScrollEnd' in manager)) {
-        manager._cachedScrollEnd = () => {
-          manager.isScrolling = false
-          manager.onScrollEnd(manager)
-        }
+        manager._cachedScrollEnd = () => scrollEnd(manager)
       } else {
         clearTimeout(manager.isScrolling)
       }
