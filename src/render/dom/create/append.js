@@ -22,6 +22,7 @@ injectable.static = (t, pnode, domNode) => {
   }
 }
 
+// also add 'appendChild' hook for nidium?
 injectable.state = (t, pnode, node, subs, tree, uid, order) => {
   var fragment
   if (isFragment(pnode)) {
@@ -33,22 +34,36 @@ injectable.state = (t, pnode, node, subs, tree, uid, order) => {
     node._order = order
     if (next) {
       if (fragment) { fragment.push(node) }
-      pnode.insertBefore(node, next)
+      if ('appendChild' in t) {
+        t.appendChild(t, pnode, node, next)
+      } else {
+        pnode.insertBefore(node, next)
+      }
     } else {
       pnode._last = order
       if (fragment) { fragment.push(node) }
       if (isNidium) {
         pnode.add(node)
       } else {
-        pnode.appendChild(node)
+        if ('appendChild' in t) {
+          t.appendChild(t, pnode, node)
+        } else {
+          pnode.appendChild(node)
+        }
       }
     }
   } else {
-    if (fragment) { fragment.push(node) }
+    if (fragment) {
+      fragment.push(node)
+    }
     if (isNidium) {
       pnode.add(node)
     } else {
-      pnode.appendChild(node)
+      if ('appendChild' in t) {
+        t.appendChild(t, pnode, node)
+      } else {
+        pnode.appendChild(node)
+      }
     }
   }
 }

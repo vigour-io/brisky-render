@@ -45,6 +45,14 @@ injectable.props = {
         render: val
       }
     })
+  },
+  appendChild (t, val) {
+    t.set({
+      hasEvents: true,
+      define: {
+        appendChild: val
+      }
+    })
   }
 }
 
