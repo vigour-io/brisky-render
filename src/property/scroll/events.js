@@ -9,10 +9,15 @@ var frameBlocked
 const unblockFrame = () => { frameBlocked = null }
 const blockFrame = () => { frameBlocked = global.requestAnimationFrame(unblockFrame) }
 
-const prepareScroll = manager => {
+const prepareScroll = (manager, target) => {
   if (manager.isScrolling) {
     global.cancelAnimationFrame(manager.isScrolling)
     global.clearTimeout(manager.isScrolling)
+  }
+  // we might remove this
+  if (target && target !== manager.currentTarget) {
+    manager.currentTarget = target
+    manager.target = false
   }
   manager.target = manager.getTarget(manager)
   manager.scrollDelta = manager.getOffsetSize(manager) - manager.getScrollSize(manager)
@@ -59,7 +64,7 @@ const touchStart = ({ target, event }) => {
     manager.oppositePos = e.clientY
   }
   blockFrame()
-  prepareScroll(manager)
+  prepareScroll(manager, target)
 }
 
 const attemptScroll = (manager, e, delta) => {
@@ -200,7 +205,7 @@ const wheel = ({ target, event }) => {
   const manager = target.scrollManager || new ScrollManager(target)
   if (!manager.isScrolling && event.timeStamp - manager.timeStamp > 100) {
     manager.timeStamp = event.timeStamp
-    prepareScroll(manager)
+    prepareScroll(manager, target)
   }
   if (attemptScroll(manager, event, manager.direction === 'y' ? -event.deltaY : -event.deltaX)) {
     if ('onScrollEnd' in manager) {
