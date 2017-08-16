@@ -23,7 +23,7 @@ const scrollEnd = manager => {
   set(eventStatus.isScrolling, false, ++scnter)
 }
 
-const prepareScroll = (manager, target) => {
+const updateScrollManager = (manager, target) => {
   if (manager.isScrolling) {
     global.cancelAnimationFrame(manager.isScrolling)
     global.clearTimeout(manager.isScrolling)
@@ -33,8 +33,11 @@ const prepareScroll = (manager, target) => {
     manager.currentTarget = target
     manager.target = false
   }
+  console.log('FOOOOO')
   manager.target = manager.getTarget(manager)
-  manager.scrollDelta = manager.getOffsetSize(manager) - manager.getScrollSize(manager)
+  manager.offsetSize = manager.getOffsetSize(manager)
+  manager.scrollSize = manager.getScrollSize(manager)
+  manager.scrollDelta = manager.offsetSize - manager.scrollSize
   manager.style = manager.target.style
   manager.isScrolling = false
   set(eventStatus.isScrolling, false, ++scnter)
@@ -79,7 +82,7 @@ const touchStart = ({ target, event }) => {
     manager.oppositePos = e.clientY
   }
   blockFrame()
-  prepareScroll(manager, target)
+  updateScrollManager(manager, target)
 }
 
 const attemptScroll = (manager, e, delta) => {
@@ -221,7 +224,7 @@ const wheel = ({ target, event }) => {
   const manager = target.scrollManager || new ScrollManager(target)
   if (!manager.isScrolling && event.timeStamp - manager.timeStamp > 100) {
     manager.timeStamp = event.timeStamp
-    prepareScroll(manager, target)
+    updateScrollManager(manager, target)
   }
   if (attemptScroll(manager, event, manager.direction === 'y' ? -event.deltaY : -event.deltaX)) {
     if ('onScrollEnd' in manager) {
@@ -238,7 +241,7 @@ const wheel = ({ target, event }) => {
 
 const scrollTo = (target, position, animate) => {
   const manager = target.scrollManager || new ScrollManager(target)
-  prepareScroll(manager)
+  updateScrollManager(manager)
   setScroll(manager, position)
 }
 
