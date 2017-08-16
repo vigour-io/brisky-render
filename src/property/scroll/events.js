@@ -33,7 +33,6 @@ const updateScrollManager = (manager, target) => {
     manager.currentTarget = target
     manager.target = false
   }
-  console.log('FOOOOO')
   manager.target = manager.getTarget(manager)
   manager.offsetSize = manager.getOffsetSize(manager)
   manager.scrollSize = manager.getScrollSize(manager)
