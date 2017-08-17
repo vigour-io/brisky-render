@@ -91,7 +91,7 @@ const touchStart = ({ target, event }) => {
 }
 
 const attemptScroll = (manager, e, delta) => {
-  if (manager.scrollDelta < 0) {
+  if (!eventStatus.blockScroll && manager.scrollDelta < 0) {
     if (!manager.isScrolling) {
       let oppositeDelta
       if ('changedTouches' in e) {
