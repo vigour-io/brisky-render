@@ -9,18 +9,25 @@ const abs = Math.abs
 
 var scnter = 0
 var frameBlocked
-const unblockFrame = () => {
-  frameBlocked = null
-}
-const blockFrame = () => {
-  frameBlocked = global.requestAnimationFrame(unblockFrame)
-}
+const unblockFrame = () => { frameBlocked = null }
+const blockFrame = () => { frameBlocked = global.requestAnimationFrame(unblockFrame) }
+
 const scrollEnd = manager => {
   if ('onScrollEnd' in manager) {
     manager.isScrolling = false
-    manager.onScrollEnd(manager)
+    for (let i = 0; i < manager.onScrollEnd.length; i++) {
+      manager.onScrollEnd[i](manager)
+    }
   }
   set(eventStatus.isScrolling, false, ++scnter)
+}
+
+const scrollMove = manager => {
+  if ('onScroll' in manager) {
+    for (let i = 0; i < manager.onScroll.length; i++) {
+      manager.onScroll[i](manager)
+    }
+  }
 }
 
 const updateScrollManager = (manager, target) => {
@@ -40,7 +47,6 @@ const updateScrollManager = (manager, target) => {
   manager.style = manager.target.style
   manager.isScrolling = false
   set(eventStatus.isScrolling, false, ++scnter)
-
   // this is to reset scroll when this node gets cloned
   // should make a more generic way of doing this
   if (!manager.target.hasOwnProperty('cloneNode')) {
@@ -119,7 +125,7 @@ const attemptScroll = (manager, e, delta) => {
       manager.timeStamp = e.timeStamp
       manager.deltasIndex = deltasIndex === deltasLastIndex ? 0 : deltasIndex + 1
       manager.deltas[deltasIndex] = delta
-      if ('onScroll' in manager) manager.onScroll(manager)
+      scrollMove(manager)
       e.preventDefault()
       return delta
     }
@@ -178,9 +184,9 @@ const touchEnd = ({ target, event }) => {
         if (abs(snapDelta) > abs(delta)) {
           scroll = () => {
             if (t < d) {
-              setScroll(manager, easeOutCubic(t++, b, c, d))
               manager.isScrolling = global.requestAnimationFrame(scroll)
-              if ('onScroll' in manager) manager.onScroll(manager)
+              setScroll(manager, easeOutCubic(t++, b, c, d))
+              scrollMove(manager)
             } else {
               scrollEnd(manager)
             }
@@ -191,7 +197,7 @@ const touchEnd = ({ target, event }) => {
         }
         if (delta > 0.5 || delta < -0.5) {
           manager.isScrolling = global.requestAnimationFrame(next)
-          if ('onScroll' in manager) manager.onScroll(manager)
+          scrollMove(manager)
         } else {
           scrollEnd(manager)
         }
@@ -207,7 +213,7 @@ const touchEnd = ({ target, event }) => {
         delta = setScroll(manager, manager.position + delta * 0.95)
         if (delta > 0.5 || delta < -0.5) {
           manager.isScrolling = global.requestAnimationFrame(next)
-          if ('onScroll' in manager) manager.onScroll(manager)
+          scrollMove(manager)
         } else {
           scrollEnd(manager)
         }
