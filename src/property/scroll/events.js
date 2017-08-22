@@ -13,8 +13,8 @@ const unblockFrame = () => { frameBlocked = null }
 const blockFrame = () => { frameBlocked = global.requestAnimationFrame(unblockFrame) }
 
 const scrollEnd = manager => {
+  manager.isScrolling = false
   if ('onScrollEnd' in manager) {
-    manager.isScrolling = false
     for (let i = 0; i < manager.onScrollEnd.length; i++) {
       manager.onScrollEnd[i](manager)
     }
@@ -256,10 +256,13 @@ const scrollTo = (target, position, animate) => {
       if (t < d) {
         manager.isScrolling = global.requestAnimationFrame(scroll)
         setScroll(manager, easeOutCubic(t++, b, c, d))
+      } else {
+        scrollEnd(manager)
       }
     })()
   } else {
     setScroll(manager, position)
+    scrollEnd(manager)
   }
 }
 
