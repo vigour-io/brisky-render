@@ -4,6 +4,14 @@ import ScrollManager from './manager'
 export default {
   props: {
     scroll (t, scroll) {
+      if (typeof scroll === 'object') {
+        if ('onScroll' in scroll) {
+          scroll.onScroll = [scroll.onScroll]
+        }
+        if ('onScrollEnd' in scroll) {
+          scroll.onScrollEnd = [scroll.onScrollEnd]
+        }
+      }
       t.set({
         define: {
           scroll,
