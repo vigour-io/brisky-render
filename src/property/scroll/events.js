@@ -247,7 +247,20 @@ const wheel = ({ target, event }) => {
 const scrollTo = (target, position, animate) => {
   const manager = target.scrollManager || new ScrollManager(target)
   updateScrollManager(manager)
-  setScroll(manager, position)
+  if (animate) {
+    const b = manager.position
+    const c = position - b
+    const d = typeof animate === 'number' ? animate : 24
+    let t = 0
+    ;(function scroll () {
+      if (t < d) {
+        manager.isScrolling = global.requestAnimationFrame(scroll)
+        setScroll(manager, easeOutCubic(t++, b, c, d))
+      }
+    })()
+  } else {
+    setScroll(manager, position)
+  }
 }
 
 export { scrollTo, touchStart, touchMove, touchEnd, wheel }
