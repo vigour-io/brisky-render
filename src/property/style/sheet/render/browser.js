@@ -110,7 +110,7 @@ export default class StyleSheet {
           }
         } else {
           while (i--) {
-            sheet.insertRule('.' + map[rules[i]] + '{' + rules[i] + '}', i) // fallback for FF
+            sheet.insertRule('.' + map[rules[i]] + '{' + rules[i] + '}', 0) // fallback for FF
           }
         }
       }
